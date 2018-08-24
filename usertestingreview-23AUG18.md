@@ -34,7 +34,7 @@ When asked, **How do you normally find a place to go out?**, trends were as foll
 - Use maps to figure out how to get there.
 
 ## Drinks Selections
-As a piece of content for the “onboarded user” (the user who knows what the Club Soda guide is and who it's for), the drinks Selections (which act like curated “playlists” of drinks) were well received. Many participants found them confusing at first, but quickly understood what they were and felt they were useful for discovery. Again, the order of elements on the page meant that this realisation about Selections wasn’t always made until the user had got to the bottom of the page.
+As a piece of content for the “onboarded user” (the user who knows what the Club Soda guide is and who it's for), the drinks Selections (which act like curated “playlists” of drinks) were well received. Many participants found them confusing at first, but quickly understood what they were and felt they were useful for discovery. Again, the order of elements on the page meant that this realisation about Selections wasn’t always made until the user had reached the bottom of the page.
 
 ## General Aesthetics
 The font families - especially the larger accent font received mixed reviews and may be over-used.
