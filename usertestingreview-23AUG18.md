@@ -62,7 +62,7 @@ At its core the Club Soda Guide is directory of venues, but this requires balanc
 
 Attached below is a rough and ready potential update to the home page which incorporates a lot of the feedback from this testing session. Brand and product promotion is reserved for for venue pages and search results pages - a common advertisement pattern on other platforms. 
 
-
+![Post Testing Rough Mockup Suggestion](post-testing-mockup.png)
 
 
 
