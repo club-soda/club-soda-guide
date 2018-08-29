@@ -3,16 +3,17 @@
 A Checklist of wireframes and their progress to confirm goals and deliverables for design.
 
 ## Wireframes
-- [ ] Home 
+- [X] Home 
 - [ ] Drinks
 - [ ] Drinks (filtered list)
-- [ ] Venues (List)
-- [ ] Venues (Map)
-- [ ] Drinks (filtered list)
-- [ ] Mixed Media Search Results 
-- [ ] Venue
 - [ ] Drink listing for member vs non-member Brand
+- [X] Venues (List)
+- [X] Venues (Map)
+- [X] Venue
+- [ ] Mixed Media Search Results 
+- [ ] Brands
 - [ ] Brand
+- [ ] View a drink of a Brand
 - [ ] Drinks Selection
 
 ## Interaction Design (connected wireframes)
