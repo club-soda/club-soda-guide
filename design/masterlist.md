@@ -4,6 +4,8 @@ A Checklist of wireframes and their progress to confirm goals and deliverables f
 
 ## Wireframes
 - [X] Home 
+- [ ] Drinks Business Home ?
+- [ ] Venues Business Home ?
 - [ ] Drinks
 - [ ] Drinks (filtered list)
 - [ ] Drink listing for member vs non-member Brand
