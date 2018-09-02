@@ -6,21 +6,21 @@ A Checklist of wireframes and their progress to confirm goals and deliverables f
 - [X] Home 
 - [ ] Drinks Business Home ?
 - [ ] Venues Business Home ?
-- [ ] Drinks
-- [ ] Drinks (filtered list)
-- [ ] Drink listing for member vs non-member Brand
+- [X] Drinks
+- [X] Drinks (filtered list)
+- [X] ~~Drink listing for member vs non-member Brand~~
 - [X] Venues (List)
 - [X] Venues (Map)
 - [X] Venue
 - [ ] Mixed Media Search Results 
-- [ ] Brands
-- [ ] Brand
-- [ ] View a drink of a Brand
+- [X] Brands
+- [X] Brand
+- [X] View a drink of a Brand
 - [ ] Drinks Selection
 
 ## Interaction Design (connected wireframes)
-- [ ] Home - using the search bar
-- [ ] Venues Results - using a filter to change the visible results
+- [X] Home - using the search bar
+- [X] Venues Results - using a filter to change the visible results
 
 ## High-fidelity Wireframes
 - [ ] Home
