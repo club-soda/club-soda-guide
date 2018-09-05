@@ -17,7 +17,7 @@ There is an important assumption in these wireframes that the brands that venues
 
 ## Brands
 
-~Member Brands vs Non-member Brands~
+Member Brands vs Non-member Brands
 
 As a user advocate my position is as follows - the experience ought not be diminished by business objectives. And so, there are some key areas where differences are struck between the two types of brands and some areas where there is no discernible difference.
 
