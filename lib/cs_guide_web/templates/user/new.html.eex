@@ -1,14 +1,14 @@
 <section class="center w-80 w-75-l mv4">
   <h3 class="f4 lh4">Create a Profile</h1>
-  <p class="mv2">You need to be part of the Club Soda community to add listings. All it
+  <p class="mt3">You need to be part of the Club Soda community to add listings. All it
   takes is your email and a password.</p>
   <%= render_autoform(@conn, :create, CsGuide.Accounts.User, changeset: @changeset) %>
   <h3 class="f4 lh4">Set Up a Venue</h1>
-  <h2 class="f5 lh5 mt4 mb2">Basic Information</h2>
+  <h2 class="f5 lh5 mv3">Basic Information</h2>
   <p class="f6 lh6 cs-pink">* - required field</p>
   <%= render_autoform(@conn, :create, CsGuide.Resources.Venue, changeset: @changeset) %>
   <p class="underline mid-blue f6 lh6 pointer">Look Up Postcode</p>
-  <h3 class="f4 lh4">Add Products to your Stocklist</h1>
+  <h3 class="f4 lh4 mv3">Add Products to your Stocklist</h1>
   <%= render_autoform(@conn, :create, CsGuide.Accounts.User, changeset: @changeset) %>
   <p class="underline mid-blue f6 lh6 pointer">I can't find my product</p>
   <button type="button" name="button" class="save btn-primary mv4">Save</button>

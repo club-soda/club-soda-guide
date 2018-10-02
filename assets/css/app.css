@@ -4,7 +4,7 @@ body {
 }
 
 form {
-  margin: 2rem auto;
+  margin: 1rem auto;
 }
 
 /* Colours */
@@ -13,8 +13,16 @@ form {
   color: #2B7CDA;
 }
 
+.cs-black {
+  color: #333333;
+}
+
 .cs-pink {
   color: #E30B5D;
+}
+
+.b--cs-pink {
+  border-color: #E30B5D;
 }
 
 /* Line heights to correspond with tachyons font classes */
@@ -44,7 +52,7 @@ form {
 
 .form-control {
   border: 1px solid #EBEBEB;
-  border-radius: 0.1875rem; /* 3px */
+  border-radius: .25rem;
   margin-bottom: 1rem; /* 16px */
   font-family: "Open Sans";
   font-size: 0.875rem; /* 14px */
@@ -73,7 +81,7 @@ form {
   color: #2E304F;
   border: none;
   padding: 0.5rem 1.5rem; /* 8px, 24px */
-  border-radius: 0.1875rem; /* 3px */
+  border-radius: .25rem
 }
 
 .btn-primary:active {

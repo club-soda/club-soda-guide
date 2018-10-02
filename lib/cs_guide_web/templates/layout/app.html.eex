@@ -15,8 +15,15 @@
 
   <body>
     <header>
-      <nav role="navigation">
-        <a href="#">List a Venue</a>
+      <nav role="navigation" class="flex items-center">
+        <div class="w-20">
+          <a href="/">
+            <img src="<%= static_path(@conn, "/images/logo.png") %>" alt="Club Soda Logo" class="ml3 ml5-l w3">
+          </a>
+        </div>
+        <div class="w-80 dib tr">
+          <a href="/users/new" class="f5 lh5 ph4 pv2 mr3 mr5-l ba b--cs-pink cs-black no-underline br2">List a Venue</a>
+        </div>
       </nav>
       <span class="logo"></span>
     </header>
