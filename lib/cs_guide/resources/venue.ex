@@ -1,12 +1,11 @@
-defmodule CsGuide.Venue do
+defmodule CsGuide.Resources.Venue do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "venues" do
-    field :phone_number, :string
-    field :postcode, :string
-    field :venue_name, :string
+    field(:phone_number, :string)
+    field(:postcode, :string)
+    field(:venue_name, :string)
 
     timestamps()
   end

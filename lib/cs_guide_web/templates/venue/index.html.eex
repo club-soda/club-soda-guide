@@ -1,0 +1,30 @@
+<h2>Listing Venues</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Venue name</th>
+      <th>Postcode</th>
+      <th>Phone number</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for venue <- @venues do %>
+    <tr>
+      <td><%= venue.venue_name %></td>
+      <td><%= venue.postcode %></td>
+      <td><%= venue.phone_number %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: venue_path(@conn, :show, venue), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: venue_path(@conn, :edit, venue), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: venue_path(@conn, :delete, venue), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Venue", to: venue_path(@conn, :new) %></span>

@@ -5,9 +5,39 @@
   <%= render_autoform(@conn, :create, CsGuide.Accounts.User, changeset: @changeset) %>
   <h3 class="f4 lh4">Set Up a Venue</h1>
   <h2 class="f5 lh5">Basic Information</h2>
-  <%= render_autoform(@conn, :create, CsGuide.Venue, changeset: @changeset) %>
+  <%= render_autoform(@conn, :create, CsGuide.Resources.Venue, changeset: @changeset) %>
   <p class="underline mid-blue f6 lh6 pointer">Look Up Postcode</p>
   <h3 class="f4 lh4">Add Products to your Stocklist</h1>
   <%= render_autoform(@conn, :create, CsGuide.Accounts.User, changeset: @changeset) %>
   <p class="underline mid-blue f6 lh6 pointer">I can't find my product</p>
+  <button type="button" name="button" class="save btn-primary mv4">Save</button>
 </section>
+<script type="text/javascript">
+  var buttons = Array.prototype.slice.apply(document.getElementsByClassName("btn-primary"));
+  var csrf = document.getElementsByName("_csrf_token")[0].value;
+  var inputs = Array.prototype.slice.apply(document.getElementsByClassName("form-control"));
+  var saveBtn = document.getElementsByClassName("save")[0];
+
+  buttons.forEach(function (btn){
+    if (!btn.classList.contains('save')) {
+      btn.classList.add("dn");
+    }
+  })
+  saveBtn.addEventListener("click", function(){
+    var formData = new FormData();
+
+    inputs.forEach(function(el){
+      formData.append(el.name, el.value)
+    })
+
+    var req = new XMLHttpRequest();
+    req.open("POST", '/signup');
+    req.setRequestHeader("x-csrf-token", csrf);
+    req.send(formData);
+    req.onreadystatechange = function(){
+      if(this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+        window.location.pathname = "/venues";
+      }
+    }
+  });
+</script>

@@ -1,0 +1,23 @@
+<h2>Show Venue</h2>
+
+<ul>
+
+  <li>
+    <strong>Venue name:</strong>
+    <%= @venue.venue_name %>
+  </li>
+
+  <li>
+    <strong>Postcode:</strong>
+    <%= @venue.postcode %>
+  </li>
+
+  <li>
+    <strong>Phone number:</strong>
+    <%= @venue.phone_number %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: venue_path(@conn, :edit, @venue) %></span>
+<span><%= link "Back", to: venue_path(@conn, :index) %></span>
