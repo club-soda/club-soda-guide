@@ -1,1 +1,83 @@
-/* This file is for your main application css. */
+body {
+  font-family: "Open Sans";
+  color: #333333;
+}
+
+form {
+  margin: 2rem auto;
+}
+
+/* Colours */
+
+.mid-blue {
+  color: #2B7CDA;
+}
+
+/* Line heights to correspond with tachyons font classes */
+
+.lh4 {
+  line-height: 2rem; /* 32px */
+}
+
+.lh5 {
+  line-height: 1.5rem; /* 24px */
+}
+
+.lh6 {
+  line-height: 1.25rem; /* 20px */
+}
+
+/* AutoForm Classes */
+
+.control-label {
+  display: block;
+  color: #333333;
+  font-family: "Open Sans";
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
+  padding-bottom: 0.5rem; /* 8px */
+}
+
+.form-control {
+  border: 1px solid #EBEBEB;
+  border-radius: 0.1875rem; /* 3px */
+  margin-bottom: 1rem; /* 16px */
+  font-family: "Open Sans";
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
+  padding: 0.5rem; /* 8px */
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (min-width: 60em) {
+  .form-control {
+    max-width: 20rem;
+  }
+}
+
+.form-control:hover {
+  border: 1px solid #A5A5A5;
+}
+
+.btn-primary {
+  background-color: #00C6B3;
+  font-family: "Open Sans";
+  text-align: center;
+  font-size: 1rem; /* 16px */
+  line-height: 1.5rem; /* 24px */
+  color: #2E304F;
+  border: none;
+  padding: 0.5rem 1.5rem; /* 8px, 24px */
+  border-radius: 0.1875rem; /* 3px */
+}
+
+.btn-primary:active {
+  background-color: #00b2a1;
+}
+
+.btn-primary:hover {
+  background-color: #19cbba;
+}
+
+/* AutoForm Classes End */
