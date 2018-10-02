@@ -7,29 +7,26 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello CsGuide!</title>
+    <title>Club Soda Guide</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css"/>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
-    <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-          </ul>
-        </nav>
-        <span class="logo"></span>
-      </header>
+    <header>
+      <nav role="navigation">
+        <a href="#">List a Venue</a>
+      </nav>
+      <span class="logo"></span>
+    </header>
 
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+    <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+    <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
-
-    </div> <!-- /container -->
+    <main role="main">
+      <%= render @view_module, @view_template, assigns %>
+    </main>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
