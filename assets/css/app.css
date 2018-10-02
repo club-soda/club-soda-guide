@@ -13,6 +13,10 @@ form {
   color: #2B7CDA;
 }
 
+.cs-pink {
+  color: #E30B5D;
+}
+
 /* Line heights to correspond with tachyons font classes */
 
 .lh4 {
@@ -80,4 +84,8 @@ form {
   background-color: #19cbba;
 }
 
+.control-label.required::after {
+  color: #E30B5D;
+  content: "*";
+}
 /* AutoForm Classes End */

@@ -14,6 +14,6 @@ defmodule CsGuide.Resources.Venue do
   def changeset(venue, attrs) do
     venue
     |> cast(attrs, [:venue_name, :postcode, :phone_number])
-    |> validate_required([:venue_name, :postcode, :phone_number])
+    |> validate_required([:venue_name, :postcode])
   end
 end
