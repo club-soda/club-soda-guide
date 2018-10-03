@@ -1,0 +1,13 @@
+<h2>Show Venue types</h2>
+
+<ul>
+
+  <li>
+    <strong>Type:</strong>
+    <%= @venue_type.type %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: venue_type_path(@conn, :edit, @venue_type) %></span>
+<span><%= link "Back", to: venue_type_path(@conn, :index) %></span>

@@ -52,6 +52,16 @@ defmodule CsGuide.Resources do
   def create_venue(attrs \\ %{}) do
     %Venue{}
     |> Venue.changeset(attrs)
+    |> (fn c ->
+          types =
+            Enum.map(attrs["venue_types"], fn {type, active} ->
+              if active do
+                Repo.get_by(CsGuide.Categories.VenueType, type: type)
+              end
+            end)
+
+          Ecto.Changeset.put_assoc(c, :venue_types, IO.inspect(types))
+        end).()
     |> Repo.insert()
   end
 

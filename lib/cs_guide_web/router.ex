@@ -18,9 +18,11 @@ defmodule CsGuideWeb.Router do
     pipe_through(:browser)
 
     get("/", PageController, :index)
+    post("/signup", SignupController, :create)
+
     resources("/users", UserController)
     resources("/venues", VenueController)
-    post("/signup", SignupController, :create)
+    resources("/venue_types", VenueTypeController)
   end
 
   # Other scopes may use custom stacks.

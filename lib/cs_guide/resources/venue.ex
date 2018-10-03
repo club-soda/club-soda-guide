@@ -7,6 +7,13 @@ defmodule CsGuide.Resources.Venue do
     field(:postcode, :string)
     field(:venue_name, :string)
 
+    many_to_many(
+      :venue_types,
+      CsGuide.Categories.VenueType,
+      join_through: "venues_venue_types",
+      join_keys: [venue_id: :id, venue_type_id: :id]
+    )
+
     timestamps()
   end
 

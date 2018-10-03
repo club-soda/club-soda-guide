@@ -3,6 +3,8 @@ defmodule CsGuideWeb.UserController do
 
   alias CsGuide.Accounts
   alias CsGuide.Accounts.User
+  alias CsGuide.Resources.Venue
+  alias CsGuide.Resources
 
   def index(conn, _params) do
     users = Accounts.list_users()
@@ -10,8 +12,9 @@ defmodule CsGuideWeb.UserController do
   end
 
   def new(conn, _params) do
-    changeset = Accounts.change_user(%User{})
-    render(conn, "new.html", changeset: changeset)
+    user_changeset = Accounts.change_user(%User{})
+    venue_changeset = Resources.change_venue(%Venue{})
+    render(conn, "new.html", user_changeset: user_changeset, venue_changeset: venue_changeset)
   end
 
   def create(conn, %{"user" => user_params}) do
@@ -20,6 +23,7 @@ defmodule CsGuideWeb.UserController do
         conn
         |> put_flash(:info, "User created successfully.")
         |> redirect(to: user_path(conn, :show, user))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -44,6 +48,7 @@ defmodule CsGuideWeb.UserController do
         conn
         |> put_flash(:info, "User updated successfully.")
         |> redirect(to: user_path(conn, :show, user))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", user: user, changeset: changeset)
     end
