@@ -1,3 +1,4 @@
-<h2>New Venue</h2>
-
-<%= render_autoform(@conn, :create, CsGuide.Resources.Venue, changeset: @changeset) %>
+<section class="center w-80 w-75-l mv4">
+  <h2 class="f4 lh4">New Venue</h2>
+  <%= render_autoform(@conn, :create, CsGuide.Resources.Venue, changeset: @changeset) %>
+</section>
