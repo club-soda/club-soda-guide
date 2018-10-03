@@ -25,10 +25,12 @@
       <p class="f5 lh5 pr4 dib"><%= @venue.postcode %></p>
       <p class="f6 lh6 cs-mid-blue underline dib">Get Directions</p>
     </div>
-    <!-- Add icon for phone -->
-    <p class="f6 lh6 cs-mid-blue underline pv3"><%= @venue.phone_number %></p>
-    <!-- Add icon for website -->
-    <a href="#" class="cs-mid-blue f6 lh6">Add venue website</a>
+    <div class="db pv3">
+      <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/phone-icon.png") %>" alt="Phone icon">
+      <p class="f6 lh6 cs-mid-blue underline dib v-top"><%= @venue.phone_number %></p>
+    </div>
+    <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
+    <a href="#" class="cs-mid-blue f6 lh6 v-top">Add venue website</a>
 
     <h3 class="f4 lh4 pv3">Opening Hours</h3>
     <a href="#" class="cs-mid-blue f5 lh5">Add venue opening hours</a>

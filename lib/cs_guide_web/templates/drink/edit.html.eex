@@ -1,5 +1,7 @@
-<h2>Edit Drink</h2>
+<section class="center w-80 w-75-l mv4">
+  <h2 class="f4 lh4">Edit Drink</h2>
 
-<%= render "form.html", Map.put(assigns, :action, drink_path(@conn, :update, @drink)) %>
+  <%= render "form.html", Map.put(assigns, :action, drink_path(@conn, :update, @drink)) %>
 
-<span><%= link "Back", to: drink_path(@conn, :index) %></span>
+  <span><%= link "Back", to: drink_path(@conn, :index) %></span>
+</section>

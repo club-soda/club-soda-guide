@@ -145,6 +145,10 @@ form {
   right: 4rem;
 }
 
+.w-1-5rem {
+  width: 1.5rem;
+}
+
 .w-5rem {
   width: 5rem;
 }
