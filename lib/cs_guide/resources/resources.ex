@@ -62,6 +62,16 @@ defmodule CsGuide.Resources do
 
           Ecto.Changeset.put_assoc(c, :venue_types, types)
         end).()
+    |> (fn c ->
+          drinks =
+            Enum.map(attrs["drinks"], fn {name, active} ->
+              if active do
+                Repo.get_by(CsGuide.Resources.Drink, name: name)
+              end
+            end)
+
+          Ecto.Changeset.put_assoc(c, :drinks, drinks)
+        end).()
     |> Repo.insert()
   end
 

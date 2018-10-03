@@ -40,6 +40,17 @@
 <section class="tc center pv5 w-90 w-100-ns">
   <h1 class="roboto-slab f2 lh2 dib">Drinks at <%= @venue.venue_name %></h1>
   <div class="flex justify-center pv5">
+    <!-- Drink cards -->
+    <%= for drink <- @venue.drinks do %>
+      <div class="w-25 shadow-4 br2 tr pb3 mh3">
+        <div class="bb b--cs-light-pink bw3 mb3 tl h-30rem">
+          <h4 class="f4 lh4 pa3 shadow-4 br2 mt5 mb1 mh4 tc"><%= drink.name %></h4>
+          <img src="https://res.cloudinary.com/ratebeer/image/upload/w_250,c_limit/beer_117796.jpg" alt="Photo of drink" class="w-5rem db center">
+          <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib"><%= drink.abv %>% ABV</p>
+        </div>
+        <a href="#" class="cs-mid-blue f5 lh5 tr pr4">More Details</a>
+      </div>
+    <% end %>
     <div class="w-third-ns w-25-l shadow-4 br2 tr pb3 mh3">
       <div class="bb b--cs-light-pink bw3 mb3 tl h-30rem">
         <h4 class="f4 lh4 pa3 shadow-4 br2 mt5 mb3 mh4 tc">Add Drinks Stocked</h4>
@@ -48,14 +59,5 @@
       </div>
       <a href="#" class="cs-mid-blue f5 lh5 tr pr4">Add Drinks</a>
     </div>
-    <!-- Drink card -->
-    <!-- <div class="w-25 shadow-4 br2 tr pb3 mh3">
-      <div class="bb b--cs-light-pink bw3 mb3 tl h-30rem">
-        <h4 class="f4 lh4 pa3 shadow-4 br2 mt5 mb1 mh4 tc">Brewdog Nanny State</h4>
-        <img src="https://res.cloudinary.com/ratebeer/image/upload/w_250,c_limit/beer_117796.jpg" alt="Photo of drink" class="w-5rem db center">
-        <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib">% ABV</p>
-      </div>
-      <a href="#" class="cs-mid-blue f5 lh5 tr pr4">More Details</a>
-    </div>
-  </div> -->
+  </div>
 </section>
