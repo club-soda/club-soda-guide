@@ -23,6 +23,7 @@ defmodule CsGuideWeb.Router do
     resources("/users", UserController)
     resources("/venues", VenueController)
     resources("/venue_types", VenueTypeController)
+    resources("/drinks", DrinkController)
   end
 
   # Other scopes may use custom stacks.

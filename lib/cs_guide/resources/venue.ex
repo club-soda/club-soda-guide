@@ -14,6 +14,13 @@ defmodule CsGuide.Resources.Venue do
       join_keys: [venue_id: :id, venue_type_id: :id]
     )
 
+    many_to_many(
+      :drinks,
+      CsGuide.Resources.Drink,
+      join_through: "venues_drinks",
+      join_keys: [venue_id: :id, drink_id: :id]
+    )
+
     timestamps()
   end
 

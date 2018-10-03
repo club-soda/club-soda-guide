@@ -50,7 +50,7 @@ form {
   padding-bottom: 0.5rem; /* 8px */
 }
 
-.form-control {
+.form-control:not([type='checkbox']) {
   border: 1px solid #EBEBEB;
   border-radius: .25rem;
   margin-bottom: 1rem; /* 16px */
