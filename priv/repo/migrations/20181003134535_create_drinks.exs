@@ -13,7 +13,7 @@ defmodule CsGuide.Repo.Migrations.CreateDrinks do
     create table(:venues_drinks, primary_key: false) do
       add(:venue_id, references(:venues, on_delete: :delete_all, column: :id, type: :id))
 
-      add(:drinks_id, references(:drinks, on_delete: :delete_all, column: :id, type: :id))
+      add(:drink_id, references(:drinks, on_delete: :delete_all, column: :id, type: :id))
     end
   end
 end

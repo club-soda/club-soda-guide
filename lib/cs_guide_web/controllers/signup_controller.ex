@@ -17,7 +17,7 @@ defmodule CsGuideWeb.SignupController do
       {:error, %Ecto.Changeset{} = changeset} ->
         conn
         |> put_view(CsGuideWeb.UserView)
-        |> render(:new, changeset: changeset)
+        |> render(:new, user_changeset: changeset, venue_changeset: changeset)
     end
   end
 end

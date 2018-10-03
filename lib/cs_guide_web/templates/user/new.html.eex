@@ -6,10 +6,10 @@
   <h3 class="f4 lh4">Set Up a Venue</h3>
   <h2 class="f5 lh5 mv3">Basic Information</h2>
   <p class="f6 lh6 cs-pink">* - required field</p>
-  <%= render_autoform(@conn, :create, CsGuide.Resources.Venue, assigns: [changeset: @venue_changeset]) %>
+  <%= render_autoform(@conn, :create, CsGuide.Resources.Venue, assigns: [changeset: @venue_changeset], exclude: [:drinks]) %>
   <p class="underline cs-mid-blue f6 lh6 pointer">Look Up Postcode</p>
   <h3 class="f4 lh mv3">Add Products to your Stocklist</h3>
-  <%= render_autoform(@conn, :create, CsGuide.Accounts.User, assigns: [changeset: @user_changeset]) %>
+  <%= render_autoform(@conn, :create, CsGuide.Resources.Venue, assigns: [changeset: @user_changeset], exclude: [:phone_number, :postcode, :venue_name, :venue_types]) %>
   <p class="underline cs-mid-blue f6 lh6 pointer">I can't find my product</p>
   <button type="button" name="button" class="save btn-primary mv4">Save</button>
 </section>

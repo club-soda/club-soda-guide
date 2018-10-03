@@ -60,7 +60,7 @@ defmodule CsGuide.Resources do
               end
             end)
 
-          Ecto.Changeset.put_assoc(c, :venue_types, IO.inspect(types))
+          Ecto.Changeset.put_assoc(c, :venue_types, types)
         end).()
     |> Repo.insert()
   end

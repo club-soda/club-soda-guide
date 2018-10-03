@@ -20,13 +20,18 @@ defmodule CsGuideWeb.VenueController do
         conn
         |> put_flash(:info, "Venue created successfully.")
         |> redirect(to: venue_path(conn, :show, venue))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
   end
 
   def show(conn, %{"id" => id}) do
-    venue = Resources.get_venue!(id)
+    venue =
+      id
+      |> Resources.get_venue!()
+      |> CsGuide.Repo.preload([:venue_types, :drinks])
+
     render(conn, "show.html", venue: venue)
   end
 
@@ -44,6 +49,7 @@ defmodule CsGuideWeb.VenueController do
         conn
         |> put_flash(:info, "Venue updated successfully.")
         |> redirect(to: venue_path(conn, :show, venue))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", venue: venue, changeset: changeset)
     end
