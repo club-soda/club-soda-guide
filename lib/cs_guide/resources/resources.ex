@@ -55,20 +55,26 @@ defmodule CsGuide.Resources do
     |> (fn c ->
           types =
             Enum.map(attrs["venue_types"], fn {type, active} ->
-              if active do
+              if String.to_existing_atom(active) do
                 Repo.get_by(CsGuide.Categories.VenueType, type: type)
+              else
+                nil
               end
             end)
+            |> Enum.filter(& &1)
 
           Ecto.Changeset.put_assoc(c, :venue_types, types)
         end).()
     |> (fn c ->
           drinks =
             Enum.map(attrs["drinks"], fn {name, active} ->
-              if active do
+              if String.to_existing_atom(active) do
                 Repo.get_by(CsGuide.Resources.Drink, name: name)
+              else
+                nil
               end
             end)
+            |> Enum.filter(& &1)
 
           Ecto.Changeset.put_assoc(c, :drinks, drinks)
         end).()
