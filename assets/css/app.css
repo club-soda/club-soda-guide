@@ -1,5 +1,5 @@
 body {
-  font-family: "Open Sans";
+  font-family: "Open Sans", sans-serif;
   color: #333333;
 }
 
@@ -7,10 +7,28 @@ form {
   margin: 1rem auto;
 }
 
+/* Fonts */
+
+.roboto-slab {
+  font-family: "Roboto Slab";
+}
+
+.open-sans {
+  font-family: "Open Sans", sans-serif;
+}
+
 /* Colours */
 
-.mid-blue {
+.cs-mid-blue {
   color: #2B7CDA;
+}
+
+.bg-cs-mint {
+  background-color: #00C6B3;
+}
+
+.bg-cs-navy {
+  background-color: #2E304F;
 }
 
 .cs-black {
@@ -21,11 +39,28 @@ form {
   color: #E30B5D;
 }
 
+.b--cs-light-pink {
+  border-color: #FBE2DB;
+}
+
+
 .b--cs-pink {
   border-color: #E30B5D;
 }
 
+.bg-cs-light-gray {
+  background-color:#EBEBEB;
+}
+
+.b--cs-light-gray {
+  border-color:#EBEBEB;
+}
+
 /* Line heights to correspond with tachyons font classes */
+
+.lh2 {
+  line-height: 3.375rem; /* 54px */
+}
 
 .lh4 {
   line-height: 2rem; /* 32px */
@@ -97,3 +132,23 @@ form {
   content: "*";
 }
 /* AutoForm Classes End */
+
+.img-cover {
+  object-fit: cover;
+}
+
+.top-6 {
+  top: 6rem;
+}
+
+.right-4 {
+  right: 4rem;
+}
+
+.w-5rem {
+  width: 5rem;
+}
+
+.h-30rem {
+  height: 30rem;
+}

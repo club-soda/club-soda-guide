@@ -7,10 +7,10 @@
   <h2 class="f5 lh5 mv3">Basic Information</h2>
   <p class="f6 lh6 cs-pink">* - required field</p>
   <%= render_autoform(@conn, :create, CsGuide.Resources.Venue, changeset: @changeset) %>
-  <p class="underline mid-blue f6 lh6 pointer">Look Up Postcode</p>
+  <p class="underline cs-mid-blue f6 lh6 pointer">Look Up Postcode</p>
   <h3 class="f4 lh4 mv3">Add Products to your Stocklist</h1>
   <%= render_autoform(@conn, :create, CsGuide.Accounts.User, changeset: @changeset) %>
-  <p class="underline mid-blue f6 lh6 pointer">I can't find my product</p>
+  <p class="underline cs-mid-blue f6 lh6 pointer">I can't find my product</p>
   <button type="button" name="button" class="save btn-primary mv4">Save</button>
 </section>
 <script type="text/javascript">
