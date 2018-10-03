@@ -1,5 +1,6 @@
-<h2>New Venue</h2>
+<section class="center w-80 w-75-l mv4">
+  <h2 class="f4 lh4">New Venue</h2>
+  <%= render_autoform(@conn, :create, CsGuide.Resources.Venue, changeset: @changeset) %>
 
-<%= render "form.html", Map.put(assigns, :action, venue_path(@conn, :create)) %>
-
-<span><%= link "Back", to: venue_path(@conn, :index) %></span>
+  <span><%= link "Back", to: venue_path(@conn, :index) %></span>
+</section>
