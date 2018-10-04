@@ -40,8 +40,9 @@
     req.setRequestHeader("x-csrf-token", csrf);
     req.send(formData);
     req.onreadystatechange = function(){
-      if(this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-        window.location.pathname = "/venues";
+      if(this.readyState == XMLHttpRequest.DONE && this.status == 201) {
+        var id = JSON.parse(this.response).id;
+        window.location.pathname = "/venues/" + id;
       }
     }
   });

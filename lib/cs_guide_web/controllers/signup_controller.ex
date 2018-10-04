@@ -9,9 +9,8 @@ defmodule CsGuideWeb.SignupController do
         case Resources.create_venue(venue) do
           {:ok, venue} ->
             conn
-            |> put_flash(:info, "User created successfully.")
-            |> put_view(CsGuideWeb.PageView)
-            |> render(:index)
+            |> put_status(:created)
+            |> json(%{id: venue.id})
         end
 
       {:error, %Ecto.Changeset{} = changeset} ->

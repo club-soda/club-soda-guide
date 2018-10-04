@@ -3,9 +3,9 @@ defmodule CsGuide.Resources.Venue do
   import Ecto.Changeset
 
   schema "venues" do
-    field(:phone_number, :string)
-    field(:postcode, :string)
     field(:venue_name, :string)
+    field(:postcode, :string)
+    field(:phone_number, :string)
 
     many_to_many(
       :venue_types,
