@@ -89,12 +89,20 @@ form {
   border: 1px solid #EBEBEB;
   border-radius: .25rem;
   margin-bottom: 1rem; /* 16px */
-  font-family: "Open Sans";
-  font-size: 0.875rem; /* 14px */
-  line-height: 1.25rem; /* 20px */
   padding: 0.5rem; /* 8px */
   box-sizing: border-box;
   width: 100%;
+}
+
+.form-control[type=checkbox] ~ label {
+  margin-right: 1rem;
+  margin-left: 0.25rem;
+}
+
+.form-control, .form-control ~ label{
+  font-family: "Open Sans";
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
 }
 
 @media (min-width: 60em) {
