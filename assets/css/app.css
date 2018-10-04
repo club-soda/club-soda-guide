@@ -164,3 +164,44 @@ form {
 .h-30rem {
   height: 30rem;
 }
+
+/* Venue Sign up - adding custom drinks */
+
+.custom-drink-msg {
+  display: none;
+}
+
+.custom-drink:hover ~ .custom-drink-msg {
+  display: inline-block;
+}
+
+.custom-drink-msg {
+	position: relative;
+	background: #ffffff;
+	border: 1px solid #EBEBEB;
+}
+.custom-drink-msg:after, .custom-drink-msg:before {
+	right: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.custom-drink-msg:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-right-color: #ffffff;
+	border-width: 5px;
+	margin-top: -5px;
+}
+.custom-drink-msg:before {
+	border-color: rgba(235, 235, 235, 0);
+	border-right-color: #EBEBEB;
+	border-width: 6px;
+	margin-top: -6px;
+}
+
+/* End of Venue Sign up - adding custom drinks */

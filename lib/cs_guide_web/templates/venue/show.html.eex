@@ -14,13 +14,14 @@
       <a class="cs-mid-blue dib" href="#">No Club Soda Guide Score yet, generate score.</a>
     </div>
     <p class="h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl">No venue description, add description.</p>
+    <!-- See issue #30 for re-adding this
     <div class="tl">
       <p class="dib pr3">Is this your business?</p>
       <a href="#" class="cs-mid-blue dib">Claim it</a>
-    </div>
+    </div> -->
   </div>
   <div class="w-90 w-40-ns pt4 pr5-ns center">
-    <img src="<%= static_path(@conn, "/images/demo-map.png") %>" alt="Map of venue" class="">
+    <img src="<%= static_path(@conn, "/images/sample-map.png") %>" alt="Map of venue" class="">
     <div class="pv3">
       <p class="f5 lh5 pr4 dib"><%= @venue.postcode %></p>
       <p class="f6 lh6 cs-mid-blue underline dib">Get Directions</p>

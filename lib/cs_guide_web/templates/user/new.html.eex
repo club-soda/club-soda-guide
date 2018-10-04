@@ -10,8 +10,9 @@
   <p class="underline cs-mid-blue f6 lh6 pointer">Look Up Postcode</p>
   <h3 class="f4 lh mt4 mb3">Add Products to your Stocklist</h3>
   <%= render_autoform(@conn, :create, CsGuide.Resources.Venue, assigns: [changeset: @user_changeset], exclude: [:phone_number, :postcode, :venue_name, :venue_types]) %>
-  <p class="underline cs-mid-blue f6 lh6 pointer">I can't find my product</p>
-  <button type="button" name="button" class="save btn-primary mv4">Save</button>
+  <p class="underline cs-mid-blue f6 lh6 pointer custom-drink dib mv2">I can't find my product</p>
+  <p class="custom-drink-msg f6 lh6 ml2 pa1 ba br2 b--moon-gray">The custom drinks feature is coming soon.</p>
+  <button type="button" name="button" class="save btn-primary mv4 db">Save</button>
 </section>
 <script type="text/javascript">
   var buttons = Array.prototype.slice.apply(document.getElementsByClassName("btn-primary"));
