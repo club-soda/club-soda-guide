@@ -171,7 +171,8 @@ form {
   display: none;
 }
 
-.custom-drink:hover ~ .custom-drink-msg {
+.custom-drink:hover ~ .custom-drink-msg,
+.custom-drink:focus ~ .custom-drink-msg{
   display: inline-block;
 }
 

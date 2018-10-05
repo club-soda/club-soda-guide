@@ -1,8 +1,8 @@
-<%= link "Edit Venue", to: venue_path(@conn, :edit, @venue), class: "dn db-ns absolute top-6 right-4 btn-primary no-underline" %>
+<%= link "Upload Photo", to: venue_path(@conn, :edit, @venue), class: "dn db-ns absolute top-6 right-4 btn-primary no-underline" %>
 <section class="flex-ns flex-wrap">
   <img class="db w-100 img-cover" src="http://www.camera-m.com/img/placeholder-image-wide.png" alt="Venue cover image">
   <div class="w-90 w-60-ns pt4 ph5-ns center tr">
-    <%= link "Edit Venue", to: venue_path(@conn, :edit, @venue), class: "dib dn-ns btn-primary no-underline" %>
+    <%= link "Upload Photo", to: venue_path(@conn, :edit, @venue), class: "dib dn-ns btn-primary no-underline" %>
     <div class="flex-ns items-center tl">
       <h1 class="roboto-slab f2 lh2 dib-ns pt4 pt0-ns"><%= @venue.venue_name %></h1>
       <%= for type <- @venue.venue_types do %>
@@ -13,7 +13,11 @@
       <img src="<%= static_path(@conn, "/images/yellow-cup.png") %>" alt="1 star" class="w2 v-btm">
       <a class="cs-mid-blue dib" href="#">No Club Soda Guide Score yet, generate score.</a>
     </div>
-    <p class="h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl">No venue description, add description.</p>
+    <p class="h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl">
+      No venue description,
+      <span class="cs-mid-blue pointer underline">add description.</span>
+    </p>
+
     <!-- See issue #30 for re-adding this
     <div class="tl">
       <p class="dib pr3">Is this your business?</p>
@@ -28,7 +32,15 @@
     </div>
     <div class="db pv3">
       <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/phone-icon.png") %>" alt="Phone icon">
-      <p class="f6 lh6 cs-mid-blue underline dib v-top"><%= @venue.phone_number %></p>
+      <%= if @venue.phone_number do %>
+        <p class="f6 lh6 cs-mid-blue underline dib v-top">
+          <%= @venue.phone_number %>
+        </p>
+      <%= else %>
+        <a href="#" class="f6 lh6 cs-mid-blue dib v-top">
+          Add venue phone number
+        </a>
+      <% end %>
     </div>
     <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
     <a href="#" class="cs-mid-blue f6 lh6 v-top">Add venue website</a>
@@ -47,7 +59,7 @@
     <%= for drink <- @venue.drinks do %>
       <div class="w-25 shadow-4 br2 tr pb3 mh3">
         <div class="bb b--cs-light-pink bw3 mb3 tl h-30rem">
-          <h4 class="f4 lh4 pa3 shadow-4 br2 mt5 mb1 mh4 tc"><%= drink.name %></h4>
+          <h4 class="f4 lh4 pa3 shadow-4 br2 mt5 mb1 mh4 tc"><%= drink.brand %> <%= drink.name %></h4>
           <img src="https://res.cloudinary.com/ratebeer/image/upload/w_250,c_limit/beer_117796.jpg" alt="Photo of drink" class="w-5rem db center">
           <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib"><%= drink.abv %>% ABV</p>
         </div>
