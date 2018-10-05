@@ -1,8 +1,8 @@
-<%= link "Upload Photo", to: venue_path(@conn, :edit, @venue), class: "dn db-ns absolute top-6 right-4 btn-primary no-underline" %>
+<%= link "Upload Photo", to: venue_path(@conn, :edit, @venue.entry_id), class: "dn db-ns absolute top-6 right-4 btn-primary no-underline" %>
 <section class="flex-ns flex-wrap">
   <img class="db w-100 img-cover" src="http://www.camera-m.com/img/placeholder-image-wide.png" alt="Venue cover image">
   <div class="w-90 w-60-ns pt4 ph5-ns center tr">
-    <%= link "Upload Photo", to: venue_path(@conn, :edit, @venue), class: "dib dn-ns btn-primary no-underline" %>
+    <%= link "Upload Photo", to: venue_path(@conn, :edit, @venue.entry_id), class: "dib dn-ns btn-primary no-underline" %>
     <div class="flex-ns items-center tl">
       <h1 class="roboto-slab f2 lh2 dib-ns pt4 pt0-ns"><%= @venue.venue_name %></h1>
       <%= for type <- @venue.venue_types do %>

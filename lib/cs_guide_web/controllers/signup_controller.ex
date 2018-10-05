@@ -10,7 +10,7 @@ defmodule CsGuideWeb.SignupController do
           {:ok, venue} ->
             conn
             |> put_status(:created)
-            |> json(%{id: venue.id})
+            |> json(%{entry_id: venue.entry_id})
         end
 
       {:error, %Ecto.Changeset{} = changeset} ->

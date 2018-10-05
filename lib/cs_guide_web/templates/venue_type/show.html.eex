@@ -9,5 +9,5 @@
 
 </ul>
 
-<span><%= link "Edit", to: venue_type_path(@conn, :edit, @venue_type) %></span>
+<span><%= link "Edit", to: venue_type_path(@conn, :edit, @venue_type.entry_id) %></span>
 <span><%= link "Back", to: venue_type_path(@conn, :index) %></span>

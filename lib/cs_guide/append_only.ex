@@ -30,8 +30,16 @@ defmodule CsGuide.AppendOnly do
         |> Repo.insert()
       end
 
-      def get(id) do
-        Repo.get(__MODULE__, id)
+      def get(entry_id) do
+        query =
+          from(
+            m in __MODULE__,
+            where: m.entry_id == ^entry_id,
+            order_by: [desc: :inserted_at],
+            limit: 1
+          )
+
+        Repo.one(query)
       end
 
       def get_by(clauses) do
@@ -39,8 +47,23 @@ defmodule CsGuide.AppendOnly do
       end
 
       def update(%__MODULE__{} = item, attrs) do
+        assocs =
+          Enum.map(__MODULE__.__schema__(:associations), fn a ->
+            schema = Map.get(__MODULE__.__schema__(:association, a), :queryable)
+
+            {a,
+             from(s in schema,
+               distinct: s.entry_id,
+               order_by: [desc: :inserted_at],
+               select: s
+             )}
+          end)
+
         item
+        |> CsGuide.Repo.preload(assocs)
         |> Map.put(:id, nil)
+        |> Map.put(:inserted_at, nil)
+        |> Map.put(:updated_at, nil)
         |> __MODULE__.changeset(attrs)
         |> Repo.insert()
       end

@@ -18,7 +18,7 @@ defmodule CsGuide.Categories.VenueType do
   end
 
   @doc false
-  def changeset(venue_type, attrs) do
+  def changeset(venue_type, attrs \\ %{}) do
     venue_type
     |> insert_entry_id()
     |> cast(attrs, [:type])

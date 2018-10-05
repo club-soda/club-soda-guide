@@ -20,7 +20,7 @@ defmodule CsGuide.Resources.Drink do
   end
 
   @doc false
-  def changeset(drink, attrs) do
+  def changeset(drink, attrs \\ %{}) do
     drink
     |> insert_entry_id()
     |> cast(attrs, [:name, :brand, :abv])

@@ -14,9 +14,9 @@
       <td><%= venue_type.type %></td>
 
       <td class="text-right">
-        <span><%= link "Show", to: venue_type_path(@conn, :show, venue_type), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Edit", to: venue_type_path(@conn, :edit, venue_type), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: venue_type_path(@conn, :delete, venue_type), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+        <span><%= link "Show", to: venue_type_path(@conn, :show, venue_type.entry_id), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: venue_type_path(@conn, :edit, venue_type.entry_id), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: venue_type_path(@conn, :delete, venue_type.entry_id), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
       </td>
     </tr>
 <% end %>

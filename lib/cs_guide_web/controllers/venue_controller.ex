@@ -3,6 +3,8 @@ defmodule CsGuideWeb.VenueController do
 
   alias CsGuide.Resources.Venue
 
+  import Ecto.Query, only: [from: 2]
+
   def index(conn, _params) do
     venues = Venue.all()
     render(conn, "index.html", venues: venues)
@@ -18,7 +20,7 @@ defmodule CsGuideWeb.VenueController do
       {:ok, venue} ->
         conn
         |> put_flash(:info, "Venue created successfully.")
-        |> redirect(to: venue_path(conn, :show, venue))
+        |> redirect(to: venue_path(conn, :show, venue.entry_id))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -26,32 +28,40 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def show(conn, %{"id" => id}) do
+    query = fn s ->
+      from(mod in Map.get(CsGuide.Resources.Venue.__schema__(:association, s), :queryable),
+        distinct: mod.entry_id,
+        order_by: [desc: :inserted_at],
+        select: mod
+      )
+    end
+
     venue =
       id
       |> Venue.get()
-      |> CsGuide.Repo.preload([:venue_types, :drinks])
+      |> CsGuide.Repo.preload(drinks: query.(:drinks), venue_types: query.(:venue_types))
 
     render(conn, "show.html", venue: venue)
   end
 
   def edit(conn, %{"id" => id}) do
-    # venue = Resources.get_venue!(id)
-    # changeset = Resources.change_venue(venue)
-    # render(conn, "edit.html", venue: venue, changeset: changeset)
+    venue = Venue.get(id)
+    changeset = Venue.changeset(venue)
+    render(conn, "edit.html", venue: venue, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "venue" => venue_params}) do
-    # venue = Resources.get_venue!(id)
+    venue = Venue.get(id)
 
-    # case Resources.update_venue(venue, venue_params) do
-    #   {:ok, venue} ->
-    #     conn
-    #     |> put_flash(:info, "Venue updated successfully.")
-    #     |> redirect(to: venue_path(conn, :show, venue))
+    case Venue.update(venue, venue_params) do
+      {:ok, venue} ->
+        conn
+        |> put_flash(:info, "Venue updated successfully.")
+        |> redirect(to: venue_path(conn, :show, venue.entry_id))
 
-    #   {:error, %Ecto.Changeset{} = changeset} ->
-    #     render(conn, "edit.html", venue: venue, changeset: changeset)
-    # end
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, "edit.html", venue: venue, changeset: changeset)
+    end
   end
 
   def delete(conn, %{"id" => id}) do

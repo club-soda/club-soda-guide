@@ -29,7 +29,7 @@ defmodule CsGuide.Resources.Venue do
   end
 
   @doc false
-  def changeset(venue, attrs) do
+  def changeset(venue, attrs \\ %{}) do
     venue
     |> insert_entry_id()
     |> cast(attrs, [:venue_name, :postcode, :phone_number])

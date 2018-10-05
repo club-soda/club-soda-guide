@@ -18,10 +18,10 @@
           <td class="pa3 dn dib-ns"><%= venue.phone_number %></td>
 
           <td class="pv3 pa3-ns tr">
-            <span><%= link "Show", to: venue_path(@conn, :show, venue), class: "ph3 pv3-ns cs-mid-blue" %></span>
-            <span><%= link "Edit", to: venue_path(@conn, :edit, venue), class: "ph3 pv3-ns cs-mid-blue" %></span>
+            <span><%= link "Show", to: venue_path(@conn, :show, venue.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
+            <span><%= link "Edit", to: venue_path(@conn, :edit, venue.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
             <span>
-              <%= link "Delete", to: venue_path(@conn, :delete, venue),
+              <%= link "Delete", to: venue_path(@conn, :delete, venue.entry_id),
               method: :delete, data: [confirm: "Are you sure you'd like to delete this venue?"],
               class: "cs-mid-blue ph3 pv3-ns" %>
             </span>
