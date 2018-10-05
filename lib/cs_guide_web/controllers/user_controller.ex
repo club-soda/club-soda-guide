@@ -5,8 +5,8 @@ defmodule CsGuideWeb.UserController do
   alias CsGuide.Resources.Venue
 
   def index(conn, _params) do
-    # users = Accounts.list_users()
-    # render(conn, "index.html", users: users)
+    users = User.all()
+    render(conn, "index.html", users: users)
   end
 
   def new(conn, _params) do

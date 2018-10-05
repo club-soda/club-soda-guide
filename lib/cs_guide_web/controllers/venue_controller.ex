@@ -4,8 +4,8 @@ defmodule CsGuideWeb.VenueController do
   alias CsGuide.Resources.Venue
 
   def index(conn, _params) do
-    # venues = Resources.list_venues()
-    # render(conn, "index.html", venues: venues)
+    venues = Venue.all()
+    render(conn, "index.html", venues: venues)
   end
 
   def new(conn, _params) do

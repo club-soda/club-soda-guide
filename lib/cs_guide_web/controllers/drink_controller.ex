@@ -4,8 +4,8 @@ defmodule CsGuideWeb.DrinkController do
   alias CsGuide.Resources.Drink
 
   def index(conn, _params) do
-    # drinks = Drinks.all()
-    # render(conn, "index.html", drinks: drinks)
+    drinks = Drink.all()
+    render(conn, "index.html", drinks: drinks)
   end
 
   def new(conn, _params) do

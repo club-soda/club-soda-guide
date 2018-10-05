@@ -55,6 +55,17 @@ defmodule CsGuide.AppendOnly do
         Repo.all(query)
       end
 
+      def all do
+        query =
+          from(m in __MODULE__,
+            distinct: m.entry_id,
+            order_by: [desc: :inserted_at],
+            select: m
+          )
+
+        Repo.all(query)
+      end
+
       def insert_entry_id(entry) do
         case Map.fetch(entry, :entry_id) do
           {:ok, nil} -> %{entry | entry_id: Ecto.UUID.generate()}
