@@ -8,6 +8,7 @@ defmodule CsGuide.Resources.Drink do
     field(:brand, :string)
     field(:name, :string)
     field(:entry_id, :string)
+    field(:deleted, :boolean)
 
     many_to_many(
       :venues,
@@ -23,7 +24,7 @@ defmodule CsGuide.Resources.Drink do
   def changeset(drink, attrs \\ %{}) do
     drink
     |> insert_entry_id()
-    |> cast(attrs, [:name, :brand, :abv])
+    |> cast(attrs, [:name, :brand, :abv, :deleted])
     |> validate_required([:name, :brand, :abv])
   end
 end

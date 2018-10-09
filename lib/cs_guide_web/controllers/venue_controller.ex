@@ -3,7 +3,7 @@ defmodule CsGuideWeb.VenueController do
 
   alias CsGuide.Resources.Venue
 
-  import Ecto.Query, only: [from: 2]
+  import Ecto.Query, only: [from: 2, subquery: 1]
 
   def index(conn, _params) do
     venues = Venue.all()
@@ -29,11 +29,14 @@ defmodule CsGuideWeb.VenueController do
 
   def show(conn, %{"id" => id}) do
     query = fn s ->
-      from(mod in Map.get(CsGuide.Resources.Venue.__schema__(:association, s), :queryable),
-        distinct: mod.entry_id,
-        order_by: [desc: :inserted_at],
-        select: mod
-      )
+      sub =
+        from(mod in Map.get(CsGuide.Resources.Venue.__schema__(:association, s), :queryable),
+          distinct: mod.entry_id,
+          order_by: [desc: :inserted_at],
+          select: mod
+        )
+
+      from(m in subquery(sub), where: not m.deleted, select: m)
     end
 
     venue =

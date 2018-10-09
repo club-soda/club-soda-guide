@@ -6,6 +6,7 @@ defmodule CsGuide.Categories.VenueType do
   schema "venue_types" do
     field(:name, :string)
     field(:entry_id, :string)
+    field(:deleted, :boolean)
 
     many_to_many(
       :venues,
