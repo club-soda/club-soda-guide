@@ -22,7 +22,8 @@ defmodule CsGuide.AppendOnly do
 
   defmacro __before_compile__(_env) do
     quote generated: true do
-      import Ecto.Query, only: [from: 2]
+      import Ecto.Query, only: [from: 2, subquery: 1]
+      import Ecto.Query.API, only: [fragment: 1]
 
       def insert(attrs) do
         %__MODULE__{}
@@ -31,15 +32,18 @@ defmodule CsGuide.AppendOnly do
       end
 
       def get(entry_id) do
-        query =
+        sub =
           from(
             m in __MODULE__,
             where: m.entry_id == ^entry_id,
             order_by: [desc: :inserted_at],
-            limit: 1
+            limit: 1,
+            select: m
           )
 
-        Repo.one(query)
+        query = from(m in subquery(sub), where: not m.deleted, select: m)
+
+        item = Repo.one(query)
       end
 
       def get_by(clauses) do
@@ -67,12 +71,14 @@ defmodule CsGuide.AppendOnly do
       end
 
       def all do
-        query =
+        sub =
           from(m in __MODULE__,
             distinct: m.entry_id,
             order_by: [desc: :inserted_at],
             select: m
           )
+
+        query = from(m in subquery(sub), where: not m.deleted, select: m)
 
         Repo.all(query)
       end
@@ -82,6 +88,16 @@ defmodule CsGuide.AppendOnly do
           {:ok, nil} -> %{entry | entry_id: Ecto.UUID.generate()}
           _ -> entry
         end
+      end
+
+      def delete(item) do
+        item
+        |> CsGuide.Repo.preload(__MODULE__.__schema__(:associations))
+        |> Map.put(:id, nil)
+        |> Map.put(:inserted_at, nil)
+        |> Map.put(:updated_at, nil)
+        |> __MODULE__.changeset(%{deleted: true})
+        |> Repo.insert()
       end
 
       defoverridable CsGuide.AppendOnly

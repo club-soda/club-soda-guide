@@ -51,11 +51,11 @@ defmodule CsGuideWeb.DrinkController do
   end
 
   def delete(conn, %{"id" => id}) do
-    # drink = Resources.get_drink!(id)
-    # {:ok, _drink} = Resources.delete_drink(drink)
+    drink = Drink.get(id)
+    {:ok, _drink} = Drink.delete(drink)
 
-    # conn
-    # |> put_flash(:info, "Drink deleted successfully.")
-    # |> redirect(to: drink_path(conn, :index))
+    conn
+    |> put_flash(:info, "Drink deleted successfully.")
+    |> redirect(to: drink_path(conn, :index))
   end
 end

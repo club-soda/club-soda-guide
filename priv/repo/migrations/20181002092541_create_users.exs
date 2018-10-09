@@ -5,6 +5,7 @@ defmodule CsGuide.Repo.Migrations.CreateUsers do
     create table(:users) do
       add(:email, :string)
       add(:entry_id, :string)
+      add(:deleted, :boolean, default: false)
 
       timestamps()
     end

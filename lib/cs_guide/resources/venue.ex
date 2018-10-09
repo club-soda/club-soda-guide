@@ -11,6 +11,7 @@ defmodule CsGuide.Resources.Venue do
     field(:postcode, :string)
     field(:phone_number, :string)
     field(:entry_id, :string)
+    field(:deleted, :boolean)
 
     many_to_many(
       :venue_types,
