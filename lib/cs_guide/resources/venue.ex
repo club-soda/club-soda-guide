@@ -2,6 +2,7 @@ defmodule CsGuide.Resources.Venue do
   use Ecto.Schema
   use CsGuide.AppendOnly
   import Ecto.Changeset
+  import Ecto.Query, only: [from: 2]
 
   alias CsGuide.Repo
 
@@ -39,7 +40,38 @@ defmodule CsGuide.Resources.Venue do
   def insert(attrs) do
     %__MODULE__{}
     |> __MODULE__.changeset(attrs)
-    |> venue_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :type)
+    |> venue_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
+    |> venue_assoc(attrs, :drinks, CsGuide.Resources.Drink, :name)
+    |> Repo.insert()
+  end
+
+  def update(%__MODULE__{} = item, attrs) do
+    assocs =
+      Enum.map(__MODULE__.__schema__(:associations), fn a ->
+        schema = Map.get(__MODULE__.__schema__(:association, a), :queryable)
+
+        selected =
+          case Map.get(attrs, to_string(a)) do
+            nil -> []
+            selected -> Enum.map(selected, fn {k, v} -> k end)
+          end
+
+        {a,
+         from(s in schema,
+           where: s.name in ^selected,
+           distinct: s.entry_id,
+           order_by: [desc: :inserted_at],
+           select: s
+         )}
+      end)
+
+    item
+    |> CsGuide.Repo.preload(assocs)
+    |> Map.put(:id, nil)
+    |> Map.put(:inserted_at, nil)
+    |> Map.put(:updated_at, nil)
+    |> __MODULE__.changeset(attrs)
+    |> venue_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
     |> venue_assoc(attrs, :drinks, CsGuide.Resources.Drink, :name)
     |> Repo.insert()
   end

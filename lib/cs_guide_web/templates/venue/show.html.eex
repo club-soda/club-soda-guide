@@ -6,7 +6,7 @@
     <div class="flex-ns items-center tl">
       <h1 class="roboto-slab f2 lh2 dib-ns pt4 pt0-ns"><%= @venue.venue_name %></h1>
       <%= for type <- @venue.venue_types do %>
-        <p class="dib ml4-ns ph3 pv1 white bg-cs-navy br2 f5 lh5 mb3 mb0-ns"><%= String.capitalize(type.type) %></p>
+        <p class="dib ml4-ns ph3 pv1 white bg-cs-navy br2 f5 lh5 mb3 mb0-ns"><%= String.capitalize(type.name) %></p>
       <% end %>
     </div>
     <div class="tl pt3">

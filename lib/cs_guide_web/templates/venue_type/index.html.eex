@@ -3,7 +3,7 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Type</th>
+      <th>Name</th>
 
       <th></th>
     </tr>
@@ -11,7 +11,7 @@
   <tbody>
 <%= for venue_type <- @venue_type do %>
     <tr>
-      <td><%= venue_type.type %></td>
+      <td><%= venue_type.name %></td>
 
       <td class="text-right">
         <span><%= link "Show", to: venue_type_path(@conn, :show, venue_type.entry_id), class: "btn btn-default btn-xs" %></span>

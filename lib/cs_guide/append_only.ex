@@ -47,20 +47,8 @@ defmodule CsGuide.AppendOnly do
       end
 
       def update(%__MODULE__{} = item, attrs) do
-        assocs =
-          Enum.map(__MODULE__.__schema__(:associations), fn a ->
-            schema = Map.get(__MODULE__.__schema__(:association, a), :queryable)
-
-            {a,
-             from(s in schema,
-               distinct: s.entry_id,
-               order_by: [desc: :inserted_at],
-               select: s
-             )}
-          end)
-
         item
-        |> CsGuide.Repo.preload(assocs)
+        |> CsGuide.Repo.preload(__MODULE__.__schema__(:associations))
         |> Map.put(:id, nil)
         |> Map.put(:inserted_at, nil)
         |> Map.put(:updated_at, nil)

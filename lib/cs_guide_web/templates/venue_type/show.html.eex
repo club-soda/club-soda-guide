@@ -3,8 +3,8 @@
 <ul>
 
   <li>
-    <strong>Type:</strong>
-    <%= @venue_type.type %>
+    <strong>Name:</strong>
+    <%= @venue_type.name %>
   </li>
 
 </ul>

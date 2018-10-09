@@ -4,7 +4,7 @@ defmodule CsGuide.Categories.VenueType do
   import Ecto.Changeset
 
   schema "venue_types" do
-    field(:type, :string)
+    field(:name, :string)
     field(:entry_id, :string)
 
     many_to_many(
@@ -21,8 +21,8 @@ defmodule CsGuide.Categories.VenueType do
   def changeset(venue_type, attrs \\ %{}) do
     venue_type
     |> insert_entry_id()
-    |> cast(attrs, [:type])
-    |> validate_required([:type])
-    |> unique_constraint(:type)
+    |> cast(attrs, [:name])
+    |> validate_required([:name])
+    |> unique_constraint(:name)
   end
 end
