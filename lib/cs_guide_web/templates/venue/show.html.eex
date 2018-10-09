@@ -54,21 +54,49 @@
 </section>
 <section class="tc center pv5 w-90 w-100-ns">
   <h1 class="roboto-slab f2 lh2 dib">Drinks at <%= @venue.venue_name %></h1>
-  <div class="flex justify-center pv5">
+  <div class="flex-ns flex-wrap justify-center pv4-ns">
     <!-- Drink cards -->
-    <%= for drink <- @venue.drinks do %>
-      <div class="w-25 shadow-4 br2 tr pb3 mh3">
-        <div class="bb b--cs-light-pink bw3 mb3 tl h-30rem">
-          <h4 class="f4 lh4 pa3 shadow-4 br2 mt5 mb1 mh4 tc"><%= drink.brand %> <%= drink.name %></h4>
-          <img src="https://res.cloudinary.com/ratebeer/image/upload/w_250,c_limit/beer_117796.jpg" alt="Photo of drink" class="w-5rem db center">
-          <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib"><%= drink.abv %>% ABV</p>
+    <%= for {drink, index} <- Enum.with_index(@venue.drinks) do %>
+      <div class="w-third-m w-20-l shadow-4 br2 tr pb3 mh3 mv3 relative">
+        <div class="card-front-contents">
+          <div class="bb b--cs-light-pink bw3 mb3 tl h-30rem">
+            <h4 class="f4 lh4 pa3 shadow-4 br2 mt4 mb1 mh4 tc"><%= drink.brand %> <%= drink.name %></h4>
+            <img src="https://res.cloudinary.com/ratebeer/image/upload/w_250,c_limit/beer_117796.jpg" alt="Photo of drink" class="w-5rem db center">
+            <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib"><%= drink.abv %>% ABV</p>
+          </div>
         </div>
-        <a href="#" class="cs-mid-blue f5 lh5 tr pr4">More Details</a>
+        <input type="checkbox" name="card-front" id="display-back-<%=index%>" class="display-back dn">
+        <label for="display-back-<%=index%>" class="cs-mid-blue f5 lh5 tr pr4 underline"></label>
+
+        <div class="card-back-contents dn absolute top-0 left-0 bg-white pt3 ph3">
+          <div class="mb3 tl h-30rem">
+            <div class="bb b--pink mt2 mh2 pb3 center">
+              <h4 class="f4 lh4 mb1"><%= drink.name %></h4>
+              <p class="f5 lh5 mv1">by</p>
+              <a class="f4 lh4 cs-mid-blue mv1" href="#"><%= drink.brand %></a>
+            </div>
+            <div class="flex flex-wrap">
+              <!-- Change this to category/ sub category -->
+              <%= if drink.name do %>
+              <p class="w-50 pv2 dib">Drink Category</p>
+              <% end %>
+              <%= if drink.abv do %>
+              <p class="w-50 pv2 dib"><%= drink.abv %>% ABV</p>
+              <% end %>
+            </div>
+            <!-- Change this to description -->
+            <%= if drink.name do %>
+            <p class="pv2">Drink description text Drink description text Drink
+              description text Drink description text Drink description text
+            </p>
+            <% end %>
+          </div>
+        </div>
       </div>
     <% end %>
-    <div class="w-third-ns w-25-l shadow-4 br2 tr pb3 mh3">
+    <div class="w-third-m w-20-l shadow-4 br2 tr pb3 mh3 mv3">
       <div class="bb b--cs-light-pink bw3 mb3 tl h-30rem">
-        <h4 class="f4 lh4 pa3 shadow-4 br2 mt5 mb3 mh4 tc">Add Drinks Stocked</h4>
+        <h4 class="f4 lh4 pa3 shadow-4 br2 mt4 mb3 mh4 tc">Add Drinks Stocked</h4>
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyT_ehuzfLvJKLPOAVjobqWtZjFO1--mgpQb_NJmq0wIfpEc5SyXkuPxpG" alt="Photo of drink" class="w-5rem db center">
         <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib">% ABV</p>
       </div>
