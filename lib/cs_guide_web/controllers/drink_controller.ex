@@ -8,6 +8,15 @@ defmodule CsGuideWeb.DrinkController do
     render(conn, "index.html", drinks: drinks)
   end
 
+  def json_index(conn, _params) do
+    drinks = Drink.all()
+
+    json(
+      conn,
+      Enum.map(drinks, fn d -> %{name: d.name, brand: d.brand, abv: d.abv} end)
+    )
+  end
+
   def new(conn, _params) do
     changeset = Drink.changeset(%Drink{}, %{})
     render(conn, "new.html", changeset: changeset)
