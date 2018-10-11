@@ -6330,6 +6330,7 @@ var author$project$DrinksCarousel$update = F2(
 				elm$core$Platform$Cmd$none);
 		}
 	});
+var elm$core$String$fromFloat = _String_fromNumber;
 var elm$json$Json$Decode$map = _Json_map1;
 var elm$json$Json$Decode$map2 = _Json_map2;
 var elm$json$Json$Decode$succeed = _Json_succeed;
@@ -6345,25 +6346,228 @@ var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 			return 3;
 	}
 };
+var elm$html$Html$a = _VirtualDom_node('a');
 var elm$html$Html$div = _VirtualDom_node('div');
+var elm$html$Html$h4 = _VirtualDom_node('h4');
+var elm$html$Html$img = _VirtualDom_node('img');
+var elm$html$Html$input = _VirtualDom_node('input');
+var elm$html$Html$label = _VirtualDom_node('label');
 var elm$html$Html$p = _VirtualDom_node('p');
 var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
+var elm$json$Json$Encode$string = _Json_wrap;
+var elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			elm$json$Json$Encode$string(string));
+	});
+var elm$html$Html$Attributes$alt = elm$html$Html$Attributes$stringProperty('alt');
+var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
+var elm$html$Html$Attributes$for = elm$html$Html$Attributes$stringProperty('htmlFor');
+var elm$html$Html$Attributes$href = function (url) {
+	return A2(
+		elm$html$Html$Attributes$stringProperty,
+		'href',
+		_VirtualDom_noJavaScriptUri(url));
+};
+var elm$html$Html$Attributes$id = elm$html$Html$Attributes$stringProperty('id');
+var elm$html$Html$Attributes$name = elm$html$Html$Attributes$stringProperty('name');
+var elm$html$Html$Attributes$src = function (url) {
+	return A2(
+		elm$html$Html$Attributes$stringProperty,
+		'src',
+		_VirtualDom_noJavaScriptOrHtmlUri(url));
+};
+var elm$html$Html$Attributes$type_ = elm$html$Html$Attributes$stringProperty('type');
 var author$project$DrinksCarousel$view = function (model) {
 	return A2(
 		elm$html$Html$div,
-		_List_Nil,
+		_List_fromArray(
+			[
+				elm$html$Html$Attributes$class('flex-ns flex-wrap justify-center pv4-ns')
+			]),
 		A2(
-			elm$core$List$map,
-			function (d) {
-				return A2(
-					elm$html$Html$p,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text(d.name)
-						]));
-			},
+			elm$core$List$indexedMap,
+			F2(
+				function (index, d) {
+					return A2(
+						elm$html$Html$div,
+						_List_fromArray(
+							[
+								elm$html$Html$Attributes$class('w-third-m w-20-l shadow-4 br2 tr pb3 mh3 mv3 relative')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								elm$html$Html$div,
+								_List_fromArray(
+									[
+										elm$html$Html$Attributes$class('card-front-contents')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										elm$html$Html$div,
+										_List_fromArray(
+											[
+												elm$html$Html$Attributes$class('bb b--cs-light-pink bw3 mb3 tl h-30rem')
+											]),
+										_List_fromArray(
+											[
+												A2(
+												elm$html$Html$h4,
+												_List_fromArray(
+													[
+														elm$html$Html$Attributes$class('f4 lh4 pa3 shadow-4 br2 mt4 mb1 mh4 tc')
+													]),
+												_List_fromArray(
+													[
+														elm$html$Html$text(d.brand + (' ' + d.name))
+													])),
+												A2(
+												elm$html$Html$img,
+												_List_fromArray(
+													[
+														elm$html$Html$Attributes$src('https://res.cloudinary.com/ratebeer/image/upload/w_250,c_limit/beer_117796.jpg'),
+														elm$html$Html$Attributes$alt('Photo of drink'),
+														elm$html$Html$Attributes$class('w-5rem db center')
+													]),
+												_List_Nil),
+												A2(
+												elm$html$Html$p,
+												_List_fromArray(
+													[
+														elm$html$Html$Attributes$class('bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib')
+													]),
+												_List_fromArray(
+													[
+														elm$html$Html$text(
+														elm$core$String$fromFloat(d.abv) + '% ABV')
+													]))
+											]))
+									])),
+								A2(
+								elm$html$Html$input,
+								_List_fromArray(
+									[
+										elm$html$Html$Attributes$type_('checkbox'),
+										elm$html$Html$Attributes$name('card-front'),
+										elm$html$Html$Attributes$id(
+										'display-back-' + elm$core$String$fromInt(index)),
+										elm$html$Html$Attributes$class('display-back dn')
+									]),
+								_List_Nil),
+								A2(
+								elm$html$Html$label,
+								_List_fromArray(
+									[
+										elm$html$Html$Attributes$for(
+										'display-back-' + elm$core$String$fromInt(index)),
+										elm$html$Html$Attributes$class('cs-mid-blue f5 lh5 tr pr4 underline')
+									]),
+								_List_Nil),
+								A2(
+								elm$html$Html$div,
+								_List_fromArray(
+									[
+										elm$html$Html$Attributes$class('card-back-contents dn absolute top-0 left-0 bg-white pt3 ph3')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										elm$html$Html$div,
+										_List_fromArray(
+											[
+												elm$html$Html$Attributes$class('mb3 tl h-30rem')
+											]),
+										_List_fromArray(
+											[
+												A2(
+												elm$html$Html$div,
+												_List_fromArray(
+													[
+														elm$html$Html$Attributes$class('bb b--pink mt2 mh2 pb3 center')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														elm$html$Html$h4,
+														_List_fromArray(
+															[
+																elm$html$Html$Attributes$class('f4 lh4 mb1')
+															]),
+														_List_fromArray(
+															[
+																elm$html$Html$text(d.name)
+															])),
+														A2(
+														elm$html$Html$p,
+														_List_fromArray(
+															[
+																elm$html$Html$Attributes$class('f5 lh5 mv1')
+															]),
+														_List_fromArray(
+															[
+																elm$html$Html$text('by')
+															])),
+														A2(
+														elm$html$Html$a,
+														_List_fromArray(
+															[
+																elm$html$Html$Attributes$class('f4 lh4 cs-mid-blue mv1'),
+																elm$html$Html$Attributes$href('#')
+															]),
+														_List_fromArray(
+															[
+																elm$html$Html$text(d.brand)
+															]))
+													])),
+												A2(
+												elm$html$Html$div,
+												_List_fromArray(
+													[
+														elm$html$Html$Attributes$class('flex flex-wrap')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														elm$html$Html$p,
+														_List_fromArray(
+															[
+																elm$html$Html$Attributes$class('w-50 pv2 dib')
+															]),
+														_List_fromArray(
+															[
+																elm$html$Html$text('Drink Category')
+															])),
+														A2(
+														elm$html$Html$p,
+														_List_fromArray(
+															[
+																elm$html$Html$Attributes$class('w-50 pv2 dib')
+															]),
+														_List_fromArray(
+															[
+																elm$html$Html$text(
+																elm$core$String$fromFloat(d.abv) + '% ABV')
+															]))
+													])),
+												A2(
+												elm$html$Html$p,
+												_List_fromArray(
+													[
+														elm$html$Html$Attributes$class('pv2')
+													]),
+												_List_fromArray(
+													[
+														elm$html$Html$text('Drink description text Drink description \n                                text Drink description text Drink description \n                                text Drink description text')
+													]))
+											]))
+									]))
+							]));
+				}),
 			model.drinks));
 };
 var elm$browser$Browser$External = function (a) {
@@ -6519,22 +6723,7 @@ var elm$browser$Debugger$Overlay$viewProblemType = function (_n0) {
 					A2(elm$core$List$map, elm$browser$Debugger$Overlay$problemToString, problems)) + '.'))
 			]));
 };
-var elm$html$Html$a = _VirtualDom_node('a');
 var elm$html$Html$ul = _VirtualDom_node('ul');
-var elm$json$Json$Encode$string = _Json_wrap;
-var elm$html$Html$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			elm$json$Json$Encode$string(string));
-	});
-var elm$html$Html$Attributes$href = function (url) {
-	return A2(
-		elm$html$Html$Attributes$stringProperty,
-		'href',
-		_VirtualDom_noJavaScriptUri(url));
-};
 var elm$browser$Debugger$Overlay$viewBadMetadata = function (_n0) {
 	var message = _n0.message;
 	var problems = _n0.problems;
@@ -6649,7 +6838,6 @@ var elm$browser$Debugger$Overlay$viewButtons = function (buttons) {
 };
 var elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
 var elm$html$Html$map = elm$virtual_dom$VirtualDom$map;
-var elm$html$Html$Attributes$id = elm$html$Html$Attributes$stringProperty('id');
 var elm$browser$Debugger$Overlay$viewMessage = F4(
 	function (config, title, details, buttons) {
 		return A2(
@@ -7799,7 +7987,6 @@ var elm$browser$Debugger$Expando$viewSequenceOpen = function (values) {
 var elm$browser$Debugger$Main$ExpandoMsg = function (a) {
 	return {$: 'ExpandoMsg', a: a};
 };
-var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
 var elm$html$Html$Attributes$title = elm$html$Html$Attributes$stringProperty('title');
 var elm$browser$Debugger$History$viewMessage = F3(
 	function (currentIndex, index, msg) {

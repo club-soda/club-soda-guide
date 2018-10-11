@@ -28,4 +28,4 @@ npm-debug.log
 
 .DS_Store
 
-assets/elm-stuff
+elm-stuff/
