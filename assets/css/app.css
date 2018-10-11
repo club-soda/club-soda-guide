@@ -43,7 +43,6 @@ form {
   border-color: #FBE2DB;
 }
 
-
 .b--cs-pink {
   border-color: #E30B5D;
 }
@@ -206,3 +205,19 @@ form {
 }
 
 /* End of Venue Sign up - adding custom drinks */
+
+/* Drinks card 'flipping' */
+
+.display-back:checked ~ .card-back-contents {
+  display: block;
+}
+
+.display-back ~ label:after {
+  content: "More Details";
+}
+
+.display-back:checked ~ label:after {
+  content: "Close";
+}
+
+/* End of drinks card 'flipping' */
