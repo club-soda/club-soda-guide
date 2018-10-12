@@ -2,12 +2,3 @@
   <p>Landing page</p>
 </section>
 <section id="drinks-carousel"></section>
-
-<!-- <script>
-
-  // Elm.DrinksCarousel.embed(document.getElementById('drinks-carousel'));
-
-  var app = Elm.Main.init({
-    node: document.getElementById('drinks-carousel')
-  })
-</script> -->

@@ -1,4 +1,4 @@
-module DrinksCarousel exposing (..)
+port module DrinksCarousel exposing (..)
 
 import Browser
 import Http
@@ -79,24 +79,17 @@ type Msg
     = ReceiveDrinks (HttpData (List Drink))
     | IncrementIndexes
     | DecrementIndexes
+    | Swipe String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ReceiveDrinks (Err _) ->
-            let
-                a =
-                    Debug.log "drinks ok" "no"
-            in
-                ( model, Cmd.none )
+            ( model, Cmd.none )
 
         ReceiveDrinks (Ok drinks) ->
-            let
-                a =
-                    Debug.log "drinks ok" "yes"
-            in
-                ( { model | drinks = drinks }, Cmd.none )
+            ( { model | drinks = drinks }, Cmd.none )
 
         IncrementIndexes ->
             let
@@ -118,10 +111,24 @@ update msg model =
             in
                 ( { model | carouselIndex = newIndex }, Cmd.none )
 
+        Swipe dir ->
+            case dir of
+                "right" ->
+                    { model | carouselIndex = model.carouselIndex - 1 }
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
+                "left" ->
+                    { model | carouselIndex = model.carouselIndex + 1 }
+
+                _ ->
+                    model
+
+
+port swipe : (String -> msg) -> Sub msg
+
+
+subscription : Model -> Sub Msg
+subscription model =
+    swipe Swipe
 
 
 
@@ -132,7 +139,7 @@ view : Model -> Html Msg
 view model =
     div [ class "relative" ]
         [ p [ class "f1 b pointer absolute-vertical-center left-2", onClick DecrementIndexes ] [ text "<" ]
-        , div [ class "flex-ns flex-wrap justify-center pv4-ns dib" ]
+        , div [ class "flex-ns flex-wrap justify-center pv4-ns dib", id "carousel" ]
             (renderDrinksCarousel model)
         , p [ class "f1 b pointer absolute-vertical-center right-2", onClick IncrementIndexes ] [ text ">" ]
         ]

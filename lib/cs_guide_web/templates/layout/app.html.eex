@@ -43,5 +43,6 @@
         })
       }
     </script>
+    <script src="<%= static_path(@conn, "/js/carousel-swipe.js") %>"></script>
   </body>
 </html>
