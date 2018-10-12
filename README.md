@@ -41,7 +41,7 @@ will drive a community that owns the mindful drinking movement.
 
 In the current iteration of the app, users can sign up and add their venue.
 
-To sign up, visit https://club-soda-guide.herokuapp.com/users/new, or click on the 'List a Venue' button on the top left of any page.
+To sign up, visit https://club-soda-guide-staging.herokuapp.com/users/new, or click on the 'List a Venue' button on the top left of any page.
 
 <img src="https://user-images.githubusercontent.com/8939909/46817864-c681d580-cd77-11e8-8a50-ff87fa446391.png" alt="'List a Venue' Button" width="200"/>
 
@@ -49,14 +49,14 @@ From there, you will see a sign up form, enabling users to sign up with an email
 
 <img width="500" alt="Sample Venue Page" src="https://user-images.githubusercontent.com/8939909/46818567-7efc4900-cd79-11e8-8287-75bafadf2155.png">
 
-To see all venues that currently exist, you can visit https://club-soda-guide.herokuapp.com/venues, where you'll see a list of all venues. From here you can click 'show' to visit the venue page, 'edit' to edit its details, or 'delete' to delete the venue listing.
+To see all venues that currently exist, you can visit https://club-soda-guide-staging.herokuapp.com/venues, where you'll see a list of all venues. From here you can click 'show' to visit the venue page, 'edit' to edit its details, or 'delete' to delete the venue listing.
 
 <img width="500" alt="Venue listings" src="https://user-images.githubusercontent.com/8939909/46818459-32b10900-cd79-11e8-8268-a01b735c0ed2.png">
 
-The venue types and drinks that can be added to a venue listing can be added to by visiting https://club-soda-guide.herokuapp.com/venue_types/new, or https://club-soda-guide.herokuapp.com/drinks/new respectively.
+The venue types and drinks that can be added to a venue listing can be added to by visiting https://club-soda-guide-staging.herokuapp.com/venue_types/new, or https://club-soda-guide-staging.herokuapp.com/drinks/new respectively.
 
 <img width="275" alt="New drink" src="https://user-images.githubusercontent.com/8939909/46818775-edd9a200-cd79-11e8-8dfd-c4db560d0c6c.png">
 
 <img width="250" alt="New Venue Type" src="https://user-images.githubusercontent.com/8939909/46818794-f7fba080-cd79-11e8-8caa-f05f65becbeb.png">
 
-You can also see a list of all venue types, and drinks on https://club-soda-guide.herokuapp.com/venue_types and https://club-soda-guide.herokuapp.com/drinks, where you can show, edit and delete them as with the venues. (These pages are still undergoing work so do not currently look very nice, but are functional).
+You can also see a list of all venue types, and drinks on https://club-soda-guide-staging.herokuapp.com/venue_types and https://club-soda-guide-staging.herokuapp.com/drinks, where you can show, edit and delete them as with the venues. (These pages are still undergoing work so do not currently look very nice, but are functional).
