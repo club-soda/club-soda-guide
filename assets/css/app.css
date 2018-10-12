@@ -35,6 +35,10 @@ form {
   color: #333333;
 }
 
+.bg-cs-black {
+  background-color: #333333;
+}
+
 .cs-pink {
   color: #E30B5D;
 }
@@ -56,6 +60,10 @@ form {
 }
 
 /* Line heights to correspond with tachyons font classes */
+
+.lh1 {
+  line-height: 4rem; /* 64px */
+}
 
 .lh2 {
   line-height: 3.375rem; /* 54px */
