@@ -7,6 +7,8 @@ import Json.Decode.Pipeline exposing (..)
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (onClick)
+import Array exposing (..)
 
 
 -- MAIN
@@ -56,12 +58,15 @@ type alias Drink =
 
 type alias Model =
     { drinks : List Drink
+    , carouselIndex : Int
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model []
+    ( { drinks = []
+      , carouselIndex = 0
+      }
     , getDrinks
     )
 
@@ -72,6 +77,8 @@ init _ =
 
 type Msg
     = ReceiveDrinks (HttpData (List Drink))
+    | IncrementIndexes
+    | DecrementIndexes
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -91,6 +98,26 @@ update msg model =
             in
                 ( { model | drinks = drinks }, Cmd.none )
 
+        IncrementIndexes ->
+            let
+                newIndex =
+                    if model.carouselIndex <= 1 then
+                        model.carouselIndex + 1
+                    else
+                        0
+            in
+                ( { model | carouselIndex = newIndex }, Cmd.none )
+
+        DecrementIndexes ->
+            let
+                newIndex =
+                    if model.carouselIndex >= 1 then
+                        model.carouselIndex - 1
+                    else
+                        11
+            in
+                ( { model | carouselIndex = newIndex }, Cmd.none )
+
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -103,8 +130,18 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-    div [ class "flex-ns flex-wrap justify-center pv4-ns" ]
-        (List.indexedMap
+    div [ class "relative" ]
+        [ p [ class "f1 b pointer absolute-vertical-center left-2", onClick DecrementIndexes ] [ text "<" ]
+        , div [ class "flex-ns flex-wrap justify-center pv4-ns dib" ]
+            (renderDrinksCarousel model)
+        , p [ class "f1 b pointer absolute-vertical-center right-2", onClick IncrementIndexes ] [ text ">" ]
+        ]
+
+
+renderDrinksCarousel model =
+    Array.fromList model.drinks
+        |> Array.slice model.carouselIndex (model.carouselIndex + 4)
+        |> Array.indexedMap
             (\index d ->
                 div
                     [ class "w-third-m w-20-l shadow-4 br2 tr pb3 mh3 mv3 relative" ]
@@ -135,5 +172,4 @@ view model =
                         ]
                     ]
             )
-            model.drinks
-        )
+        |> toList
