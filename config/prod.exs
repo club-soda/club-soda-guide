@@ -15,7 +15,8 @@ use Mix.Config
 # which you typically run after static files are built.
 config :cs_guide, CsGuideWeb.Endpoint,
   load_from_system_env: true,
-  url: [host: "example.com", port: 80],
+  http: [port: {:system, "PORT"}],
+  url: [host: System.get_env("URL"), port: 443],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
@@ -59,6 +60,10 @@ config :logger, level: :info
 #     config :cs_guide, CsGuideWeb.Endpoint, server: true
 #
 
-# Finally import the config/prod.secret.exs
-# which should be versioned separately.
-import_config "prod.secret.exs"
+config :cs_guide, CsGuideWeb.Endpoint,
+  secret_key_base: System.get_env("SECRET_KEY_BASE")
+
+# Configure your database
+config :cs_guide, CsGuide.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  pool_size: 10
