@@ -69,6 +69,10 @@ form {
   line-height: 3.375rem; /* 54px */
 }
 
+.lh3 {
+  line-height: 2.5rem; /* 40px */
+}
+
 .lh4 {
   line-height: 2rem; /* 32px */
 }
@@ -128,7 +132,7 @@ form {
   text-align: center;
   font-size: 1rem; /* 16px */
   line-height: 1.5rem; /* 24px */
-  color: #2E304F;
+  color: #333333;
   border: none;
   padding: 0.5rem 1.5rem; /* 8px, 24px */
   border-radius: .25rem
@@ -230,8 +234,80 @@ form {
 
 /* End of drinks card 'flipping' */
 
+/* Landing page bg images */
+.bg-hero {
+  background-image: url("/images/hero-image.jpg");
+  background-repeat: no-repeat;
+  object-fit: cover;
+  background-position: center;
+  background-size: cover;
+  height: 75vh;
+}
+
+.nominate-venue-bg {
+  background-image: url("/images/nominate-venue-img.jpg");
+  background-repeat: no-repeat;
+  object-fit: cover;
+  background-position: 0 30%;
+  background-size: cover;
+  height: 30rem;
+}
+
+@media (min-width: 60em;) {
+  .nominate-venue-bg {
+    height: 13rem;
+  }
+}
+
+.white-gradient {
+  background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.5) 100%);
+}
+
+.black-gradient {
+  background: -moz-linear-gradient(left, rgba(51,51,51,1) 0%, rgba(49,49,49,1) 1%, rgba(0,0,0,0.85) 31%, rgba(0,0,0,0.75) 50%, rgba(255,255,255,0.5) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left, rgba(51,51,51,1) 0%,rgba(49,49,49,1) 1%,rgba(0,0,0,0.85) 31%,rgba(0,0,0,0.75) 50%,rgba(255,255,255,0.5) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right, rgba(51,51,51,1) 0%,rgba(49,49,49,1) 1%,rgba(0,0,0,0.85) 31%,rgba(0,0,0,0.75) 50%,rgba(255,255,255,0.5) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#333333', endColorstr='#80ffffff',GradientType=1 ); /* IE6-9 */
+}
+
+/* Landing page bg images END */
+
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 48em) {
+  .absolute-center-s {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .absolute-horizontal-center-s {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+
+  .bottom-4-s {
+    bottom: 4rem;
+  }
+}
+
 .absolute-vertical-center {
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
+}
+
+@media (min-width: 60em){
+  .absolute-vertical-center-ns {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+  }
 }
