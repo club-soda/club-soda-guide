@@ -1,3 +1,11 @@
+var drinksCarousel = document.getElementById('drinks-carousel');
+var app;
+if (drinksCarousel) {
+  app = Elm.DrinksCarousel.init({
+    node: drinksCarousel
+  })
+}
+
 function swipe(el, callback){
   var swipedir;
   var startX;
@@ -32,7 +40,7 @@ setTimeout(function() {
   var carousel = document.getElementById('carousel');
   if (carousel) {
     swipe(carousel, function(swipedir) {
-      drinksCarousel.ports.swipe.send(swipedir);
+      app.ports.swipe.send(swipedir);
     });
   }
 });

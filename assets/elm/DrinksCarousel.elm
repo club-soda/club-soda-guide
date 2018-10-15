@@ -112,22 +112,32 @@ update msg model =
                 ( { model | carouselIndex = newIndex }, Cmd.none )
 
         Swipe dir ->
-            case dir of
-                "right" ->
-                    { model | carouselIndex = model.carouselIndex - 1 }
+            let
+                newIndex =
+                    case dir of
+                        "right" ->
+                            if model.carouselIndex >= 1 then
+                                model.carouselIndex - 1
+                            else
+                                11
 
-                "left" ->
-                    { model | carouselIndex = model.carouselIndex + 1 }
+                        "left" ->
+                            if model.carouselIndex <= 1 then
+                                model.carouselIndex + 1
+                            else
+                                0
 
-                _ ->
-                    model
+                        _ ->
+                            model.carouselIndex
+            in
+                ( { model | carouselIndex = newIndex }, Cmd.none )
 
 
 port swipe : (String -> msg) -> Sub msg
 
 
-subscription : Model -> Sub Msg
-subscription model =
+subscriptions : Model -> Sub Msg
+subscriptions model =
     swipe Swipe
 
 

@@ -22,3 +22,4 @@ import "phoenix_html"
 
 
 require("./main.js")
+require("./carousel-swipe.js")

@@ -29,3 +29,5 @@ npm-debug.log
 .DS_Store
 
 elm-stuff/
+
+/assets/js/main.js
