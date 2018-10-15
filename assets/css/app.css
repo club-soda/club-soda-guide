@@ -59,6 +59,10 @@ form {
   border-color:#EBEBEB;
 }
 
+.bg-sheer-white {
+  background: rgba(255, 255, 255, 0.5);
+}
+
 /* Line heights to correspond with tachyons font classes */
 
 .lh1 {
@@ -172,8 +176,12 @@ form {
   width: 5rem;
 }
 
-.h-30rem {
-  height: 30rem;
+.h-25rem {
+  height: 25rem;
+}
+
+.h-27rem {
+  height: 27rem;
 }
 
 /* Venue Sign up - adding custom drinks */
