@@ -27,6 +27,12 @@ defmodule CsGuideWeb.Router do
     get("json_drinks", DrinkController, :json_index)
   end
 
+  scope "/search", CsGuideWeb do
+    pipe_through(:browser)
+
+    resources("/drinks", SearchDrinkController, only: [:index])
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", CsGuideWeb do
   #   pipe_through :api
