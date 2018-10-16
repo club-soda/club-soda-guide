@@ -1,6 +1,6 @@
 defmodule CsGuide.Accounts.User do
   use Ecto.Schema
-  use CsGuide.AppendOnly
+  use Alog
   import Ecto.Changeset
 
   schema "users" do
@@ -14,7 +14,6 @@ defmodule CsGuide.Accounts.User do
   @doc false
   def changeset(user, attrs \\ %{}) do
     user
-    |> insert_entry_id()
     |> cast(attrs, [:email])
     |> validate_required([:email])
   end

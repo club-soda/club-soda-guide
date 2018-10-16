@@ -1,6 +1,6 @@
 defmodule CsGuide.Resources.Drink do
   use Ecto.Schema
-  use CsGuide.AppendOnly
+  use Alog
   import Ecto.Changeset
 
   schema "drinks" do
@@ -23,7 +23,6 @@ defmodule CsGuide.Resources.Drink do
   @doc false
   def changeset(drink, attrs \\ %{}) do
     drink
-    |> insert_entry_id()
     |> cast(attrs, [:name, :brand, :abv, :deleted])
     |> validate_required([:name, :brand, :abv])
   end

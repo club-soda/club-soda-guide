@@ -1,6 +1,6 @@
 defmodule CsGuide.Categories.VenueType do
   use Ecto.Schema
-  use CsGuide.AppendOnly
+  use Alog
   import Ecto.Changeset
 
   schema "venue_types" do
@@ -21,7 +21,6 @@ defmodule CsGuide.Categories.VenueType do
   @doc false
   def changeset(venue_type, attrs \\ %{}) do
     venue_type
-    |> insert_entry_id()
     |> cast(attrs, [:name])
     |> validate_required([:name])
     |> unique_constraint(:name)
