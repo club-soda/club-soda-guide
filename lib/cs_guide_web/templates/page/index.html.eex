@@ -1,5 +1,5 @@
   <section class="bg-hero relative">
-    <div class="white-gradient w-100 h-100">
+    <div class="w-100 h-100">
       <h1 class="w-90 w-40-ns absolute-center tc center f2 lh2 roboto-slab">Find mindful drinks and good places to enjoy them</h1>
     </div>
   </section>
@@ -18,24 +18,24 @@
   <p class="f4 lh4 pb4">
     Highly recommended for their range and atmosphere.
   </p>
-  <div class="flex flex-wrap">
+  <div class="flex flex-wrap justify-center">
     <div class="w-100 w-25-ns pb4">
-      <div class="bg-green w-100 w5-ns h4 br2"></div>
+      <div class="bg-green w-100 w-90-m w5-l h4 br2"></div>
       <p class="f5 lh5 pt2">Angel</p>
       <p class="f4 lh4">The Rover's Return</p>
     </div>
     <div class="w-100 w-25-ns pb4 pb0-ns">
-      <div class="bg-green w-100 w5-ns h4 br2"></div>
+      <div class="bg-green w-100 w-90-m w5-l h4 br2"></div>
       <p class="f5 lh5 pt2">Angel</p>
       <p class="f4 lh4">The Rover's Return</p>
     </div>
     <div class="w-100 w-25-ns pb4 pb0-ns">
-      <div class="bg-green w-100 w5-ns h4 br2"></div>
+      <div class="bg-green w-100 w-90-m w5-l h4 br2"></div>
       <p class="f5 lh5 pt2">Angel</p>
       <p class="f4 lh4">The Rover's Return</p>
     </div>
     <div class="w-100 w-25-ns pb4 pb0-ns">
-      <div class="bg-green w-100 w5-ns h4 br2"></div>
+      <div class="bg-green w-100 w-90-m w5-l h4 br2"></div>
       <p class="f5 lh5 pt2">Angel</p>
       <p class="f4 lh4">The Rover's Return</p>
     </div>
@@ -46,21 +46,21 @@
 </section>
 
 <section class="">
-  <div class="mv6 mh5-ns shadow-4 nominate-venue-bg">
+  <div class="mv6 mh5-l shadow-4 bg-nominate-venue">
     <div class="black-gradient w-100 h-100 relative">
-      <p class="white absolute-center-s absolute-vertical-center-ns lh3 f3 pl5-ns w-90 w-60-ns dib pv5">
+      <p class="white absolute-center-s absolute-vertical-center-ns lh3 f3 pl4-m pl5-l w-90 w-60-ns dib pv5 pt4-m">
         Can't find that bar round the corner? The one with that great no-alcohol
         wine? Tell us about it!
       </p>
       <a class="absolute-horizontal-center-s absolute-vertical-center-ns bottom-4-s right-2-ns bg-white br2 ph4 pv2 mr5-ns cs-black no-underline lh4 f4 w5" href="#">Nominate a Venue</a>
     </div>
   </div>
-  <div class="tr bg-blue pv6 pr6-ns">
-    <div class="w-90 w-100-ns center">
+  <div class="tr bg-newsletter pv6 mb6 mb0-ns pr6-ns">
+    <div class="w-90 w-third-ns center fr-ns tl">
       <p class="roboto-slab f4 lh4 pb3">Mindfulness, Events, Articles and More</p>
-      <p class="f4 lh4">Get the Newsletter</p>
+      <p class="f4 lh4 pb3">Get the Newsletter</p>
       <p class="f4 lh4 pt3">Join the Club</p>
-      <a class="f4 lh4 cs-black no-underline"href="https://joinclubsoda.co.uk/">joinclubsoda.co.uk</a>
+      <a class="f4 lh4 cs-black"href="https://joinclubsoda.co.uk/">joinclubsoda.co.uk</a>
     </div>
   </div>
 </section>

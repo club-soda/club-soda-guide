@@ -244,15 +244,15 @@ form {
 
 /* Landing page bg images */
 .bg-hero {
-  background-image: url("/images/hero-image.jpg");
+  background-image: url("/images/hero-image.png");
   background-repeat: no-repeat;
   object-fit: cover;
   background-position: center;
   background-size: cover;
-  height: 75vh;
+  height: 70vh;
 }
 
-.nominate-venue-bg {
+.bg-nominate-venue {
   background-image: url("/images/nominate-venue-img.jpg");
   background-repeat: no-repeat;
   object-fit: cover;
@@ -261,14 +261,24 @@ form {
   height: 30rem;
 }
 
-@media (min-width: 60em;) {
-  .nominate-venue-bg {
+@media (min-width: 30em) {
+  .bg-nominate-venue {
     height: 13rem;
   }
 }
 
-.white-gradient {
-  background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.5) 100%);
+@media (min-width: 48em) {
+  .bg-hero {
+    height: 107vh;
+  }
+}
+
+.bg-newsletter {
+  background-image: url("/images/newsletter-image.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 32rem;
 }
 
 .black-gradient {
@@ -287,7 +297,7 @@ form {
   transform: translate(-50%, -50%);
 }
 
-@media (max-width: 48em) {
+@media (max-width: 30em) {
   .absolute-center-s {
     position: absolute;
     top: 50%;

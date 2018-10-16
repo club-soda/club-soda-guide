@@ -149,7 +149,7 @@ view : Model -> Html Msg
 view model =
     div [ class "relative" ]
         [ p [ class "f1 b pointer absolute-vertical-center left-2", onClick DecrementIndexes ] [ text "<" ]
-        , div [ class "flex-ns flex-wrap justify-center pv4-ns dib", id "carousel" ]
+        , div [ class "flex-ns flex-wrap justify-center pv4-ns db dib-ns", id "carousel" ]
             (renderDrinksCarousel model)
         , p [ class "f1 b pointer absolute-vertical-center right-2", onClick IncrementIndexes ] [ text ">" ]
         ]
