@@ -37,7 +37,7 @@
     </div>
   </div>
   <div class="mv4 center tc tl-ns">
-    <a class="btn-primary no-underline" href="/venues">Find One Near Me</a>
+    <a class="btn-primary no-underline" href="search/venues">Find One Near Me</a>
   </div>
 </section>
 

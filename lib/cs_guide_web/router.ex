@@ -31,6 +31,7 @@ defmodule CsGuideWeb.Router do
     pipe_through(:browser)
 
     resources("/drinks", SearchDrinkController, only: [:index])
+    resources("/venues", SearchVenueController, only: [:index])
   end
 
   # Other scopes may use custom stacks.
