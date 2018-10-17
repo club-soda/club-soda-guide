@@ -15,7 +15,7 @@
   <%= for drink <- @drinks do %>
       <tr>
         <td><%= drink.name %></td>
-        <td><%= drink.brand %></td>
+        <td><%= drink.brand.name %></td>
         <td><%= drink.abv %></td>
 
         <td class="text-right">

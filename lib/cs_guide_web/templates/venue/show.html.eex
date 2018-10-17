@@ -59,7 +59,7 @@
     <%= for drink <- @venue.drinks do %>
       <div class="w-25 shadow-4 br2 tr pb3 mh3">
         <div class="bb b--cs-light-pink bw3 mb3 tl h-30rem">
-          <h4 class="f4 lh4 pa3 shadow-4 br2 mt5 mb1 mh4 tc"><%= drink.brand %> <%= drink.name %></h4>
+          <h4 class="f4 lh4 pa3 shadow-4 br2 mt5 mb1 mh4 tc"> <%= drink.name %></h4>
           <img src="https://res.cloudinary.com/ratebeer/image/upload/w_250,c_limit/beer_117796.jpg" alt="Photo of drink" class="w-5rem db center">
           <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib"><%= drink.abv %>% ABV</p>
         </div>

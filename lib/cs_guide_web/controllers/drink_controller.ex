@@ -3,8 +3,13 @@ defmodule CsGuideWeb.DrinkController do
 
   alias CsGuide.Resources.Drink
 
+  import Ecto.Query, only: [from: 2, subquery: 1]
+
   def index(conn, _params) do
-    drinks = Drink.all()
+    drinks =
+      Drink.all()
+      |> CsGuide.Repo.preload(:brand)
+
     render(conn, "index.html", drinks: drinks)
   end
 
@@ -26,7 +31,10 @@ defmodule CsGuideWeb.DrinkController do
   end
 
   def show(conn, %{"id" => id}) do
-    drink = Drink.get(id)
+    drink =
+      Drink.get(id)
+      |> CsGuide.Repo.preload(:brand)
+
     render(conn, "show.html", drink: drink)
   end
 

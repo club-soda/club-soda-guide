@@ -51,4 +51,44 @@ defmodule CsGuide.Resources do
         end).()
     |> Venue.insert()
   end
+
+  def put_many_to_many_assoc(item, attrs, assoc, assoc_module, field) do
+    assocs =
+      Enum.map(Map.get(attrs, to_string(assoc)), fn {f, active} ->
+        if String.to_existing_atom(active) do
+          Repo.one(
+            from(a in assoc_module,
+              where: field(a, ^field) == ^f,
+              limit: 1,
+              order_by: [desc: :inserted_at],
+              select: a
+            )
+          )
+        else
+          nil
+        end
+      end)
+      |> Enum.filter(& &1)
+
+    Ecto.Changeset.put_assoc(item, assoc, assocs)
+  end
+
+  def put_belongs_to_assoc(item, attrs, assoc, assoc_field, assoc_module, field) do
+    {assoc, _} =
+      Enum.find(Map.get(attrs, to_string(assoc)), fn {_, active} ->
+        String.to_existing_atom(active)
+      end)
+
+    loaded_assoc =
+      Repo.one(
+        from(a in assoc_module,
+          where: field(a, ^field) == ^assoc,
+          limit: 1,
+          order_by: [desc: :inserted_at],
+          select: a
+        )
+      )
+
+    Map.put(item, assoc_field, loaded_assoc.id)
+  end
 end
