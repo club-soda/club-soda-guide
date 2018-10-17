@@ -1,0 +1,26 @@
+<h2>Listing Venue type</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for venue_type <- @venue_type do %>
+    <tr>
+      <td><%= venue_type.name %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: venue_type_path(@conn, :show, venue_type.entry_id), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: venue_type_path(@conn, :edit, venue_type.entry_id), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: venue_type_path(@conn, :delete, venue_type.entry_id), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Venue types", to: venue_type_path(@conn, :new) %></span>

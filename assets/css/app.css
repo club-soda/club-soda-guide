@@ -1,0 +1,208 @@
+body {
+  font-family: "Open Sans", sans-serif;
+  color: #333333;
+}
+
+form {
+  margin: 1rem auto;
+}
+
+/* Fonts */
+
+.roboto-slab {
+  font-family: "Roboto Slab";
+}
+
+.open-sans {
+  font-family: "Open Sans", sans-serif;
+}
+
+/* Colours */
+
+.cs-mid-blue {
+  color: #2B7CDA;
+}
+
+.bg-cs-mint {
+  background-color: #00C6B3;
+}
+
+.bg-cs-navy {
+  background-color: #2E304F;
+}
+
+.cs-black {
+  color: #333333;
+}
+
+.cs-pink {
+  color: #E30B5D;
+}
+
+.b--cs-light-pink {
+  border-color: #FBE2DB;
+}
+
+
+.b--cs-pink {
+  border-color: #E30B5D;
+}
+
+.bg-cs-light-gray {
+  background-color:#EBEBEB;
+}
+
+.b--cs-light-gray {
+  border-color:#EBEBEB;
+}
+
+/* Line heights to correspond with tachyons font classes */
+
+.lh2 {
+  line-height: 3.375rem; /* 54px */
+}
+
+.lh4 {
+  line-height: 2rem; /* 32px */
+}
+
+.lh5 {
+  line-height: 1.5rem; /* 24px */
+}
+
+.lh6 {
+  line-height: 1.25rem; /* 20px */
+}
+
+/* AutoForm Classes */
+
+.control-label {
+  display: block;
+  color: #333333;
+  font-family: "Open Sans";
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
+  padding-bottom: 0.5rem; /* 8px */
+}
+
+.form-control:not([type='checkbox']) {
+  border: 1px solid #EBEBEB;
+  border-radius: .25rem;
+  margin-bottom: 1rem; /* 16px */
+  padding: 0.5rem; /* 8px */
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.form-control[type=checkbox] ~ label {
+  margin-right: 1rem;
+  margin-left: 0.25rem;
+}
+
+.form-control, .form-control ~ label{
+  font-family: "Open Sans";
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem; /* 20px */
+}
+
+@media (min-width: 60em) {
+  .form-control {
+    max-width: 20rem;
+  }
+}
+
+.form-control:hover {
+  border: 1px solid #A5A5A5;
+}
+
+.btn-primary {
+  background-color: #00C6B3;
+  font-family: "Open Sans";
+  text-align: center;
+  font-size: 1rem; /* 16px */
+  line-height: 1.5rem; /* 24px */
+  color: #2E304F;
+  border: none;
+  padding: 0.5rem 1.5rem; /* 8px, 24px */
+  border-radius: .25rem
+}
+
+.btn-primary:active {
+  background-color: #00b2a1;
+}
+
+.btn-primary:hover {
+  background-color: #19cbba;
+}
+
+.control-label.required::after {
+  color: #E30B5D;
+  content: "*";
+}
+/* AutoForm Classes End */
+
+.img-cover {
+  object-fit: cover;
+}
+
+.top-6 {
+  top: 6rem;
+}
+
+.right-4 {
+  right: 4rem;
+}
+
+.w-1-5rem {
+  width: 1.5rem;
+}
+
+.w-5rem {
+  width: 5rem;
+}
+
+.h-30rem {
+  height: 30rem;
+}
+
+/* Venue Sign up - adding custom drinks */
+
+.custom-drink-msg {
+  display: none;
+}
+
+.custom-drink:hover ~ .custom-drink-msg,
+.custom-drink:focus ~ .custom-drink-msg{
+  display: inline-block;
+}
+
+.custom-drink-msg {
+	position: relative;
+	background: #ffffff;
+	border: 1px solid #EBEBEB;
+}
+.custom-drink-msg:after, .custom-drink-msg:before {
+	right: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.custom-drink-msg:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-right-color: #ffffff;
+	border-width: 5px;
+	margin-top: -5px;
+}
+.custom-drink-msg:before {
+	border-color: rgba(235, 235, 235, 0);
+	border-right-color: #EBEBEB;
+	border-width: 6px;
+	margin-top: -6px;
+}
+
+/* End of Venue Sign up - adding custom drinks */

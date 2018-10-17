@@ -1,0 +1,23 @@
+<h2>Show Drink</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @drink.name %>
+  </li>
+
+  <li>
+    <strong>Brand:</strong>
+    <%= @drink.brand %>
+  </li>
+
+  <li>
+    <strong>Abv:</strong>
+    <%= @drink.abv %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: drink_path(@conn, :edit, @drink.entry_id) %></span>
+<span><%= link "Back", to: drink_path(@conn, :index) %></span>

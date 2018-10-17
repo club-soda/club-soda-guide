@@ -1,0 +1,5 @@
+<h2>Edit Venue type</h2>
+
+<%= render "form.html", Map.put(assigns, :action, venue_type_path(@conn, :update, @venue_type.entry_id)) %>
+
+<span><%= link "Back", to: venue_type_path(@conn, :index) %></span>
