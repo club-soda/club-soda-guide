@@ -4,7 +4,7 @@ defmodule CsGuide.Categories.DrinkType do
   import Ecto.Changeset
 
   schema "drink_types" do
-    field(:drink_type, :string)
+    field(:name, :string)
 
     many_to_many(
       :drinks,
@@ -19,8 +19,8 @@ defmodule CsGuide.Categories.DrinkType do
   @doc false
   def changeset(drink_type, attrs \\ %{}) do
     drink_type
-    |> cast(attrs, [:drink_type])
-    |> validate_required([:drink_type])
-    |> unique_constraint(:drink_type)
+    |> cast(attrs, [:name])
+    |> validate_required([:name])
+    |> unique_constraint(:name)
   end
 end

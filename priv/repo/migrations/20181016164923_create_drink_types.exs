@@ -3,7 +3,7 @@ defmodule CsGuide.Repo.Migrations.CreateDrinkTypes do
 
   def change do
     create table(:drink_types) do
-      add(:drink_type, :string)
+      add(:name, :string)
 
       timestamps()
     end
