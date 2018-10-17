@@ -43,12 +43,24 @@ form {
   color: #E30B5D;
 }
 
-.b--cs-light-pink {
-  border-color: #FBE2DB;
+.bg-cs-pink {
+  background-color: #E30B5D;
 }
 
 .b--cs-pink {
   border-color: #E30B5D;
+}
+
+.bg-cs-light-pink {
+  background-color: #FBE2DB;
+}
+
+.b--cs-light-pink {
+  border-color: #FBE2DB;
+}
+
+.bg-cs-yellow {
+  background-color: #FFB700;
 }
 
 .bg-cs-light-gray {
@@ -176,12 +188,31 @@ form {
   width: 5rem;
 }
 
+@media (min-width: 30rem) {
+  .w-sixth-ns {
+    width: 16.6%;
+  }
+}
+
 .h-25rem {
   height: 25rem;
 }
 
 .h-27rem {
   height: 27rem;
+}
+
+.pt-3rem {
+  padding-top: 3rem;
+}
+
+@media (max-width: 30rem) {
+  .pb-3rem-s {
+    padding-bottom: 3rem;
+  }
+  .mt-30rem-s {
+    margin-top: 30rem;
+  }
 }
 
 /* Venue Sign up - adding custom drinks */
