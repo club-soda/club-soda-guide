@@ -1,10 +1,9 @@
+
+
+
+
 <section class="mv6 w-90 center">
     <button class="cs-light-gray b--cs-mid-gray pv2 ph4 br2 bw1">Dropdown</button>
-    <div class="">
-      <a href="#">Bar</a>
-      <a href="#">Pub</a>
-      <a href="#">Restaurant</a>
-    </div>
 
   <section class="tc center pv5 w-100">
     <div class="flex-ns flex-wrap justify-center pv4-ns">
