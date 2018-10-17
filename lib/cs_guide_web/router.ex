@@ -24,6 +24,7 @@ defmodule CsGuideWeb.Router do
     resources("/venues", VenueController)
     resources("/venue_types", VenueTypeController)
     resources("/drinks", DrinkController)
+    resources("/brands", BrandController)
     get("json_drinks", DrinkController, :json_index)
   end
 

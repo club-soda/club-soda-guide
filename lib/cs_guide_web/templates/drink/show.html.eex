@@ -9,7 +9,7 @@
 
   <li>
     <strong>Brand:</strong>
-    <%= @drink.brand %>
+    <%= @drink.brand.name %>
   </li>
 
   <li>
