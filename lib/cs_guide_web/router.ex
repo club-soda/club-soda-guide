@@ -23,6 +23,7 @@ defmodule CsGuideWeb.Router do
     resources("/users", UserController)
     resources("/venues", VenueController)
     resources("/venue_types", VenueTypeController)
+    resources("/drink_types", DrinkTypeController)
     resources("/drinks", DrinkController)
     resources("/brands", BrandController)
     get("json_drinks", DrinkController, :json_index)

@@ -6,7 +6,8 @@ defmodule CsGuideWeb.SearchDrinkController do
   def index(conn, %{"drink_type" => type_filter}) do
     drinks =
       Drink.all()
-      |> CsGuide.Repo.preload(:drink_types)
+      |> CsGuide.Repo.preload([:drink_types, :brand])
+      |> IO.inspect()
       |> Enum.filter(fn drink ->
         Enum.any?(drink.drink_types, &has_drink_type?/1)
       end)
@@ -26,7 +27,10 @@ defmodule CsGuideWeb.SearchDrinkController do
   end
 
   def index(conn, params) do
-    drinks = Drink.all()
+    drinks =
+      Drink.all()
+      |> CsGuide.Repo.preload(:brand)
+
     render(conn, "index.html", drinks: drinks)
   end
 end

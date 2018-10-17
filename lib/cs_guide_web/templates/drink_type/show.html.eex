@@ -1,0 +1,13 @@
+<h2>Show Venue types</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @drink_type.name %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: drink_type_path(@conn, :edit, @drink_type.entry_id) %></span>
+<span><%= link "Back", to: drink_type_path(@conn, :index) %></span>

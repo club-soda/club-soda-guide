@@ -1,7 +1,7 @@
 defmodule CsGuideWeb.VenueController do
   use CsGuideWeb, :controller
 
-  alias CsGuide.Resources.Venue
+  alias CsGuide.Resources.{Venue, Drink}
 
   import Ecto.Query, only: [from: 2, subquery: 1]
 
@@ -28,9 +28,9 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def show(conn, %{"id" => id}) do
-    query = fn s ->
+    query = fn s, m ->
       sub =
-        from(mod in Map.get(CsGuide.Resources.Venue.__schema__(:association, s), :queryable),
+        from(mod in Map.get(m.__schema__(:association, s), :queryable),
           distinct: mod.entry_id,
           order_by: [desc: :inserted_at],
           select: mod
@@ -42,7 +42,10 @@ defmodule CsGuideWeb.VenueController do
     venue =
       id
       |> Venue.get()
-      |> CsGuide.Repo.preload(drinks: query.(:drinks), venue_types: query.(:venue_types))
+      |> CsGuide.Repo.preload(
+        drinks: {query.(:drinks, Venue), brand: query.(:brand, Drink)},
+        venue_types: query.(:venue_types, Venue)
+      )
 
     render(conn, "show.html", venue: venue)
   end

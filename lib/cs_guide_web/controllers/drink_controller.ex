@@ -14,11 +14,13 @@ defmodule CsGuideWeb.DrinkController do
   end
 
   def json_index(conn, _params) do
-    drinks = Drink.all()
+    drinks =
+      Drink.all()
+      |> CsGuide.Repo.preload(:brand)
 
     json(
       conn,
-      Enum.map(drinks, fn d -> %{name: d.name, brand: d.brand, abv: d.abv} end)
+      Enum.map(drinks, fn d -> %{name: d.name, brand: d.brand.name, abv: d.abv} end)
     )
   end
 
@@ -42,7 +44,7 @@ defmodule CsGuideWeb.DrinkController do
   def show(conn, %{"id" => id}) do
     drink =
       Drink.get(id)
-      |> CsGuide.Repo.preload(:brand)
+      |> CsGuide.Repo.preload([:brand, :drink_types])
 
     render(conn, "show.html", drink: drink)
   end

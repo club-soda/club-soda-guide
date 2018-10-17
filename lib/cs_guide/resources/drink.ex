@@ -40,8 +40,9 @@ defmodule CsGuide.Resources.Drink do
   def insert(attrs) do
     %__MODULE__{}
     |> insert_entry_id()
-    |> Resources.put_belongs_to_assoc(attrs, :brand, :brand_id, CsGuide.Resources.Brand, :name)
     |> __MODULE__.changeset(attrs)
+    |> Resources.put_many_to_many_assoc(attrs, :drink_types, CsGuide.Categories.DrinkType, :name)
+    |> Resources.put_belongs_to_assoc(attrs, :brand, :brand_id, CsGuide.Resources.Brand, :name)
     |> CsGuide.Repo.insert()
   end
 end
