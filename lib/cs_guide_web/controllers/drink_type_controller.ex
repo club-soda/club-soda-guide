@@ -16,8 +16,6 @@ defmodule CsGuideWeb.DrinkTypeController do
   def create(conn, %{"drink_type" => drink_type_params}) do
     case DrinkType.insert(drink_type_params) do
       {:ok, drink_type} ->
-        IO.inspect(drink_type)
-
         conn
         |> put_flash(:info, "Drink types created successfully.")
         |> redirect(to: drink_type_path(conn, :show, drink_type.entry_id))

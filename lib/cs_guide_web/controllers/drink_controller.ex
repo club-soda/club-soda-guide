@@ -16,11 +16,18 @@ defmodule CsGuideWeb.DrinkController do
   def json_index(conn, _params) do
     drinks =
       Drink.all()
-      |> CsGuide.Repo.preload(:brand)
+      |> CsGuide.Repo.preload([:brand, :drink_types])
 
     json(
       conn,
-      Enum.map(drinks, fn d -> %{name: d.name, brand: d.brand.name, abv: d.abv} end)
+      Enum.map(drinks, fn d ->
+        %{
+          name: d.name,
+          brand: d.brand.name,
+          abv: d.abv,
+          drink_types: Enum.map(d.drink_types, fn t -> t.name end)
+        }
+      end)
     )
   end
 
