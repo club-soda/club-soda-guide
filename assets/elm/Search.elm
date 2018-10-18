@@ -2,7 +2,7 @@ module Search exposing (..)
 
 import Browser
 import Http
-import Json.Decode as Decode exposing (..)
+import Json.Decode as Json exposing (..)
 import Json.Decode.Pipeline exposing (..)
 import Html exposing (..)
 import Html.Events exposing (..)
@@ -11,47 +11,7 @@ import Html.Events exposing (onClick)
 import Array exposing (..)
 
 
--- Create a dropdown with hard coded type
--- On change event where model is updated 'type-filter' (List of strings)
--- Once the type-filter is something other than [], update drinks
--- Call filterDrinks fn which then calls renderDrinks fn with its outcome as the argument
--- MAIN
-
-
-main =
-    Browser.element
-        { init = init
-        , subscriptions = subscriptions
-        , update = update
-        , view = view
-        }
-
-
-
 -- MODEL
-
-
-getDrinks : Cmd Msg
-getDrinks =
-    Http.get ("/json_drinks") drinksDecoder |> Http.send ReceiveDrinks
-
-
-drinksDecoder : Decoder (List Drink)
-drinksDecoder =
-    Decode.list drinkDecoder
-
-
-drinkDecoder : Decoder Drink
-drinkDecoder =
-    Decode.map4 Drink
-        (field "name" string)
-        (field "brand" string)
-        (field "abv" float)
-        (field "drink_types" (Decode.list string))
-
-
-type alias HttpData data =
-    Result Http.Error data
 
 
 type alias Drink =
@@ -64,15 +24,50 @@ type alias Drink =
 
 type alias Model =
     { drinks : List Drink
+    , dtype_filter : String
     }
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
+type alias Flags =
+    { dtype_filter : String
+    }
+
+
+type alias HttpData data =
+    Result Http.Error data
+
+
+init : Flags -> ( Model, Cmd Msg )
+init flags =
     ( { drinks = []
+      , dtype_filter = flags.dtype_filter
       }
     , getDrinks
     )
+
+
+onChange : (String -> msg) -> Attribute msg
+onChange msgConstructor =
+    Html.Events.on "change" <| Json.map msgConstructor <| Json.at [ "target", "value" ] Json.string
+
+
+getDrinks : Cmd Msg
+getDrinks =
+    Http.get ("/json_drinks") drinksDecoder |> Http.send ReceiveDrinks
+
+
+drinksDecoder : Decoder (List Drink)
+drinksDecoder =
+    Json.list drinkDecoder
+
+
+drinkDecoder : Decoder Drink
+drinkDecoder =
+    Json.map4 Drink
+        (field "name" string)
+        (field "brand" string)
+        (field "abv" float)
+        (field "drink_types" (Json.list string))
 
 
 
@@ -81,6 +76,7 @@ init _ =
 
 type Msg
     = ReceiveDrinks (HttpData (List Drink))
+    | SelectDrinkType String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -92,10 +88,8 @@ update msg model =
         ReceiveDrinks (Ok drinks) ->
             ( { model | drinks = drinks }, Cmd.none )
 
-
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
+        SelectDrinkType drink_type ->
+            ( { model | dtype_filter = drink_type }, Cmd.none )
 
 
 
@@ -105,17 +99,33 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div [ class "mt6" ]
-        [ p [ class "w-90 center" ] [ text "TESTING 123" ]
+        [ (renderFilters model)
         , div [ class "relative" ]
             [ div [ class "flex-ns flex-wrap justify-center pv4-ns db dib-ns" ]
-                -- Call filterDrinks fn which then calls renderDrinks fn with its outcome as the argument
-                (renderDrinks model)
+                (filterDrinks model)
             ]
         ]
 
 
-renderDrinks model =
-    Array.fromList model.drinks
+filterDrinks : Model -> List (Html Msg)
+filterDrinks model =
+    List.filter (\d -> filterByType model d) model.drinks
+        |> renderDrinks
+
+
+
+-- Add types in
+
+
+filterByType model drink =
+    List.any (\t -> String.toLower model.dtype_filter == String.toLower t) drink.drink_types
+        || model.dtype_filter
+        == ""
+
+
+renderDrinks : List Drink -> List (Html Msg)
+renderDrinks drinks =
+    Array.fromList drinks
         |> Array.indexedMap
             (\index d ->
                 div
@@ -148,3 +158,44 @@ renderDrinks model =
                     ]
             )
         |> toList
+
+
+renderFilters : Model -> Html Msg
+renderFilters model =
+    div [ class "w-90 center" ]
+        [ select
+            [ onChange SelectDrinkType
+            , class "f6 lh6 cs-black bg-white b--cs-light-gray dib w-10 mb2"
+            ]
+            [ option [ Html.Attributes.value "" ] [ text "Drink Type" ]
+            , option [ Html.Attributes.value "beer" ] [ text "Beer" ]
+            , option [ Html.Attributes.value "wine" ]
+                [ text "Wine" ]
+
+            -- ([ option [ Html.Attributes.value "" ] [ text defaultTitle ] ]
+            --     ++ List.map (\dropdownItem -> option [ Html.Attributes.value dropdownItem ] [ text dropdownItem ]) dropdownItems
+            -- )
+            ]
+        ]
+
+
+drink_types =
+    [ "Beer", "Wine", "Soft Drinks", "Cider" ]
+
+
+
+-- MAIN
+
+
+main =
+    Browser.element
+        { init = init
+        , subscriptions = subscriptions
+        , update = update
+        , view = view
+        }
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none
