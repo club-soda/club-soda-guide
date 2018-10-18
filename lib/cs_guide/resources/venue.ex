@@ -1,6 +1,6 @@
 defmodule CsGuide.Resources.Venue do
   use Ecto.Schema
-  use CsGuide.AppendOnly
+  use Alog
   import Ecto.Changeset
   import Ecto.Query, only: [from: 2]
 
@@ -33,13 +33,13 @@ defmodule CsGuide.Resources.Venue do
   @doc false
   def changeset(venue, attrs \\ %{}) do
     venue
-    |> insert_entry_id()
     |> cast(attrs, [:venue_name, :postcode, :phone_number])
     |> validate_required([:venue_name, :postcode])
   end
 
   def insert(attrs) do
     %__MODULE__{}
+    |> insert_entry_id()
     |> __MODULE__.changeset(attrs)
     |> venue_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
     |> venue_assoc(attrs, :drinks, CsGuide.Resources.Drink, :name)

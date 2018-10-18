@@ -33,6 +33,7 @@ defmodule CsGuideWeb.VenueController do
         from(mod in Map.get(CsGuide.Resources.Venue.__schema__(:association, s), :queryable),
           distinct: mod.entry_id,
           order_by: [desc: :inserted_at],
+          limit: 1,
           select: mod
         )
 

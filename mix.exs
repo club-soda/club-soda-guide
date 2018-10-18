@@ -41,7 +41,8 @@ defmodule CsGuide.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
-      {:autoform, path: System.get_env("AUTOFORM_PATH")}
+      {:autoform, git: "https://github.com/dwyl/autoform.git", tag: "0.1"},
+      {:alog, git: "https://github.com/dwyl/alog.git", tag: "0.1"}
     ]
   end
 
