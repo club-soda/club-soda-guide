@@ -54,7 +54,7 @@ defmodule CsGuide.Resources do
 
   def put_many_to_many_assoc(item, attrs, assoc, assoc_module, field) do
     assocs =
-      Enum.map(Map.get(attrs, to_string(assoc)), fn {f, active} ->
+      Enum.map(get_assoc_attrs(assoc, attrs), fn {f, active} ->
         if String.to_existing_atom(active) do
           Repo.one(
             from(a in assoc_module,
@@ -75,7 +75,7 @@ defmodule CsGuide.Resources do
 
   def put_belongs_to_assoc(item, attrs, assoc, assoc_field, assoc_module, field) do
     {assoc, _} =
-      Enum.find(Map.get(attrs, to_string(assoc)), fn {_, active} ->
+      Enum.find(get_assoc_attrs(assoc, attrs), fn {_, active} ->
         String.to_existing_atom(active)
       end)
 
@@ -90,5 +90,14 @@ defmodule CsGuide.Resources do
       )
 
     Map.put(item, assoc_field, loaded_assoc.id)
+  end
+
+  defp get_assoc_attrs(assoc, attrs) do
+    assoc_attrs = Map.get(attrs, assoc, Map.get(attrs, to_string(assoc), []))
+
+    case Enumerable.impl_for(assoc_attrs) do
+      nil -> []
+      _ -> assoc_attrs
+    end
   end
 end

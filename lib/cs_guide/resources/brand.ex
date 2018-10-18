@@ -20,7 +20,7 @@ defmodule CsGuide.Resources.Brand do
   @doc false
   def changeset(brand, attrs) do
     brand
-    |> cast(attrs, [:name, :description])
+    |> cast(attrs, [:name, :description, :deleted])
     |> validate_required([:name, :description])
   end
 end

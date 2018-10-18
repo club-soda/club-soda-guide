@@ -100,7 +100,7 @@
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyT_ehuzfLvJKLPOAVjobqWtZjFO1--mgpQb_NJmq0wIfpEc5SyXkuPxpG" alt="Photo of drink" class="w-5rem db center pt4">
         <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib">% ABV</p>
       </div>
-      <a href="#" class="cs-mid-blue f5 lh5 tr pr4">Add Drinks</a>
+      <a href="/venues/<%= @venue.entry_id %>/add_drinks" class="cs-mid-blue f5 lh5 tr pr4">Add Drinks</a>
     </div>
   </div>
 </section>

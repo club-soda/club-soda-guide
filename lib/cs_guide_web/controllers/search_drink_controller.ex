@@ -7,7 +7,6 @@ defmodule CsGuideWeb.SearchDrinkController do
     drinks =
       Drink.all()
       |> CsGuide.Repo.preload([:drink_types, :brand])
-      |> IO.inspect()
       |> Enum.filter(fn drink ->
         Enum.any?(drink.drink_types, &has_drink_type?/1)
       end)

@@ -1,0 +1,18 @@
+<section class="center w-80 w-75-l mt5">
+<h2 class="f2">Add a product to your stocklist</h2>
+<%= form_for @changeset, @action, fn f -> %>
+  <%= for b <- @brands do %>
+    <h3 class="f3 mv2"><%= b.name %></h3>
+    <%= for d <- b.drinks do %>
+      <div class="pl3">
+        <%= checkbox(f, String.to_atom(d.name), name: "venue[drinks][#{String.to_atom(d.name)}]", value: d.name in @current_drinks, class: "mt2") %>
+        <%= d.name %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="form-group">
+    <%= submit "Submit", class: "btn btn-primary mt3" %>
+  </div>
+<% end %>
+</section>
