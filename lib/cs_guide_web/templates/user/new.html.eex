@@ -2,14 +2,14 @@
   <h3 class="f4 lh4">Create a Profile</h3>
   <p class="mt3">You need to be part of the Club Soda community to add listings. All it
   takes is your email and a password.</p>
-  <%= render_autoform(@conn, :create, CsGuide.Accounts.User, assigns: [changeset: @user_changeset]) %>
+  <%= render_autoform(@conn, :create, CsGuide.Accounts.User, assigns: [changeset: @user_changeset], exclude: [:entry_id, :deleted]) %>
   <h3 class="f4 lh4">Set Up a Venue</h3>
   <h2 class="f5 lh5 mv3">Basic Information</h2>
   <p class="f6 lh6 cs-pink">* - required field</p>
-  <%= render_autoform(@conn, :create, CsGuide.Resources.Venue, assigns: [changeset: @venue_changeset], exclude: [:drinks]) %>
+  <%= render_autoform(@conn, :create, CsGuide.Resources.Venue, assigns: [changeset: @venue_changeset], exclude: [:drinks, :entry_id, :deleted], assoc_query: &query/1) %>
   <p class="underline cs-mid-blue f6 lh6 pointer">Look Up Postcode</p>
   <h3 class="f4 lh mt4 mb3">Add Products to your Stocklist</h3>
-  <%= render_autoform(@conn, :create, CsGuide.Resources.Venue, assigns: [changeset: @user_changeset], exclude: [:phone_number, :postcode, :venue_name, :venue_types]) %>
+  <%= render_autoform(@conn, :create, CsGuide.Resources.Venue, assigns: [changeset: @venue_changeset], exclude: [:phone_number, :postcode, :venue_name, :venue_types, :entry_id, :deleted], assoc_query: &query/1) %>
   <p class="underline cs-mid-blue f6 lh6 pointer custom-drink dib mv2">I can't find my product</p>
   <p class="custom-drink-msg f6 lh6 ml2 pa1 ba br2 b--moon-gray">The custom drinks feature is coming soon.</p>
   <button type="button" name="button" class="save btn-primary mv4 db">Save</button>
@@ -41,8 +41,9 @@
     req.setRequestHeader("x-csrf-token", csrf);
     req.send(formData);
     req.onreadystatechange = function(){
-      if(this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-        window.location.pathname = "/venues";
+      if(this.readyState == XMLHttpRequest.DONE && this.status == 201) {
+        var id = JSON.parse(this.response).entry_id;
+        window.location.pathname = "/venues/" + id;
       }
     }
   });

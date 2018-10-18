@@ -1,11 +1,14 @@
 defmodule CsGuide.Resources.Drink do
   use Ecto.Schema
+  use Alog
   import Ecto.Changeset
 
   schema "drinks" do
     field(:abv, :float)
     field(:brand, :string)
     field(:name, :string)
+    field(:entry_id, :string)
+    field(:deleted, :boolean)
 
     many_to_many(
       :venues,
@@ -18,9 +21,9 @@ defmodule CsGuide.Resources.Drink do
   end
 
   @doc false
-  def changeset(drink, attrs) do
+  def changeset(drink, attrs \\ %{}) do
     drink
-    |> cast(attrs, [:name, :brand, :abv])
+    |> cast(attrs, [:name, :brand, :abv, :deleted])
     |> validate_required([:name, :brand, :abv])
   end
 end

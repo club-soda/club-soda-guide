@@ -1,25 +1,24 @@
 defmodule CsGuideWeb.VenueTypeController do
   use CsGuideWeb, :controller
 
-  alias CsGuide.Categories
   alias CsGuide.Categories.VenueType
 
   def index(conn, _params) do
-    venue_type = Categories.list_venue_type()
+    venue_type = VenueType.all()
     render(conn, "index.html", venue_type: venue_type)
   end
 
   def new(conn, _params) do
-    changeset = Categories.change_venue_type(%VenueType{})
+    changeset = VenueType.changeset(%VenueType{}, %{})
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"venue_type" => venue_type_params}) do
-    case Categories.create_venue_type(venue_type_params) do
+    case VenueType.insert(venue_type_params) do
       {:ok, venue_type} ->
         conn
         |> put_flash(:info, "Venue types created successfully.")
-        |> redirect(to: venue_type_path(conn, :show, venue_type))
+        |> redirect(to: venue_type_path(conn, :show, venue_type.entry_id))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -27,24 +26,24 @@ defmodule CsGuideWeb.VenueTypeController do
   end
 
   def show(conn, %{"id" => id}) do
-    venue_type = Categories.get_venue_type!(id)
+    venue_type = VenueType.get(id)
     render(conn, "show.html", venue_type: venue_type)
   end
 
   def edit(conn, %{"id" => id}) do
-    venue_type = Categories.get_venue_type!(id)
-    changeset = Categories.change_venue_type(venue_type)
+    venue_type = VenueType.get(id)
+    changeset = VenueType.changeset(venue_type)
     render(conn, "edit.html", venue_type: venue_type, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "venue_type" => venue_type_params}) do
-    venue_type = Categories.get_venue_type!(id)
+    venue_type = VenueType.get(id)
 
-    case Categories.update_venue_type(venue_type, venue_type_params) do
+    case VenueType.update(venue_type, venue_type_params) do
       {:ok, venue_type} ->
         conn
         |> put_flash(:info, "Venue types updated successfully.")
-        |> redirect(to: venue_type_path(conn, :show, venue_type))
+        |> redirect(to: venue_type_path(conn, :show, venue_type.entry_id))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", venue_type: venue_type, changeset: changeset)
@@ -52,11 +51,11 @@ defmodule CsGuideWeb.VenueTypeController do
   end
 
   def delete(conn, %{"id" => id}) do
-    venue_type = Categories.get_venue_type!(id)
-    {:ok, _venue_type} = Categories.delete_venue_type(venue_type)
+    # venue_type = Categories.get_venue_type!(id)
+    # {:ok, _venue_type} = Categories.delete_venue_type(venue_type)
 
-    conn
-    |> put_flash(:info, "Venue types deleted successfully.")
-    |> redirect(to: venue_type_path(conn, :index))
+    # conn
+    # |> put_flash(:info, "Venue types deleted successfully.")
+    # |> redirect(to: venue_type_path(conn, :index))
   end
 end

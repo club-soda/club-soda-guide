@@ -1,11 +1,17 @@
 defmodule CsGuide.Resources.Venue do
   use Ecto.Schema
+  use Alog
   import Ecto.Changeset
+  import Ecto.Query, only: [from: 2]
+
+  alias CsGuide.Repo
 
   schema "venues" do
-    field(:phone_number, :string)
-    field(:postcode, :string)
     field(:venue_name, :string)
+    field(:postcode, :string)
+    field(:phone_number, :string)
+    field(:entry_id, :string)
+    field(:deleted, :boolean)
 
     many_to_many(
       :venue_types,
@@ -25,9 +31,63 @@ defmodule CsGuide.Resources.Venue do
   end
 
   @doc false
-  def changeset(venue, attrs) do
+  def changeset(venue, attrs \\ %{}) do
     venue
     |> cast(attrs, [:venue_name, :postcode, :phone_number])
     |> validate_required([:venue_name, :postcode])
+  end
+
+  def insert(attrs) do
+    %__MODULE__{}
+    |> insert_entry_id()
+    |> __MODULE__.changeset(attrs)
+    |> venue_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
+    |> venue_assoc(attrs, :drinks, CsGuide.Resources.Drink, :name)
+    |> Repo.insert()
+  end
+
+  def update(%__MODULE__{} = item, attrs) do
+    assocs =
+      Enum.map(__MODULE__.__schema__(:associations), fn a ->
+        schema = Map.get(__MODULE__.__schema__(:association, a), :queryable)
+
+        selected =
+          case Map.get(attrs, to_string(a)) do
+            nil -> []
+            selected -> Enum.map(selected, fn {k, v} -> k end)
+          end
+
+        {a,
+         from(s in schema,
+           where: s.name in ^selected,
+           distinct: s.entry_id,
+           order_by: [desc: :inserted_at],
+           select: s
+         )}
+      end)
+
+    item
+    |> CsGuide.Repo.preload(assocs)
+    |> Map.put(:id, nil)
+    |> Map.put(:inserted_at, nil)
+    |> Map.put(:updated_at, nil)
+    |> __MODULE__.changeset(attrs)
+    |> venue_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
+    |> venue_assoc(attrs, :drinks, CsGuide.Resources.Drink, :name)
+    |> Repo.insert()
+  end
+
+  def venue_assoc(venue, attrs, assoc, assoc_module, field) do
+    assocs =
+      Enum.map(Map.get(attrs, to_string(assoc)), fn {f, active} ->
+        if String.to_existing_atom(active) do
+          Repo.get_by(assoc_module, [{field, f}])
+        else
+          nil
+        end
+      end)
+      |> Enum.filter(& &1)
+
+    Ecto.Changeset.put_assoc(venue, assoc, assocs)
   end
 end

@@ -19,9 +19,9 @@
         <td><%= drink.abv %></td>
 
         <td class="text-right">
-          <span><%= link "Show", to: drink_path(@conn, :show, drink), class: "btn btn-default btn-xs" %></span>
-          <span><%= link "Edit", to: drink_path(@conn, :edit, drink), class: "btn btn-default btn-xs" %></span>
-          <span><%= link "Delete", to: drink_path(@conn, :delete, drink), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+          <span><%= link "Show", to: drink_path(@conn, :show, drink.entry_id), class: "btn btn-default btn-xs" %></span>
+          <span><%= link "Edit", to: drink_path(@conn, :edit, drink.entry_id), class: "btn btn-default btn-xs" %></span>
+          <span><%= link "Delete", to: drink_path(@conn, :delete, drink.entry_id), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
         </td>
       </tr>
   <% end %>

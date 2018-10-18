@@ -3,10 +3,11 @@ defmodule CsGuide.Repo.Migrations.CreateUsers do
 
   def change do
     create table(:users) do
-      add :email, :string
+      add(:email, :string)
+      add(:entry_id, :string)
+      add(:deleted, :boolean, default: false)
 
       timestamps()
     end
-
   end
 end

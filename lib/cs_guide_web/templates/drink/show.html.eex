@@ -19,5 +19,5 @@
 
 </ul>
 
-<span><%= link "Edit", to: drink_path(@conn, :edit, @drink) %></span>
+<span><%= link "Edit", to: drink_path(@conn, :edit, @drink.entry_id) %></span>
 <span><%= link "Back", to: drink_path(@conn, :index) %></span>

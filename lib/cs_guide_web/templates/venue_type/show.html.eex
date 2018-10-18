@@ -3,11 +3,11 @@
 <ul>
 
   <li>
-    <strong>Type:</strong>
-    <%= @venue_type.type %>
+    <strong>Name:</strong>
+    <%= @venue_type.name %>
   </li>
 
 </ul>
 
-<span><%= link "Edit", to: venue_type_path(@conn, :edit, @venue_type) %></span>
+<span><%= link "Edit", to: venue_type_path(@conn, :edit, @venue_type.entry_id) %></span>
 <span><%= link "Back", to: venue_type_path(@conn, :index) %></span>

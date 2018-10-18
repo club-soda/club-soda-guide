@@ -6,6 +6,8 @@ defmodule CsGuide.Repo.Migrations.CreateVenues do
       add(:venue_name, :string)
       add(:postcode, :string)
       add(:phone_number, :string)
+      add(:entry_id, :string)
+      add(:deleted, :boolean, default: false)
 
       timestamps()
     end

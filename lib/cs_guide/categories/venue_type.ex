@@ -1,9 +1,12 @@
 defmodule CsGuide.Categories.VenueType do
   use Ecto.Schema
+  use Alog
   import Ecto.Changeset
 
   schema "venue_types" do
-    field(:type, :string)
+    field(:name, :string)
+    field(:entry_id, :string)
+    field(:deleted, :boolean)
 
     many_to_many(
       :venues,
@@ -16,10 +19,10 @@ defmodule CsGuide.Categories.VenueType do
   end
 
   @doc false
-  def changeset(venue_type, attrs) do
+  def changeset(venue_type, attrs \\ %{}) do
     venue_type
-    |> cast(attrs, [:type])
-    |> validate_required([:type])
-    |> unique_constraint(:type)
+    |> cast(attrs, [:name])
+    |> validate_required([:name])
+    |> unique_constraint(:name)
   end
 end

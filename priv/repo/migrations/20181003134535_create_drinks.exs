@@ -6,6 +6,8 @@ defmodule CsGuide.Repo.Migrations.CreateDrinks do
       add(:name, :string)
       add(:brand, :string)
       add(:abv, :float)
+      add(:entry_id, :string)
+      add(:deleted, :boolean, default: false)
 
       timestamps()
     end
