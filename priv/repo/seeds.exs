@@ -11,7 +11,7 @@
 # and so on) as they will fail if something goes wrong.
 
 alias CsGuide.Resources.{Brand, Drink, Venue}
-alias CsGuide.Categories.{DrinkType, VenueType}
+alias CsGuide.Categories.{DrinkType, VenueType, DrinkStyle}
 
 brands = [
   {"Brewdog", "Scottish Craft Beer"},
@@ -22,6 +22,8 @@ brands = [
 ]
 
 drink_types = ["Beer", "Wine", "Soft Drink"]
+
+drink_styles = ["Pale Ale", "Lager", "Stouts & Porters", "Red Wine"]
 
 venue_types = ["Pub", "Restaurant", "Cocktail Bar"]
 
@@ -41,6 +43,7 @@ venues = [
 ]
 
 Enum.map(drink_types, fn b -> DrinkType.insert(%{name: b}) end)
+Enum.map(drink_styles, fn b -> DrinkStyle.insert(%{name: b}) end)
 Enum.map(venue_types, fn v -> VenueType.insert(%{name: v}) end)
 Enum.map(brands, fn {n, d} -> Brand.insert(%{name: n, description: d}) end)
 

@@ -1,0 +1,5 @@
+<h2>Edit Drink style</h2>
+
+<%= render "form.html", Map.put(assigns, :action, drink_style_path(@conn, :update, @drink_style.entry_id)) %>
+
+<span><%= link "Back", to: drink_style_path(@conn, :index) %></span>
