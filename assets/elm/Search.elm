@@ -25,6 +25,7 @@ type alias Drink =
 type alias Model =
     { drinks : List Drink
     , dtype_filter : String
+    , abv_filter : String
     }
 
 
@@ -48,6 +49,7 @@ init flags =
   in
     ( { drinks = []
       , dtype_filter = dtype_filter
+      , abv_filter = ""
       }
     , getDrinks
     )
@@ -84,7 +86,7 @@ drinkDecoder =
 type Msg
     = ReceiveDrinks (HttpData (List Drink))
     | SelectDrinkType String
-
+    | SelectABVLevel String
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -98,17 +100,25 @@ update msg model =
         SelectDrinkType drink_type ->
             ( { model | dtype_filter = drink_type }, Cmd.none )
 
-
+        SelectABVLevel abv_level ->
+            ( { model | abv_filter = abv_level }, Cmd.none )
 
 -- VIEW
 drink_types : List String
 drink_types =
     [ "Beer", "Wine", "Spirits and Mixers", "Soft Drinks", "Flavoured Tonics", "Ciders" ]
 
+abv_levels : List String
+abv_levels =
+  ["0.05%", "0.5%", "1 - 2.5%", "2.5 - 8%"]
+
 view : Model -> Html Msg
 view model =
     div [ class "mt6" ]
-        [ (renderFilters model "Drink Type" drink_types)
+        [ div [class "w-90 center"]
+        [ (renderFilter model "Drink Type" drink_types SelectDrinkType)
+        , (renderFilter model "ABV" abv_levels SelectABVLevel)
+        ]
         , div [ class "relative" ]
             [ div [ class "flex-ns flex-wrap justify-center pv4-ns db dib-ns" ]
                 (filterDrinks model)
@@ -119,7 +129,22 @@ view model =
 filterDrinks : Model -> List (Html Msg)
 filterDrinks model =
     List.filter (\d -> filterByType model d) model.drinks
-        |> renderDrinks
+    |> List.filter (\d -> filterByABV model d)
+    |> renderDrinks
+
+filterByABV : Model -> Drink -> Bool
+filterByABV model drink =
+  case model.abv_filter of
+  "0.05%" ->
+    drink.abv == 0.05
+  "0.5%" ->
+    drink.abv == 0.5
+  "1 - 2.5%" ->
+    (drink.abv >= 1 && drink.abv <= 2.5)
+  "2.5 - 8%" ->
+    (drink.abv >= 2.5 && drink.abv <= 8)
+  _ ->
+    True
 
 
 filterByType : Model -> Drink -> Bool
@@ -170,11 +195,11 @@ renderDrinks drinks =
         |> toList
 
 
-renderFilters : Model -> String -> List String -> Html Msg
-renderFilters model defaultTitle dropdownItems =
-    div [ class "w-90 center" ]
+renderFilter : Model -> String -> List String -> (String -> Msg) -> Html Msg
+renderFilter model defaultTitle dropdownItems msgConstructor =
+    div [ class "dib pr4" ]
         [ select
-            [ onChange SelectDrinkType
+            [ onChange msgConstructor
             , class "f6 lh6 cs-light-gray bg-white b--cs-light-gray br2 bw1 pv2 pl2 dib w6 mb2"
             ]
             ([ option [ Html.Attributes.value "" ] [ text defaultTitle ] ]
