@@ -39,8 +39,15 @@ type alias HttpData data =
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
+  let
+      dtype_filter =
+        if flags.dtype_filter == "default" then
+          ""
+        else
+          flags.dtype_filter
+  in
     ( { drinks = []
-      , dtype_filter = flags.dtype_filter
+      , dtype_filter = dtype_filter
       }
     , getDrinks
     )
@@ -94,12 +101,14 @@ update msg model =
 
 
 -- VIEW
-
+drink_types : List String
+drink_types =
+    [ "Beer", "Wine", "Spirits and Mixers", "Soft Drinks", "Flavoured Tonics", "Ciders" ]
 
 view : Model -> Html Msg
 view model =
     div [ class "mt6" ]
-        [ (renderFilters model)
+        [ (renderFilters model "Drink Type" drink_types)
         , div [ class "relative" ]
             [ div [ class "flex-ns flex-wrap justify-center pv4-ns db dib-ns" ]
                 (filterDrinks model)
@@ -113,11 +122,12 @@ filterDrinks model =
         |> renderDrinks
 
 
-
--- Add types in
-
-
+filterByType : Model -> Drink -> Bool
 filterByType model drink =
+  case String.toLower model.dtype_filter of
+  "spirits and mixers" ->
+    List.any (\t -> ("spirit" == String.toLower t || "mixer" == String.toLower t) )drink.drink_types
+  _ ->
     List.any (\t -> String.toLower model.dtype_filter == String.toLower t) drink.drink_types
         || model.dtype_filter
         == ""
@@ -160,29 +170,25 @@ renderDrinks drinks =
         |> toList
 
 
-renderFilters : Model -> Html Msg
-renderFilters model =
+renderFilters : Model -> String -> List String -> Html Msg
+renderFilters model defaultTitle dropdownItems =
     div [ class "w-90 center" ]
         [ select
             [ onChange SelectDrinkType
-            , class "f6 lh6 cs-black bg-white b--cs-light-gray dib w-10 mb2"
+            , class "f6 lh6 cs-light-gray bg-white b--cs-light-gray br2 bw1 pv2 pl2 dib w6 mb2"
             ]
-            [ option [ Html.Attributes.value "" ] [ text "Drink Type" ]
-            , option [ Html.Attributes.value "beer" ] [ text "Beer" ]
-            , option [ Html.Attributes.value "wine" ]
-                [ text "Wine" ]
-
-            -- ([ option [ Html.Attributes.value "" ] [ text defaultTitle ] ]
-            --     ++ List.map (\dropdownItem -> option [ Html.Attributes.value dropdownItem ] [ text dropdownItem ]) dropdownItems
-            -- )
-            ]
+            ([ option [ Html.Attributes.value "" ] [ text defaultTitle ] ]
+                ++ List.map (\dropdownItem -> renderDropdownItems model dropdownItem) dropdownItems
+            )
         ]
 
-
-drink_types =
-    [ "Beer", "Wine", "Soft Drinks", "Cider" ]
-
-
+renderDropdownItems : Model -> String -> Html Msg
+renderDropdownItems model dropdownItem =
+  if (String.toLower dropdownItem) == (String.toLower model.dtype_filter) then
+    option [ Html.Attributes.value dropdownItem, Html.Attributes.selected True]
+    [ text dropdownItem ]
+  else
+    option [ Html.Attributes.value dropdownItem ] [ text dropdownItem ]
 
 -- MAIN
 

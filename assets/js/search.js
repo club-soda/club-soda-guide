@@ -1,4 +1,4 @@
-var drink_type = window.location.search.slice(1).split("=")[1]
+var drink_type = window.location.search.slice(1).split("=")[1].replace(/_/g, " ") || "default";
 
   var search = document.getElementById('search');
   var searchApp;
