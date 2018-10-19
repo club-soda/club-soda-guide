@@ -67,6 +67,10 @@ form {
   background-color:#EBEBEB;
 }
 
+.bg-cs-light-gray-hover:hover {
+  background-color:#EBEBEB;
+}
+
 .b--cs-light-gray {
   border-color:#EBEBEB;
 }
@@ -99,6 +103,18 @@ form {
 
 .lh6 {
   line-height: 1.25rem; /* 20px */
+}
+
+/* Font Size */
+
+.f4-5 {
+  font-size: 1.15rem;
+}
+
+/* Heights */
+
+.h4-5 {
+  height: 14rem;
 }
 
 /* AutoForm Classes */
@@ -359,4 +375,10 @@ form {
     top: 50%;
     transform: translate(0, -50%);
   }
+}
+
+#brand-search {
+  background-image: url("/images/search-icon.svg");
+  background-position: right 5px top 5px;
+  background-repeat: no-repeat;
 }

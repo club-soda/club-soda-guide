@@ -26,7 +26,10 @@ defmodule CsGuideWeb.Router do
     resources("/drink_types", DrinkTypeController)
     resources("/drinks", DrinkController)
     resources("/brands", BrandController)
-    get("json_drinks", DrinkController, :json_index)
+    resources("/drink_styles", DrinkStyleController)
+
+    get("/json_drinks", DrinkController, :json_index)
+    get("/venues/:id/add_drinks", VenueController, :add_drinks)
   end
 
   scope "/search", CsGuideWeb do

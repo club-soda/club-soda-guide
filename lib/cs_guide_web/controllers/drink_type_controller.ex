@@ -4,8 +4,8 @@ defmodule CsGuideWeb.DrinkTypeController do
   alias CsGuide.Categories.DrinkType
 
   def index(conn, _params) do
-    drink_type = DrinkType.all()
-    render(conn, "index.html", drink_type: drink_type)
+    drink_types = DrinkType.all()
+    render(conn, "index.html", drink_types: drink_types)
   end
 
   def new(conn, _params) do
