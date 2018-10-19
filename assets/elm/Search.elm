@@ -160,6 +160,7 @@ filterByType model drink =
 
 renderDrinks : List Drink -> List (Html Msg)
 renderDrinks drinks =
+    if List.length drinks >= 1 then
     Array.fromList drinks
         |> Array.indexedMap
             (\index d ->
@@ -193,6 +194,10 @@ renderDrinks drinks =
                     ]
             )
         |> toList
+      else
+        [div []
+        [ p [] [text "Your search didn't return any drinks, change your filters and try again."]
+        ]]
 
 
 renderFilter : Model -> String -> List String -> (String -> Msg) -> Html Msg
