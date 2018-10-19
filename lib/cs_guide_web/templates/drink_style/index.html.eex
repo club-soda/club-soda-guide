@@ -1,26 +1,27 @@
-<h2>Listing Drink styles</h2>
+<section class="center w-80 w-75-l mv6">
+  <h2 class="f4 lh4">Listing Drink Styles</h2>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
+  <table class="mt3 mb5 w-100">
+    <thead>
+      <tr class="tl">
+        <th class="pv3 pr3 f5 lh5 b">Name</th>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for drink_style <- @drink_styles do %>
-    <tr>
-      <td><%= drink_style.name %></td>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+  <%= for drink_style <- @drink_styles do %>
+      <tr class="bt bb b--cs-light-gray">
+        <td class="pv3 pr3"><%= drink_style.name %></td>
 
-      <td class="text-right">
-        <span><%= link "Show", to: drink_style_path(@conn, :show, drink_style.entry_id), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Edit", to: drink_style_path(@conn, :edit, drink_style.entry_id), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: drink_style_path(@conn, :delete, drink_style.entry_id), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
+        <td class="text-right">
+          <span><%= link "Edit", to: drink_style_path(@conn, :edit, drink_style.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
+          <span><%= link "Delete", to: drink_style_path(@conn, :delete, drink_style.entry_id), method: :delete, data: [confirm: "Are you sure?"], class: "ph3 pv3-ns cs-mid-blue" %></span>
+        </td>
+      </tr>
+  <% end %>
+    </tbody>
+  </table>
 
-<span><%= link "New Drink style", to: drink_style_path(@conn, :new) %></span>
+  <span><%= link "New Drink Style", to: drink_style_path(@conn, :new), class: "btn-primary no-underline" %></span>
+</section>

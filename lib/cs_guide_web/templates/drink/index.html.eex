@@ -1,32 +1,32 @@
-<section class="center w-80 w-75-l mv4">
+<section class="center w-80 w-75-l mv6">
   <h2 class="f4 lh4">All Drinks</h2>
 
-  <table class="table">
+  <table class="mt3 mb5 w-100">
     <thead>
-      <tr>
-        <th>Name</th>
-        <th>Brand</th>
-        <th>Abv</th>
+      <tr class="tl">
+        <th class="pv3 pr3 f5 lh5 b">Name</th>
+        <th class="pa3 f5 lh5 b">Brand</th>
+        <th class="pa3 f5 lh5 b dn dib-ns">Abv</th>
 
         <th></th>
       </tr>
     </thead>
     <tbody>
   <%= for drink <- @drinks do %>
-      <tr>
-        <td><%= drink.name %></td>
-        <td><%= drink.brand.name %></td>
-        <td><%= drink.abv %></td>
+      <tr class="bt bb b--cs-light-gray">
+        <td class="pv3 pr3"><%= drink.name %></td>
+        <td class="pa3"><%= drink.brand.name %></td>
+        <td class="pa3 dn dib-ns"><%= drink.abv %></td>
 
         <td class="text-right">
-          <span><%= link "Show", to: drink_path(@conn, :show, drink.entry_id), class: "btn btn-default btn-xs" %></span>
-          <span><%= link "Edit", to: drink_path(@conn, :edit, drink.entry_id), class: "btn btn-default btn-xs" %></span>
-          <span><%= link "Delete", to: drink_path(@conn, :delete, drink.entry_id), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+          <span><%= link "Show", to: drink_path(@conn, :show, drink.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
+          <span><%= link "Edit", to: drink_path(@conn, :edit, drink.entry_id),class: "ph3 pv3-ns cs-mid-blue" %></span>
+          <span><%= link "Delete", to: drink_path(@conn, :delete, drink.entry_id), method: :delete, data: [confirm: "Are you sure?"], class: "ph3 pv3-ns cs-mid-blue" %></span>
         </td>
       </tr>
   <% end %>
     </tbody>
   </table>
 
-  <span><%= link "New Drink", to: drink_path(@conn, :new) %></span>
+  <span><%= link "New Drink", to: drink_path(@conn, :new), class: "btn-primary no-underline" %></span>
 </section>

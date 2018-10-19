@@ -4,8 +4,8 @@ defmodule CsGuideWeb.VenueTypeController do
   alias CsGuide.Categories.VenueType
 
   def index(conn, _params) do
-    venue_type = VenueType.all()
-    render(conn, "index.html", venue_type: venue_type)
+    venue_types = VenueType.all()
+    render(conn, "index.html", venue_types: venue_types)
   end
 
   def new(conn, _params) do

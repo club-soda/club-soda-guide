@@ -41,7 +41,7 @@ defmodule CsGuide.Resources.Drink do
   def changeset(drink, attrs \\ %{}) do
     drink
     |> cast(attrs, [:name, :abv, :brand_id])
-    |> validate_required([:name, :abv])
+    |> validate_required([:name])
   end
 
   def insert(attrs) do
