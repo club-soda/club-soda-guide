@@ -6,10 +6,13 @@ defmodule CsGuide.Resources.Drink do
   alias CsGuide.Resources
 
   schema "drinks" do
-    field(:abv, :float)
     field(:name, :string)
+    field(:abv, :float)
     field(:entry_id, :string)
     field(:deleted, :boolean)
+    field(:description, :string)
+
+    belongs_to(:brand, CsGuide.Resources.Brand)
 
     many_to_many(
       :venues,
@@ -32,15 +35,13 @@ defmodule CsGuide.Resources.Drink do
       join_keys: [drink_id: :id, drink_style_id: :id]
     )
 
-    belongs_to(:brand, CsGuide.Resources.Brand)
-
     timestamps()
   end
 
   @doc false
   def changeset(drink, attrs \\ %{}) do
     drink
-    |> cast(attrs, [:name, :abv, :brand_id])
+    |> cast(attrs, [:name, :abv, :brand_id, :description])
     |> validate_required([:name])
   end
 

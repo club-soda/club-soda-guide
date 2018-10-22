@@ -39,10 +39,11 @@ drinksDecoder =
 
 drinkDecoder : Decoder Drink
 drinkDecoder =
-    Decode.map3 Drink
+    Decode.map4 Drink
         (field "name" string)
         (field "brand" string)
         (field "abv" float)
+        (field "description" string)
 
 
 type alias HttpData data =
@@ -53,6 +54,7 @@ type alias Drink =
     { name : String
     , brand : String
     , abv : Float
+    , description : String
     }
 
 
@@ -183,7 +185,7 @@ renderDrinksCarousel model =
                                 , p [ class "w-50 pv2 dib" ] [ text <| String.fromFloat d.abv ++ "% ABV" ]
                                 ]
                             , p [ class "pv2" ]
-                                [ text "Drink description text Drink description \n                                text Drink description text Drink description \n                                text Drink description text"
+                                [ text d.description
                                 ]
                             ]
                         ]
