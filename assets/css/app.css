@@ -398,3 +398,7 @@ select {
   background-position: right 5px top 5px;
   background-repeat: no-repeat;
 }
+
+.brand-group, .drink_styles-group, .drink_types-group {
+  padding: 1rem;
+}

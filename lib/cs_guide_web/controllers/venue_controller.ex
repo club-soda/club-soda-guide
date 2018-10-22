@@ -1,7 +1,7 @@
 defmodule CsGuideWeb.VenueController do
   use CsGuideWeb, :controller
 
-  alias CsGuide.Resources.{Venue, Drink}
+  alias CsGuide.Resources.{Venue, Drink, Brand}
 
   import Ecto.Query, only: [from: 2, subquery: 1]
 
@@ -43,7 +43,9 @@ defmodule CsGuideWeb.VenueController do
       id
       |> Venue.get()
       |> CsGuide.Repo.preload(
-        drinks: {query.(:drinks, Venue), brand: query.(:brand, Drink)},
+        drinks:
+          {query.(:drinks, Venue),
+           brand: query.(:brand, Drink), drink_types: query.(:drink_types, Drink)},
         venue_types: query.(:venue_types, Venue)
       )
 
@@ -108,7 +110,7 @@ defmodule CsGuideWeb.VenueController do
       |> Venue.get()
       |> CsGuide.Repo.preload(drinks: {query.(:drinks, Venue), brand: query.(:brand, Drink)})
 
-    brands = CsGuide.Resources.Brand.all() |> CsGuide.Repo.preload(:drinks)
+    brands = CsGuide.Resources.Brand.all() |> CsGuide.Repo.preload(drinks: query.(:drinks, Brand))
 
     changeset = Venue.changeset(venue)
 

@@ -41,10 +41,10 @@ drinks = [
    3},
   {"Pale Ale", "Big Drop", "Beer", "0.5",
    "This dry-hopped pale ale is deliciously refreshing. The nose has hints of pine and honey. Packed full of flavour from citrus-heavy hops with a twist of fresh lime to create a crisp, zesty beer. ",
-   3},
+   2},
   {"Lager", "Big Drop", "Beer", "0.5",
    "Aromas of cracker, light honey and pepper this lager is crisp, balanced with a suitable level of bitterness to ensure it has a dry, refreshing bite.",
-   3},
+   1},
   {"Shiraz", "Belvoir Drinks", "Wine", "0.0",
    "It has a very ‘grown-up’ taste with a nose of blackcurrant, a touch of vanilla and a semi-sweet fruity flavour with an astringent, slightly mouth drying finish and a hint of spice typically associated with a Shiraz red wine. Just like the alcoholic variety this rich dark red alcohol-free version slips down nicely with steak or boeuf bourguignon.",
    2}
