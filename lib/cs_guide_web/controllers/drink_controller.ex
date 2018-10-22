@@ -20,7 +20,8 @@ defmodule CsGuideWeb.DrinkController do
 
     json(
       conn,
-      Enum.map(drinks, fn d ->
+      Enum.sort_by(drinks, fn d -> Map.get(d, :weighting, 0) end, &>=/2)
+      |> Enum.map(fn d ->
         %{
           name: d.name,
           brand: d.brand.name,
