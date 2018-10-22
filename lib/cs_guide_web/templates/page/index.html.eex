@@ -4,7 +4,7 @@
       The best low and no alcohol drinks and where to find them</h1>
   </div>
   <div class="w-90-ns center db">
-    <h2 class="b pv3 f2 lh2 w-90 w-100-ns center">Explore All Drinks</h2>
+    <h2 class="b pv3 f2 lh2 w-90 w-100-ns center tc tl-ns">Explore All Drinks</h2>
     <div class="roboto-slab flex flex-wrap flex-nowrap-ns justify-between tc">
       <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns mr2-ns bg-cs-pink br2-ns white pt-3rem" href="/search/drinks/?drink_type=beer">Beers</a>
       <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns mh2-ns bg-cs-light-pink br2-ns cs-black pt-3rem" href="/search/drinks/?drink_type=wine">Wines</a>
@@ -16,14 +16,14 @@
   </div>
 </section>
 <section class="mt-30rem-s mt6-ns pv3 pv5-ns w-90 w-100-ns center">
-  <h2 class="w-90-ns center b pt3 f2 lh2">Great drinks for mindful drinkers</h2>
+  <h2 class="w-90-ns center b pt3 f2 lh2 tc tl-ns">Great drinks for mindful drinkers</h2>
   <div id="drinks-carousel"></div>
   <div class="w-90-ns center tc tl-ns mv4">
-    <a class="bg-cs-black br2 ph4 pv2 white no-underline" href="/drinks">View Selection</a>
+    <a class="bg-cs-black br2 ph4 pv2 white no-underline" href="/search/drinks">View Selection</a>
   </div>
 </section>
 <section class="w-90 center">
-  <h2 class="b pt3 f2 lh2">Great Places for Mindful Drinkers</h2>
+  <h2 class="b pt3 f2 lh2 mb3 tc tl-ns">Great Places for Mindful Drinkers</h2>
   <div class="flex flex-wrap justify-center">
     <div class="w-100 w-25-ns pb4">
       <div class="bg-green w-100 w-90-m w5-l h4 br2"></div>

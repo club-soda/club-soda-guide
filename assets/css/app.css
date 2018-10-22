@@ -7,6 +7,12 @@ form {
   margin: 1rem auto;
 }
 
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
 /* Fonts */
 
 .roboto-slab {
@@ -344,6 +350,12 @@ form {
   transform: translate(-50%, -50%);
 }
 
+.absolute-horizontal-center {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
 @media (max-width: 30em) {
   .absolute-center-s {
     position: absolute;
@@ -356,6 +368,10 @@ form {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
+  }
+
+  .center-s {
+    margin: auto;
   }
 
   .bottom-4-s {

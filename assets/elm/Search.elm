@@ -129,7 +129,7 @@ view model =
             , (renderFilter model "ABV" abv_levels SelectABVLevel)
             ]
         , div [ class "relative" ]
-            [ div [ class "flex-ns flex-wrap justify-center pv4-ns db dib-ns" ]
+            [ div [ class "flex-ns flex-wrap justify-center pt3 pb4-ns db dib-ns" ]
                 (filterDrinks model)
             ]
         ]
@@ -180,10 +180,10 @@ renderDrinks drinks =
             |> Array.indexedMap
                 (\index d ->
                     div
-                        [ class "w-third-m w-20-l shadow-4 br2 tr pb3 mh3 mv3 relative" ]
+                        [ class "w-90 w-third-m w-20-l center-s shadow-4 br2 tr pb3 mh3 mv3 relative" ]
                         [ div [ class "card-front-contents" ]
                             [ div [ class "bb b--cs-light-pink bw3 mb3 tl h-27rem" ]
-                                [ h4 [ class "f4 lh4 pa3 shadow-4 br2 mt4 mb1 mh4 tc bg-sheer-white absolute top-1" ] [ text <| d.brand ++ " " ++ d.name ]
+                                [ h4 [ class "f4 lh4 pa3 shadow-4 br2 mt4 mb1 tc bg-sheer-white absolute-horizontal-center top-1 w-80" ] [ text <| d.brand ++ " " ++ d.name ]
                                 , img [ src "https://res.cloudinary.com/ratebeer/image/upload/w_250,c_limit/beer_117796.jpg", alt "Photo of drink", class "w-5rem db center pt4" ] []
                                 , p [ class "bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib" ] [ text <| String.fromFloat d.abv ++ "% ABV" ]
                                 ]
@@ -218,10 +218,10 @@ renderDrinks drinks =
 
 renderFilter : Model -> String -> List String -> (String -> Msg) -> Html Msg
 renderFilter model defaultTitle dropdownItems msgConstructor =
-    div [ class "dib pr4" ]
+    div [ class "dib pr2" ]
         [ select
             [ onChange msgConstructor
-            , class "f6 lh6 cs-light-gray bg-white b--cs-light-gray br2 bw1 pv2 pl2 dib w6 mb2"
+            , class "f6 lh6 cs-light-gray bg-white b--cs-light-gray br2 bw1 pv2 pl3 dib w6"
             ]
             ([ option [ Html.Attributes.value "" ] [ text defaultTitle ] ]
                 ++ List.map (\dropdownItem -> renderDropdownItems model dropdownItem) dropdownItems
