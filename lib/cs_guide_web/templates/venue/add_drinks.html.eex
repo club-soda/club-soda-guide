@@ -7,7 +7,7 @@
     <div class="w-100 overflow-scroll h4-5">
       <%= for {b, i} <- Enum.with_index(@brands) do %>
         <div id="brand-<%= i %>" class="bg-cs-light-gray-hover ph1 pb2">
-          <span class="f5 pt2 db brand-name"><%= b.name %></span>
+          <div class="db brand-name pointer"><span class="f5 pt2 dib"><%= b.name %></span><span class="f3 dib fr">&#8964;</span></div>
           <div id="drink-list-<%= i %>" class="dn pt1">
             <%= for d <- b.drinks do %>
               <div class="mv1 pl3">
