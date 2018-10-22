@@ -1,7 +1,20 @@
 <section class="center w-80 w-75-l mv4">
   <h2 class="f4 lh4">New Drink</h2>
 
-  <%= render_autoform(@conn, :create, CsGuide.Resources.Drink, exclude: [:entry_id, :deleted, :venues, :brand_id], update_field: :entry_id, assoc_query: &query/1) %>
+  <%= custom_render_autoform(@conn, :create, [
+    {CsGuide.Resources.Drink, exclude: [:description, :drink_types, :drink_styles, :brand, :weighting, :abv]},
+    """
+    <div class="form-group">
+      <label class="control-label " for="drink_abv">Abv</label>
+      <input class="form-control" id="drink_abv" name="drink[abv]" type="number" step="any">
+    </div>
+    <div class="form-group">
+      <label class="control-label " for="drink_description">Description</label>
+      <textarea class="form-control" id="drink_description" name="drink[description]" type="text"></textarea>
+    </div>
+    """,
+    {CsGuide.Resources.Drink, exclude: [:description, :abv, :name]},
+  ], exclude: [:entry_id, :deleted, :venues, :brand_id], update_field: :entry_id, assoc_query: &query/1) %>
 
   <span><%= link "Back", to: drink_path(@conn, :index) %></span>
 </section>
