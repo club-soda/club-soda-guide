@@ -130,4 +130,72 @@ defmodule CsGuide.ResourcesTest do
       assert %Ecto.Changeset{} = Resources.change_drink(drink)
     end
   end
+
+  describe "brands" do
+    alias CsGuide.Resources.Brand
+
+    @valid_attrs %{description: "some description", logo: "some logo", member: true, name: "some name", website: "some website"}
+    @update_attrs %{description: "some updated description", logo: "some updated logo", member: false, name: "some updated name", website: "some updated website"}
+    @invalid_attrs %{description: nil, logo: nil, member: nil, name: nil, website: nil}
+
+    def brand_fixture(attrs \\ %{}) do
+      {:ok, brand} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Resources.create_brand()
+
+      brand
+    end
+
+    test "list_brands/0 returns all brands" do
+      brand = brand_fixture()
+      assert Resources.list_brands() == [brand]
+    end
+
+    test "get_brand!/1 returns the brand with given id" do
+      brand = brand_fixture()
+      assert Resources.get_brand!(brand.id) == brand
+    end
+
+    test "create_brand/1 with valid data creates a brand" do
+      assert {:ok, %Brand{} = brand} = Resources.create_brand(@valid_attrs)
+      assert brand.description == "some description"
+      assert brand.logo == "some logo"
+      assert brand.member == true
+      assert brand.name == "some name"
+      assert brand.website == "some website"
+    end
+
+    test "create_brand/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Resources.create_brand(@invalid_attrs)
+    end
+
+    test "update_brand/2 with valid data updates the brand" do
+      brand = brand_fixture()
+      assert {:ok, brand} = Resources.update_brand(brand, @update_attrs)
+      assert %Brand{} = brand
+      assert brand.description == "some updated description"
+      assert brand.logo == "some updated logo"
+      assert brand.member == false
+      assert brand.name == "some updated name"
+      assert brand.website == "some updated website"
+    end
+
+    test "update_brand/2 with invalid data returns error changeset" do
+      brand = brand_fixture()
+      assert {:error, %Ecto.Changeset{}} = Resources.update_brand(brand, @invalid_attrs)
+      assert brand == Resources.get_brand!(brand.id)
+    end
+
+    test "delete_brand/1 deletes the brand" do
+      brand = brand_fixture()
+      assert {:ok, %Brand{}} = Resources.delete_brand(brand)
+      assert_raise Ecto.NoResultsError, fn -> Resources.get_brand!(brand.id) end
+    end
+
+    test "change_brand/1 returns a brand changeset" do
+      brand = brand_fixture()
+      assert %Ecto.Changeset{} = Resources.change_brand(brand)
+    end
+  end
 end

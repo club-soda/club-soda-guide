@@ -43,15 +43,31 @@ form {
   color: #E30B5D;
 }
 
-.b--cs-light-pink {
-  border-color: #FBE2DB;
+.bg-cs-pink {
+  background-color: #E30B5D;
 }
 
 .b--cs-pink {
   border-color: #E30B5D;
 }
 
+.bg-cs-light-pink {
+  background-color: #FBE2DB;
+}
+
+.b--cs-light-pink {
+  border-color: #FBE2DB;
+}
+
+.bg-cs-yellow {
+  background-color: #FFB700;
+}
+
 .bg-cs-light-gray {
+  background-color:#EBEBEB;
+}
+
+.bg-cs-light-gray-hover:hover {
   background-color:#EBEBEB;
 }
 
@@ -87,6 +103,18 @@ form {
 
 .lh6 {
   line-height: 1.25rem; /* 20px */
+}
+
+/* Font Size */
+
+.f4-5 {
+  font-size: 1.15rem;
+}
+
+/* Heights */
+
+.h4-5 {
+  height: 14rem;
 }
 
 /* AutoForm Classes */
@@ -176,12 +204,31 @@ form {
   width: 5rem;
 }
 
+@media (min-width: 30rem) {
+  .w-sixth-ns {
+    width: 16.6%;
+  }
+}
+
 .h-25rem {
   height: 25rem;
 }
 
 .h-27rem {
   height: 27rem;
+}
+
+.pt-3rem {
+  padding-top: 3rem;
+}
+
+@media (max-width: 30rem) {
+  .pb-3rem-s {
+    padding-bottom: 3rem;
+  }
+  .mt-30rem-s {
+    margin-top: 30rem;
+  }
 }
 
 /* Venue Sign up - adding custom drinks */
@@ -328,4 +375,10 @@ form {
     top: 50%;
     transform: translate(0, -50%);
   }
+}
+
+#brand-search {
+  background-image: url("/images/search-icon.svg");
+  background-position: right 5px top 5px;
+  background-repeat: no-repeat;
 }

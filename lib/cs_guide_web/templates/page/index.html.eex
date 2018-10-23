@@ -1,11 +1,21 @@
-<section class="bg-hero relative">
-  <div class="w-100 h-100">
+<section class="bg-hero relative pb5">
+  <div class="w-100 h-100 mb4 mb0-ns">
     <h1 class="w-90 w-40-ns absolute-center tc center f2 lh2 roboto-slab">
       The best low and no alcohol drinks and where to find them</h1>
   </div>
-  <h2 class="w-90-ns center b pt3 f2 lh2">Explore All Drinks</h2>
+  <div class="w-90-ns center db">
+    <h2 class="b pv3 f2 lh2 w-90 w-100-ns center">Explore All Drinks</h2>
+    <div class="roboto-slab flex flex-wrap flex-nowrap-ns justify-between tc">
+      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns mr2-ns bg-cs-pink br2-ns white pt-3rem" href="/search/drinks/?drink_type=beer">Beers</a>
+      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns mh2-ns bg-cs-light-pink br2-ns cs-black pt-3rem" href="/search/drinks/?drink_type=wine">Wines</a>
+      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pv4 mh2-ns bg-cs-yellow br2-ns cs-black" href="/search/drinks/?drink_type=spirits_and_mixers">Spirits and</br>Mixers</a>
+      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns mh2-ns bg-cs-mint br2-ns cs-black pt-3rem" href="/search/drinks/?drink_type=soft_drink">Soft Drinks</a>
+      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pv4 mh2-ns bg-cs-black br2-ns white" href="/search/drinks/?drink_type=tonic">Flavoured</br>Tonics</a>
+      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns ml2-ns bg-cs-navy br2-ns white pt-3rem" href="/search/drinks/?drink_type=cider"><span class="v-mid">Ciders</span></a>
+    </div>
+  </div>
 </section>
-<section class="mt5 pv3 pv5-ns w-90 w-100-ns center">
+<section class="mt-30rem-s mt6-ns pv3 pv5-ns w-90 w-100-ns center">
   <h2 class="w-90-ns center b pt3 f2 lh2">Great drinks for mindful drinkers</h2>
   <div id="drinks-carousel"></div>
   <div class="w-90-ns center tc tl-ns mv4">
@@ -37,7 +47,7 @@
     </div>
   </div>
   <div class="mv4 center tc tl-ns">
-    <a class="btn-primary no-underline" href="/venues">Find One Near Me</a>
+    <a class="btn-primary no-underline" href="search/venues">Find One Near Me</a>
   </div>
 </section>
 

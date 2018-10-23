@@ -5,6 +5,7 @@ defmodule CsGuide.Resources.Venue do
   import Ecto.Query, only: [from: 2]
 
   alias CsGuide.Repo
+  alias CsGuide.Resources
 
   schema "venues" do
     field(:venue_name, :string)
@@ -41,8 +42,8 @@ defmodule CsGuide.Resources.Venue do
     %__MODULE__{}
     |> insert_entry_id()
     |> __MODULE__.changeset(attrs)
-    |> venue_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
-    |> venue_assoc(attrs, :drinks, CsGuide.Resources.Drink, :name)
+    |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
+    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :name)
     |> Repo.insert()
   end
 
@@ -72,22 +73,8 @@ defmodule CsGuide.Resources.Venue do
     |> Map.put(:inserted_at, nil)
     |> Map.put(:updated_at, nil)
     |> __MODULE__.changeset(attrs)
-    |> venue_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
-    |> venue_assoc(attrs, :drinks, CsGuide.Resources.Drink, :name)
+    |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
+    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :name)
     |> Repo.insert()
-  end
-
-  def venue_assoc(venue, attrs, assoc, assoc_module, field) do
-    assocs =
-      Enum.map(Map.get(attrs, to_string(assoc)), fn {f, active} ->
-        if String.to_existing_atom(active) do
-          Repo.get_by(assoc_module, [{field, f}])
-        else
-          nil
-        end
-      end)
-      |> Enum.filter(& &1)
-
-    Ecto.Changeset.put_assoc(venue, assoc, assocs)
   end
 end
