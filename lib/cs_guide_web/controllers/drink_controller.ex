@@ -3,9 +3,32 @@ defmodule CsGuideWeb.DrinkController do
 
   alias CsGuide.Resources.Drink
 
+  import Ecto.Query, only: [from: 2, subquery: 1]
+
   def index(conn, _params) do
-    drinks = Drink.all()
+    drinks =
+      Drink.all()
+      |> CsGuide.Repo.preload(:brand)
+
     render(conn, "index.html", drinks: drinks)
+  end
+
+  def json_index(conn, _params) do
+    drinks =
+      Drink.all()
+      |> CsGuide.Repo.preload([:brand, :drink_types])
+
+    json(
+      conn,
+      Enum.map(drinks, fn d ->
+        %{
+          name: d.name,
+          brand: d.brand.name,
+          abv: d.abv,
+          drink_types: Enum.map(d.drink_types, fn t -> t.name end)
+        }
+      end)
+    )
   end
 
   def new(conn, _params) do
@@ -26,7 +49,10 @@ defmodule CsGuideWeb.DrinkController do
   end
 
   def show(conn, %{"id" => id}) do
-    drink = Drink.get(id)
+    drink =
+      Drink.get(id)
+      |> CsGuide.Repo.preload([:brand, :drink_types])
+
     render(conn, "show.html", drink: drink)
   end
 

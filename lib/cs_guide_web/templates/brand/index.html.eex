@@ -1,0 +1,36 @@
+<section class="center w-80 w-75-l mv6">
+  <h2 class="f4 lh4">Listing Brands</h2>
+
+  <table class="mt3 mb5 w-100">
+    <thead>
+      <tr class="tl">
+        <th class="pv3 pr3 f5 lh5 b">Name</th>
+        <th class="pa3 f5 lh5 b">Member</th>
+        <th class="pa3 f5 lh5 b">Description</th>
+        <th class="pa3 f5 lh5 b">Logo</th>
+        <th class="pa3 f5 lh5 b">Website</th>
+
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+  <%= for brand <- @brands do %>
+      <tr class="bt bb b--cs-light-gray">
+        <td class="pv3 pr3"><%= brand.name %></td>
+        <td class="pa3"><%= brand.member %></td>
+        <td class="pa3"><%= brand.description %></td>
+        <td class="pa3"><%= brand.logo %></td>
+        <td class="pa3"><%= brand.website %></td>
+
+        <td class="text-right">
+          <span><%= link "Show", to: brand_path(@conn, :show, brand.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
+          <span><%= link "Edit", to: brand_path(@conn, :edit, brand.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
+          <span><%= link "Delete", to: brand_path(@conn, :delete, brand.entry_id), method: :delete, data: [confirm: "Are you sure?"], class: "ph3 pv3-ns cs-mid-blue" %></span>
+        </td>
+      </tr>
+  <% end %>
+    </tbody>
+  </table>
+
+  <span><%= link "New Brand", to: brand_path(@conn, :new), class: "btn-primary no-underline" %></span>
+</section>

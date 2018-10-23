@@ -35,19 +35,39 @@ form {
   color: #333333;
 }
 
+.bg-cs-black {
+  background-color: #333333;
+}
+
 .cs-pink {
   color: #E30B5D;
 }
 
-.b--cs-light-pink {
-  border-color: #FBE2DB;
+.bg-cs-pink {
+  background-color: #E30B5D;
 }
 
 .b--cs-pink {
   border-color: #E30B5D;
 }
 
+.bg-cs-light-pink {
+  background-color: #FBE2DB;
+}
+
+.b--cs-light-pink {
+  border-color: #FBE2DB;
+}
+
+.bg-cs-yellow {
+  background-color: #FFB700;
+}
+
 .bg-cs-light-gray {
+  background-color:#EBEBEB;
+}
+
+.bg-cs-light-gray-hover:hover {
   background-color:#EBEBEB;
 }
 
@@ -55,10 +75,22 @@ form {
   border-color:#EBEBEB;
 }
 
+.bg-sheer-white {
+  background: rgba(255, 255, 255, 0.5);
+}
+
 /* Line heights to correspond with tachyons font classes */
+
+.lh1 {
+  line-height: 4rem; /* 64px */
+}
 
 .lh2 {
   line-height: 3.375rem; /* 54px */
+}
+
+.lh3 {
+  line-height: 2.5rem; /* 40px */
 }
 
 .lh4 {
@@ -71,6 +103,18 @@ form {
 
 .lh6 {
   line-height: 1.25rem; /* 20px */
+}
+
+/* Font Size */
+
+.f4-5 {
+  font-size: 1.15rem;
+}
+
+/* Heights */
+
+.h4-5 {
+  height: 14rem;
 }
 
 /* AutoForm Classes */
@@ -120,7 +164,7 @@ form {
   text-align: center;
   font-size: 1rem; /* 16px */
   line-height: 1.5rem; /* 24px */
-  color: #2E304F;
+  color: #333333;
   border: none;
   padding: 0.5rem 1.5rem; /* 8px, 24px */
   border-radius: .25rem
@@ -160,8 +204,31 @@ form {
   width: 5rem;
 }
 
-.h-30rem {
-  height: 30rem;
+@media (min-width: 30rem) {
+  .w-sixth-ns {
+    width: 16.6%;
+  }
+}
+
+.h-25rem {
+  height: 25rem;
+}
+
+.h-27rem {
+  height: 27rem;
+}
+
+.pt-3rem {
+  padding-top: 3rem;
+}
+
+@media (max-width: 30rem) {
+  .pb-3rem-s {
+    padding-bottom: 3rem;
+  }
+  .mt-30rem-s {
+    margin-top: 30rem;
+  }
 }
 
 /* Venue Sign up - adding custom drinks */
@@ -221,3 +288,97 @@ form {
 }
 
 /* End of drinks card 'flipping' */
+
+/* Landing page bg images */
+.bg-hero {
+  background-image: url("/images/hero-image.png");
+  background-repeat: no-repeat;
+  object-fit: cover;
+  background-position: center;
+  background-size: cover;
+  height: 70vh;
+}
+
+.bg-nominate-venue {
+  background-image: url("/images/nominate-venue-img.jpg");
+  background-repeat: no-repeat;
+  object-fit: cover;
+  background-position: 0 30%;
+  background-size: cover;
+  height: 30rem;
+}
+
+@media (min-width: 30em) {
+  .bg-nominate-venue {
+    height: 13rem;
+  }
+}
+
+@media (min-width: 48em) {
+  .bg-hero {
+    height: 107vh;
+  }
+}
+
+.bg-newsletter {
+  background-image: url("/images/newsletter-image.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 32rem;
+}
+
+.black-gradient {
+  background: -moz-linear-gradient(left, rgba(51,51,51,1) 0%, rgba(49,49,49,1) 1%, rgba(0,0,0,0.85) 31%, rgba(0,0,0,0.75) 50%, rgba(255,255,255,0.5) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left, rgba(51,51,51,1) 0%,rgba(49,49,49,1) 1%,rgba(0,0,0,0.85) 31%,rgba(0,0,0,0.75) 50%,rgba(255,255,255,0.5) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right, rgba(51,51,51,1) 0%,rgba(49,49,49,1) 1%,rgba(0,0,0,0.85) 31%,rgba(0,0,0,0.75) 50%,rgba(255,255,255,0.5) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#333333', endColorstr='#80ffffff',GradientType=1 ); /* IE6-9 */
+}
+
+/* Landing page bg images END */
+
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 30em) {
+  .absolute-center-s {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .absolute-horizontal-center-s {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+
+  .bottom-4-s {
+    bottom: 4rem;
+  }
+}
+
+.absolute-vertical-center {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+@media (min-width: 60em){
+  .absolute-vertical-center-ns {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+  }
+}
+
+#brand-search {
+  background-image: url("/images/search-icon.svg");
+  background-position: right 5px top 5px;
+  background-repeat: no-repeat;
+}

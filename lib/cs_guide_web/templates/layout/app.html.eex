@@ -15,21 +15,20 @@
 
   <body>
     <header>
-      <nav role="navigation" class="flex items-center">
-        <div class="w-20 mv2">
+      <nav role="navigation" class="absolute top-0 left-0 z-1 flex items-center w-100">
+        <div class="w-20 mv3">
           <a href="/">
-            <img src="<%= static_path(@conn, "/images/logo.png") %>" alt="Club Soda Logo" class="ml3 ml5-l w3">
+            <img src="<%= static_path(@conn, "/images/logo.png") %>" alt="Club Soda Logo" class="ml3 ml5-l">
           </a>
         </div>
         <div class="w-80 mv2 dib tr">
+          <!-- <a href="/search/venues" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Venues</a> -->
+          <a href="/search/drinks?drink_type=" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Drinks</a>
           <a href="/users/new" class="f5 lh5 ph4 pv2 mr3 mr5-l ba b--cs-pink cs-black no-underline br2">List a Venue</a>
         </div>
       </nav>
       <span class="logo"></span>
     </header>
-
-    <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-    <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
     <main role="main">
       <%= render @view_module, @view_template, assigns %>

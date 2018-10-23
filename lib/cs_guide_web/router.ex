@@ -23,7 +23,20 @@ defmodule CsGuideWeb.Router do
     resources("/users", UserController)
     resources("/venues", VenueController)
     resources("/venue_types", VenueTypeController)
+    resources("/drink_types", DrinkTypeController)
     resources("/drinks", DrinkController)
+    resources("/brands", BrandController)
+    resources("/drink_styles", DrinkStyleController)
+
+    get("/json_drinks", DrinkController, :json_index)
+    get("/venues/:id/add_drinks", VenueController, :add_drinks)
+  end
+
+  scope "/search", CsGuideWeb do
+    pipe_through(:browser)
+
+    resources("/drinks", SearchDrinkController, only: [:index])
+    resources("/venues", SearchVenueController, only: [:index])
   end
 
   # Other scopes may use custom stacks.
