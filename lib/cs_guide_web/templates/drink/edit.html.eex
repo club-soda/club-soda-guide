@@ -1,7 +1,8 @@
-<section class="center w-80 w-75-l mv4">
+<section class="center w-80 w-75-l mv6-ns mv5">
   <h2 class="f4 lh4">Edit Drink</h2>
 
-  <%= render "form.html", Map.put(assigns, :action, drink_path(@conn, :update, @drink.entry_id)) %>
+    <%= render_autoform(@conn, :update, 
+    CsGuide.Resources.Drink, exclude: [:entry_id, :deleted, :venues, :brand_id, :brand], path: "/", assigns: [changeset: @changeset, drink: @drink], update_field: :entry_id, assoc_query: &query/1) %>
 
   <span><%= link "Back", to: drink_path(@conn, :index) %></span>
 </section>

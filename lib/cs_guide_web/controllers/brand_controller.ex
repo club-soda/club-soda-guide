@@ -18,7 +18,7 @@ defmodule CsGuideWeb.BrandController do
       {:ok, brand} ->
         conn
         |> put_flash(:info, "Brand created successfully.")
-        |> redirect(to: brand_path(conn, :show, brand.entry_id))
+        |> redirect(to: brand_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)

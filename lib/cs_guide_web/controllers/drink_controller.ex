@@ -20,7 +20,8 @@ defmodule CsGuideWeb.DrinkController do
 
     json(
       conn,
-      Enum.map(drinks, fn d ->
+      Enum.sort_by(drinks, fn d -> Map.get(d, :weighting, 0) end, &>=/2)
+      |> Enum.map(fn d ->
         %{
           name: d.name,
           brand: d.brand.name,
@@ -42,7 +43,7 @@ defmodule CsGuideWeb.DrinkController do
       {:ok, drink} ->
         conn
         |> put_flash(:info, "Drink created successfully.")
-        |> redirect(to: drink_path(conn, :show, drink.entry_id))
+        |> redirect(to: drink_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -70,7 +71,7 @@ defmodule CsGuideWeb.DrinkController do
       {:ok, drink} ->
         conn
         |> put_flash(:info, "Drink updated successfully.")
-        |> redirect(to: drink_path(conn, :show, drink.entry_id))
+        |> redirect(to: drink_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", drink: drink, changeset: changeset)
