@@ -8,7 +8,7 @@
     <div class="roboto-slab flex flex-wrap flex-nowrap-ns justify-between tc">
       <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns mr2-ns bg-cs-pink br2-ns white pt-3rem" href="/search/drinks/?drink_type=beer">Beers</a>
       <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns mh2-ns bg-cs-light-pink br2-ns cs-black pt-3rem" href="/search/drinks/?drink_type=wine">Wines</a>
-      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pv4 mh2-ns bg-cs-yellow br2-ns cs-black" href="/search/drinks/?drink_type=spirits_and_mixers">Spirits and</br>Mixers</a>
+      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pv4 mh2-ns bg-cs-yellow br2-ns cs-black" href="/search/drinks/?drink_type=spirits_and_premixed">Spirits and</br>Premixed</a>
       <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns mh2-ns bg-cs-mint br2-ns cs-black pt-3rem" href="/search/drinks/?drink_type=soft_drink">Soft Drinks</a>
       <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pv4 mh2-ns bg-cs-black br2-ns white" href="/search/drinks/?drink_type=tonic">Flavoured</br>Tonics</a>
       <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns ml2-ns bg-cs-navy br2-ns white pt-3rem" href="/search/drinks/?drink_type=cider"><span class="v-mid">Ciders</span></a>
