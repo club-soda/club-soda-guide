@@ -113,7 +113,7 @@ update msg model =
 
 drink_types : List String
 drink_types =
-    [ "Beer", "Wine", "Spirits and Mixers", "Soft Drinks", "Flavoured Tonics", "Ciders" ]
+    [ "Beer", "Wine", "Spirits and Premixed", "Soft Drinks", "Flavoured Tonics", "Ciders" ]
 
 
 abv_levels : List String
@@ -164,8 +164,8 @@ filterByABV model drink =
 filterByType : Model -> Drink -> Bool
 filterByType model drink =
     case String.toLower model.dtype_filter of
-        "spirits and mixers" ->
-            List.any (\t -> ("spirit" == String.toLower t || "mixer" == String.toLower t)) drink.drink_types
+        "spirits and premixed" ->
+            List.any (\t -> ("spirit" == String.toLower t || "premixed" == String.toLower t)) drink.drink_types
 
         _ ->
             List.any (\t -> String.toLower model.dtype_filter == String.toLower t) drink.drink_types
