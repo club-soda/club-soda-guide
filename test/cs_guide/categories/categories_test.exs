@@ -2,10 +2,9 @@ defmodule CsGuide.CategoriesTest do
   use CsGuide.DataCase
 
   alias CsGuide.Categories
+  alias CsGuide.Categories.VenueType
 
   describe "venue_type" do
-    alias CsGuide.Categories.VenueTypes
-
     @valid_attrs %{type: "some type"}
     @update_attrs %{type: "some updated type"}
     @invalid_attrs %{type: nil}
@@ -30,7 +29,7 @@ defmodule CsGuide.CategoriesTest do
     end
 
     test "create_venue_types/1 with valid data creates a venue_types" do
-      assert {:ok, %VenueTypes{} = venue_types} = Categories.create_venue_types(@valid_attrs)
+      assert {:ok, %VenueType{} = venue_types} = Categories.create_venue_types(@valid_attrs)
       assert venue_types.type == "some type"
     end
 
@@ -41,19 +40,22 @@ defmodule CsGuide.CategoriesTest do
     test "update_venue_types/2 with valid data updates the venue_types" do
       venue_types = venue_types_fixture()
       assert {:ok, venue_types} = Categories.update_venue_types(venue_types, @update_attrs)
-      assert %VenueTypes{} = venue_types
+      assert %VenueType{} = venue_types
       assert venue_types.type == "some updated type"
     end
 
     test "update_venue_types/2 with invalid data returns error changeset" do
       venue_types = venue_types_fixture()
-      assert {:error, %Ecto.Changeset{}} = Categories.update_venue_types(venue_types, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Categories.update_venue_types(venue_types, @invalid_attrs)
+
       assert venue_types == Categories.get_venue_types!(venue_types.id)
     end
 
     test "delete_venue_types/1 deletes the venue_types" do
       venue_types = venue_types_fixture()
-      assert {:ok, %VenueTypes{}} = Categories.delete_venue_types(venue_types)
+      assert {:ok, %VenueType{}} = Categories.delete_venue_types(venue_types)
       assert_raise Ecto.NoResultsError, fn -> Categories.get_venue_types!(venue_types.id) end
     end
 
@@ -111,7 +113,10 @@ defmodule CsGuide.CategoriesTest do
 
     test "update_drink_style/2 with invalid data returns error changeset" do
       drink_style = drink_style_fixture()
-      assert {:error, %Ecto.Changeset{}} = Categories.update_drink_style(drink_style, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Categories.update_drink_style(drink_style, @invalid_attrs)
+
       assert drink_style == Categories.get_drink_style!(drink_style.id)
     end
 
