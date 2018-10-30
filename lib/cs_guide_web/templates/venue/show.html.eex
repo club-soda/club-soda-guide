@@ -10,9 +10,9 @@
       <% end %>
     </div>
     <div class="tl pt3">
-      <img class="w2 v-btm" src="<%= static_path(@conn, "/images/score-#{@venue.cs_score}.png") %>" alt="Club Soda Score of <%= @venue.cs_score %>">
+      <img class="w4 v-btm" src="<%= static_path(@conn, "/images/score-#{@venue.cs_score}.png") %>" alt="Club Soda Score of <%= @venue.cs_score %>">
       <%= if @venue.cs_score == 0 do %>
-        <a class="cs-mid-blue dib" href="/venues/<%= @venue.entry_id %>/add_drinks">Your Club Soda score is 0, improve it by listing drinks you stock.</a>
+        <a class="cs-mid-blue dib mt2" href="/venues/<%= @venue.entry_id %>/add_drinks">Your Club Soda score is 0, improve it by listing drinks you stock.</a>
       <% end %>
     </div>
     <p class="h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl">
