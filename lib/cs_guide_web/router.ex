@@ -30,6 +30,8 @@ defmodule CsGuideWeb.Router do
 
     get("/json_drinks", DrinkController, :json_index)
     get("/venues/:id/add_drinks", VenueController, :add_drinks)
+    get("/venues/:id/add_photo", VenueController, :add_photo)
+    post("/venues/:id/", VenueController, :upload_photo)
   end
 
   scope "/search", CsGuideWeb do

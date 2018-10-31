@@ -121,4 +121,25 @@ defmodule CsGuideWeb.VenueController do
       action: venue_path(conn, :update, venue.entry_id)
     )
   end
+
+  def add_photo(conn, %{"id" => id}) do
+    render(conn, "add_photo.html", id: id)
+  end
+
+  def upload_photo(conn, params) do
+    file = File.read!(params["photo"].path)
+
+    case ExAws.S3.put_object(
+           Application.get_env(:ex_aws, :bucket),
+           params["photo"].filename,
+           file
+         )
+         |> ExAws.request() do
+      {:ok, _} ->
+        redirect(conn, to: venue_path(conn, :show, params["id"]))
+
+      _ ->
+        render(conn, "add_photo.html", id: params["id"], error: true)
+    end
+  end
 end
