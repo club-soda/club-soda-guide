@@ -1,6 +1,7 @@
 defmodule CsGuide.Import do
   alias NimbleCSV.RFC4180, as: CSV
   alias CsGuide.Resources.{Brand, Drink}
+  alias CsGuide.Categories.{DrinkType, DrinkStyle}
 
   def drinks(csv) do
     csv
@@ -10,6 +11,24 @@ defmodule CsGuide.Import do
         {_, drink} =
           Map.get_and_update(d, :brand, fn b ->
             {b, Map.new([{b, "on"}])}
+          end)
+          |> elem(1)
+          |> Map.get_and_update(drink, :drink_types, fn t ->
+            new =
+              String.split(t, ",")
+              |> Enum.map(fn dt ->
+                case DrinkType.get_by(name: dt) do
+                  nil ->
+                    DrinkType.insert(%{name: dt})
+                    {dt, "on"}
+
+                  type ->
+                    {type.name, "on"}
+                end
+              end)
+              |> Map.new()
+
+            {t, new}
           end)
 
         case Drink.insert(drink) do
