@@ -1,6 +1,9 @@
 <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.entry_id), class: "dn db-ns absolute top-6 right-4 btn-primary no-underline" %>
-<section class="flex-ns flex-wrap">
-  <img class="db w-100 img-cover" src="http://www.camera-m.com/img/placeholder-image-wide.png" alt="Venue cover image">
+<section class="flex-ns flex-wrap mt-4-5rem">
+  <div class="db bg-venue w-100"
+    style="background-image: url('https://s3-eu-west-1.amazonaws.com/club-soda-images/<%= @venue.entry_id %>'), url('http://www.camera-m.com/img/placeholder-image-wide.png');">
+  </div>
+
   <div class="w-90 w-60-ns pt4 ph5-ns center tr">
     <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.entry_id), class: "dib dn-ns btn-primary no-underline" %>
     <div class="flex-ns items-center tl">

@@ -131,7 +131,7 @@ defmodule CsGuideWeb.VenueController do
 
     case ExAws.S3.put_object(
            Application.get_env(:ex_aws, :bucket),
-           params["photo"].filename,
+           params["id"],
            file
          )
          |> ExAws.request() do
