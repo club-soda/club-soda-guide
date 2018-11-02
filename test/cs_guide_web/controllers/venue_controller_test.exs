@@ -1,6 +1,18 @@
 defmodule CsGuideWeb.VenueControllerTest do
   use CsGuideWeb.ConnCase
-  alias CsGuide.Resources
+  alias CsGuide.{Resources, Categories}
+
+  @create_types [
+    %{
+      name: "Beer"
+    },
+    %{
+      name: "Wine"
+    },
+    %{
+      name: "Soft Drink"
+    }
+  ]
 
   @create_brand %{
     name: "Brewdog",
@@ -8,14 +20,32 @@ defmodule CsGuideWeb.VenueControllerTest do
     deleted: false
   }
 
-  @create_drink %{
-    entry_id: "0167ce54-95fc-4b28-82a2-147b7b67055d",
-    name: "Nanny State",
-    abv: "0.0",
-    description: "Description of Nanny State",
-    weighting: 1,
-    drink_types: %{"cee2b342-8a5d-4a2f-931c-d139ee1d5fc0" => "on"}
-  }
+  @create_drinks [
+    %{
+      entry_id: "0167ce54-95fc-4b28-82a2-147b7b67055d",
+      name: "Nanny State",
+      abv: "0.5",
+      description: "Description of Nanny State",
+      weighting: 1,
+      drink_types: %{"Beer" => "on"}
+    },
+    %{
+      entry_id: "8edf4a7e-d6e7-48b8-abf1-8e1f9aafa29a",
+      name: "Shiraz",
+      abv: "0.0",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Wine" => "on"}
+    },
+    %{
+      entry_id: "587bee17-2034-4466-8396-d5277b1eee38",
+      name: "Cucumber & Mint",
+      abv: "0.0",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Soft Drink" => "on"}
+    }
+  ]
 
   @create_attrs %{
     phone_number: "some phone_number",
@@ -45,14 +75,18 @@ defmodule CsGuideWeb.VenueControllerTest do
     venue
   end
 
-  def fixture(:drink, id) do
-    {:ok, drink} =
-      @create_drink
-      |> Map.put(:brand, id)
-      |> IO.inspect()
-      |> Resources.Drink.insert()
+  def fixture(:drink, brand) do
+    drinks =
+      @create_drinks
+      |> Enum.map(fn d ->
+        {:ok, drink} =
+          Map.put(d, :brand, Map.new([{brand, "on"}]))
+          |> Resources.Drink.insert()
 
-    drink
+        drink
+      end)
+
+    drinks
   end
 
   def fixture(:brand) do
@@ -61,6 +95,17 @@ defmodule CsGuideWeb.VenueControllerTest do
       |> Resources.Brand.insert()
 
     brand
+  end
+
+  def fixture(:type) do
+    types =
+      @create_types
+      |> Enum.map(fn t ->
+        {:ok, type} = Categories.DrinkType.insert(t)
+        type
+      end)
+
+    types
   end
 
   describe "index" do
@@ -95,16 +140,45 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "calculates correct Club Soda Score" do
-    setup [:create_brand_and_drink]
+    setup [:drink_setup]
 
-    test "score should be 1", %{conn: conn} do
+    test "score should be 1", %{conn: conn, drinks: drinks} do
+      drink = Enum.find(drinks, fn d -> d.name == "Nanny State" end)
+
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
-
       assert %{id: id} = redirected_params(conn)
+
+      conn =
+        put(conn, venue_path(conn, :update, id), %{
+          "id" => id,
+          "venue" => %{"drinks" => Map.new([{drink.entry_id, "on"}])}
+        })
+
       assert redirected_to(conn) == venue_path(conn, :show, id)
 
       conn = get(conn, venue_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Nanny State"
+      assert html_response(conn, 200) =~ "Club Soda Score of 1.0"
+    end
+
+    test "score should be 1.5", %{conn: conn, drinks: drinks} do
+      nannyState = Enum.find(drinks, fn d -> d.name == "Nanny State" end)
+      nixKix = Enum.find(drinks, fn d -> d.name == "Cucumber & Mint" end)
+
+      conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
+      assert %{id: id} = redirected_params(conn)
+
+      conn =
+        put(conn, venue_path(conn, :update, id), %{
+          "id" => id,
+          "venue" => %{
+            "drinks" => Map.new([{nannyState.entry_id, "on"}, {nixKix.entry_id, "on"}])
+          }
+        })
+
+      assert redirected_to(conn) == venue_path(conn, :show, id)
+
+      conn = get(conn, venue_path(conn, :show, id))
+      assert html_response(conn, 200) =~ "Club Soda Score of 1.5"
     end
   end
 
@@ -152,11 +226,14 @@ defmodule CsGuideWeb.VenueControllerTest do
     {:ok, venue: venue}
   end
 
-  defp create_brand_and_drink(_) do
+  defp drink_setup(_) do
     brand = fixture(:brand)
     {:ok, brand: brand}
 
-    drink = fixture(:drink, brand.id)
-    {:ok, drink: drink}
+    type = fixture(:type)
+    {:ok, type: type}
+
+    drinks = fixture(:drink, brand.name)
+    {:ok, drinks: drinks}
   end
 end

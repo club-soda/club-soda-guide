@@ -90,8 +90,7 @@ defmodule CsGuideWeb.VenueController do
              venue,
              Map.put(
                venue_params,
-               # May need to change to an atom again
-               "cs_score",
+               :cs_score,
                CsGuide.Resources.CsScore.calculateScore(
                  venue.drinks
                  |> CsGuide.Repo.preload(drink_types: query.(:drink_types, Drink))
