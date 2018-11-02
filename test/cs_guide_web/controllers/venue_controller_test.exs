@@ -11,6 +11,18 @@ defmodule CsGuideWeb.VenueControllerTest do
     },
     %{
       name: "Soft Drink"
+    },
+    %{
+      name: "Tonic"
+    },
+    %{
+      name: "Mixer"
+    },
+    %{
+      name: "Spirits"
+    },
+    %{
+      name: "Premixed"
     }
   ]
 
@@ -22,28 +34,148 @@ defmodule CsGuideWeb.VenueControllerTest do
 
   @create_drinks [
     %{
-      entry_id: "0167ce54-95fc-4b28-82a2-147b7b67055d",
-      name: "Nanny State",
+      entry_id: "0167ce54-95fc-4b28-82a2-147b7b67055a",
+      name: "AF Beer 1",
       abv: "0.5",
-      description: "Description of Nanny State",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Beer" => "on"}
+    },
+    %{
+      entry_id: "0167ce54-95fc-4b28-82a2-147b7b67055b",
+      name: "AF Beer 2",
+      abv: "0.0",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Beer" => "on"}
+    },
+    %{
+      entry_id: "0167ce54-95fc-4b28-82a2-147b7b67055c",
+      name: "Low Alc Beer 1",
+      abv: "1.5",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Beer" => "on"}
+    },
+    %{
+      entry_id: "0167ce54-95fc-4b28-82a2-147b7b67055d",
+      name: "Low Alc Beer 2",
+      abv: "1.0",
+      description: "Description of drink",
       weighting: 1,
       drink_types: %{"Beer" => "on"}
     },
     %{
       entry_id: "8edf4a7e-d6e7-48b8-abf1-8e1f9aafa29a",
-      name: "Shiraz",
+      name: "AF Wine 1",
       abv: "0.0",
       description: "Description of drink",
       weighting: 1,
       drink_types: %{"Wine" => "on"}
     },
     %{
-      entry_id: "587bee17-2034-4466-8396-d5277b1eee38",
-      name: "Cucumber & Mint",
+      entry_id: "8edf4a7e-d6e7-48b8-abf1-8e1f9aafa29b",
+      name: "AF Wine 2",
+      abv: "0.0",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Wine" => "on"}
+    },
+    %{
+      entry_id: "8edf4a7e-d6e7-48b8-abf1-8e1f9aafa29a",
+      name: "Low Alc Wine 1",
+      abv: "7.0",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Wine" => "on"}
+    },
+    %{
+      entry_id: "8edf4a7e-d6e7-48b8-abf1-8e1f9aafa29b",
+      name: "Low Alc Wine 2",
+      abv: "1.0",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Wine" => "on"}
+    },
+    %{
+      entry_id: "587bee17-2034-4466-8396-d5277b1eee31",
+      name: "Soft Drink 1",
       abv: "0.0",
       description: "Description of drink",
       weighting: 1,
       drink_types: %{"Soft Drink" => "on"}
+    },
+    %{
+      entry_id: "587bee17-2034-4466-8396-d5277b1eee32",
+      name: "Soft Drink 2",
+      abv: "0.0",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Soft Drink" => "on"}
+    },
+    %{
+      entry_id: "587bee17-2034-4466-8396-d5277b1eee33",
+      name: "Soft Drink 3",
+      abv: "0.0",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Soft Drink" => "on"}
+    },
+    %{
+      entry_id: "587bee17-2034-4466-8396-d5277b1eee21",
+      name: "AF Cider 1",
+      abv: "0.0",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Cider" => "on"}
+    },
+    %{
+      entry_id: "587bee17-2034-4466-8396-d5277b1eee22",
+      name: "AF Cider 2",
+      abv: "0.0",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Cider" => "on"}
+    },
+    %{
+      entry_id: "587bee17-2034-4466-8396-d5277b1eee41",
+      name: "Tonic 1",
+      abv: "0.0",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Tonic" => "on"}
+    },
+    %{
+      entry_id: "587bee17-2034-4466-8396-d5277b1eee42",
+      name: "Mixer 1",
+      abv: "0.0",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Mixer" => "on"}
+    },
+    %{
+      entry_id: "587bee17-2034-4466-8396-d5277b1eee43",
+      name: "Mixer 2",
+      abv: "0.0",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Mixer" => "on"}
+    },
+    %{
+      entry_id: "587bee17-2034-4466-8396-d5277b1eee51",
+      name: "Spirit 1",
+      abv: "0.0",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Spirit" => "on"}
+    },
+    %{
+      entry_id: "587bee17-2034-4466-8396-d5277b1eee52",
+      name: "Premixed 1",
+      abv: "0.0",
+      description: "Description of drink",
+      weighting: 1,
+      drink_types: %{"Premixed" => "on"}
     }
   ]
 
@@ -139,30 +271,32 @@ defmodule CsGuideWeb.VenueControllerTest do
     end
   end
 
-  describe "calculates correct Club Soda Score" do
+  describe "Calculates correct CS Score:" do
     setup [:drink_setup]
 
-    test "score should be 1", %{conn: conn, drinks: drinks} do
-      drink = Enum.find(drinks, fn d -> d.name == "Nanny State" end)
-
+    test "When no drinks are added the score is 0", %{conn: conn, drinks: drinks} do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
       assert %{id: id} = redirected_params(conn)
 
       conn =
         put(conn, venue_path(conn, :update, id), %{
           "id" => id,
-          "venue" => %{"drinks" => Map.new([{drink.entry_id, "on"}])}
+          "venue" => %{
+            "drinks" => Map.new([])
+          }
         })
 
       assert redirected_to(conn) == venue_path(conn, :show, id)
 
       conn = get(conn, venue_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Club Soda Score of 1.0"
+      assert html_response(conn, 200) =~ "Club Soda Score of 0.0"
     end
 
-    test "score should be 1.5", %{conn: conn, drinks: drinks} do
-      nannyState = Enum.find(drinks, fn d -> d.name == "Nanny State" end)
-      nixKix = Enum.find(drinks, fn d -> d.name == "Cucumber & Mint" end)
+    test "AF Beers and Ciders are worth 1pt each", %{conn: conn, drinks: drinks} do
+      afBeer1 = Enum.find(drinks, fn d -> d.name == "AF Beer 1" end)
+      afBeer2 = Enum.find(drinks, fn d -> d.name == "AF Beer 2" end)
+      afWine1 = Enum.find(drinks, fn d -> d.name == "AF Wine 1" end)
+      afWine2 = Enum.find(drinks, fn d -> d.name == "AF Wine 2" end)
 
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
       assert %{id: id} = redirected_params(conn)
@@ -171,15 +305,211 @@ defmodule CsGuideWeb.VenueControllerTest do
         put(conn, venue_path(conn, :update, id), %{
           "id" => id,
           "venue" => %{
-            "drinks" => Map.new([{nannyState.entry_id, "on"}, {nixKix.entry_id, "on"}])
+            "drinks" =>
+              Map.new([
+                {afBeer1.entry_id, "on"},
+                {afBeer2.entry_id, "on"},
+                {afWine1.entry_id, "on"},
+                {afWine2.entry_id, "on"}
+              ])
           }
         })
 
       assert redirected_to(conn) == venue_path(conn, :show, id)
 
       conn = get(conn, venue_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Club Soda Score of 1.5"
+      assert html_response(conn, 200) =~ "Club Soda Score of 4.0"
     end
+
+    test "Low Alc Beers can be max 1pt", %{conn: conn, drinks: drinks} do
+      beer1 = Enum.find(drinks, fn d -> d.name == "Low Alc Beer 1" end)
+      beer2 = Enum.find(drinks, fn d -> d.name == "Low Alc Beer 2" end)
+
+      conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
+      assert %{id: id} = redirected_params(conn)
+
+      conn =
+        put(conn, venue_path(conn, :update, id), %{
+          "id" => id,
+          "venue" => %{
+            "drinks" =>
+              Map.new([
+                {beer1.entry_id, "on"},
+                {beer2.entry_id, "on"}
+              ])
+          }
+        })
+
+      assert redirected_to(conn) == venue_path(conn, :show, id)
+
+      conn = get(conn, venue_path(conn, :show, id))
+      assert html_response(conn, 200) =~ "Club Soda Score of 1.0"
+    end
+
+    test "Low Alc Wines can be max 1pt", %{conn: conn, drinks: drinks} do
+      wine1 = Enum.find(drinks, fn d -> d.name == "Low Alc Wine 1" end)
+      wine2 = Enum.find(drinks, fn d -> d.name == "Low Alc Wine 2" end)
+
+      conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
+      assert %{id: id} = redirected_params(conn)
+
+      conn =
+        put(conn, venue_path(conn, :update, id), %{
+          "id" => id,
+          "venue" => %{
+            "drinks" =>
+              Map.new([
+                {wine1.entry_id, "on"},
+                {wine2.entry_id, "on"}
+              ])
+          }
+        })
+
+      assert redirected_to(conn) == venue_path(conn, :show, id)
+
+      conn = get(conn, venue_path(conn, :show, id))
+      assert html_response(conn, 200) =~ "Club Soda Score of 1.0"
+    end
+
+    test "3 soft drinks are worth 1pt", %{conn: conn, drinks: drinks} do
+      softDrink1 = Enum.find(drinks, fn d -> d.name == "Soft Drink 1" end)
+      softDrink2 = Enum.find(drinks, fn d -> d.name == "Soft Drink 2" end)
+      softDrink3 = Enum.find(drinks, fn d -> d.name == "Soft Drink 3" end)
+
+      conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
+      assert %{id: id} = redirected_params(conn)
+
+      conn =
+        put(conn, venue_path(conn, :update, id), %{
+          "id" => id,
+          "venue" => %{
+            "drinks" =>
+              Map.new([
+                {softDrink1.entry_id, "on"},
+                {softDrink2.entry_id, "on"},
+                {softDrink3.entry_id, "on"}
+              ])
+          }
+        })
+
+      assert redirected_to(conn) == venue_path(conn, :show, id)
+
+      conn = get(conn, venue_path(conn, :show, id))
+      assert html_response(conn, 200) =~ "Club Soda Score of 1.0"
+    end
+
+    test "3 Tonics/Mixers are worth 1pt", %{conn: conn, drinks: drinks} do
+      tonic1 = Enum.find(drinks, fn d -> d.name == "Tonic 1" end)
+      mixer1 = Enum.find(drinks, fn d -> d.name == "Mixer 1" end)
+      mixer2 = Enum.find(drinks, fn d -> d.name == "Mixer 2" end)
+
+      conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
+      assert %{id: id} = redirected_params(conn)
+
+      conn =
+        put(conn, venue_path(conn, :update, id), %{
+          "id" => id,
+          "venue" => %{
+            "drinks" =>
+              Map.new([
+                {tonic1.entry_id, "on"},
+                {mixer1.entry_id, "on"},
+                {mixer2.entry_id, "on"}
+              ])
+          }
+        })
+
+      assert redirected_to(conn) == venue_path(conn, :show, id)
+
+      conn = get(conn, venue_path(conn, :show, id))
+      assert html_response(conn, 200) =~ "Club Soda Score of 1.0"
+    end
+
+    test "Scores are capped at 5pts", %{conn: conn, drinks: drinks} do
+      afWine1 = Enum.find(drinks, fn d -> d.name == "AF Wine 1" end)
+      afWine2 = Enum.find(drinks, fn d -> d.name == "AF Wine 2" end)
+      lowAlcWine1 = Enum.find(drinks, fn d -> d.name == "Low Alc Wine 1" end)
+      afBeer1 = Enum.find(drinks, fn d -> d.name == "AF Beer 1" end)
+      afBeer2 = Enum.find(drinks, fn d -> d.name == "AF Beer 2" end)
+      lowAlcBeer1 = Enum.find(drinks, fn d -> d.name == "Low Alc Beer 1" end)
+      # afCider1 = Enum.find(drinks, fn d -> d.name == "AF Cider 1" end)
+
+      conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
+      assert %{id: id} = redirected_params(conn)
+
+      conn =
+        put(conn, venue_path(conn, :update, id), %{
+          "id" => id,
+          "venue" => %{
+            "drinks" =>
+              Map.new([
+                {afWine1.entry_id, "on"},
+                {afWine2.entry_id, "on"},
+                {lowAlcWine1.entry_id, "on"},
+                {afBeer1.entry_id, "on"},
+                {afBeer2.entry_id, "on"},
+                # {afCider1.entry_id, "on"},
+                {lowAlcBeer1.entry_id, "on"}
+              ])
+          }
+        })
+
+      assert redirected_to(conn) == venue_path(conn, :show, id)
+
+      conn = get(conn, venue_path(conn, :show, id))
+      assert html_response(conn, 200) =~ "Club Soda Score of 5.0"
+    end
+
+    # test "Spirits and Premixed are worth 1pt each", %{conn: conn, drinks: drinks} do
+    #   spirit1 = Enum.find(drinks, fn d -> d.name == "Spirit 1" end)
+    #   premixed1 = Enum.find(drinks, fn d -> d.name == "Premixed 1" end)
+    #
+    #   conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
+    #   assert %{id: id} = redirected_params(conn)
+    #
+    #   conn =
+    #     put(conn, venue_path(conn, :update, id), %{
+    #       "id" => id,
+    #       "venue" => %{
+    #         "drinks" =>
+    #           Map.new([
+    #             {spirit1.entry_id, "on"},
+    #             {premixed1.entry_id, "on"}
+    #           ])
+    #       }
+    #     })
+    #
+    #   assert redirected_to(conn) == venue_path(conn, :show, id)
+    #
+    #   conn = get(conn, venue_path(conn, :show, id))
+    #   assert html_response(conn, 200) =~ "Club Soda Score of 2.0"
+    # end
+
+    # test "AF Ciders are worth 1pt each", %{conn: conn, drinks: drinks} do
+    #   IO.inspect(drinks)
+    #   afCider1 = Enum.find(drinks, fn d -> d.name == "AF Cider 1" end)
+    #   afCider2 = Enum.find(drinks, fn d -> d.name == "AF Cider 2" end)
+    #
+    #   conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
+    #   assert %{id: id} = redirected_params(conn)
+    #
+    #   conn =
+    #     put(conn, venue_path(conn, :update, id), %{
+    #       "id" => id,
+    #       "venue" => %{
+    #         "drinks" =>
+    #           Map.new([
+    #             {afCider1.entry_id, "on"},
+    #             {afCider2.entry_id, "on"}
+    #           ])
+    #       }
+    #     })
+    #
+    #   assert redirected_to(conn) == venue_path(conn, :show, id)
+    #
+    #   conn = get(conn, venue_path(conn, :show, id))
+    #   assert html_response(conn, 200) =~ "Club Soda Score of 2.0"
+    # end
   end
 
   describe "edit venue" do
