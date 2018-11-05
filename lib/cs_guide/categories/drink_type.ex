@@ -6,12 +6,12 @@ defmodule CsGuide.Categories.DrinkType do
   schema "drink_types" do
     field(:name, :string)
     field(:entry_id, :string)
-    field(:deleted, :boolean)
+    field(:deleted, :boolean, default: false)
 
     many_to_many(
       :drinks,
       CsGuide.Resources.Drink,
-      join_through: "drink_drink_types",
+      join_through: "drinks_drink_types",
       join_keys: [drink_type_id: :id, drink_id: :id]
     )
 

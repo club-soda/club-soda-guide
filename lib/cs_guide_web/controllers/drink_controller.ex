@@ -8,7 +8,7 @@ defmodule CsGuideWeb.DrinkController do
   def index(conn, _params) do
     drinks =
       Drink.all()
-      |> CsGuide.Repo.preload(:brand)
+      |> Drink.preload(:brand)
 
     render(conn, "index.html", drinks: drinks)
   end
@@ -16,7 +16,7 @@ defmodule CsGuideWeb.DrinkController do
   def json_index(conn, _params) do
     drinks =
       Drink.all()
-      |> CsGuide.Repo.preload([:brand, :drink_types])
+      |> Drink.preload([:brand, :drink_types])
 
     json(
       conn,
@@ -53,7 +53,8 @@ defmodule CsGuideWeb.DrinkController do
   def show(conn, %{"id" => id}) do
     drink =
       Drink.get(id)
-      |> CsGuide.Repo.preload([:brand, :drink_types])
+      |> Drink.preload([:brand, :venues])
+      |> IO.inspect()
 
     render(conn, "show.html", drink: drink)
   end

@@ -2,6 +2,7 @@ defmodule CsGuide.Resources.Drink do
   use Ecto.Schema
   use Alog
   import Ecto.Changeset
+  import Ecto.Query, only: [from: 2]
 
   alias CsGuide.Resources
 
@@ -9,7 +10,7 @@ defmodule CsGuide.Resources.Drink do
     field(:name, :string)
     field(:abv, :float)
     field(:entry_id, :string)
-    field(:deleted, :boolean)
+    field(:deleted, :boolean, default: false)
     field(:description, :string)
     field(:weighting, :integer)
 
@@ -49,6 +50,36 @@ defmodule CsGuide.Resources.Drink do
   def insert(attrs) do
     %__MODULE__{}
     |> insert_entry_id()
+    |> Resources.put_belongs_to_assoc(attrs, :brand, :brand_id, CsGuide.Resources.Brand, :name)
+    |> __MODULE__.changeset(attrs)
+    |> Resources.put_many_to_many_assoc(attrs, :drink_types, CsGuide.Categories.DrinkType, :name)
+    |> CsGuide.Repo.insert()
+  end
+
+  def update(%__MODULE__{} = item, attrs) do
+    assocs =
+      Enum.map(__MODULE__.__schema__(:associations), fn a ->
+        schema = Map.get(__MODULE__.__schema__(:association, a), :queryable)
+
+        selected =
+          case Map.get(attrs, to_string(a)) do
+            nil -> []
+            selected -> Enum.map(selected, fn {k, v} -> k end)
+          end
+
+        {a,
+         from(s in schema,
+           distinct: s.entry_id,
+           order_by: [desc: :inserted_at],
+           select: s
+         )}
+      end)
+
+    item
+    |> CsGuide.Repo.preload(assocs)
+    |> Map.put(:id, nil)
+    |> Map.put(:inserted_at, nil)
+    |> Map.put(:updated_at, nil)
     |> Resources.put_belongs_to_assoc(attrs, :brand, :brand_id, CsGuide.Resources.Brand, :name)
     |> __MODULE__.changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :drink_types, CsGuide.Categories.DrinkType, :name)

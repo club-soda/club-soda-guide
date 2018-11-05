@@ -5,7 +5,7 @@ defmodule CsGuide.Import do
 
   def drinks(csv) do
     csv
-    |> csv_to_map(~w(name brand image abv description drink_types style ingredients)a)
+    |> csv_to_map(~w(name brand image abv description drink_types drink_styles ingredients)a)
     |> Enum.each(fn d ->
       if d.name != "" do
         {_, drink} =
@@ -65,6 +65,31 @@ defmodule CsGuide.Import do
     end)
   end
 
+  def venues_3(csv) do
+    csv
+    |> csv_to_map(
+      ~w(venue_name nil address phone_number email description website facebook twitter)a
+    )
+    |> Enum.each(fn v ->
+      v
+      |> Map.put(:venue_types, "Bars")
+      |> Map.put(
+        :drinks,
+        Map.new([
+          {"Nanny State", "on"},
+          {"B:Free", "on"},
+          {"Sparkling Elderflower", "on"},
+          {"Rose Lemonade", "on"},
+          {"Ginger Beer", "on"},
+          {"Mediterranean Tonic Water", "on"}
+        ])
+      )
+      |> add_link(:venue_types, VenueType, :name)
+      |> elem(1)
+      |> Venue.insert()
+    end)
+  end
+
   defp csv_to_map(csv, columns) do
     csv
     |> CSV.parse_string()
@@ -76,7 +101,7 @@ defmodule CsGuide.Import do
     end)
   end
 
-  def add_link(d, column, queryable, field) do
+  defp add_link(d, column, queryable, field) do
     Map.get_and_update(d, column, fn t ->
       new =
         String.split(t, ",")
@@ -96,7 +121,7 @@ defmodule CsGuide.Import do
     end)
   end
 
-  def get_column_num(csv, name) do
+  defp get_column_num(csv, name) do
     CSV.parse_string(csv, headers: false)
     |> List.first()
     |> Enum.find_index(fn e -> e == name end)
