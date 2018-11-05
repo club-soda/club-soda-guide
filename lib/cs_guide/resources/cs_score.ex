@@ -1,4 +1,7 @@
 defmodule CsGuide.Resources.CsScore do
+  @spirit "Spirit"
+  @premixed "Premixed"
+
   def calculateScore(drinks) do
     if Kernel.length(drinks) >= 1 do
       low_alc_score =
@@ -14,7 +17,7 @@ defmodule CsGuide.Resources.CsScore do
         drinks
         |> Enum.map(fn d ->
           cond do
-            isMultipleDrinkTypes(d, "Spirits", "Premixed") ->
+            isMultipleDrinkTypes(d, @spirit, @premixed) ->
               1
 
             true ->

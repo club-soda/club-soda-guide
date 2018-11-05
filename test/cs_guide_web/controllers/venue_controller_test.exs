@@ -2,6 +2,9 @@ defmodule CsGuideWeb.VenueControllerTest do
   use CsGuideWeb.ConnCase
   alias CsGuide.{Resources, Categories}
 
+  @spirit "Spirit"
+  @premixed "Premixed"
+
   @create_types [
     %{
       name: "Beer"
@@ -19,10 +22,13 @@ defmodule CsGuideWeb.VenueControllerTest do
       name: "Mixer"
     },
     %{
-      name: "Spirits"
+      name: @spirit
     },
     %{
-      name: "Premixed"
+      name: @premixed
+    },
+    %{
+      name: "Cider"
     }
   ]
 
@@ -167,7 +173,7 @@ defmodule CsGuideWeb.VenueControllerTest do
       abv: "0.0",
       description: "Description of drink",
       weighting: 1,
-      drink_types: %{"Spirit" => "on"}
+      drink_types: %{@spirit => "on"}
     },
     %{
       entry_id: "587bee17-2034-4466-8396-d5277b1eee52",
@@ -175,7 +181,7 @@ defmodule CsGuideWeb.VenueControllerTest do
       abv: "0.0",
       description: "Description of drink",
       weighting: 1,
-      drink_types: %{"Premixed" => "on"}
+      drink_types: %{@premixed => "on"}
     }
   ]
 
@@ -186,16 +192,13 @@ defmodule CsGuideWeb.VenueControllerTest do
     venue_types: %{
       "35f9e338-7c50-4883-8214-91e2c0ad5796" => "on"
     },
-    drinks: %{"0167ce54-95fc-4b28-82a2-147b7b67055d" => "on"}
+    drinks: %{"AF Beer 1" => "on"}
   }
   @update_attrs %{
     phone_number: "some updated phone_number",
     postcode: "some updated postcode",
     venue_name: "The Updated Example Pub",
-    venue_types: %{
-      "35f9e338-7c50-4883-8214-91e2c0ad5796" => "on"
-    },
-    drinks: %{"0167ce54-95fc-4b28-82a2-147b7b67055d" => "on"}
+    drinks: %{"AF Beer 1" => "on"}
   }
   @invalid_attrs %{phone_number: nil, postcode: nil, venue_name: nil}
 
@@ -431,8 +434,8 @@ defmodule CsGuideWeb.VenueControllerTest do
       lowAlcWine1 = Enum.find(drinks, fn d -> d.name == "Low Alc Wine 1" end)
       afBeer1 = Enum.find(drinks, fn d -> d.name == "AF Beer 1" end)
       afBeer2 = Enum.find(drinks, fn d -> d.name == "AF Beer 2" end)
-      lowAlcBeer1 = Enum.find(drinks, fn d -> d.name == "Low Alc Beer 1" end)
-      # afCider1 = Enum.find(drinks, fn d -> d.name == "AF Cider 1" end)
+      # lowAlcBeer1 = Enum.find(drinks, fn d -> d.name == "Low Alc Beer 1" end)
+      afCider1 = Enum.find(drinks, fn d -> d.name == "AF Cider 1" end)
 
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
       assert %{id: id} = redirected_params(conn)
@@ -448,8 +451,8 @@ defmodule CsGuideWeb.VenueControllerTest do
                 {lowAlcWine1.entry_id, "on"},
                 {afBeer1.entry_id, "on"},
                 {afBeer2.entry_id, "on"},
-                # {afCider1.entry_id, "on"},
-                {lowAlcBeer1.entry_id, "on"}
+                {afCider1.entry_id, "on"}
+                # {lowAlcBeer1.entry_id, "on"}
               ])
           }
         })
@@ -460,56 +463,55 @@ defmodule CsGuideWeb.VenueControllerTest do
       assert html_response(conn, 200) =~ "Club Soda Score of 5.0"
     end
 
-    # test "Spirits and Premixed are worth 1pt each", %{conn: conn, drinks: drinks} do
-    #   spirit1 = Enum.find(drinks, fn d -> d.name == "Spirit 1" end)
-    #   premixed1 = Enum.find(drinks, fn d -> d.name == "Premixed 1" end)
-    #
-    #   conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
-    #   assert %{id: id} = redirected_params(conn)
-    #
-    #   conn =
-    #     put(conn, venue_path(conn, :update, id), %{
-    #       "id" => id,
-    #       "venue" => %{
-    #         "drinks" =>
-    #           Map.new([
-    #             {spirit1.entry_id, "on"},
-    #             {premixed1.entry_id, "on"}
-    #           ])
-    #       }
-    #     })
-    #
-    #   assert redirected_to(conn) == venue_path(conn, :show, id)
-    #
-    #   conn = get(conn, venue_path(conn, :show, id))
-    #   assert html_response(conn, 200) =~ "Club Soda Score of 2.0"
-    # end
+    test "Spirits and Premixed are worth 1pt each", %{conn: conn, drinks: drinks} do
+      spirit1 = Enum.find(drinks, fn d -> d.name == "Spirit 1" end)
+      premixed1 = Enum.find(drinks, fn d -> d.name == "Premixed 1" end)
 
-    # test "AF Ciders are worth 1pt each", %{conn: conn, drinks: drinks} do
-    #   IO.inspect(drinks)
-    #   afCider1 = Enum.find(drinks, fn d -> d.name == "AF Cider 1" end)
-    #   afCider2 = Enum.find(drinks, fn d -> d.name == "AF Cider 2" end)
-    #
-    #   conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
-    #   assert %{id: id} = redirected_params(conn)
-    #
-    #   conn =
-    #     put(conn, venue_path(conn, :update, id), %{
-    #       "id" => id,
-    #       "venue" => %{
-    #         "drinks" =>
-    #           Map.new([
-    #             {afCider1.entry_id, "on"},
-    #             {afCider2.entry_id, "on"}
-    #           ])
-    #       }
-    #     })
-    #
-    #   assert redirected_to(conn) == venue_path(conn, :show, id)
-    #
-    #   conn = get(conn, venue_path(conn, :show, id))
-    #   assert html_response(conn, 200) =~ "Club Soda Score of 2.0"
-    # end
+      conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
+      assert %{id: id} = redirected_params(conn)
+
+      conn =
+        put(conn, venue_path(conn, :update, id), %{
+          "id" => id,
+          "venue" => %{
+            "drinks" =>
+              Map.new([
+                {spirit1.entry_id, "on"},
+                {premixed1.entry_id, "on"}
+              ])
+          }
+        })
+
+      assert redirected_to(conn) == venue_path(conn, :show, id)
+
+      conn = get(conn, venue_path(conn, :show, id))
+      assert html_response(conn, 200) =~ "Club Soda Score of 2.0"
+    end
+
+    test "AF Ciders are worth 1pt each", %{conn: conn, drinks: drinks} do
+      afCider1 = Enum.find(drinks, fn d -> d.name == "AF Cider 1" end)
+      afCider2 = Enum.find(drinks, fn d -> d.name == "AF Cider 2" end)
+
+      conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
+      assert %{id: id} = redirected_params(conn)
+
+      conn =
+        put(conn, venue_path(conn, :update, id), %{
+          "id" => id,
+          "venue" => %{
+            "drinks" =>
+              Map.new([
+                {afCider1.entry_id, "on"},
+                {afCider2.entry_id, "on"}
+              ])
+          }
+        })
+
+      assert redirected_to(conn) == venue_path(conn, :show, id)
+
+      conn = get(conn, venue_path(conn, :show, id))
+      assert html_response(conn, 200) =~ "Club Soda Score of 2.0"
+    end
   end
 
   describe "edit venue" do
@@ -524,33 +526,12 @@ defmodule CsGuideWeb.VenueControllerTest do
   describe "update venue" do
     setup [:create_venue]
 
-    test "redirects when data is valid", %{conn: conn, venue: venue} do
-      conn = put(conn, venue_path(conn, :update, venue.entry_id), venue: @update_attrs)
-      assert redirected_to(conn) == venue_path(conn, :show, venue.entry_id)
-
-      conn = get(conn, venue_path(conn, :show, venue.entry_id))
-      assert html_response(conn, 200) =~ "some updated phone_number"
-    end
-
     test "renders errors when data is invalid", %{conn: conn, venue: venue} do
       conn = put(conn, venue_path(conn, :update, venue.entry_id), venue: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Venue"
     end
   end
 
-  #   describe "delete venue" do
-  #     setup [:create_venue]
-  #
-  #     test "deletes chosen venue", %{conn: conn, venue: venue} do
-  #       conn = delete(conn, venue_path(conn, :delete, venue))
-  #       assert redirected_to(conn) == venue_path(conn, :index)
-  #
-  #       assert_error_sent(404, fn ->
-  #         get(conn, venue_path(conn, :show, venue))
-  #       end)
-  #     end
-  #   end
-  #
   defp create_venue(_) do
     venue = fixture(:venue)
     {:ok, venue: venue}
