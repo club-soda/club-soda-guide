@@ -60,3 +60,29 @@ The venue types and drinks that can be added to a venue listing can be added to 
 <img width="250" alt="New Venue Type" src="https://user-images.githubusercontent.com/8939909/46818794-f7fba080-cd79-11e8-8caa-f05f65becbeb.png">
 
 You can also see a list of all venue types, and drinks on https://club-soda-guide-staging.herokuapp.com/venue_types and https://club-soda-guide-staging.herokuapp.com/drinks, where you can show, edit and delete them as with the venues. (These pages are still undergoing work so do not currently look very nice, but are functional).
+
+## User Admin Guide
+
+The CS team has the ability to add, edit and delete various details to do with
+drinks, brands and venues on the site. At present these are not password protected.
+
+These are the elements of the site that can be amended in this way and their
+corresponding urls:
+- Users `/users`
+- Drinks `/drinks`
+  - Drink types `/drink_types`
+  - Drink style `/drink_styles`
+- Brands `/brands`
+- Venues `/venues`
+  - Venue type `/venue_types`
+
+Go to one of these links and you will have the option to create a new one,
+view/edit an existing one or delete an old one. Like this:
+
+![image](https://user-images.githubusercontent.com/16775804/47349854-67dc2600-d6ac-11e8-8cd8-ff634e743fd3.png)
+
+When you add/edit a subcategory its fields will be updated in the main category
+to which it belongs. E.g. If you add a new venue type it will become a new option
+under venue types in the new venue form. So you could add 'pub' as a new type and
+then when you create a new venue you would now have the ability to select 'pub'
+as the venue type when creating your new venue.

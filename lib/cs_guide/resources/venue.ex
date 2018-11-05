@@ -11,6 +11,7 @@ defmodule CsGuide.Resources.Venue do
     field(:venue_name, :string)
     field(:postcode, :string)
     field(:phone_number, :string)
+    field(:cs_score, :float)
     field(:entry_id, :string)
     field(:deleted, :boolean)
 
@@ -34,7 +35,7 @@ defmodule CsGuide.Resources.Venue do
   @doc false
   def changeset(venue, attrs \\ %{}) do
     venue
-    |> cast(attrs, [:venue_name, :postcode, :phone_number])
+    |> cast(attrs, [:venue_name, :postcode, :phone_number, :cs_score])
     |> validate_required([:venue_name, :postcode])
   end
 
@@ -60,7 +61,7 @@ defmodule CsGuide.Resources.Venue do
 
         {a,
          from(s in schema,
-           where: s.name in ^selected,
+           where: s.entry_id in ^selected,
            distinct: s.entry_id,
            order_by: [desc: :inserted_at],
            select: s
@@ -74,7 +75,7 @@ defmodule CsGuide.Resources.Venue do
     |> Map.put(:updated_at, nil)
     |> __MODULE__.changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
-    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :name)
+    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
     |> Repo.insert()
   end
 end
