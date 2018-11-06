@@ -19,6 +19,8 @@ defmodule CsGuide.Import do
           end)
           |> elem(1)
           |> add_link(:drink_types, DrinkType, :name)
+          |> elem(1)
+          |> add_link(:drink_styles, DrinkStyle, :name)
 
         case Drink.insert(drink) do
           {:ok, _} -> nil

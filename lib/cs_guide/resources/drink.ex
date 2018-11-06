@@ -11,7 +11,7 @@ defmodule CsGuide.Resources.Drink do
     field(:abv, :float)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
-    field(:description, :string)
+    field(:description, :string, default: "")
     field(:weighting, :integer)
 
     belongs_to(:brand, CsGuide.Resources.Brand)
@@ -53,6 +53,12 @@ defmodule CsGuide.Resources.Drink do
     |> Resources.put_belongs_to_assoc(attrs, :brand, :brand_id, CsGuide.Resources.Brand, :name)
     |> __MODULE__.changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :drink_types, CsGuide.Categories.DrinkType, :name)
+    |> Resources.put_many_to_many_assoc(
+      attrs,
+      :drink_styles,
+      CsGuide.Categories.DrinkStyle,
+      :name
+    )
     |> CsGuide.Repo.insert()
   end
 
@@ -83,6 +89,12 @@ defmodule CsGuide.Resources.Drink do
     |> Resources.put_belongs_to_assoc(attrs, :brand, :brand_id, CsGuide.Resources.Brand, :name)
     |> __MODULE__.changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :drink_types, CsGuide.Categories.DrinkType, :name)
+    |> Resources.put_many_to_many_assoc(
+      attrs,
+      :drink_styles,
+      CsGuide.Categories.DrinkStyle,
+      :name
+    )
     |> CsGuide.Repo.insert()
   end
 end
