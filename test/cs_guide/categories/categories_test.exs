@@ -25,7 +25,7 @@ defmodule CsGuide.CategoriesTest do
 
     test "get/1 returns the venue_types with given id" do
       venue_types = venue_types_fixture()
-      assert VenueType.get(venue_types.id) == venue_types
+      assert VenueType.get(venue_types.entry_id) == venue_types
     end
 
     test "insert/1 with valid data creates a venue_types" do
@@ -49,7 +49,7 @@ defmodule CsGuide.CategoriesTest do
 
       assert {:error, %Ecto.Changeset{}} = VenueType.update(venue_types, @invalid_attrs)
 
-      assert venue_types == VenueType.get(venue_types.id)
+      assert venue_types == VenueType.get(venue_types.entry_id)
     end
 
     test "changeset/1 returns a venue_types changeset" do
@@ -59,7 +59,7 @@ defmodule CsGuide.CategoriesTest do
   end
 
   describe "drink_styles" do
-    @valid_attrs %{deleted: true, entry_id: "some entry_id", name: "some name"}
+    @valid_attrs %{deleted: false, entry_id: "some entry_id", name: "some name"}
     @update_attrs %{deleted: false, entry_id: "some updated entry_id", name: "some updated name"}
     @invalid_attrs %{deleted: nil, entry_id: nil, name: nil}
 
@@ -79,12 +79,12 @@ defmodule CsGuide.CategoriesTest do
 
     test "get/1 returns the drink_style with given id" do
       drink_style = drink_style_fixture()
-      assert DrinkStyle.get(drink_style.id) == drink_style
+      assert DrinkStyle.get(drink_style.entry_id) == drink_style
     end
 
     test "insert/1 with valid data creates a drink_style" do
       assert {:ok, %DrinkStyle{} = drink_style} = DrinkStyle.insert(@valid_attrs)
-      assert drink_style.deleted == true
+      assert drink_style.deleted == false
       assert drink_style.entry_id == "some entry_id"
       assert drink_style.name == "some name"
     end
@@ -107,12 +107,12 @@ defmodule CsGuide.CategoriesTest do
 
       assert {:error, %Ecto.Changeset{}} = DrinkStyle.update(drink_style, @invalid_attrs)
 
-      assert drink_style == DrinkStyle.get(drink_style.id)
+      assert drink_style == DrinkStyle.get(drink_style.entry_id)
     end
 
     test "changeset/1 returns a drink_style changeset" do
       drink_style = drink_style_fixture()
-      assert %Ecto.Changeset{} = DrinkStyle.changeset(drink_style)
+      assert %Ecto.Changeset{} = DrinkStyle.changeset(drink_style, %{})
     end
   end
 end

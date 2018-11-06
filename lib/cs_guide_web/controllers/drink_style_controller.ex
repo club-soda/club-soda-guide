@@ -19,7 +19,7 @@ defmodule CsGuideWeb.DrinkStyleController do
       {:ok, drink_style} ->
         conn
         |> put_flash(:info, "Drink style created successfully.")
-        |> redirect(to: drink_style_path(conn, :show, drink_style))
+        |> redirect(to: drink_style_path(conn, :show, drink_style.entry_id))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -38,13 +38,13 @@ defmodule CsGuideWeb.DrinkStyleController do
   end
 
   def update(conn, %{"id" => id, "drink_style" => drink_style_params}) do
-    drink_style = Categories.get_drink_style!(id)
+    drink_style = DrinkStyle.get(id)
 
-    case Drink.update(drink_style, drink_style_params) do
+    case DrinkStyle.update(drink_style, drink_style_params) do
       {:ok, drink_style} ->
         conn
         |> put_flash(:info, "Drink style updated successfully.")
-        |> redirect(to: drink_style_path(conn, :show, drink_style))
+        |> redirect(to: drink_style_path(conn, :show, drink_style.entry_id))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", drink_style: drink_style, changeset: changeset)

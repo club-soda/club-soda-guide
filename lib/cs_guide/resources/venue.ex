@@ -11,9 +11,9 @@ defmodule CsGuide.Resources.Venue do
     field(:venue_name, :string)
     field(:postcode, :string)
     field(:phone_number, :string)
-    field(:cs_score, :float)
+    field(:cs_score, :float, default: 0.0)
     field(:entry_id, :string)
-    field(:deleted, :boolean)
+    field(:deleted, :boolean, default: false)
 
     many_to_many(
       :venue_types,

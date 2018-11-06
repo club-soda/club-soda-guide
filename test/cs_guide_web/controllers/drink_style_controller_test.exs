@@ -3,8 +3,8 @@ defmodule CsGuideWeb.DrinkStyleControllerTest do
 
   alias CsGuide.Categories
 
-  @create_attrs %{deleted: true, entry_id: "some entry_id", name: "some name"}
-  @update_attrs %{deleted: false, entry_id: "some updated entry_id", name: "some updated name"}
+  @create_attrs %{deleted: false, name: "some name"}
+  @update_attrs %{deleted: false, name: "some updated name"}
   @invalid_attrs %{deleted: nil, entry_id: nil, name: nil}
 
   def fixture(:drink_style) do
@@ -31,6 +31,7 @@ defmodule CsGuideWeb.DrinkStyleControllerTest do
       conn = post(conn, drink_style_path(conn, :create), drink_style: @create_attrs)
 
       assert %{id: id} = redirected_params(conn)
+
       assert redirected_to(conn) == drink_style_path(conn, :show, id)
 
       conn = get(conn, drink_style_path(conn, :show, id))
@@ -64,7 +65,7 @@ defmodule CsGuideWeb.DrinkStyleControllerTest do
       assert redirected_to(conn) == drink_style_path(conn, :show, drink_style.entry_id)
 
       conn = get(conn, drink_style_path(conn, :show, drink_style.entry_id))
-      assert html_response(conn, 200) =~ "some updated entry_id"
+      assert html_response(conn, 200) =~ "some updated name"
     end
 
     test "renders errors when data is invalid", %{conn: conn, drink_style: drink_style} do

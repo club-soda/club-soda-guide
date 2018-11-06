@@ -6,7 +6,7 @@ defmodule CsGuide.Accounts.User do
   schema "users" do
     field(:email, :string)
     field(:entry_id, :string)
-    field(:deleted, :boolean)
+    field(:deleted, :boolean, default: false)
 
     timestamps()
   end

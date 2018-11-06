@@ -36,11 +36,6 @@ defmodule CsGuideWeb.UserControllerTest do
       conn = get(conn, user_path(conn, :show, id))
       assert html_response(conn, 200) =~ "Show User"
     end
-
-    test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, user_path(conn, :create), user: @invalid_attrs)
-      assert html_response(conn, 200) =~ "Create a Profile"
-    end
   end
 
   describe "edit user" do

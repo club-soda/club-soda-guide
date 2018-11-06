@@ -106,15 +106,6 @@ defmodule CsGuideWeb.VenueController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    # venue = Resources.get_venue!(id)
-    # {:ok, _venue} = Resources.delete_venue(venue)
-
-    # conn
-    # |> put_flash(:info, "Venue deleted successfully.")
-    # |> redirect(to: venue_path(conn, :index))
-  end
-
   def add_drinks(conn, %{"id" => id}) do
     query = fn s, m ->
       sub =

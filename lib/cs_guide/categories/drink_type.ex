@@ -6,7 +6,7 @@ defmodule CsGuide.Categories.DrinkType do
   schema "drink_types" do
     field(:name, :string)
     field(:entry_id, :string)
-    field(:deleted, :boolean)
+    field(:deleted, :boolean, default: false)
 
     many_to_many(
       :drinks,

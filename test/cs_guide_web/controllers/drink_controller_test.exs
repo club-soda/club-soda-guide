@@ -1,7 +1,10 @@
 defmodule CsGuideWeb.DrinkControllerTest do
   use CsGuideWeb.ConnCase
 
-  alias CsGuide.{Resources, Categories}
+  alias CsGuide.{Resources, Categories, Fixtures}
+
+  @create_types Fixtures.create_types()
+  @create_brand Fixtures.create_brand()
 
   @create_attrs %{
     entry_id: "0167ce54-95fc-4b28-82a2-147b7b67055a",
@@ -19,21 +22,6 @@ defmodule CsGuideWeb.DrinkControllerTest do
     weighting: 1,
     drink_types: %{"Beer" => "on"}
   }
-
-  @create_brand %{
-    name: "Brewdog",
-    description: "Brewdog description",
-    deleted: false
-  }
-
-  @create_types [
-    %{
-      name: "Beer"
-    },
-    %{
-      name: "Wine"
-    }
-  ]
 
   def fixture(:type) do
     types =

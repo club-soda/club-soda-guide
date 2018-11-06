@@ -45,11 +45,7 @@ defmodule CsGuideWeb.BrandControllerTest do
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, brand_path(conn, :create), brand: @create_attrs)
 
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == brand_path(conn, :show, id)
-
-      conn = get(conn, brand_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Brand"
+      assert redirected_to(conn) == brand_path(conn, :index)
     end
 
     test "renders errors when data is invalid", %{conn: conn} do

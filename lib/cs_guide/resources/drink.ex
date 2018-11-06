@@ -9,7 +9,7 @@ defmodule CsGuide.Resources.Drink do
     field(:name, :string)
     field(:abv, :float)
     field(:entry_id, :string)
-    field(:deleted, :boolean)
+    field(:deleted, :boolean, default: false)
     field(:description, :string)
     field(:weighting, :integer)
 
