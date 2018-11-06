@@ -193,7 +193,11 @@ defmodule CsGuide.Fixtures do
     %{
       name: "Brewdog",
       description: "Brewdog description",
-      deleted: false
+      deleted: false,
+      twitter: "",
+      facebook: "",
+      instagram: "",
+      copy: ""
     }
   end
 end

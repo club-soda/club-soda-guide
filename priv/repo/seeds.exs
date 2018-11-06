@@ -10,7 +10,7 @@ defmodule CsGuide.Import do
   """
   def drinks(csv) do
     csv
-    |> csv_to_map(~w(name brand image abv description drink_types drink_styles ingredients)a)
+    |> csv_to_map(~w(name brand nil abv description drink_types drink_styles ingredients)a)
     |> Enum.each(fn d ->
       if d.name != "" do
         {_, drink} =
