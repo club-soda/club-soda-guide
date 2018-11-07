@@ -1,5 +1,7 @@
-<h2>Edit Venue type</h2>
+<section class="center w-80 w-75-l mv6-ns mv5">
+  <h2 class="f4 lh4">Edit Drink type</h2>
 
-<%= render "form.html", Map.put(assigns, :action, drink_type_path(@conn, :update, @drink_type.entry_id)) %>
+  <%= render "form.html", Map.put(assigns, :action, drink_type_path(@conn, :update, @drink_type.entry_id)) %>
 
-<span><%= link "Back", to: drink_type_path(@conn, :index) %></span>
+  <span><%= link "Back", to: drink_type_path(@conn, :index) %></span>
+</section>

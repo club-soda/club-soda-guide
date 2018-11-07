@@ -1,13 +1,12 @@
-<h2>Show User</h2>
+<section class="center w-80 w-75-l mv6">
+  <h2 class="f4 lh4">Show User</h2>
+  <ul class="pv3">
+    <li>
+      <strong>Email:</strong>
+      <%= @user.email %>
+    </li>
+  </ul>
 
-<ul>
-
-  <li>
-    <strong>Email:</strong>
-    <%= @user.email %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: user_path(@conn, :edit, @user.entry_id) %></span>
-<span><%= link "Back", to: user_path(@conn, :index) %></span>
+  <span><%= link "Edit", to: user_path(@conn, :edit, @user.entry_id) %></span>
+  <span><%= link "Back", to: user_path(@conn, :index) %></span>
+</section>

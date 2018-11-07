@@ -1,13 +1,12 @@
-<h2>Show Drink style</h2>
-
-<ul>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @drink_style.name %>
-  </li>
-
-</ul>
+<section class="center w-80 w-75-l mv6">
+  <h2 class="f4 lh4">Show Drink style</h2>
+  <ul class="pv3">
+    <li>
+      <strong>Name:</strong>
+      <%= @drink_style.name %>
+    </li>
+  </ul>
 
 <span><%= link "Edit", to: drink_style_path(@conn, :edit, @drink_style.entry_id) %></span>
 <span><%= link "Back", to: drink_style_path(@conn, :index) %></span>
+</section>

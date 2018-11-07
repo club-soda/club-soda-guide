@@ -1,5 +1,6 @@
 <section class="center w-80 w-75-l mv6">
-  <h2 class="f4 lh4">All Drinks</h2>
+  <h2 class="f4 lh4 dib">All Drinks</h2>
+  <span class="fr"><%= link "New Drink", to: drink_path(@conn, :new), class: "btn-primary no-underline" %></span>
 
   <table class="mt3 mb5 w-100">
     <thead>
@@ -15,7 +16,9 @@
   <%= for drink <- @drinks do %>
       <tr class="bt bb b--cs-light-gray">
         <td class="pv3 pr3"><%= drink.name %></td>
+        <%= if drink.brand do %>
         <td class="pa3"><%= drink.brand.name %></td>
+        <% end %>
         <td class="pa3 dn dib-ns"><%= drink.abv %></td>
 
         <td class="text-right">
@@ -27,6 +30,4 @@
   <% end %>
     </tbody>
   </table>
-
-  <span><%= link "New Drink", to: drink_path(@conn, :new), class: "btn-primary no-underline" %></span>
 </section>

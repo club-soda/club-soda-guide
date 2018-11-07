@@ -1,33 +1,28 @@
-<h2>Show Brand</h2>
+<section class="center w-80 w-75-l mv6">
+  <h2 class="f4 lh4">Show Brand</h2>
+  <ul class="pv3">
+    <li>
+      <strong>Name:</strong>
+      <%= @brand.name %>
+    </li>
+    <li>
+      <strong>Member:</strong>
+      <%= @brand.member %>
+    </li>
+    <li>
+      <strong>Description:</strong>
+      <%= @brand.description %>
+    </li>
+    <li>
+      <strong>Logo:</strong>
+      <%= @brand.logo %>
+    </li>
+    <li>
+      <strong>Website:</strong>
+      <%= @brand.website %>
+    </li>
+  </ul>
 
-<ul>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @brand.name %>
-  </li>
-
-  <li>
-    <strong>Member:</strong>
-    <%= @brand.member %>
-  </li>
-
-  <li>
-    <strong>Description:</strong>
-    <%= @brand.description %>
-  </li>
-
-  <li>
-    <strong>Logo:</strong>
-    <%= @brand.logo %>
-  </li>
-
-  <li>
-    <strong>Website:</strong>
-    <%= @brand.website %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: brand_path(@conn, :edit, @brand) %></span>
-<span><%= link "Back", to: brand_path(@conn, :index) %></span>
+  <span><%= link "Edit", to: brand_path(@conn, :edit, @brand) %></span>
+  <span><%= link "Back", to: brand_path(@conn, :index) %></span>
+</section>
