@@ -402,3 +402,7 @@ select {
 .brand-group, .drink_styles-group, .drink_types-group {
   padding: 1rem;
 }
+
+.form-group:last-child {
+  margin-top: 2rem;
+}
