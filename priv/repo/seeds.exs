@@ -93,7 +93,7 @@ defmodule CsGuide.Import do
   def venues_3(csv) do
     csv
     |> csv_to_map(
-      ~w(venue_name nil address phone_number email description website facebook twitter)a
+      ~w(venue_name nil address phone_number email description website facebook twitter num_cocktails)a
     )
     |> Enum.each(fn v ->
       v
@@ -109,7 +109,7 @@ defmodule CsGuide.Import do
           {"Mediterranean Tonic Water", "on"}
         ])
       )
-      |> Map.put(:cs_score, 3.0)
+      |> Map.put(:cs_score, 5.0)
       |> add_link(:venue_types, VenueType, :name)
       |> elem(1)
       |> Venue.insert()

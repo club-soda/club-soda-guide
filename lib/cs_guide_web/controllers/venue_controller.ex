@@ -42,10 +42,18 @@ defmodule CsGuideWeb.VenueController do
     render(conn, "edit.html", venue: venue, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "venue" => venue = %{"drinks" => drinks}})
-      when map_size(venue) == 1 do
+  def update(conn, %{
+        "id" => id,
+        "venue" => venue = %{"drinks" => drinks, "num_cocktails" => num_cocktails}
+      })
+      when map_size(venue) <= 2 do
     venue = Venue.get(id)
-    venue_params = Map.put(Map.from_struct(venue), :drinks, drinks)
+
+    venue_params =
+      venue
+      |> Map.from_struct()
+      |> Map.put(:drinks, drinks)
+      |> Map.put(:num_cocktails, num_cocktails)
 
     do_update(conn, venue, venue_params)
   end
@@ -77,7 +85,8 @@ defmodule CsGuideWeb.VenueController do
                :cs_score,
                CsGuide.Resources.CsScore.calculateScore(
                  venue.drinks
-                 |> CsGuide.Repo.preload(drink_types: query.(:drink_types, Drink))
+                 |> CsGuide.Repo.preload(drink_types: query.(:drink_types, Drink)),
+                 venue.num_cocktails
                )
              )
            ) do

@@ -22,6 +22,11 @@
   </div>
 
   <div class="form-group tc">
+    <h4 class="f5 mv3">If you serve alcohol free cocktails AND list them on your menu, type in the number of cocktails here:</h4>
+    <input name="venue[num_cocktails]" class="db mb2 w-100 ba b--cs-light-gray pa2" type="number" value="<%= @changeset.data.num_cocktails %>"/>
+  </div>
+
+  <div class="form-group tc">
     <%= submit "Submit", class: "btn btn-primary mt3" %>
   </div>
 

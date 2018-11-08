@@ -12,6 +12,7 @@ defmodule CsGuide.Resources.Venue do
     field(:postcode, :string)
     field(:phone_number, :string)
     field(:cs_score, :float, default: 0.0)
+    field(:num_cocktails, :integer)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
     field(:description, :string)
@@ -36,7 +37,14 @@ defmodule CsGuide.Resources.Venue do
   @doc false
   def changeset(venue, attrs \\ %{}) do
     venue
-    |> cast(attrs, [:venue_name, :postcode, :phone_number, :cs_score, :description])
+    |> cast(attrs, [
+      :venue_name,
+      :postcode,
+      :phone_number,
+      :cs_score,
+      :description,
+      :num_cocktails
+    ])
     |> validate_required([:venue_name])
   end
 

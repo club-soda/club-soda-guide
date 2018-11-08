@@ -2,36 +2,39 @@ defmodule CsGuide.Resources.CsScore do
   @spirit "Spirit"
   @premixed "Premixed"
 
-  def calculateScore(drinks) do
-    if Kernel.length(drinks) >= 1 do
-      low_alc_score =
-        drinks
-        |> checkLowAlcDrinks
-        |> Enum.reduce(fn score, total -> total + score end)
+  def calculateScore(drinks, num_cocktails) do
+    score =
+      if Kernel.length(drinks) >= 1 do
+        low_alc_score =
+          drinks
+          |> checkLowAlcDrinks
+          |> Enum.reduce(fn score, total -> total + score end)
 
-      med_alc_score =
-        drinks
-        |> checkMedAlcDrinks
+        med_alc_score =
+          drinks
+          |> checkMedAlcDrinks
 
-      others_score =
-        drinks
-        |> Enum.map(fn d ->
-          cond do
-            isMultipleDrinkTypes(d, @spirit, @premixed) ->
-              1
+        others_score =
+          drinks
+          |> Enum.map(fn d ->
+            cond do
+              isMultipleDrinkTypes(d, @spirit, @premixed) ->
+                1
 
-            true ->
-              0
-          end
-        end)
-        |> Enum.reduce(fn score, total -> total + score end)
+              true ->
+                0
+            end
+          end)
+          |> Enum.reduce(fn score, total -> total + score end)
 
-      total_score =
-        (low_alc_score + med_alc_score + others_score)
-        |> limitAt5
-    else
-      0
-    end
+        total_score =
+          (low_alc_score + med_alc_score + others_score)
+          |> limitAt5
+      else
+        0
+      end
+
+    score + num_cocktails * 0.5
   end
 
   defp limitAt5(score) do
