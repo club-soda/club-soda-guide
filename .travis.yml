@@ -9,13 +9,12 @@ cache:
   directories:
     - _build
     - deps
-addons:
-  postgresql: 
-    - '9.5'
+services:
+  - postgresql
 env:
   global:
     - MIX_ENV=test
 before_script:
   - mix do ecto.create, ecto.migrate
 script:
-  - mix do deps.get, mix test
+  - mix test
