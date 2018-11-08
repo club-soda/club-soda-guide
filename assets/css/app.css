@@ -237,6 +237,10 @@ select {
   }
 }
 
+.mt-4-5rem {
+  margin-top: 4.5rem;
+}
+
 /* Venue Sign up - adding custom drinks */
 
 .custom-drink-msg {
@@ -403,6 +407,15 @@ select {
   padding: 1rem;
 }
 
+
 .form-group:last-child {
   margin-top: 2rem;
 }
+
+.bg-venue {
+  height: 60vh;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+

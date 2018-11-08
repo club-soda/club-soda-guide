@@ -20,7 +20,7 @@ defmodule CsGuide.Mixfile do
   def application do
     [
       mod: {CsGuide.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :ex_aws, :httpoison]
     ]
   end
 
@@ -43,7 +43,12 @@ defmodule CsGuide.Mixfile do
       {:cowboy, "~> 1.0"},
       {:nimble_csv, "~> 0.3"},
       {:autoform, git: "https://github.com/dwyl/autoform.git", branch: "dropdown"},
-      {:alog, git: "https://github.com/dwyl/alog.git", tag: "0.2"}
+      {:alog, git: "https://github.com/dwyl/alog.git", tag: "0.2"},
+      {:ex_aws, "~> 2.0"},
+      {:ex_aws_s3, "~> 2.0"},
+      {:plug_cowboy, "~> 1.0"},
+      {:poison, "~> 1.2", override: true},
+      {:httpoison, "~> 0.7"}
     ]
   end
 
