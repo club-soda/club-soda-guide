@@ -9,6 +9,7 @@ defmodule CsGuide.Repo.Migrations.CreateVenues do
       add(:cs_score, :float, default: 0)
       add(:entry_id, :string)
       add(:deleted, :boolean, default: false)
+      add(:description, :text)
 
       timestamps()
     end

@@ -14,6 +14,7 @@ defmodule CsGuide.Resources.Venue do
     field(:cs_score, :float, default: 0.0)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
+    field(:description, :string)
 
     many_to_many(
       :venue_types,
@@ -35,7 +36,7 @@ defmodule CsGuide.Resources.Venue do
   @doc false
   def changeset(venue, attrs \\ %{}) do
     venue
-    |> cast(attrs, [:venue_name, :postcode, :phone_number, :cs_score])
+    |> cast(attrs, [:venue_name, :postcode, :phone_number, :cs_score, :description])
     |> validate_required([:venue_name])
   end
 

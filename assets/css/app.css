@@ -419,3 +419,6 @@ select {
   background-repeat: no-repeat;
 }
 
+.min-h5 {
+  min-height: 16rem;
+}

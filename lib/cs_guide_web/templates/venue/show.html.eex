@@ -18,9 +18,13 @@
         <a class="cs-mid-blue dib mt2" href="/venues/<%= @venue.entry_id %>/add_drinks">Your Club Soda score is 0, improve it by listing drinks you stock.</a>
       <% end %>
     </div>
-    <p class="h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl">
-      No venue description,
-      <span class="cs-mid-blue pointer underline">add description.</span>
+    <p class="min-h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl lh5">
+      <%= if @venue.description do %>
+        <%= @venue.description |> raw() %>
+      <% else %>
+        No venue description,
+        <span class="cs-mid-blue pointer underline">add description.</span>
+      <% end %>
     </p>
 
     <!-- See issue #30 for re-adding this
