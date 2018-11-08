@@ -86,3 +86,12 @@ to which it belongs. E.g. If you add a new venue type it will become a new optio
 under venue types in the new venue form. So you could add 'pub' as a new type and
 then when you create a new venue you would now have the ability to select 'pub'
 as the venue type when creating your new venue.
+
+
+## Importing Data
+
+The existing data is imported through our [seeds file](priv/repo/seeds.exs).
+
+The environment variable `IMPORT_FILES_DIR` should be the path to the directory containing the csv files (For example, if those files are hosted on AWS S3, it would be the path of the S3 bucket).
+
+The files should be named correctly such that the format of te file matches the function that will be calling it. (That is, the brands file should be `brands.csv`, drinks `drinks.csv` and the venues `venues_1.csv`, `venues_2.csv` or `venues_3.csv`, depending on which format it is. These should be named correctly already, and as this import is only intended to be done once, shouldn't need to be changed. This documentation is just here as a guide if this import function ever needs to be extended.)

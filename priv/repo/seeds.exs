@@ -1,80 +1,164 @@
-# Script for populating the database. You can run it as:
-#
-#     mix run priv/repo/seeds.exs
-#
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     CsGuide.Repo.insert!(%CsGuide.SomeSchema{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+defmodule CsGuide.Import do
+  alias NimbleCSV.RFC4180, as: CSV
+  alias CsGuide.Resources.{Brand, Drink, Venue}
+  alias CsGuide.Categories.{DrinkType, DrinkStyle, VenueType}
 
-alias CsGuide.Resources.{Brand, Drink, Venue}
-alias CsGuide.Categories.{DrinkType, VenueType, DrinkStyle}
+  @doc """
+  Imports drinks from csv file. The columns are mapped to atoms in our csv_to_map function
+  and that map is then inserted into the database using the Drink.insert function. We also
+  manually set the brand, and link with the drink types, creating any that don't already exist in the database.
+  """
+  def drinks(csv) do
+    csv
+    |> csv_to_map(~w(name brand image abv description drink_types drink_styles ingredients)a)
+    |> Enum.each(fn d ->
+      if d.name != "" do
+        {_, drink} =
+          Map.get_and_update(d, :brand, fn b ->
+            {b, Map.new([{b, "on"}])}
+          end)
+          |> elem(1)
+          |> add_link(:drink_types, DrinkType, :name)
+          |> elem(1)
+          |> add_link(:drink_styles, DrinkStyle, :name)
 
-brands = [
-  {"Brewdog", "Scottish Craft Beer"},
-  {"Heineken", "Dutch Beer"},
-  {"Nix and Kix", "Adult Soft Drinks"},
-  {"Big Drop", "Low Alcohol Craft Beer"},
-  {"Belvoir Drinks", "Naturally Lovely Drinks"}
-]
+        case Drink.insert(drink) do
+          {:ok, _} -> nil
+          err -> IO.inspect(err)
+        end
+      end
+    end)
+  end
 
-drink_types = ["Beer", "Wine", "Soft Drink"]
+  @doc """
+  Imports brands from csv file. The columns are mapped to atoms in our csv_to_map function
+  and that map is then inserted into the database using the Brand.insert function. Any unused columns
+  are mapped to nil, which is then filtered out.
+  """
+  def brands(csv) do
+    csv
+    |> csv_to_map(~w(name nil member description nil nil nil nil link nil)a)
+    |> Enum.each(&Brand.insert/1)
+  end
 
-drink_styles = ["Pale Ale", "Lager", "Stouts & Porters", "Red Wine"]
+  @doc """
+  Imports venues from csv file. The columns are mapped to atoms in our csv_to_map function
+  and that map is then inserted into the database using the Venue.insert function. We also
+  link with the venue types, creating any that don't already exist in the database.
+  """
+  def venues_1(csv) do
+    csv
+    |> csv_to_map(
+      ~w(nil venue_name nil description venue_types nil nil nil nil nil nil nil address city region country postcode latitude longitude opening_hours phone_number email website twitter facebook instagram)a
+    )
+    |> Enum.each(fn v ->
+      if v.venue_name != "" do
+        {_, venue} = add_link(v, :venue_types, VenueType, :name)
 
-venue_types = ["Pub", "Restaurant", "Cocktail Bar"]
+        venue
+        |> Map.update!(:venue_name, &String.trim/1)
+        |> Venue.insert()
+        |> case do
+          {:ok, _} -> nil
+          err -> IO.inspect(err)
+        end
+      end
+    end)
+  end
 
-drinks = [
-  {"Nanny State", "Brewdog", "Beer", "0.5",
-   "Packed with loads of Centennial, Amarillo, Columbus, Cascade and Simcoe hops, dry hopped to the brink and back and sitting at 45 IBUS, Nanny State is a force to be reckoned with.",
-   1},
-  {"0.0", "Heineken", "Beer", "0.0",
-   "Heineken 0.0 Lager 0.0% is a balanced thirst quencher with refreshing fruity notes and a soft malty body.",
-   1},
-  {"Cucumber & Mint", "Nix and Kix", "Soft Drink", "0.0", " ", 1},
-  {"Peach & Vanilla", "Nix and Kix", "Soft Drink", "0.0", " ", 2},
-  {"Stout", "Big Drop", "Beer", "0.5",
-   "With notes of coffee, cocoa nibs and a lingering hint of sweet vanilla this beer is dark, rich and indulgent. ",
-   3},
-  {"Pale Ale", "Big Drop", "Beer", "0.5",
-   "This dry-hopped pale ale is deliciously refreshing. The nose has hints of pine and honey. Packed full of flavour from citrus-heavy hops with a twist of fresh lime to create a crisp, zesty beer. ",
-   2},
-  {"Lager", "Big Drop", "Beer", "0.5",
-   "Aromas of cracker, light honey and pepper this lager is crisp, balanced with a suitable level of bitterness to ensure it has a dry, refreshing bite.",
-   1},
-  {"Shiraz", "Belvoir Drinks", "Wine", "0.0",
-   "It has a very ‘grown-up’ taste with a nose of blackcurrant, a touch of vanilla and a semi-sweet fruity flavour with an astringent, slightly mouth drying finish and a hint of spice typically associated with a Shiraz red wine. Just like the alcoholic variety this rich dark red alcohol-free version slips down nicely with steak or boeuf bourguignon.",
-   2}
-]
+  @doc """
+  Imports venues from csv file. The columns are mapped to atoms in our csv_to_map function
+  and that map is then inserted into the database using the Venue.insert function. We also
+  link with the venue types, creating any that don't already exist in the database.
+  """
+  def venues_2(csv) do
+    csv
+    |> csv_to_map(
+      [nil, nil, nil, nil, :venue_name] ++
+        List.duplicate(nil, get_column_num(csv, "cf_final_score") - 5) ++ [:cs_score]
+    )
+    |> Enum.each(fn v ->
+      Venue.get_by(venue_name: v.venue_name)
+      |> Venue.update(v)
+      |> case do
+        {:ok, _} -> nil
+        err -> IO.inspect(err)
+      end
+    end)
+  end
 
-venues = [
-  {"The Black Dog", "0123456789", "E2 0SY", "Pub"}
-]
+  @doc """
+  Imports venues from csv file. The columns are mapped to atoms in our csv_to_map function
+  and that map is then inserted into the database using the Venue.insert function. We also
+  link with the venue types, creating any that don't already exist in the database. These venues
+  are all from the same chain, and as such all serve the same drinks, which we also insert.
+  """
+  def venues_3(csv) do
+    csv
+    |> csv_to_map(
+      ~w(venue_name nil address phone_number email description website facebook twitter)a
+    )
+    |> Enum.each(fn v ->
+      v
+      |> Map.put(:venue_types, "Bars")
+      |> Map.put(
+        :drinks,
+        Map.new([
+          {"Nanny State", "on"},
+          {"B:Free", "on"},
+          {"Sparkling Elderflower", "on"},
+          {"Rose Lemonade", "on"},
+          {"Ginger Beer", "on"},
+          {"Mediterranean Tonic Water", "on"}
+        ])
+      )
+      |> add_link(:venue_types, VenueType, :name)
+      |> elem(1)
+      |> Venue.insert()
+    end)
+  end
 
-Enum.map(drink_types, fn b -> DrinkType.insert(%{name: b}) end)
-Enum.map(drink_styles, fn b -> DrinkStyle.insert(%{name: b}) end)
-Enum.map(venue_types, fn v -> VenueType.insert(%{name: v}) end)
-Enum.map(brands, fn {n, d} -> Brand.insert(%{name: n, description: d}) end)
+  defp csv_to_map(csv, columns) do
+    csv
+    |> CSV.parse_string()
+    |> Enum.map(fn data ->
+      columns
+      |> Enum.zip(data)
+      |> Enum.filter(fn {k, v} -> not is_nil(k) end)
+      |> Map.new()
+    end)
+  end
 
-Enum.map(venues, fn {n, ph, p, t} ->
-  Venue.insert(%{
-    "venue_name" => n,
-    "phone_number" => ph,
-    "postcode" => p,
-    "venue_types" => Map.new([{t, "on"}])
-  })
-end)
+  defp add_link(item, column, queryable, field) do
+    Map.get_and_update(item, column, fn values ->
+      new =
+        values
+        |> String.split(",")
+        |> Enum.map(fn v ->
+          case queryable.get_by([{field, v}]) do
+            nil ->
+              queryable.insert(%{} |> Map.put(field, v))
+              {v, "on"}
 
-Enum.map(drinks, fn {n, b, t, a, d, w} ->
-  Drink.insert(%{
-    "name" => n,
-    "drink_types" => Map.new([{t, "on"}]),
-    "brand" => Map.new([{b, "on"}]),
-    "abv" => a,
-    "description" => d,
-    "weighting" => w
-  })
-end)
+            type ->
+              {Map.get(type, field), "on"}
+          end
+        end)
+        |> Map.new()
+
+      {values, new}
+    end)
+  end
+
+  defp get_column_num(csv, name) do
+    CSV.parse_string(csv, headers: false)
+    |> List.first()
+    |> Enum.find_index(fn e -> e == name end)
+  end
+end
+
+File.read!("#{System.get_env("IMPORT_FILES_DIR")}/brands.csv") |> CsGuide.Import.brands()
+File.read!("#{System.get_env("IMPORT_FILES_DIR")}/drinks.csv") |> CsGuide.Import.drinks()
+File.read!("#{System.get_env("IMPORT_FILES_DIR")}/venues_1.csv") |> CsGuide.Import.venues_1()
+File.read!("#{System.get_env("IMPORT_FILES_DIR")}/venues_2.csv") |> CsGuide.Import.venues_2()
+File.read!("#{System.get_env("IMPORT_FILES_DIR")}/venues_3.csv") |> CsGuide.Import.venues_3()

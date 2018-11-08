@@ -81,7 +81,9 @@
             <div class="flex flex-wrap">
               <!-- Change this to category/ sub category -->
               <%= if drink.drink_types do %>
-              <p class="w-50 pv2 dib"><%= List.first(drink.drink_types).name %></p>
+              <%= for dt <- drink.drink_types do %>
+              <p class="w-50 pv2 dib"><%= dt.name %></p>
+              <% end %>
               <% end %>
               <%= if drink.abv do %>
               <p class="w-50 pv2 dib"><%= drink.abv %>% ABV</p>

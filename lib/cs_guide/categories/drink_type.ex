@@ -11,7 +11,7 @@ defmodule CsGuide.Categories.DrinkType do
     many_to_many(
       :drinks,
       CsGuide.Resources.Drink,
-      join_through: "drink_drink_types",
+      join_through: "drinks_drink_types",
       join_keys: [drink_type_id: :id, drink_id: :id]
     )
 

@@ -28,26 +28,10 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def show(conn, %{"id" => id}) do
-    query = fn s, m ->
-      sub =
-        from(mod in Map.get(m.__schema__(:association, s), :queryable),
-          distinct: mod.entry_id,
-          order_by: [desc: :inserted_at],
-          select: mod
-        )
-
-      from(m in subquery(sub), where: not m.deleted, select: m)
-    end
-
     venue =
       id
       |> Venue.get()
-      |> CsGuide.Repo.preload(
-        drinks:
-          {query.(:drinks, Venue),
-           brand: query.(:brand, Drink), drink_types: query.(:drink_types, Drink)},
-        venue_types: query.(:venue_types, Venue)
-      )
+      |> Venue.preload(drinks: [:brand, :drink_types], venue_types: [])
 
     render(conn, "show.html", venue: venue)
   end
@@ -107,23 +91,12 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def add_drinks(conn, %{"id" => id}) do
-    query = fn s, m ->
-      sub =
-        from(mod in Map.get(m.__schema__(:association, s), :queryable),
-          distinct: mod.entry_id,
-          order_by: [desc: :inserted_at],
-          select: mod
-        )
-
-      from(m in subquery(sub), where: not m.deleted, select: m)
-    end
-
     venue =
       id
       |> Venue.get()
-      |> CsGuide.Repo.preload(drinks: {query.(:drinks, Venue), brand: query.(:brand, Drink)})
+      |> Venue.preload(drinks: [:brand])
 
-    brands = CsGuide.Resources.Brand.all() |> CsGuide.Repo.preload(drinks: query.(:drinks, Brand))
+    brands = Brand.all() |> Brand.preload(:drinks)
 
     changeset = Venue.changeset(venue)
 
