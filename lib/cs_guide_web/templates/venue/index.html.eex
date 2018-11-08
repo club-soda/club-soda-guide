@@ -1,5 +1,6 @@
 <section class="center w-80 w-75-l mv6">
-  <h2 class="f4 lh4">All Venues</h2>
+  <h2 class="f4 lh4 dib">All Venues</h2>
+  <span class="fr"><%= link "New Venue", to: venue_path(@conn, :new), class: "btn-primary no-underline" %></span>
 
   <table class="mt3 mb5 w-100">
     <thead>
@@ -30,6 +31,4 @@
       <% end %>
     </tbody>
   </table>
-
-  <span><%= link "New Venue", to: venue_path(@conn, :new), class: "btn-primary no-underline" %></span>
 </section>

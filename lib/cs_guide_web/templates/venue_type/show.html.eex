@@ -1,13 +1,12 @@
-<h2>Show Venue types</h2>
+<section class="center w-80 w-75-l mv6">
+  <h2 class="f4 lh4">Show Venue types</h2>
+  <ul class="pv3">
+    <li>
+      <strong>Name:</strong>
+      <%= @venue_type.name %>
+    </li>
+  </ul>
 
-<ul>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @venue_type.name %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: venue_type_path(@conn, :edit, @venue_type.entry_id) %></span>
-<span><%= link "Back", to: venue_type_path(@conn, :index) %></span>
+  <span><%= link "Edit", to: venue_type_path(@conn, :edit, @venue_type.entry_id) %></span>
+  <span><%= link "Back", to: venue_type_path(@conn, :index) %></span>
+</section>

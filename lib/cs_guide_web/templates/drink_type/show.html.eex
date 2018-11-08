@@ -1,13 +1,12 @@
-<h2>Show Venue types</h2>
+<section class="center w-80 w-75-l mv6">
+  <h2 class="f4 lh4">Show Drink types</h2>
+  <ul class="pv3">
+    <li>
+      <strong>Name:</strong>
+      <%= @drink_type.name %>
+    </li>
+  </ul>
 
-<ul>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @drink_type.name %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: drink_type_path(@conn, :edit, @drink_type.entry_id) %></span>
-<span><%= link "Back", to: drink_type_path(@conn, :index) %></span>
+  <span><%= link "Edit", to: drink_type_path(@conn, :edit, @drink_type.entry_id) %></span>
+  <span><%= link "Back", to: drink_type_path(@conn, :index) %></span>
+</section>

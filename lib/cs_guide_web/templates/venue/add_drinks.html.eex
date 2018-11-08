@@ -1,4 +1,4 @@
-<section class="center w-80 w-50-l mt5">
+<section class="center w-80 w-50-l mt6">
 <h3 class="f4-5 mb4">Add products to your stocklist</h2>
 <%= form_for @changeset, @action, fn f -> %>
   <h4 class="f5 mv3">Select a Brand</h4>

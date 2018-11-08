@@ -1,23 +1,20 @@
-<h2>Show Drink</h2>
+<section class="center w-80 w-75-l mv6">
+  <h2 class="f4 lh4">Show Drink</h2>
+  <ul class="pv3">
+    <li>
+      <strong>Name:</strong>
+      <%= @drink.name %>
+    </li>
+    <li>
+      <strong>Brand:</strong>
+      <%= @drink.brand.name %>
+    </li>
+    <li>
+      <strong>Abv:</strong>
+      <%= @drink.abv %>
+    </li>
+  </ul>
 
-<ul>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @drink.name %>
-  </li>
-
-  <li>
-    <strong>Brand:</strong>
-    <%= @drink.brand.name %>
-  </li>
-
-  <li>
-    <strong>Abv:</strong>
-    <%= @drink.abv %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: drink_path(@conn, :edit, @drink.entry_id) %></span>
-<span><%= link "Back", to: drink_path(@conn, :index) %></span>
+  <span><%= link "Edit", to: drink_path(@conn, :edit, @drink.entry_id) %></span>
+  <span><%= link "Back", to: drink_path(@conn, :index) %></span>
+</section>

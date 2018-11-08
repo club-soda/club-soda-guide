@@ -1,5 +1,7 @@
-<h2>New Drink style</h2>
+<section class="center w-80 w-75-l mv6-ns mv5">
+  <h2 class="f4 lh4">New Drink style</h2>
 
-<%= render "form.html", Map.put(assigns, :action, drink_style_path(@conn, :create)) %>
+  <%= render "form.html", Map.put(assigns, :action, drink_style_path(@conn, :create)) %>
 
-<span><%= link "Back", to: drink_style_path(@conn, :index) %></span>
+  <span><%= link "Back", to: drink_style_path(@conn, :index) %></span>
+</section>
