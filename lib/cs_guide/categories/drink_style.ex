@@ -12,7 +12,7 @@ defmodule CsGuide.Categories.DrinkStyle do
       :drinks,
       CsGuide.Resources.Drink,
       join_through: "drinks_drink_styles",
-      join_keys: [drink_type_id: :id, drink_id: :id]
+      join_keys: [drink_style_id: :id, drink_id: :id]
     )
 
     timestamps()

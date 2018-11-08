@@ -9,8 +9,7 @@ defmodule CsGuideWeb.SignupController do
         case Venue.insert(venue) do
           {:ok, venue} ->
             conn
-            |> put_status(:created)
-            |> json(%{entry_id: venue.entry_id})
+            |> redirect(to: venue_path(conn, :show, venue.entry_id))
         end
 
       {:error, %Ecto.Changeset{} = changeset} ->

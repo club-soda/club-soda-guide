@@ -3,7 +3,7 @@ defmodule CsGuideWeb.SearchVenueController do
 
   alias CsGuide.Resources.Venue
 
-  def index(conn, params) do
+  def index(conn, _params) do
     venues = Venue.all()
 
     render(conn, "index.html", venues: venues)
