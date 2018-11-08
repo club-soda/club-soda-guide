@@ -167,7 +167,7 @@ renderDrinksCarousel model =
                     [ div [ class "card-front-contents" ]
                         [ div [ class "bb b--cs-light-pink bw3 mb3 tl h-27rem" ]
                             [ h4 [ class "f4 lh4 pa3 shadow-4 br2 mt4 mb1 mh4 tc bg-sheer-white absolute top-1" ] [ text <| d.brand ++ " " ++ d.name ]
-                            , img [ src "https://res.cloudinary.com/ratebeer/image/upload/w_250,c_limit/beer_117796.jpg", alt "Photo of drink", class "w-5rem db center pt4" ] []
+                            , img [ src "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyT_ehuzfLvJKLPOAVjobqWtZjFO1--mgpQb_NJmq0wIfpEc5SyXkuPxpG", alt "Photo of drink", class "w-5rem db center pt4" ] []
                             , p [ class "bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib" ] [ text <| String.fromFloat d.abv ++ "% ABV" ]
                             ]
                         ]
