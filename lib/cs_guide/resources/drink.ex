@@ -13,6 +13,7 @@ defmodule CsGuide.Resources.Drink do
     field(:deleted, :boolean, default: false)
     field(:description, :string, default: "")
     field(:weighting, :integer)
+    field(:ingredients, :string)
 
     belongs_to(:brand, CsGuide.Resources.Brand)
 
@@ -43,7 +44,7 @@ defmodule CsGuide.Resources.Drink do
   @doc false
   def changeset(drink, attrs \\ %{}) do
     drink
-    |> cast(attrs, [:name, :abv, :brand_id, :description, :weighting])
+    |> cast(attrs, [:name, :abv, :brand_id, :description, :weighting, :ingredients])
     |> validate_required([:name])
   end
 

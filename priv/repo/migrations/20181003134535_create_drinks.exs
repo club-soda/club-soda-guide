@@ -10,6 +10,10 @@ defmodule CsGuide.Repo.Migrations.CreateDrinks do
       add(:website, :string)
       add(:entry_id, :string)
       add(:deleted, :boolean, default: false)
+      add(:twitter, :string)
+      add(:instagram, :string)
+      add(:facebook, :string)
+      add(:copy, :string)
 
       timestamps()
     end
@@ -22,6 +26,7 @@ defmodule CsGuide.Repo.Migrations.CreateDrinks do
       add(:description, :text)
       add(:entry_id, :string)
       add(:deleted, :boolean, default: false)
+      add(:ingredients, :text)
 
       timestamps()
     end

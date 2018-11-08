@@ -11,6 +11,10 @@ defmodule CsGuide.Resources.Brand do
     field(:website, :string)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
+    field(:twitter, :string)
+    field(:instagram, :string)
+    field(:facebook, :string)
+    field(:copy, :string)
 
     has_many(:drinks, CsGuide.Resources.Drink)
 
@@ -20,7 +24,18 @@ defmodule CsGuide.Resources.Brand do
   @doc false
   def changeset(brand, attrs) do
     brand
-    |> cast(attrs, [:name, :description, :deleted, :website, :logo, :member])
-    |> validate_required([:name, :description])
+    |> cast(attrs, [
+      :name,
+      :description,
+      :deleted,
+      :website,
+      :logo,
+      :member,
+      :twitter,
+      :instagram,
+      :facebook,
+      :copy
+    ])
+    |> validate_required([:name])
   end
 end

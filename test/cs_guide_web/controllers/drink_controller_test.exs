@@ -7,7 +7,6 @@ defmodule CsGuideWeb.DrinkControllerTest do
   @create_brand Fixtures.create_brand()
 
   @create_attrs %{
-    entry_id: "0167ce54-95fc-4b28-82a2-147b7b67055a",
     name: "AF Beer 1",
     abv: "0.5",
     description: "Description of drink",
@@ -15,7 +14,6 @@ defmodule CsGuideWeb.DrinkControllerTest do
     drink_types: %{"Beer" => "on"}
   }
   @update_attrs %{
-    entry_id: "0167ce54-95fc-4b28-82a2-147b7b67055a",
     name: "Updated AF Beer 1",
     abv: "0.5",
     description: "Updated description of drink",
