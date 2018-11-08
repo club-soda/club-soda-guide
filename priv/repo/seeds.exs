@@ -14,10 +14,7 @@ defmodule CsGuide.Import do
     |> Enum.each(fn d ->
       if d.name != "" do
         {_, drink} =
-          Map.get_and_update(d, :brand, fn b ->
-            {b, Map.new([{b, "on"}])}
-          end)
-          |> elem(1)
+          d
           |> add_link(:drink_types, DrinkType, :name)
           |> elem(1)
           |> add_link(:drink_styles, DrinkStyle, :name)
@@ -112,6 +109,7 @@ defmodule CsGuide.Import do
           {"Mediterranean Tonic Water", "on"}
         ])
       )
+      |> Map.put(:cs_score, 3.0)
       |> add_link(:venue_types, VenueType, :name)
       |> elem(1)
       |> Venue.insert()

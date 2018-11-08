@@ -42,7 +42,7 @@ defmodule CsGuide.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:nimble_csv, "~> 0.3"},
-      {:autoform, git: "https://github.com/dwyl/autoform.git", tag: "0.2.1"},
+      {:autoform, git: "https://github.com/dwyl/autoform.git", branch: "dropdown"},
       {:alog, git: "https://github.com/dwyl/alog.git", tag: "0.2"}
     ]
   end

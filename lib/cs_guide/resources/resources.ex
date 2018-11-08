@@ -30,10 +30,7 @@ defmodule CsGuide.Resources do
   end
 
   def put_belongs_to_assoc(item, attrs, assoc, assoc_field, assoc_module, field) do
-    {assoc, _} =
-      Enum.find(get_assoc_attrs(assoc, attrs), fn {_, active} ->
-        String.to_existing_atom(active)
-      end)
+    assoc = Map.get(attrs, assoc, Map.get(attrs, to_string(assoc), ""))
 
     loaded_assoc =
       Repo.one(
