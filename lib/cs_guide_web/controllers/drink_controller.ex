@@ -54,7 +54,6 @@ defmodule CsGuideWeb.DrinkController do
     drink =
       Drink.get(id)
       |> Drink.preload([:brand, :venues])
-      |> IO.inspect()
 
     render(conn, "show.html", drink: drink)
   end
