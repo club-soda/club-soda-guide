@@ -50,13 +50,43 @@
           Add venue phone number
         </a>
       <% end %>
+
+      <div class="db">
+        <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
+        <%= if @venue.website do %>
+          <a href="<%= @venue.website %>" class="cs-mid-blue f6 lh6 v-top">Visit venue website</a>
+        <% else %>
+          <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue website</a>
+        <% end %>
+      </div>
+
+      <div class="db">
+        <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/Twitter.svg") %>" alt="Twitter icon">
+        <%= if @venue.twitter do %>
+          <a href="<%= @venue.twitter %>" class="cs-mid-blue f6 lh6 v-top"><%= @venue.twitter %></a>
+        <% else %>
+          <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue twitter</a>
+        <% end %>
+      </div>
+
+      <div class="db">
+        <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/Instagram.svg") %>" alt="Instagram icon">
+        <%= if @venue.instagram do %>
+          <a href="<%= @venue.instagram %>" class="cs-mid-blue f6 lh6 v-top"><%= @venue.instagram %></a>
+        <% else %>
+          <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue instagram</a>
+        <% end %>
+      </div>
+
+      <div class="db">
+        <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/Facebook.svg") %>" alt="Facebook icon">
+        <%= if @venue.facebook do %>
+          <a href="<%= @venue.facebook %>" class="cs-mid-blue f6 lh6 v-top"><%= @venue.facebook %></a>
+        <% else %>
+          <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue facebook page</a>
+        <% end %>
+      </div>
     </div>
-    <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
-    <%= if @venue.website do %>
-      <a href="<%= @venue.website %>" class="cs-mid-blue f6 lh6 v-top">Visit venue website</a>
-    <% else %>
-      <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue website</a>
-    <% end %>
 
 <!-- To be added at a later date, see #119 -->
     <!-- <h3 class="f4 lh4 pv3">Opening Hours</h3>

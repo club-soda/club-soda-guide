@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon/App/Facebook</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M9.29852455,21 L9.27272727,12.8181818 L6,12.8181818 L6,9.54545455 L9.27272727,9.54545455 L9.27272727,7.5 C9.27272727,4.4634 11.1531709,3 13.8620236,3 C15.1595945,3 16.2747845,3.09660273 16.5997827,3.13978636 L16.5997827,6.31321091 L14.7210491,6.31406182 C13.2478227,6.31406182 12.9625718,7.01411455 12.9625718,8.04139909 L12.9625718,9.54545455 L17.25,9.54545455 L15.6136364,12.8181818 L12.9625718,12.8181818 L12.9625718,21 L9.29852455,21 Z" id="path-1"></path>
+    </defs>
+    <g id="Icon/App/Facebook" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Bounding-Box" x="0" y="0" width="24" height="24"></rect>
+        <mask id="mask-2" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <use id="Mask" fill="#3B5998" xlink:href="#path-1"></use>
+        <g id="Mixin/Fill/Black" mask="url(#mask-2)" fill="#333333">
+            <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
+        </g>
+    </g>
+</svg>

@@ -46,7 +46,7 @@ defmodule CsGuide.Import do
   def venues_1(csv) do
     csv
     |> csv_to_map(
-      ~w(nil venue_name nil description venue_types nil nil nil nil nil nil nil address_line_1 city region country postcode latitude longitude opening_hours phone_number email website twitter facebook instagram)a
+      ~w(nil venue_name nil description venue_types nil nil nil nil nil nil nil address_line_1 city region country postcode latitude longitude opening_hours phone_number email website twitter facebook nil nil nil instagram)a
     )
     |> Enum.each(fn v ->
       if v.venue_name != "" do
