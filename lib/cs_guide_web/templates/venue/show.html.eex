@@ -52,7 +52,11 @@
       <% end %>
     </div>
     <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
-    <a href="#" class="cs-mid-blue f6 lh6 v-top">Add venue website</a>
+    <%= if @venue.website do %>
+      <a href="<%= @venue.website %>" class="cs-mid-blue f6 lh6 v-top">Visit venue website</a>
+    <% else %>
+      <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue website</a>
+    <% end %>
 
 <!-- To be added at a later date, see #119 -->
     <!-- <h3 class="f4 lh4 pv3">Opening Hours</h3>

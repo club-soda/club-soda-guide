@@ -6,7 +6,7 @@ defmodule CsGuideWeb.VenueController do
   import Ecto.Query, only: [from: 2, subquery: 1]
 
   def index(conn, _params) do
-    venues = Venue.all()
+    venues = Venue.all() |> Enum.sort_by(& &1.venue_name)
     render(conn, "index.html", venues: venues)
   end
 
@@ -61,7 +61,16 @@ defmodule CsGuideWeb.VenueController do
   def update(conn, %{"id" => id, "venue" => venue_params}) do
     venue = Venue.get(id)
 
-    do_update(conn, venue, venue_params)
+    # do_update(conn, venue, venue_params)
+    case Venue.update(venue, venue_params) do
+      {:ok, venue} ->
+        conn
+        |> put_flash(:info, "Venue updated successfully.")
+        |> redirect(to: venue_path(conn, :show, venue.entry_id))
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, "edit.html", venue: venue, changeset: changeset)
+    end
   end
 
   defp do_update(conn, venue, venue_params) do

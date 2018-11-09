@@ -9,6 +9,7 @@ defmodule CsGuideWeb.DrinkController do
     drinks =
       Drink.all()
       |> Drink.preload(:brand)
+      |> Enum.sort_by(& &1.name)
 
     render(conn, "index.html", drinks: drinks)
   end

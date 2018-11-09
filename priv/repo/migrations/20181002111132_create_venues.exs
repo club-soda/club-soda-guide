@@ -11,6 +11,7 @@ defmodule CsGuide.Repo.Migrations.CreateVenues do
       add(:deleted, :boolean, default: false)
       add(:description, :text)
       add(:num_cocktails, :integer)
+      add(:website, :string)
 
       timestamps()
     end

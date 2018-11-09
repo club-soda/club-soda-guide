@@ -27,14 +27,12 @@ defmodule CsGuide.Resources.CsScore do
           end)
           |> Enum.reduce(fn score, total -> total + score end)
 
-        total_score =
-          (low_alc_score + med_alc_score + others_score)
-          |> limitAt5
+        total_score = low_alc_score + med_alc_score + others_score
       else
         0
       end
 
-    score + num_cocktails * 0.5
+    (score + (num_cocktails || 0) * 0.5) |> limitAt5
   end
 
   defp limitAt5(score) do

@@ -16,6 +16,7 @@ defmodule CsGuide.Resources.Venue do
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
     field(:description, :string)
+    field(:website, :string)
 
     many_to_many(
       :venue_types,
@@ -43,7 +44,8 @@ defmodule CsGuide.Resources.Venue do
       :phone_number,
       :cs_score,
       :description,
-      :num_cocktails
+      :num_cocktails,
+      :website
     ])
     |> validate_required([:venue_name])
   end
