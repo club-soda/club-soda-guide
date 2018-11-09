@@ -30,7 +30,7 @@
     <%= submit "Submit", class: "btn btn-primary mt3" %>
   </div>
 
-  <div class="tc mt2"><a href="#">I can't find my product</a></div>
+  <div class="tc mt2"><a href="mailto:jussi@joinclubsoda.co.uk">I can't find my product</a></div>
 <% end %>
 </section>
 
