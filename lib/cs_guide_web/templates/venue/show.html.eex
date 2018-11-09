@@ -36,7 +36,7 @@
   <div class="w-90 w-40-ns pt4 pr5-ns center">
     <img src="<%= static_path(@conn, "/images/sample-map.png") %>" alt="Map of venue" class="">
     <div class="pv3">
-      <p class="f5 lh5 pr4 dib"><%= @venue.postcode %></p>
+      <p class="f5 lh5 pr4 dib"><%= @venue.address_line_1 <> " " <> @venue.city <> " " <> @venue.postcode %></p>
       <p class="f6 lh6 cs-mid-blue underline dib">Get Directions</p>
     </div>
     <div class="db pv3">
