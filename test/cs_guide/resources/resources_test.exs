@@ -89,7 +89,7 @@ defmodule CsGuide.ResourcesTest do
 
       {:ok, drink} =
         attrs
-        |> Map.put(:brand, Map.new([{brand.name, "on"}]))
+        |> Map.put(:brand, brand.name)
         |> Enum.into(@valid_attrs)
         |> Drink.insert()
 
@@ -100,14 +100,14 @@ defmodule CsGuide.ResourcesTest do
       drink = drink_fixture()
 
       assert Drink.all()
-             |> Drink.preload(:drink_types) == [drink]
+             |> Drink.preload([:drink_types, :drink_styles]) == [drink]
     end
 
     test "get/1 returns the drink with given id" do
       drink = drink_fixture()
 
       assert Drink.get(drink.entry_id)
-             |> Drink.preload(:drink_types) == drink
+             |> Drink.preload([:drink_types, :drink_styles]) == drink
     end
 
     test "update/2 with valid data updates the drink" do

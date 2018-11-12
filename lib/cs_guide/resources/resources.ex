@@ -42,7 +42,13 @@ defmodule CsGuide.Resources do
         )
       )
 
-    Map.put(item, assoc_field, loaded_assoc.id)
+    case loaded_assoc do
+      nil ->
+        item
+
+      loaded ->
+        Map.put(item, assoc_field, loaded_assoc.id)
+    end
   end
 
   defp get_assoc_attrs(assoc, attrs) do

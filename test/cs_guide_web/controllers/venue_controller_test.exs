@@ -11,6 +11,8 @@ defmodule CsGuideWeb.VenueControllerTest do
   @create_drinks Fixtures.create_drinks()
 
   @create_attrs %{
+    address_line_1: "number and road",
+    city: "London",
     phone_number: "some phone_number",
     postcode: "some postcode",
     venue_name: "The Example Pub",
@@ -40,7 +42,7 @@ defmodule CsGuideWeb.VenueControllerTest do
       @create_drinks
       |> Enum.map(fn d ->
         {:ok, drink} =
-          Map.put(d, :brand, Map.new([{brand, "on"}]))
+          Map.put(d, :brand, brand)
           |> Resources.Drink.insert()
 
         drink
@@ -139,7 +141,8 @@ defmodule CsGuideWeb.VenueControllerTest do
                 {afBeer2.entry_id, "on"},
                 {afWine1.entry_id, "on"},
                 {afWine2.entry_id, "on"}
-              ])
+              ]),
+            "num_cocktails" => 0
           }
         })
 
@@ -164,7 +167,8 @@ defmodule CsGuideWeb.VenueControllerTest do
               Map.new([
                 {beer1.entry_id, "on"},
                 {beer2.entry_id, "on"}
-              ])
+              ]),
+            "num_cocktails" => 0
           }
         })
 
@@ -189,7 +193,8 @@ defmodule CsGuideWeb.VenueControllerTest do
               Map.new([
                 {wine1.entry_id, "on"},
                 {wine2.entry_id, "on"}
-              ])
+              ]),
+            "num_cocktails" => 0
           }
         })
 
@@ -216,7 +221,8 @@ defmodule CsGuideWeb.VenueControllerTest do
                 {softDrink1.entry_id, "on"},
                 {softDrink2.entry_id, "on"},
                 {softDrink3.entry_id, "on"}
-              ])
+              ]),
+            "num_cocktails" => 0
           }
         })
 
@@ -243,7 +249,8 @@ defmodule CsGuideWeb.VenueControllerTest do
                 {tonic1.entry_id, "on"},
                 {mixer1.entry_id, "on"},
                 {mixer2.entry_id, "on"}
-              ])
+              ]),
+            "num_cocktails" => 0
           }
         })
 
@@ -278,7 +285,8 @@ defmodule CsGuideWeb.VenueControllerTest do
                 {afBeer2.entry_id, "on"},
                 {afCider1.entry_id, "on"}
                 # {lowAlcBeer1.entry_id, "on"}
-              ])
+              ]),
+            "num_cocktails" => 0
           }
         })
 
@@ -303,7 +311,8 @@ defmodule CsGuideWeb.VenueControllerTest do
               Map.new([
                 {spirit1.entry_id, "on"},
                 {premixed1.entry_id, "on"}
-              ])
+              ]),
+            "num_cocktails" => 0
           }
         })
 
@@ -328,7 +337,8 @@ defmodule CsGuideWeb.VenueControllerTest do
               Map.new([
                 {afCider1.entry_id, "on"},
                 {afCider2.entry_id, "on"}
-              ])
+              ]),
+            "num_cocktails" => 0
           }
         })
 

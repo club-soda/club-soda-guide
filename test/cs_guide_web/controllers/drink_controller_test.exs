@@ -43,7 +43,7 @@ defmodule CsGuideWeb.DrinkControllerTest do
   def fixture(:drink, brand) do
     {:ok, drink} =
       @create_attrs
-      |> Map.put(:brand, Map.new([{brand, "on"}]))
+      |> Map.put(:brand, brand)
       |> Resources.Drink.insert()
 
     drink
