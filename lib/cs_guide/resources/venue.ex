@@ -9,8 +9,14 @@ defmodule CsGuide.Resources.Venue do
 
   schema "venues" do
     field(:venue_name, :string)
+    field(:description, :string)
+    field(:address1, :string)
+    field(:address2, :string)
     field(:postcode, :string)
+    field(:website, :string)
     field(:phone_number, :string)
+    field(:facebook, :string)
+    field(:instagram, :string)
     field(:cs_score, :float, default: 0.0)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
@@ -35,7 +41,18 @@ defmodule CsGuide.Resources.Venue do
   @doc false
   def changeset(venue, attrs \\ %{}) do
     venue
-    |> cast(attrs, [:venue_name, :postcode, :phone_number, :cs_score])
+    |> cast(attrs, [
+      :venue_name,
+      :description,
+      :address1,
+      :address2,
+      :postcode,
+      :website,
+      :phone_number,
+      :facebook,
+      :instagram,
+      :cs_score
+    ])
     |> validate_required([:venue_name])
   end
 

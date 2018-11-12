@@ -15,10 +15,16 @@
         <a class="cs-mid-blue dib mt2" href="/venues/<%= @venue.entry_id %>/add_drinks">Your Club Soda score is 0, improve it by listing drinks you stock.</a>
       <% end %>
     </div>
-    <p class="h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl">
-      No venue description,
-      <span class="cs-mid-blue pointer underline">add description.</span>
-    </p>
+    <%= if @venue.description do %>
+      <p class="pv3 mv4 mr5-ns br2 tl">
+        <%= @venue.description %>
+      </p>
+    <%= else %>
+      <p class="h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl">
+        No venue description,
+        <span class="cs-mid-blue pointer underline">add description.</span>
+      </p>
+    <% end %>
 
     <!-- See issue #30 for re-adding this
     <div class="tl">
@@ -29,6 +35,12 @@
   <div class="w-90 w-40-ns pt4 pr5-ns center">
     <img src="<%= static_path(@conn, "/images/sample-map.png") %>" alt="Map of venue" class="">
     <div class="pv3">
+      <%= if @venue.address1 do %>
+      <p class="f5 lh5 pr2 dib"><%= @venue.address1 %></p>
+      <% end %>
+      <%= if @venue.address2 do %>
+      <p class="f5 lh5 pr2 dib"><%= @venue.address2 %></p>
+      <% end %>
       <p class="f5 lh5 pr4 dib"><%= @venue.postcode %></p>
       <p class="f6 lh6 cs-mid-blue underline dib">Get Directions</p>
     </div>
@@ -44,9 +56,36 @@
         </a>
       <% end %>
     </div>
-    <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
-    <a href="#" class="cs-mid-blue f6 lh6 v-top">Add venue website</a>
-
+    <div class="db pv3">
+      <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
+      <%= if @venue.website do %>
+      <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @venue.website %>">
+        <%= @venue.website %>
+      </a>
+      <%= else %>
+      <a href="#" class="cs-mid-blue f6 lh6 v-top">Add venue website</a>
+      <% end %>
+    </div>
+    <div class="db pv3">
+      <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/facebook-icon.png") %>" alt="Facebook icon">
+      <%= if @venue.facebook do %>
+      <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @venue.facebook %>">
+        <%= @venue.facebook %>
+      </a>
+      <%= else %>
+      <a href="#" class="cs-mid-blue f6 lh6 v-top">Add venue facebook</a>
+      <% end %>
+    </div>
+    <div class="db pv3">
+      <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/instagram-icon.png") %>" alt="Instagram icon">
+      <%= if @venue.instagram do %>
+      <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @venue.instagram %>">
+        <%= @venue.instagram %>
+      </a>
+      <%= else %>
+      <a href="#" class="cs-mid-blue f6 lh6 v-top">Add venue instagram</a>
+      <% end %>
+    </div>
 <!-- To be added at a later date, see #119 -->
     <!-- <h3 class="f4 lh4 pv3">Opening Hours</h3>
     <a href="#" class="cs-mid-blue f5 lh5">Add venue opening hours</a> -->

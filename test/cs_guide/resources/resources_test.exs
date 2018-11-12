@@ -11,16 +11,38 @@ defmodule CsGuide.ResourcesTest do
     alias CsGuide.Resources.Venue
 
     @valid_attrs %{
-      phone_number: "some phone_number",
+      venue_name: "some venue_name",
+      description: "some description",
+      address1: "some address",
+      address2: "some address2",
       postcode: "some postcode",
-      venue_name: "some venue_name"
+      website: "some website",
+      phone_number: "some phone_number",
+      facebook: "some facebook",
+      instagram: "some instagram"
     }
     @update_attrs %{
-      phone_number: "some updated phone_number",
+      venue_name: "some updated venue_name",
+      description: "some updated description",
+      address1: "some address",
+      address2: "some address2",
       postcode: "some updated postcode",
-      venue_name: "some updated venue_name"
+      website: "some website",
+      phone_number: "some updated phone_number",
+      facebook: "some facebook",
+      instagram: ""
     }
-    @invalid_attrs %{phone_number: nil, postcode: nil, venue_name: nil}
+    @invalid_attrs %{
+      venue_name: nil,
+      description: nil,
+      address1: nil,
+      address2: nil,
+      postcode: nil,
+      website: nil,
+      phone_number: nil,
+      facebook: nil,
+      instagram: nil
+    }
 
     def venue_fixture(attrs \\ %{}) do
       {:ok, venue} =
