@@ -113,26 +113,9 @@
   <section class="w-90 center">
     <h2 class="roboto-slab f2 lh2 db tc pb4">Places that Serve <%= @brand.name %></h2>
     <div class="flex flex-wrap justify-center">
-      <div class="w-100 w-25-ns pb4">
-        <div class="bg-green w-100 w-90-m w5-l h4 br2"></div>
-        <p class="f5 lh5 pt2">Angel</p>
-        <p class="f4 lh4">The Rover's Return</p>
-      </div>
-      <div class="w-100 w-25-ns pb4 pb0-ns">
-        <div class="bg-green w-100 w-90-m w5-l h4 br2"></div>
-        <p class="f5 lh5 pt2">Angel</p>
-        <p class="f4 lh4">The Rover's Return</p>
-      </div>
-      <div class="w-100 w-25-ns pb4 pb0-ns">
-        <div class="bg-green w-100 w-90-m w5-l h4 br2"></div>
-        <p class="f5 lh5 pt2">Angel</p>
-        <p class="f4 lh4">The Rover's Return</p>
-      </div>
-      <div class="w-100 w-25-ns pb4 pb0-ns">
-        <div class="bg-green w-100 w-90-m w5-l h4 br2"></div>
-        <p class="f5 lh5 pt2">Angel</p>
-        <p class="f4 lh4">The Rover's Return</p>
-      </div>
+        <%= for venue <- get_venues(@brand) do %>
+          <%= component("venue_card", venue: venue, conn: @conn) %>
+        <% end %>
     </div>
     <div class="mv4 center tc tl-ns">
       <a class="btn-primary no-underline" href="search/venues">Find One Near Me</a>

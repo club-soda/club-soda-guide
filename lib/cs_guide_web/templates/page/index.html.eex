@@ -27,17 +27,7 @@
   <h2 class="b pt3 f2 lh2 mb4 tc tl-ns">Great Places for Mindful Drinkers</h2>
   <div class="flex flex-wrap justify-center">
     <%= for venue <- @venues do %>
-      <div class="w-100 w-25-ns pb4">
-        <div class="bg-green w-100 w-90-m w5-l h4 br2"></div>
-        <p class="f5 lh5 pt2"><%= venue.postcode %></p>
-        <p class="f4 lh4"><%= venue.venue_name %></p>
-
-        <div class="">
-          <%= if venue.cs_score > 0 do %>
-            <img class="w4 v-btm" src="<%= static_path(@conn, "/images/score-#{venue.cs_score}.png") %>" alt="Club Soda Score of <%= venue.cs_score %>">
-          <% end %>
-        </div>
-      </div>
+      <%= component("venue_card", venue: venue, conn: @conn) %>
     <% end %>
   </div>
   <div class="mv4 center tc tl-ns">
