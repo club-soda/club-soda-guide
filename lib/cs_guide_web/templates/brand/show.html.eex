@@ -117,8 +117,8 @@
           <%= component("venue_card", venue: venue, conn: @conn) %>
         <% end %>
     </div>
-    <div class="mv4 center tc tl-ns">
-      <a class="btn-primary no-underline" href="search/venues">Find One Near Me</a>
+    <div class="mv4 center tc">
+      <%= secondary_btn("Find One Near Me", "search/venues") %>
     </div>
   </section>
 

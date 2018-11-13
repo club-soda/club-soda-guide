@@ -19,7 +19,7 @@
   <h2 class="w-90-ns center b pt3 f2 lh2 tc tl-ns">Great drinks for mindful drinkers</h2>
   <div id="drinks-carousel"></div>
   <div class="w-90-ns center tc tl-ns mv4">
-    <a class="bg-cs-black br2 ph4 pv2 white no-underline" href="/search/drinks">View Selection</a>
+    <%= secondary_btn("View Selection", "/search/drinks")%>
   </div>
 </section>
 
@@ -31,7 +31,7 @@
     <% end %>
   </div>
   <div class="mv4 center tc tl-ns">
-    <a class="btn-primary no-underline" href="search/venues">Find One Near Me</a>
+    <%= primary_btn("Find One Near Me", "search/venues")%>
   </div>
 </section>
 
