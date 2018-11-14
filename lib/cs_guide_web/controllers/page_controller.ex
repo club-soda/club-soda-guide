@@ -5,6 +5,7 @@ defmodule CsGuideWeb.PageController do
   def index(conn, _params) do
     venues =
       Venue.all()
+      |> Venue.preload(:venue_types)
       |> sort_by_cs_score()
 
     render(conn, "index.html", venues: venues)
