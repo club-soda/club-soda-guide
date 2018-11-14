@@ -18,6 +18,7 @@ defmodule CsGuide.Resources.Venue do
     field(:facebook, :string)
     field(:instagram, :string)
     field(:cs_score, :float, default: 0.0)
+    field(:favourite, :boolean, default: false)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
 
@@ -51,7 +52,8 @@ defmodule CsGuide.Resources.Venue do
       :phone_number,
       :facebook,
       :instagram,
-      :cs_score
+      :cs_score,
+      :favourite
     ])
     |> validate_required([:venue_name])
   end
