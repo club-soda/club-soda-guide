@@ -5,6 +5,7 @@ defmodule CsGuideWeb.PageController do
   def index(conn, _params) do
     venues =
       Venue.all()
+      |> Venue.preload(:venue_types)
       |> Enum.filter(fn v ->
         v.favourite
       end)
