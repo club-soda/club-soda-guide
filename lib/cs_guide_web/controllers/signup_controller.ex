@@ -9,6 +9,7 @@ defmodule CsGuideWeb.SignupController do
         case Venue.insert(venue) do
           {:ok, venue} ->
             conn
+            |> put_flash(:info, "Venue created successfully.")
             |> redirect(to: venue_path(conn, :show, venue.entry_id))
         end
 

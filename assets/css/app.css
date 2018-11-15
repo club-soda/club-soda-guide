@@ -194,10 +194,6 @@ select {
   object-fit: cover;
 }
 
-.top-6 {
-  top: 6rem;
-}
-
 .right-4 {
   right: 4rem;
 }
@@ -235,10 +231,6 @@ select {
   .mt-30rem-s {
     margin-top: 30rem;
   }
-}
-
-.mt-4-5rem {
-  margin-top: 4.5rem;
 }
 
 /* Venue Sign up - adding custom drinks */
@@ -421,4 +413,8 @@ select {
 
 .min-h5 {
   min-height: 16rem;
+}
+
+.alert-info {
+  background: #00C6B3;
 }
