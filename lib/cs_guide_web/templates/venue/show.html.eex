@@ -21,14 +21,16 @@
            <a class="cs-mid-blue dib mt2" href="/venues/<%= @venue.entry_id %>/add_drinks">Improve your score by adding more drinks to your stocklist</a>
         <% end %>
       </div>
-      <p class="min-h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl lh5">
-        <%= if @venue.description do %>
+      <%= if @venue.description do %>
+        <p class="pv3 mv4 mr5-ns br2 tl lh5">
           <%= @venue.description |> raw() %>
-        <% else %>
-          No venue description,
-          <span class="cs-mid-blue pointer underline">add description.</span>
-        <% end %>
+        </p>
+      <% else %>
+      <p class="min-h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl lh5">
+        No venue description,
+        <span class="cs-mid-blue pointer underline">add description.</span>
       </p>
+      <% end %>
 
       <!-- See issue #30 for re-adding this
       <div class="tl">
@@ -64,7 +66,7 @@
           </a>
         <% end %>
 
-        <div class="db">
+        <div class="db pv1">
           <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
           <%= if @venue.website do %>
             <a href="<%= @venue.website %>" class="cs-mid-blue f6 lh6 v-top">Visit venue website</a>
@@ -73,7 +75,7 @@
           <% end %>
         </div>
 
-        <div class="db">
+        <div class="db pv1">
           <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/Twitter.svg") %>" alt="Twitter icon">
           <%= if @venue.twitter do %>
             <a href="<%= @venue.twitter %>" class="cs-mid-blue f6 lh6 v-top"><%= @venue.twitter %></a>
@@ -82,7 +84,7 @@
           <% end %>
         </div>
 
-        <div class="db">
+        <div class="db pv1">
           <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/Instagram.svg") %>" alt="Instagram icon">
           <%= if @venue.instagram do %>
             <a href="<%= @venue.instagram %>" class="cs-mid-blue f6 lh6 v-top"><%= @venue.instagram %></a>
@@ -91,7 +93,7 @@
           <% end %>
         </div>
 
-        <div class="db">
+        <div class="db pv1">
           <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/Facebook.svg") %>" alt="Facebook icon">
           <%= if @venue.facebook do %>
             <a href="<%= @venue.facebook %>" class="cs-mid-blue f6 lh6 v-top"><%= @venue.facebook %></a>
