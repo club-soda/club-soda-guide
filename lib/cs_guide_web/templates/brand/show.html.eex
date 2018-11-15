@@ -110,7 +110,7 @@
     </div>
   </section>
 
-  <section class="w-90 center">
+  <section class="w-90 center pv5">
     <h2 class="roboto-slab f2 lh2 db tc pb4">Places that Serve <%= @brand.name %></h2>
     <div class="flex flex-wrap justify-center">
         <%= for venue <- get_venues(@brand) do %>
@@ -122,5 +122,21 @@
     </div>
   </section>
 
+  <%= if @brand.member do %>
+    <section class="w-90 center pv5">
+      <h2 class="roboto-slab f2 lh2 db tc pb4">Where to Buy <%= @brand.name %></h2>
+      <%= for venue <- get_venues(@brand) do %>
+
+        <%= if venue.venue_types do %>
+          <%= for type <- venue.venue_types do %>
+            <%= if type.name == "Bars" do %>
+              <p class="bg-red ph4"><%= type.name %></p>
+            <% end %>
+          <% end %>
+        <% end %>
+
+      <% end %>
+    </section>
+  <% end %>
 
 </section>
