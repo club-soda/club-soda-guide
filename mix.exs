@@ -48,7 +48,8 @@ defmodule CsGuide.Mixfile do
       {:ex_aws_s3, "~> 2.0"},
       {:plug_cowboy, "~> 1.0"},
       {:poison, "~> 1.2", override: true},
-      {:httpoison, "~> 0.7"}
+      {:httpoison, "~> 0.7"},
+      {:fields, git: "https://github.com/dwyl/fields.git", tag: "0.1.2"}
     ]
   end
 

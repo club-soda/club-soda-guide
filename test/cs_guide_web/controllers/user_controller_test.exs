@@ -3,8 +3,8 @@ defmodule CsGuideWeb.UserControllerTest do
 
   alias CsGuide.Accounts
 
-  @create_attrs %{email: "some email"}
-  @update_attrs %{email: "some updated email"}
+  @create_attrs %{email: "some@email"}
+  @update_attrs %{email: "some@updated.email"}
   @invalid_attrs %{email: nil}
 
   def fixture(:user) do
@@ -55,7 +55,7 @@ defmodule CsGuideWeb.UserControllerTest do
       assert redirected_to(conn) == user_path(conn, :show, user.entry_id)
 
       conn = get(conn, user_path(conn, :show, user.entry_id))
-      assert html_response(conn, 200) =~ "some updated email"
+      assert html_response(conn, 200) =~ "some@updated.email"
     end
 
     test "renders errors when data is invalid", %{conn: conn, user: user} do

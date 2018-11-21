@@ -11,13 +11,13 @@ defmodule CsGuide.ResourcesTest do
     alias CsGuide.Resources.Venue
 
     @valid_attrs %{
-      phone_number: "some phone_number",
-      postcode: "some postcode",
+      phone_number: "01234567890",
+      postcode: "EC1 5AD",
       venue_name: "some venue_name"
     }
     @update_attrs %{
-      phone_number: "some updated phone_number",
-      postcode: "some updated postcode",
+      phone_number: "09876543210",
+      postcode: "EC2 6FV",
       venue_name: "some updated venue_name"
     }
     @invalid_attrs %{phone_number: nil, postcode: nil, venue_name: nil}
@@ -47,8 +47,8 @@ defmodule CsGuide.ResourcesTest do
 
     test "insert/1 with valid data creates a venue" do
       assert {:ok, %Venue{} = venue} = Venue.insert(@valid_attrs)
-      assert venue.phone_number == "some phone_number"
-      assert venue.postcode == "some postcode"
+      assert venue.phone_number == "01234567890"
+      assert venue.postcode == "EC1 5AD"
       assert venue.venue_name == "some venue_name"
     end
 
@@ -60,8 +60,8 @@ defmodule CsGuide.ResourcesTest do
       venue = venue_fixture()
       assert {:ok, venue} = Venue.update(venue, @update_attrs)
       assert %Venue{} = venue
-      assert venue.phone_number == "some updated phone_number"
-      assert venue.postcode == "some updated postcode"
+      assert venue.phone_number == "09876543210"
+      assert venue.postcode == "EC2 6FV"
       assert venue.venue_name == "some updated venue_name"
     end
 

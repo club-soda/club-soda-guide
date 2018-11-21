@@ -26,6 +26,20 @@ config :ex_aws,
   region: System.get_env("AWS_S3_REGION"),
   bucket: System.get_env("AWS_S3_BUCKET")
 
+config :fields, Fields.AES,
+  # get the ENCRYPTION_KEYS env variable
+  keys:
+    System.get_env("ENCRYPTION_KEYS")
+    # remove single-quotes around key list in .env
+    |> String.replace("'", "")
+    # split the CSV list of keys
+    |> String.split(",")
+    # decode the key.
+    |> Enum.map(fn key -> :base64.decode(key) end)
+
+config :fields, Fields,
+  secret_key_base: "4hf8JJmuXBYA1qDB1RpA6wePqW9EHkF6DxqXMshLZcSdTu3yLmoy2OR0Dhq2CYmE"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
