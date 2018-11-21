@@ -9,11 +9,19 @@ defmodule CsGuide.Resources.Venue do
 
   schema "venues" do
     field(:venue_name, :string)
-    field(:postcode, :string)
-    field(:phone_number, :string)
+    field(:postcode, Fields.Postcode)
+    field(:phone_number, Fields.PhoneNumber)
     field(:cs_score, :float, default: 0.0)
+    field(:num_cocktails, :integer)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
+    field(:description, :string)
+    field(:website, :string)
+    field(:address_line_1, Fields.Address)
+    field(:city, Fields.Address)
+    field(:twitter, :string)
+    field(:instagram, :string)
+    field(:facebook, :string)
 
     many_to_many(
       :venue_types,
@@ -35,7 +43,20 @@ defmodule CsGuide.Resources.Venue do
   @doc false
   def changeset(venue, attrs \\ %{}) do
     venue
-    |> cast(attrs, [:venue_name, :postcode, :phone_number, :cs_score])
+    |> cast(attrs, [
+      :venue_name,
+      :postcode,
+      :phone_number,
+      :cs_score,
+      :description,
+      :num_cocktails,
+      :website,
+      :address_line_1,
+      :city,
+      :twitter,
+      :instagram,
+      :facebook
+    ])
     |> validate_required([:venue_name])
   end
 

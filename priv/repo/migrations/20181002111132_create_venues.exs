@@ -9,6 +9,14 @@ defmodule CsGuide.Repo.Migrations.CreateVenues do
       add(:cs_score, :float, default: 0)
       add(:entry_id, :string)
       add(:deleted, :boolean, default: false)
+      add(:description, :text)
+      add(:num_cocktails, :integer)
+      add(:website, :string)
+      add(:address_line_1, :string)
+      add(:city, :string)
+      add(:twitter, :string)
+      add(:instagram, :string)
+      add(:facebook, :string)
 
       timestamps()
     end

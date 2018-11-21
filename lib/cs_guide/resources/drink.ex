@@ -71,7 +71,8 @@ defmodule CsGuide.Resources.Drink do
         selected =
           case Map.get(attrs, to_string(a)) do
             nil -> []
-            selected -> Enum.map(selected, fn {k, v} -> k end)
+            [_] = selected -> Enum.map(selected, fn {k, v} -> k end)
+            selected -> selected
           end
 
         {a,

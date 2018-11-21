@@ -194,10 +194,6 @@ select {
   object-fit: cover;
 }
 
-.top-6 {
-  top: 6rem;
-}
-
 .right-4 {
   right: 4rem;
 }
@@ -401,4 +397,24 @@ select {
 
 .brand-group, .drink_styles-group, .drink_types-group {
   padding: 1rem;
+}
+
+
+.form-group:last-child {
+  margin-top: 2rem;
+}
+
+.bg-venue {
+  height: 60vh;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.min-h5 {
+  min-height: 16rem;
+}
+
+.alert-info {
+  background: #00C6B3;
 }
