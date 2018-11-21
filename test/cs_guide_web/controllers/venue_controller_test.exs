@@ -13,8 +13,8 @@ defmodule CsGuideWeb.VenueControllerTest do
   @create_attrs %{
     address_line_1: "number and road",
     city: "London",
-    phone_number: "some phone_number",
-    postcode: "some postcode",
+    phone_number: "01234567890",
+    postcode: "EC1 5AD",
     venue_name: "The Example Pub",
     venue_types: %{
       "35f9e338-7c50-4883-8214-91e2c0ad5796" => "on"
@@ -22,8 +22,8 @@ defmodule CsGuideWeb.VenueControllerTest do
     drinks: %{"AF Beer 1" => "on"}
   }
   @update_attrs %{
-    phone_number: "some updated phone_number",
-    postcode: "some updated postcode",
+    phone_number: "09876543210",
+    postcode: "EC2 7FY",
     venue_name: "The Updated Example Pub",
     drinks: %{"AF Beer 1" => "on"}
   }

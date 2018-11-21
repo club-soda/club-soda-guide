@@ -54,6 +54,8 @@ defmodule CsGuide.Import do
 
         venue
         |> Map.update!(:venue_name, &String.trim/1)
+        |> Map.update!(:phone_number, fn s -> String.replace(s, " ", "") |> String.trim() end)
+        |> Map.update!(:postcode, &String.trim/1)
         |> Venue.insert()
         |> case do
           {:ok, _} -> nil

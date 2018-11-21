@@ -4,7 +4,9 @@ defmodule CsGuide.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
-    field(:email, :string)
+    field(:email, Fields.EmailEncrypted)
+    field(:email_hash, Fields.EmailHash)
+    field(:email_plaintext, Fields.EmailPlaintext, virtual: true)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
 

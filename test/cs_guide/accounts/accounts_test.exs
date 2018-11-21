@@ -6,8 +6,8 @@ defmodule CsGuide.AccountsTest do
   describe "users" do
     alias CsGuide.Accounts.User
 
-    @valid_attrs %{email: "some email"}
-    @update_attrs %{email: "some updated email"}
+    @valid_attrs %{email: "some@email"}
+    @update_attrs %{email: "some@updated.email"}
     @invalid_attrs %{email: nil}
 
     def user_fixture(attrs \\ %{}) do
@@ -31,7 +31,7 @@ defmodule CsGuide.AccountsTest do
 
     test "insert/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = User.insert(@valid_attrs)
-      assert user.email == "some email"
+      assert user.email == "some@email"
     end
 
     test "insert/1 with invalid data returns error changeset" do
@@ -42,7 +42,7 @@ defmodule CsGuide.AccountsTest do
       user = user_fixture()
       assert {:ok, user} = User.update(user, @update_attrs)
       assert %User{} = user
-      assert user.email == "some updated email"
+      assert user.email == "some@updated.email"
     end
 
     test "update/2 with invalid data returns error changeset" do

@@ -11,6 +11,13 @@ defmodule CsGuideWeb.SignupController do
             conn
             |> put_flash(:info, "Venue created successfully.")
             |> redirect(to: venue_path(conn, :show, venue.entry_id))
+
+          {:error, %Ecto.Changeset{} = changeset} ->
+            IO.inspect(changeset)
+
+            conn
+            |> put_view(CsGuideWeb.UserView)
+            |> render(:new, user_changeset: changeset, venue_changeset: changeset)
         end
 
       {:error, %Ecto.Changeset{} = changeset} ->
