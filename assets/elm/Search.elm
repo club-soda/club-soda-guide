@@ -113,12 +113,12 @@ update msg model =
 
 drink_types : List String
 drink_types =
-    [ "Beer", "Wine", "Spirits and Premixed", "Soft Drinks", "Flavoured Tonics", "Ciders" ]
+    [ "Beer", "Wine", "Spirits & Premixed", "Soft Drink", "Tonics & Mixers", "Cider" ]
 
 
 abv_levels : List String
 abv_levels =
-    [ "0.05%", "0.5%", "1 - 2.5%", "2.5 - 8%" ]
+    [ "0%", "0.05%", "0.5%", "1 - 2.5%", "2.5 - 8%" ]
 
 
 view : Model -> Html Msg
@@ -145,6 +145,9 @@ filterDrinks model =
 filterByABV : Model -> Drink -> Bool
 filterByABV model drink =
     case model.abv_filter of
+        "0%" ->
+            drink.abv == 0.0
+
         "0.05%" ->
             drink.abv == 0.05
 
