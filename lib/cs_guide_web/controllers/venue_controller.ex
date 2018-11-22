@@ -37,7 +37,7 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def edit(conn, %{"id" => id}) do
-    venue = Venue.get(id)
+    venue = Venue.get(id) |> Venue.preload(:venue_types)
     changeset = Venue.changeset(venue)
     render(conn, "edit.html", venue: venue, changeset: changeset)
   end

@@ -59,4 +59,14 @@ defmodule CsGuide.Resources do
       _ -> assoc_attrs
     end
   end
+
+  def require_assocs(changeset, assocs) do
+    Enum.reduce(assocs, changeset, fn a, c ->
+      if length(Map.get(c.changes, a, [])) < 1 do
+        Ecto.Changeset.add_error(c, a, "can't be blank", validation: :required)
+      else
+        c
+      end
+    end)
+  end
 end

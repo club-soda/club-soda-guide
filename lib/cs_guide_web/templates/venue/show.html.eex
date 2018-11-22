@@ -42,8 +42,8 @@
       <img src="<%= static_path(@conn, "/images/sample-map.png") %>" alt="Map of venue" class="">
       <div class="pv3">
           <p class="f5 lh5 pr4 dib">
-            <%= if @venue.address_line_1 do %>
-              <%= @venue.address_line_1 <> " " %>
+            <%= if @venue.address do %>
+              <%= @venue.address <> " " %>
             <% end %>
             <%= if @venue.city do %>
               <%= @venue.city <> " " %>
