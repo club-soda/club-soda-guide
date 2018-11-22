@@ -9,20 +9,32 @@ defmodule CsGuide.ResourcesTest do
 
   describe "venues" do
     alias CsGuide.Resources.Venue
+    alias CsGuide.Categories.VenueType
 
+    @venue_type_name "Bars"
     @valid_attrs %{
       phone_number: "01234567890",
       postcode: "EC1 5AD",
-      venue_name: "some venue_name"
+      venue_name: "some venue_name",
+      venue_types: %{@venue_type_name => "on"}
     }
     @update_attrs %{
       phone_number: "09876543210",
       postcode: "EC2 6FV",
-      venue_name: "some updated venue_name"
+      venue_name: "some updated venue_name",
+      venue_types: %{@venue_type_name => "on"}
     }
-    @invalid_attrs %{phone_number: nil, postcode: nil, venue_name: nil}
+    @invalid_attrs %{
+      phone_number: nil,
+      postcode: nil,
+      venue_name: nil,
+      venue_types: %{@venue_type_name => "on"}
+    }
 
     def venue_fixture(attrs \\ %{}) do
+      %{name: @venue_type_name}
+      |> VenueType.insert()
+
       {:ok, venue} =
         attrs
         |> Enum.into(@valid_attrs)
@@ -46,6 +58,7 @@ defmodule CsGuide.ResourcesTest do
     end
 
     test "insert/1 with valid data creates a venue" do
+      assert {:ok, %VenueType{}} = VenueType.insert(%{name: @venue_type_name})
       assert {:ok, %Venue{} = venue} = Venue.insert(@valid_attrs)
       assert venue.phone_number == "01234567890"
       assert venue.postcode == "EC1 5AD"

@@ -46,7 +46,7 @@ defmodule CsGuide.Import do
   def venues_1(csv) do
     csv
     |> csv_to_map(
-      ~w(nil venue_name nil description venue_types nil nil nil nil nil nil nil address_line_1 city region country postcode latitude longitude opening_hours phone_number email website twitter facebook nil nil nil instagram)a
+      ~w(nil venue_name nil description venue_types nil nil nil nil nil nil nil address city region country postcode latitude longitude opening_hours phone_number email website twitter facebook nil nil nil instagram)a
     )
     |> Enum.each(fn v ->
       if v.venue_name != "" do
@@ -114,7 +114,7 @@ defmodule CsGuide.Import do
         ])
       )
       |> Map.put(:postcode, postcode)
-      |> Map.put(:address_line_1, String.trim(address))
+      |> Map.put(:address, String.trim(address))
       |> Map.put(:cs_score, 5.0)
       |> add_link(:venue_types, VenueType, :name)
       |> elem(1)
@@ -128,7 +128,7 @@ defmodule CsGuide.Import do
     |> Enum.map(fn data ->
       columns
       |> Enum.zip(data)
-      |> Enum.filter(fn {k, v} -> not is_nil(k) end)
+      |> Enum.filter(fn {k, _v} -> not is_nil(k) end)
       |> Map.new()
     end)
   end

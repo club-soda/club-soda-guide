@@ -9,9 +9,10 @@ defmodule CsGuideWeb.VenueControllerTest do
   @create_brand Fixtures.create_brand()
   @create_types Fixtures.create_types()
   @create_drinks Fixtures.create_drinks()
+  @create_venue_type Fixtures.create_venue_type()
 
   @create_attrs %{
-    address_line_1: "number and road",
+    address: "number and road",
     city: "London",
     phone_number: "01234567890",
     postcode: "EC1 5AD",
@@ -19,17 +20,21 @@ defmodule CsGuideWeb.VenueControllerTest do
     venue_types: %{
       "35f9e338-7c50-4883-8214-91e2c0ad5796" => "on"
     },
-    drinks: %{"AF Beer 1" => "on"}
+    drinks: %{"AF Beer 1" => "on"},
+    venue_types: %{"Bars" => "on"}
   }
   @update_attrs %{
     phone_number: "09876543210",
     postcode: "EC2 7FY",
     venue_name: "The Updated Example Pub",
-    drinks: %{"AF Beer 1" => "on"}
+    drinks: %{"AF Beer 1" => "on"},
+    venue_types: %{"Bars" => "on"}
   }
   @invalid_attrs %{phone_number: nil, postcode: nil, venue_name: nil}
 
   def fixture(:venue) do
+    {:ok, type} = @create_venue_type |> Categories.VenueType.insert()
+
     {:ok, venue} =
       @create_attrs
       |> Resources.Venue.insert()
@@ -85,6 +90,8 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "create venue" do
+    setup [:create_venue]
+
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
 
@@ -102,7 +109,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "Calculates correct CS Score:" do
-    setup [:drink_setup]
+    setup [:drink_setup, :create_venue]
 
     test "When no drinks are added the score is 0", %{conn: conn, drinks: drinks} do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)

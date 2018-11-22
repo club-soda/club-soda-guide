@@ -17,7 +17,7 @@ defmodule CsGuide.Resources.Venue do
     field(:deleted, :boolean, default: false)
     field(:description, :string)
     field(:website, :string)
-    field(:address_line_1, Fields.Address)
+    field(:address, Fields.Address)
     field(:city, Fields.Address)
     field(:twitter, :string)
     field(:instagram, :string)
@@ -51,13 +51,13 @@ defmodule CsGuide.Resources.Venue do
       :description,
       :num_cocktails,
       :website,
-      :address_line_1,
+      :address,
       :city,
       :twitter,
       :instagram,
       :facebook
     ])
-    |> validate_required([:venue_name])
+    |> validate_required([:venue_name, :postcode, :venue_types])
   end
 
   def insert(attrs) do
@@ -66,6 +66,7 @@ defmodule CsGuide.Resources.Venue do
     |> __MODULE__.changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :name)
+    |> Resources.require_assocs([:venue_types])
     |> Repo.insert()
   end
 
