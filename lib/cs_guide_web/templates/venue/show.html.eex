@@ -120,7 +120,11 @@
           <div class="card-front-contents">
             <div class="bb b--cs-light-pink bw3 mb3 tl h-27rem">
               <h4 class="f4 lh4 pa3 shadow-4 br2 mt4 mb1 mh4 tc bg-sheer-white absolute top-1"><%= drink.brand.name %> <%= drink.name %></h4>
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyT_ehuzfLvJKLPOAVjobqWtZjFO1--mgpQb_NJmq0wIfpEc5SyXkuPxpG" alt="Photo of drink" class="w-5rem db center pt4">
+              <%= if img = List.last(drink.drink_images) do %>
+                <img src="https://s3-eu-west-1.amazonaws.com/club-soda-images/<%=img.entry_id%>" alt="Photo of drink" class="min-w-5rem max-h-16rem db center pt4">
+              <% else %>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyT_ehuzfLvJKLPOAVjobqWtZjFO1--mgpQb_NJmq0wIfpEc5SyXkuPxpG" alt="Photo of drink" class="min-w-5rem max-h-16rem db center pt4">
+              <% end %>
               <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib"><%= drink.abv %>% ABV</p>
             </div>
           </div>

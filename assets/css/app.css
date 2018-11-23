@@ -206,6 +206,14 @@ select {
   width: 5rem;
 }
 
+.min-w-5rem {
+  min-width: 5rem;
+}
+
+.max-h-16rem {
+  max-height: 16rem;
+}
+
 @media (min-width: 30rem) {
   .w-sixth-ns {
     width: 16.6%;

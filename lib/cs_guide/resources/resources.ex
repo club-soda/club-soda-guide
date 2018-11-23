@@ -69,4 +69,12 @@ defmodule CsGuide.Resources do
       end
     end)
   end
+
+  def upload_photo(params, filename) do
+    file = File.read!(params["photo"].path)
+
+    Application.get_env(:ex_aws, :bucket)
+    |> ExAws.S3.put_object(filename, file)
+    |> ExAws.request()
+  end
 end
