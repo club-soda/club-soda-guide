@@ -38,6 +38,8 @@ defmodule CsGuide.Resources.Drink do
       join_keys: [drink_id: :id, drink_style_id: :id]
     )
 
+    has_many(:drink_images, CsGuide.Images.DrinkImage)
+
     timestamps()
   end
 

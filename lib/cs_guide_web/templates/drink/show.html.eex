@@ -1,5 +1,10 @@
 <section class="center w-80 w-75-l mv6">
   <h2 class="f4 lh4">Show Drink</h2>
+
+  <%= if img = List.last(@drink.drink_images) do %>
+    <img src="https://s3-eu-west-1.amazonaws.com/club-soda-images/<%=img.entry_id%>">
+  <% end %>
+  
   <ul class="pv3">
     <li>
       <strong>Name:</strong>
@@ -14,6 +19,10 @@
       <%= @drink.abv %>
     </li>
   </ul>
+
+  <div class="mt1 mb4">
+    <%= link "Upload Photo", to: drink_path(@conn, :add_photo, @drink.entry_id), class: "dib db btn-primary no-underline" %>
+  </div>
 
   <span><%= link "Edit", to: drink_path(@conn, :edit, @drink.entry_id) %></span>
   <span><%= link "Back", to: drink_path(@conn, :index) %></span>

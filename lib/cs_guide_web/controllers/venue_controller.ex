@@ -31,7 +31,7 @@ defmodule CsGuideWeb.VenueController do
     venue =
       id
       |> Venue.get()
-      |> Venue.preload(drinks: [:brand, :drink_types], venue_types: [])
+      |> Venue.preload(drinks: [:brand, :drink_types, :drink_images], venue_types: [])
 
     render(conn, "show.html", venue: venue)
   end
@@ -112,7 +112,7 @@ defmodule CsGuideWeb.VenueController do
     venue =
       id
       |> Venue.get()
-      |> Venue.preload(drinks: [:brand])
+      |> Venue.preload(drinks: [:brand], venue_types: [])
 
     brands = Brand.all() |> Brand.preload(:drinks)
 
@@ -131,19 +131,9 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def upload_photo(conn, params) do
-    file = File.read!(params["photo"].path)
-
-    case ExAws.S3.put_object(
-           Application.get_env(:ex_aws, :bucket),
-           params["id"],
-           file
-         )
-         |> ExAws.request() do
-      {:ok, _} ->
-        redirect(conn, to: venue_path(conn, :show, params["id"]))
-
-      _ ->
-        render(conn, "add_photo.html", id: params["id"], error: true)
+    case CsGuide.Resources.upload_photo(params, params["id"]) do
+      {:ok, _} -> redirect(conn, to: venue_path(conn, :show, params["id"]))
+      _ -> render(conn, "add_photo.html", id: params["id"], error: true)
     end
   end
 end
