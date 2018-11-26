@@ -1,0 +1,18 @@
+<section class="center w-80 w-75-l mv6">
+  <h2 class="f4 lh4">Upload a photo for this drink</h2>
+
+  <%= form_for @conn, drink_path(@conn, :upload_photo, @id), [multipart: true], fn f -> %>
+    <div class="form-group mb4">
+      <label class="db pt4 pb3">Select drink photo</label>
+      <%= file_input f, :photo, class: "form-control" %>
+      <%= if assigns[:error] do %>
+      <p class="f5 lh5 red">Error uploading image, please try again or an alternative image.</p>
+      <% end %>
+    </div>
+
+    <div class="form-group">
+      <%= submit "Submit", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+
+</section>

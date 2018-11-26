@@ -95,3 +95,21 @@ The existing data is imported through our [seeds file](priv/repo/seeds.exs).
 The environment variable `IMPORT_FILES_DIR` should be the path to the directory containing the csv files (For example, if those files are hosted on AWS S3, it would be the path of the S3 bucket).
 
 The files should be named correctly such that the format of te file matches the function that will be calling it. (That is, the brands file should be `brands.csv`, drinks `drinks.csv` and the venues `venues_1.csv`, `venues_2.csv` or `venues_3.csv`, depending on which format it is. These should be named correctly already, and as this import is only intended to be done once, shouldn't need to be changed. This documentation is just here as a guide if this import function ever needs to be extended.)
+
+## Uploading Images
+
+To upload a drink image, go to `/drinks`, then select `show` on the drink you want to upload an image for.
+
+<img width="500" alt="drinks list" src="https://user-images.githubusercontent.com/8939909/48944120-6442f580-ef1d-11e8-9173-31b01d4bf126.png">
+
+There you will see an `Upload Image` button. Click this and it will take you to the upload image page.
+
+<img width="250" alt="drink page" src="https://user-images.githubusercontent.com/8939909/48944137-73c23e80-ef1d-11e8-839c-621c1d07353e.png">
+
+Select the image you want to upload and click submit.
+
+<img width="250" alt="upload image page" src="https://user-images.githubusercontent.com/8939909/48944177-95bbc100-ef1d-11e8-8173-f36ba2e4a6ed.png">
+
+If successful, you'll be taken back to the drink page and your image will display.
+
+<img width="250" alt="drink page with image" src="https://user-images.githubusercontent.com/8939909/48944158-83418780-ef1d-11e8-9480-118293245c86.png">

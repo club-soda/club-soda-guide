@@ -20,6 +20,7 @@ type alias Drink =
     , abv : Float
     , drink_types : List String
     , description : String
+    , image : String
     }
 
 
@@ -73,12 +74,13 @@ drinksDecoder =
 
 drinkDecoder : Decoder Drink
 drinkDecoder =
-    Json.map5 Drink
+    Json.map6 Drink
         (field "name" string)
         (field "brand" string)
         (field "abv" float)
         (field "drink_types" (Json.list string))
         (field "description" string)
+        (field "image" string)
 
 
 
@@ -113,12 +115,12 @@ update msg model =
 
 drink_types : List String
 drink_types =
-    [ "Beer", "Wine", "Spirits and Premixed", "Soft Drinks", "Flavoured Tonics", "Ciders" ]
+    [ "Beer", "Wine", "Spirits & Premixed", "Soft Drink", "Tonics & Mixers", "Cider" ]
 
 
 abv_levels : List String
 abv_levels =
-    [ "0.05%", "0.5%", "1 - 2.5%", "2.5 - 8%" ]
+    [ "0%", "0.05%", "0.5%", "1 - 2.5%", "2.5 - 8%" ]
 
 
 view : Model -> Html Msg
@@ -145,6 +147,9 @@ filterDrinks model =
 filterByABV : Model -> Drink -> Bool
 filterByABV model drink =
     case model.abv_filter of
+        "0%" ->
+            drink.abv == 0.0
+
         "0.05%" ->
             drink.abv == 0.05
 
@@ -184,7 +189,7 @@ renderDrinks drinks =
                         [ div [ class "card-front-contents" ]
                             [ div [ class "bb b--cs-light-pink bw3 mb3 tl h-27rem" ]
                                 [ h4 [ class "f4 lh4 pa3 shadow-4 br2 mt4 mb1 tc bg-sheer-white absolute-horizontal-center top-1 w-80" ] [ text <| d.brand ++ " " ++ d.name ]
-                                , img [ src "https://res.cloudinary.com/ratebeer/image/upload/w_250,c_limit/beer_117796.jpg", alt "Photo of drink", class "w-5rem db center pt4" ] []
+                                , img [ src d.image, alt "Photo of drink", class "min-w-5rem max-h-16rem db center pt4" ] []
                                 , p [ class "bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib" ] [ text <| String.fromFloat d.abv ++ "% ABV" ]
                                 ]
                             ]
