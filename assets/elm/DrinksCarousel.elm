@@ -39,9 +39,10 @@ drinksDecoder =
 
 drinkDecoder : Decoder Drink
 drinkDecoder =
-    Decode.map5 Drink
+    Decode.map6 Drink
         (field "name" string)
         (field "brand" string)
+        (field "brandId" string)
         (field "abv" float)
         (field "description" string)
         (field "image" string)
@@ -54,6 +55,7 @@ type alias HttpData data =
 type alias Drink =
     { name : String
     , brand : String
+    , brandId : String
     , abv : Float
     , description : String
     , image : String
@@ -180,7 +182,7 @@ renderDrinksCarousel model =
                             [ div [ class "bb b--pink mt2 mh2 pb3 center" ]
                                 [ h4 [ class "f4 lh4 mb1" ] [ text d.name ]
                                 , p [ class "f5 lh5 mv1" ] [ text "by" ]
-                                , a [ class "f4 lh4 cs-mid-blue mv1", href <| "/brands/" ++ "d.brand.entry_id" ] [ text d.brand ]
+                                , a [ class "f4 lh4 cs-mid-blue mv1", href <| "/brands/" ++ d.brandId ] [ text d.brand ]
                                 ]
                             , div [ class "flex flex-wrap" ]
                                 [ p [ class "w-50 pv2 dib" ] [ text "Drink Category" ]
