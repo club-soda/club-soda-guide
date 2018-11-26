@@ -2,6 +2,7 @@ defmodule CsGuideWeb.BrandController do
   use CsGuideWeb, :controller
 
   alias CsGuide.Resources.Brand
+  alias CsGuide.Images.BrandImage
 
   def index(conn, _params) do
     brands = Brand.all()
@@ -29,7 +30,10 @@ defmodule CsGuideWeb.BrandController do
     brand =
       id
       |> Brand.get()
-      |> Brand.preload(drinks: [:brand, :drink_types, venues: [:venue_types]])
+      |> Brand.preload(
+        drinks: [:drink_images, :brand, :drink_types, venues: [:venue_types]],
+        brand_images: []
+      )
 
     render(conn, "show.html", brand: brand)
   end
@@ -61,5 +65,29 @@ defmodule CsGuideWeb.BrandController do
     conn
     |> put_flash(:info, "Brand deleted successfully.")
     |> redirect(to: brand_path(conn, :index))
+  end
+
+  def add_photo(conn, %{"id" => id}) do
+    render(conn, "add_photo.html", id: id)
+  end
+
+  def upload_photo(conn, params) do
+    CsGuide.Repo.transaction(fn ->
+      with {:ok, brand_image} <-
+             BrandImage.insert(%{
+               brand: params["id"],
+               cover: String.to_existing_atom(params["cover"])
+             }),
+           {:ok, _} <- CsGuide.Resources.upload_photo(params, brand_image.entry_id) do
+        {:ok, brand_image}
+      else
+        val ->
+          Repo.rollback(val)
+      end
+    end)
+    |> case do
+      {:ok, _} -> redirect(conn, to: brand_path(conn, :show, params["id"]))
+      {:error, _} -> render(conn, "add_photo.html", id: params["id"], error: true)
+    end
   end
 end

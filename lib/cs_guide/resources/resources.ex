@@ -10,18 +10,24 @@ defmodule CsGuide.Resources do
 
   def put_many_to_many_assoc(item, attrs, assoc, assoc_module, field) do
     assocs =
-      Enum.map(get_assoc_attrs(assoc, attrs), fn {f, active} ->
-        if String.to_existing_atom(active) do
-          Repo.one(
-            from(a in assoc_module,
-              where: field(a, ^field) == ^f,
-              limit: 1,
-              order_by: [desc: :inserted_at],
-              select: a
-            )
-          )
-        else
-          nil
+      Enum.map(get_assoc_attrs(assoc, attrs), fn a ->
+        case a do
+          {f, active} ->
+            if String.to_existing_atom(active) do
+              Repo.one(
+                from(a in assoc_module,
+                  where: field(a, ^field) == ^f,
+                  limit: 1,
+                  order_by: [desc: :inserted_at],
+                  select: a
+                )
+              )
+            else
+              nil
+            end
+
+          f ->
+            f
         end
       end)
       |> Enum.filter(& &1)

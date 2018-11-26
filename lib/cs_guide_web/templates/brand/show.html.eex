@@ -1,6 +1,8 @@
 <section class="center mt5 mb6">
   <%= if @brand.member do %>
-    <img class="db w-40 img-cover pt2 center mb6" src="https://static1.squarespace.com/static/593fd282ff7c50ca377ca0e8/t/593fd36d15d5db7a1fd79461/1539942462000/?format=1500w" alt="Brand cover image">
+    <%= if img = @brand.brand_images |> Enum.reverse |> Enum.find(fn i -> i.cover end) do %>
+      <img class="db w-40 img-cover pt2 center mb6" src="https://s3-eu-west-1.amazonaws.com/club-soda-images/<%=img.entry_id%>" alt="Brand cover image">
+    <% end %>
   <%= else %>
     <div class="bg-blue-pink w-100 center tc mb5">
       <h1 class="roboto-slab white f2 lh2 pv6"><%= @brand.name %></h1>
@@ -53,9 +55,11 @@
 
   <%= if @brand.member do %>
     <section class="flex w-70-ns center">
-      <div class="w-50-ns pa3 shadow-1">
-        <img class="w-100" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKzommFsRAApdf_sUR6NgbM0f285vbD99amG93ptXxkDrHfPbL" alt="brand image">
-      </div>
+      <%= if img = @brand.brand_images |> Enum.reverse |> Enum.find(fn i -> !i.cover end) do %>
+        <div class="w-50-ns pa3 <%= if img do %>shadow-1<% end %>">
+          <img class="w-100" src="https://s3-eu-west-1.amazonaws.com/club-soda-images/<%=img.entry_id%>" alt="Brand image">
+        </div>
+      <% end %>
       <div class="w-50-ns pl4 lh6 f6">
         <%= if @brand.copy do %>
           <p><%= @brand.copy %></p>
@@ -75,7 +79,11 @@
           <div class="card-front-contents">
             <div class="bb b--cs-light-pink bw3 mb3 tl h-27rem">
               <h4 class="f4 lh4 pa3 shadow-4 br2 mt4 mb1 mh4 tc bg-sheer-white absolute top-1"><%= drink.brand.name %> <%= drink.name %></h4>
-              <img src="https://res.cloudinary.com/ratebeer/image/upload/w_250,c_limit/beer_117796.jpg" alt="Photo of drink" class="w-5rem db center pt4">
+              <%= if img = List.last(drink.drink_images) do %>
+                <img src="https://s3-eu-west-1.amazonaws.com/club-soda-images/<%=img.entry_id%>" alt="Photo of drink" class="min-w-5rem max-h-16rem db center pt4">
+              <% else %>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyT_ehuzfLvJKLPOAVjobqWtZjFO1--mgpQb_NJmq0wIfpEc5SyXkuPxpG" alt="Photo of drink" class="min-w-5rem max-h-16rem db center pt4">
+              <% end %>
               <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib"><%= drink.abv %>% ABV</p>
             </div>
           </div>
@@ -113,7 +121,7 @@
   <section class="w-90 center pv5">
     <h2 class="roboto-slab f2 lh2 db tc pb4">Places that Serve <%= @brand.name %></h2>
     <div class="flex flex-wrap justify-center">
-        <%= for venue <- get_venues(@brand) do %>
+        <%= for venue <- get_venues(@brand) |> Enum.slice(0,4) do %>
           <%= component("venue_card", venue: venue, conn: @conn) %>
         <% end %>
     </div>
@@ -126,11 +134,10 @@
     <section class="w-90 center pv5">
       <h2 class="roboto-slab f2 lh2 db tc pb4">Where to Buy <%= @brand.name %></h2>
       <%= for venue <- get_venues(@brand) do %>
-
         <%= if venue.venue_types do %>
           <%= for type <- venue.venue_types do %>
-            <%= if type.name == "Bars" do %>
-              <p class="bg-red ph4"><%= type.name %></p>
+            <%= if type.name == "Retailers" do %>
+              <p class="ph4"><%= venue.venue_name %></p>
             <% end %>
           <% end %>
         <% end %>

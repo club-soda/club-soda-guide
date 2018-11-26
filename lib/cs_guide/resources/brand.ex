@@ -17,6 +17,7 @@ defmodule CsGuide.Resources.Brand do
     field(:copy, :string)
 
     has_many(:drinks, CsGuide.Resources.Drink)
+    has_many(:brand_images, CsGuide.Images.BrandImage)
 
     timestamps()
   end

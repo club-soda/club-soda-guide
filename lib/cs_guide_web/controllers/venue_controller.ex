@@ -47,7 +47,7 @@ defmodule CsGuideWeb.VenueController do
         "venue" => venue = %{"drinks" => drinks, "num_cocktails" => num_cocktails}
       })
       when map_size(venue) <= 2 do
-    venue = Venue.get(id)
+    venue = Venue.get(id) |> Venue.preload(:venue_types)
 
     venue_params =
       venue
