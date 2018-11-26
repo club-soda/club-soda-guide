@@ -202,10 +202,6 @@ select {
   object-fit: cover;
 }
 
-.top-6 {
-  top: 6rem;
-}
-
 .right-4 {
   right: 4rem;
 }
@@ -216,6 +212,14 @@ select {
 
 .w-5rem {
   width: 5rem;
+}
+
+.min-w-5rem {
+  min-width: 5rem;
+}
+
+.max-h-16rem {
+  max-height: 16rem;
 }
 
 @media (min-width: 30rem) {
@@ -409,4 +413,24 @@ select {
 
 .brand-group, .drink_styles-group, .drink_types-group {
   padding: 1rem;
+}
+
+
+.form-group:last-child {
+  margin-top: 2rem;
+}
+
+.bg-venue {
+  height: 60vh;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.min-h5 {
+  min-height: 16rem;
+}
+
+.alert-info {
+  background: #00C6B3;
 }

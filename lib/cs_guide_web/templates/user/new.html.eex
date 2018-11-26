@@ -4,12 +4,11 @@
   takes is your email and a password.</p>
 
   <%= custom_render_autoform(@conn, :create, [
-    CsGuide.Accounts.User,
+    {CsGuide.Accounts.User, exclude: [:email_hash]},
     "<h3 class=\"f4 lh4 mt3\">Set Up a Venue</h3>",
     "<h2 class=\"f5 lh5 mt3 mb2\">Basic Information</h2>",
     "<p class=\"f6 lh6 cs-pink mb3\">* - required field</p>",
-    {CsGuide.Resources.Venue, exclude: [:drinks, :phone_number, :venue_types, :cs_score]},
-    "<p class=\"underline cs-mid-blue f6 lh6 pointer mb3\">Look Up Postcode</p>",
-    {CsGuide.Resources.Venue, exclude: [:drinks, :venue_name, :postcode, :cs_score], custom_labels: %{venue_types: "Venue Type"}}
+    {CsGuide.Resources.Venue, exclude: [:drinks, :phone_number, :venue_types, :cs_score, :num_cocktails, :website, :description, :twitter, :instagram, :facebook]},
+    {CsGuide.Resources.Venue, exclude: [:drinks, :venue_name, :postcode, :cs_score, :num_cocktails, :website, :description, :address, :city, :twitter, :instagram, :facebook], custom_labels: %{venue_types: "Venue Type"}}
   ], exclude: [:deleted, :entry_id], path: "/signup", assoc_query: &query/1, assigns: [changeset: @venue_changeset]) %>
 </section>

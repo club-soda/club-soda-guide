@@ -30,10 +30,7 @@ defmodule CsGuide.Resources do
   end
 
   def put_belongs_to_assoc(item, attrs, assoc, assoc_field, assoc_module, field) do
-    {assoc, _} =
-      Enum.find(get_assoc_attrs(assoc, attrs), fn {_, active} ->
-        String.to_existing_atom(active)
-      end)
+    assoc = Map.get(attrs, assoc, Map.get(attrs, to_string(assoc), ""))
 
     loaded_assoc =
       Repo.one(
@@ -45,7 +42,13 @@ defmodule CsGuide.Resources do
         )
       )
 
-    Map.put(item, assoc_field, loaded_assoc.id)
+    case loaded_assoc do
+      nil ->
+        item
+
+      loaded ->
+        Map.put(item, assoc_field, loaded_assoc.id)
+    end
   end
 
   defp get_assoc_attrs(assoc, attrs) do
@@ -55,5 +58,23 @@ defmodule CsGuide.Resources do
       nil -> []
       _ -> assoc_attrs
     end
+  end
+
+  def require_assocs(changeset, assocs) do
+    Enum.reduce(assocs, changeset, fn a, c ->
+      if length(Map.get(c.changes, a, [])) < 1 do
+        Ecto.Changeset.add_error(c, a, "can't be blank", validation: :required)
+      else
+        c
+      end
+    end)
+  end
+
+  def upload_photo(params, filename) do
+    file = File.read!(params["photo"].path)
+
+    Application.get_env(:ex_aws, :bucket)
+    |> ExAws.S3.put_object(filename, file)
+    |> ExAws.request()
   end
 end

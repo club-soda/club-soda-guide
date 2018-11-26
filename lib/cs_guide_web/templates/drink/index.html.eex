@@ -23,7 +23,11 @@
 
         <td class="text-right">
           <span><%= link "Show", to: drink_path(@conn, :show, drink.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
+        </td>
+        <td>
           <span><%= link "Edit", to: drink_path(@conn, :edit, drink.entry_id),class: "ph3 pv3-ns cs-mid-blue" %></span>
+        </td>
+        <td>
           <span><%= link "Delete", to: drink_path(@conn, :delete, drink.entry_id), method: :delete, data: [confirm: "Are you sure?"], class: "ph3 pv3-ns cs-mid-blue" %></span>
         </td>
       </tr>

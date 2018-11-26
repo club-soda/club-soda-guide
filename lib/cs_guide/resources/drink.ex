@@ -38,6 +38,8 @@ defmodule CsGuide.Resources.Drink do
       join_keys: [drink_id: :id, drink_style_id: :id]
     )
 
+    has_many(:drink_images, CsGuide.Images.DrinkImage)
+
     timestamps()
   end
 
@@ -71,7 +73,8 @@ defmodule CsGuide.Resources.Drink do
         selected =
           case Map.get(attrs, to_string(a)) do
             nil -> []
-            selected -> Enum.map(selected, fn {k, v} -> k end)
+            [_] = selected -> Enum.map(selected, fn {k, v} -> k end)
+            selected -> selected
           end
 
         {a,

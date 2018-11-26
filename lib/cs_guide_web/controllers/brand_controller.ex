@@ -29,7 +29,7 @@ defmodule CsGuideWeb.BrandController do
     brand =
       id
       |> Brand.get()
-      |> Brand.preload(drinks: [:brand, :drink_types, :venues])
+      |> Brand.preload(drinks: [:brand, :drink_types, venues: [:venue_types]])
 
     render(conn, "show.html", brand: brand)
   end
