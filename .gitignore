@@ -33,3 +33,5 @@ elm-stuff/
 /assets/js/main.js
 
 .elixir_ls/
+
+/assets/package-lock.json
