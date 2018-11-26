@@ -60,8 +60,9 @@ config :logger, level: :info
 #     config :cs_guide, CsGuideWeb.Endpoint, server: true
 #
 
-config :cs_guide, CsGuideWeb.Endpoint,
-  secret_key_base: System.get_env("SECRET_KEY_BASE")
+config :cs_guide, CsGuideWeb.Endpoint, secret_key_base: System.get_env("SECRET_KEY_BASE")
+
+config :fields, Fields, secret_key_base: System.get_env("SECRET_KEY_BASE")
 
 # Configure your database
 config :cs_guide, CsGuide.Repo,

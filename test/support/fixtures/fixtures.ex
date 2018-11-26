@@ -200,4 +200,8 @@ defmodule CsGuide.Fixtures do
       copy: ""
     }
   end
+
+  def create_venue_type do
+    %{name: "Bars"}
+  end
 end

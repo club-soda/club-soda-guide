@@ -14,10 +14,7 @@ defmodule CsGuide.Import do
     |> Enum.each(fn d ->
       if d.name != "" do
         {_, drink} =
-          Map.get_and_update(d, :brand, fn b ->
-            {b, Map.new([{b, "on"}])}
-          end)
-          |> elem(1)
+          d
           |> add_link(:drink_types, DrinkType, :name)
           |> elem(1)
           |> add_link(:drink_styles, DrinkStyle, :name)
@@ -49,7 +46,7 @@ defmodule CsGuide.Import do
   def venues_1(csv) do
     csv
     |> csv_to_map(
-      ~w(nil venue_name nil description venue_types nil nil nil nil nil nil nil address city region country postcode latitude longitude opening_hours phone_number email website twitter facebook instagram)a
+      ~w(nil venue_name nil description venue_types nil nil nil nil nil nil nil address city region country postcode latitude longitude opening_hours phone_number email website twitter facebook nil nil nil instagram)a
     )
     |> Enum.each(fn v ->
       if v.venue_name != "" do
@@ -57,6 +54,8 @@ defmodule CsGuide.Import do
 
         venue
         |> Map.update!(:venue_name, &String.trim/1)
+        |> Map.update!(:phone_number, fn s -> String.replace(s, " ", "") |> String.trim() end)
+        |> Map.update!(:postcode, &String.trim/1)
         |> Venue.insert()
         |> case do
           {:ok, _} -> nil
@@ -96,9 +95,11 @@ defmodule CsGuide.Import do
   def venues_3(csv) do
     csv
     |> csv_to_map(
-      ~w(venue_name nil address phone_number email description website facebook twitter)a
+      ~w(venue_name nil address phone_number email description website facebook twitter num_cocktails)a
     )
     |> Enum.each(fn v ->
+      [address, postcode] = extract_postcode(v.address)
+
       v
       |> Map.put(:venue_types, "Bars")
       |> Map.put(
@@ -112,6 +113,9 @@ defmodule CsGuide.Import do
           {"Mediterranean Tonic Water", "on"}
         ])
       )
+      |> Map.put(:postcode, postcode)
+      |> Map.put(:address, String.trim(address))
+      |> Map.put(:cs_score, 5.0)
       |> add_link(:venue_types, VenueType, :name)
       |> elem(1)
       |> Venue.insert()
@@ -124,7 +128,7 @@ defmodule CsGuide.Import do
     |> Enum.map(fn data ->
       columns
       |> Enum.zip(data)
-      |> Enum.filter(fn {k, v} -> not is_nil(k) end)
+      |> Enum.filter(fn {k, _v} -> not is_nil(k) end)
       |> Map.new()
     end)
   end
@@ -154,6 +158,13 @@ defmodule CsGuide.Import do
     CSV.parse_string(csv, headers: false)
     |> List.first()
     |> Enum.find_index(fn e -> e == name end)
+  end
+
+  defp extract_postcode(str) do
+    postcode_regex =
+      ~r/((GIR 0AA)|((([A-PR-UWYZ][0-9][0-9]?)|(([A-PR-UWYZ][A-HK-Y][0-9][0-9]?)|(([A-PR-UWYZ][0-9][A-HJKSTUW])|([A-PR-UWYZ][A-HK-Y][0-9][ABEHMNPRVWXY])))) [0-9][ABD-HJLNP-UW-Z]{2}))/
+
+    Regex.split(postcode_regex, str, include_captures: true, trim: true)
   end
 end
 

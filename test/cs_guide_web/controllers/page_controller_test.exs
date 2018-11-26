@@ -1,15 +1,19 @@
 defmodule CsGuideWeb.PageControllerTest do
   use CsGuideWeb.ConnCase
-  alias CsGuide.Resources
+  alias CsGuide.{Resources, Categories}
 
   @venues [
     %{
       venue_name: "The Favourite Pub",
-      favourite: true
+      favourite: true,
+      venue_types: %{"Pubs" => "on"},
+      postcode: "TW3 5FG"
     },
     %{
       venue_name: "The Not Favourite Pub",
-      favourite: false
+      favourite: false,
+      venue_types: %{"Pubs" => "on"},
+      postcode: "SW1 4RV"
     }
   ]
   describe "renders landing page as expected" do
@@ -36,6 +40,9 @@ defmodule CsGuideWeb.PageControllerTest do
   end
 
   def fixture(:venue) do
+    %{name: "Pubs"}
+    |> Categories.VenueType.insert()
+
     @venues
     |> Enum.map(fn v ->
       {:ok, venue} = Resources.Venue.insert(v)

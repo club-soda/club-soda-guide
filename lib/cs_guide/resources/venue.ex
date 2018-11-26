@@ -10,15 +10,17 @@ defmodule CsGuide.Resources.Venue do
   schema "venues" do
     field(:venue_name, :string)
     field(:description, :string)
-    field(:address1, :string)
-    field(:address2, :string)
-    field(:postcode, :string)
+    field(:address, Fields.Address)
+    field(:city, Fields.Address)
+    field(:postcode, Fields.Postcode)
     field(:website, :string)
-    field(:phone_number, :string)
+    field(:phone_number, Fields.PhoneNumber)
+    field(:twitter, :string)
     field(:facebook, :string)
     field(:instagram, :string)
     field(:cs_score, :float, default: 0.0)
     field(:favourite, :boolean, default: false)
+    field(:num_cocktails, :integer)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
 
@@ -44,18 +46,20 @@ defmodule CsGuide.Resources.Venue do
     venue
     |> cast(attrs, [
       :venue_name,
-      :description,
-      :address1,
-      :address2,
       :postcode,
-      :website,
       :phone_number,
-      :facebook,
-      :instagram,
       :cs_score,
+      :description,
+      :num_cocktails,
+      :website,
+      :address,
+      :city,
+      :twitter,
+      :instagram,
+      :facebook,
       :favourite
     ])
-    |> validate_required([:venue_name])
+    |> validate_required([:venue_name, :postcode, :venue_types])
   end
 
   def insert(attrs) do
@@ -64,6 +68,7 @@ defmodule CsGuide.Resources.Venue do
     |> __MODULE__.changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :name)
+    |> Resources.require_assocs([:venue_types])
     |> Repo.insert()
   end
 
