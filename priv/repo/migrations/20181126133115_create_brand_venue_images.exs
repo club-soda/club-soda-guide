@@ -10,9 +10,7 @@ defmodule CsGuide.Repo.Migrations.CreateBrandVenueImages do
 
       timestamps()
     end
-  end
 
-  def change do
     create table(:venue_images) do
       add(:entry_id, :string)
       add(:deleted, :boolean, default: false, null: false)

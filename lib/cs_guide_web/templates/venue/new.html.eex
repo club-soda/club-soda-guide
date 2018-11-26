@@ -1,4 +1,4 @@
 <section class="center w-80 w-75-l mv5">
   <h2 class="f4 lh4">New Venue</h2>
-  <%= render_autoform(@conn, :create, CsGuide.Resources.Venue, assigns: [changeset: @changeset], exclude: [:deleted, :entry_id, :drinks, :num_cocktails, :cs_score]) %>
+  <%= render_autoform(@conn, :create, CsGuide.Resources.Venue, assigns: [changeset: @changeset], exclude: [:deleted, :entry_id, :drinks, :num_cocktails, :cs_score, :venue_images]) %>
 </section>

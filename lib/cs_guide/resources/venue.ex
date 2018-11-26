@@ -38,6 +38,8 @@ defmodule CsGuide.Resources.Venue do
       join_keys: [venue_id: :id, drink_id: :id]
     )
 
+    has_many(:venue_images, CsGuide.Images.VenueImage)
+
     timestamps()
   end
 

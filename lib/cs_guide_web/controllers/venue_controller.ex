@@ -2,6 +2,7 @@ defmodule CsGuideWeb.VenueController do
   use CsGuideWeb, :controller
 
   alias CsGuide.Resources.{Venue, Drink, Brand}
+  alias CsGuide.Images.VenueImage
 
   import Ecto.Query, only: [from: 2, subquery: 1]
 
@@ -31,7 +32,11 @@ defmodule CsGuideWeb.VenueController do
     venue =
       id
       |> Venue.get()
-      |> Venue.preload(drinks: [:brand, :drink_types, :drink_images], venue_types: [])
+      |> Venue.preload(
+        drinks: [:brand, :drink_types, :drink_images],
+        venue_types: [],
+        venue_images: []
+      )
 
     render(conn, "show.html", venue: venue)
   end
@@ -47,7 +52,7 @@ defmodule CsGuideWeb.VenueController do
         "venue" => venue = %{"drinks" => drinks, "num_cocktails" => num_cocktails}
       })
       when map_size(venue) <= 2 do
-    venue = Venue.get(id) |> Venue.preload(:venue_types)
+    venue = Venue.get(id) |> Venue.preload([:venue_types, :venue_images])
 
     venue_params =
       venue
@@ -131,9 +136,18 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def upload_photo(conn, params) do
-    case CsGuide.Resources.upload_photo(params, params["id"]) do
+    CsGuide.Repo.transaction(fn ->
+      with {:ok, venue_image} <- VenueImage.insert(%{venue: params["id"]}),
+           {:ok, _} <- CsGuide.Resources.upload_photo(params, venue_image.entry_id) do
+        {:ok, venue_image}
+      else
+        val ->
+          Repo.rollback(val)
+      end
+    end)
+    |> case do
       {:ok, _} -> redirect(conn, to: venue_path(conn, :show, params["id"]))
-      _ -> render(conn, "add_photo.html", id: params["id"], error: true)
+      {:error, _} -> render(conn, "add_photo.html", id: params["id"], error: true)
     end
   end
 end
