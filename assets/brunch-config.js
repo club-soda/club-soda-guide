@@ -53,7 +53,7 @@ exports.config = {
       mainModules: ["elm/DrinksCarousel.elm", "elm/Search.elm"],
       outputFolder: "js",
       outputFile: "main.js",
-      makeParameters: ["--debug"]
+      makeParameters: []
     },
     babel: {
       // Do not use ES6 compiler in vendor code

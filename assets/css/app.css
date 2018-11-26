@@ -69,6 +69,10 @@ select {
   background-color: #FFB700;
 }
 
+.cs-gray {
+  color:#999999;
+}
+
 .bg-cs-light-gray {
   background-color:#EBEBEB;
 }
@@ -83,6 +87,10 @@ select {
 
 .bg-sheer-white {
   background: rgba(255, 255, 255, 0.5);
+}
+
+.bg-blue-pink {
+  background: linear-gradient(270deg, #E30B5D 0%, #00C6B3 100%);
 }
 
 /* Line heights to correspond with tachyons font classes */

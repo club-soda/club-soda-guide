@@ -9,19 +9,20 @@ defmodule CsGuide.Resources.Venue do
 
   schema "venues" do
     field(:venue_name, :string)
+    field(:description, :string)
+    field(:address, Fields.Address)
+    field(:city, Fields.Address)
     field(:postcode, Fields.Postcode)
+    field(:website, :string)
     field(:phone_number, Fields.PhoneNumber)
+    field(:twitter, :string)
+    field(:facebook, :string)
+    field(:instagram, :string)
     field(:cs_score, :float, default: 0.0)
+    field(:favourite, :boolean, default: false)
     field(:num_cocktails, :integer)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
-    field(:description, :string)
-    field(:website, :string)
-    field(:address, Fields.Address)
-    field(:city, Fields.Address)
-    field(:twitter, :string)
-    field(:instagram, :string)
-    field(:facebook, :string)
 
     many_to_many(
       :venue_types,
@@ -55,7 +56,8 @@ defmodule CsGuide.Resources.Venue do
       :city,
       :twitter,
       :instagram,
-      :facebook
+      :facebook,
+      :favourite
     ])
     |> validate_required([:venue_name, :postcode, :venue_types])
   end

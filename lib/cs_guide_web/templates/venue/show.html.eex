@@ -4,7 +4,6 @@
     <div class="db bg-venue w-100"
       style="background-image: url('https://s3-eu-west-1.amazonaws.com/club-soda-images/<%= @venue.entry_id %>'), url('http://www.camera-m.com/img/placeholder-image-wide.png');">
     </div>
-
     <div class="w-90 w-60-ns pt4 ph5-ns center tr">
       <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.entry_id), class: "dib dn-ns btn-primary no-underline" %>
       <div class="flex-ns items-center tl">
@@ -16,20 +15,20 @@
       <div class="tl pt3">
         <img class="w4 v-btm" src="<%= static_path(@conn, "/images/score-#{@venue.cs_score}.png") %>" alt="Club Soda Score of <%= @venue.cs_score %>">
         <%= if @venue.cs_score == 0 do %>
-          <a class="cs-mid-blue dib mt2" href="/venues/<%= @venue.entry_id %>/add_drinks">Your Club Soda score is 0, improve it by listing drinks you stock</a>
-        <% else %>
-           <a class="cs-mid-blue dib mt2" href="/venues/<%= @venue.entry_id %>/add_drinks">Improve your score by adding more drinks to your stocklist</a>
+          <a class="cs-mid-blue dib mt2 mt0-ns pb1" href="/venues/<%= @venue.entry_id %>/add_drinks">Your Club Soda score is 0, improve it by listing drinks you stock.</a>
+        <%= else %>
+          <a class="cs-mid-blue dib mt2 mt0-ns pb1" href="/venues/<%= @venue.entry_id %>/add_drinks">Improve your score by adding more drinks to you stocklist.</a>
         <% end %>
       </div>
       <%= if @venue.description do %>
-        <p class="pv3 mv4 mr5-ns br2 tl lh5">
+        <p class="min-h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl lh5">
           <%= @venue.description %>
         </p>
-      <% else %>
-      <p class="min-h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl lh5">
-        No venue description,
-        <span class="cs-mid-blue pointer underline">add description.</span>
-      </p>
+      <%= else %>
+        <p class="h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl">
+          No venue description,
+          <span class="cs-mid-blue pointer underline">add description.</span>
+        </p>
       <% end %>
 
       <!-- See issue #30 for re-adding this
@@ -40,21 +39,17 @@
     </div>
     <div class="w-90 w-40-ns pt4 pr5-ns center">
       <img src="<%= static_path(@conn, "/images/sample-map.png") %>" alt="Map of venue" class="">
-      <div class="pv3">
-          <p class="f5 lh5 pr4 dib">
-            <%= if @venue.address do %>
-              <%= @venue.address <> " " %>
-            <% end %>
-            <%= if @venue.city do %>
-              <%= @venue.city <> " " %>
-            <% end %>
-            <%= if @venue.postcode do %>
-              <%= @venue.postcode <> " " %>
-            <% end %>
-          </p>
+      <div class="pv1">
+        <%= if @venue.address do %>
+        <p class="f5 lh5 pr2 dib"><%= @venue.address %></p>
+        <% end %>
+        <%= if @venue.city do %>
+        <p class="f5 lh5 pr2 dib"><%= @venue.city %></p>
+        <% end %>
+        <p class="f5 lh5 pr4 dib"><%= @venue.postcode %></p>
         <p class="f6 lh6 cs-mid-blue underline dib">Get Directions</p>
       </div>
-      <div class="db pv3">
+      <div class="db pv1">
         <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/phone-icon.png") %>" alt="Phone icon">
         <%= if @venue.phone_number do %>
           <p class="f6 lh6 cs-mid-blue underline dib v-top">
@@ -65,45 +60,46 @@
             Add venue phone number
           </a>
         <% end %>
-
-        <div class="db pv1">
-          <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
-          <%= if @venue.website do %>
-            <a href="<%= @venue.website %>" class="cs-mid-blue f6 lh6 v-top">Visit venue website</a>
-          <% else %>
-            <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue website</a>
-          <% end %>
-        </div>
-
-        <div class="db pv1">
-          <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/Twitter.svg") %>" alt="Twitter icon">
-          <%= if @venue.twitter do %>
-            <a href="<%= @venue.twitter %>" class="cs-mid-blue f6 lh6 v-top"><%= @venue.twitter %></a>
-          <% else %>
-            <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue twitter</a>
-          <% end %>
-        </div>
-
-        <div class="db pv1">
-          <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/Instagram.svg") %>" alt="Instagram icon">
-          <%= if @venue.instagram do %>
-            <a href="<%= @venue.instagram %>" class="cs-mid-blue f6 lh6 v-top"><%= @venue.instagram %></a>
-          <% else %>
-            <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue instagram</a>
-          <% end %>
-        </div>
-
-        <div class="db pv1">
-          <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/Facebook.svg") %>" alt="Facebook icon">
-          <%= if @venue.facebook do %>
-            <a href="<%= @venue.facebook %>" class="cs-mid-blue f6 lh6 v-top"><%= @venue.facebook %></a>
-          <% else %>
-            <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue facebook page</a>
-          <% end %>
-        </div>
       </div>
-
-  <!-- To be added at a later date, see #119 -->
+      <div class="db pv1">
+        <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
+        <%= if @venue.website do %>
+        <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @venue.website %>">
+          <%= @venue.website %>
+        </a>
+        <%= else %>
+        <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue website</a>
+        <% end %>
+      </div>
+      <div class="db pv1">
+        <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/facebook-icon.png") %>" alt="Facebook icon">
+        <%= if @venue.facebook do %>
+        <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @venue.facebook %>">
+          <%= @venue.facebook %>
+        </a>
+        <%= else %>
+        <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue facebook</a>
+        <% end %>
+      </div>
+      <div class="db pv1">
+        <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/instagram-icon.png") %>" alt="Instagram icon">
+        <%= if @venue.instagram do %>
+        <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @venue.instagram %>">
+          <%= @venue.instagram %>
+        </a>
+        <%= else %>
+        <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue instagram</a>
+        <% end %>
+      </div>
+      <div class="db pv1">
+        <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/Twitter.svg") %>" alt="Twitter icon">
+        <%= if @venue.twitter do %>
+          <a href="<%= @venue.twitter %>" class="f6 lh6 cs-mid-blue underline dib v-top"><%= @venue.twitter %></a>
+        <% else %>
+          <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue twitter</a>
+        <% end %>
+      </div>
+      <!-- To be added at a later date, see #119 -->
       <!-- <h3 class="f4 lh4 pv3">Opening Hours</h3>
       <a href="#" class="cs-mid-blue f5 lh5">Add venue opening hours</a> -->
 
@@ -111,6 +107,7 @@
       <a href="#" class="cs-mid-blue f5 lh5">Let us know.</a>
     </div>
   </section>
+                
   <section class="tc center pv5 w-90 w-100-ns">
     <h1 class="roboto-slab f2 lh2 dib">Drinks at <%= @venue.venue_name %></h1>
     <div class="flex-ns flex-wrap justify-center pv4-ns">
@@ -136,7 +133,7 @@
               <div class="bb b--pink mt2 mh2 pb3 center">
                 <h4 class="f4 lh4 mb1"><%= drink.name %></h4>
                 <p class="f5 lh5 mv1">by</p>
-                <a class="f4 lh4 cs-mid-blue mv1" href="#"><%= drink.brand.name %></a>
+                <%= link drink.brand.name, to: brand_path(@conn, :show, drink.brand.entry_id), class: "f4 lh4 cs-mid-blue mv1" %>
               </div>
               <div class="flex flex-wrap">
                 <!-- Change this to category/ sub category -->

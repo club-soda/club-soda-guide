@@ -19,35 +19,19 @@
   <h2 class="w-90-ns center b pt3 f2 lh2 tc tl-ns">Great drinks for mindful drinkers</h2>
   <div id="drinks-carousel"></div>
   <div class="w-90-ns center tc tl-ns mv4">
-    <a class="bg-cs-black br2 ph4 pv2 white no-underline" href="/search/drinks">View Selection</a>
+    <%= secondary_btn("View Selection", "/search/drinks")%>
   </div>
 </section>
+
 <section class="w-90 center">
-  <h2 class="b pt3 f2 lh2 mb3 tc tl-ns">Great Places for Mindful Drinkers</h2>
+  <h2 class="b pt3 f2 lh2 mb4 tc tl-ns">Great Places for Mindful Drinkers</h2>
   <div class="flex flex-wrap justify-center">
-    <div class="w-100 w-25-ns pb4">
-      <div class="bg-green w-100 w-90-m w5-l h4 br2"></div>
-      <p class="f5 lh5 pt2">Angel</p>
-      <p class="f4 lh4">The Rover's Return</p>
-    </div>
-    <div class="w-100 w-25-ns pb4 pb0-ns">
-      <div class="bg-green w-100 w-90-m w5-l h4 br2"></div>
-      <p class="f5 lh5 pt2">Angel</p>
-      <p class="f4 lh4">The Rover's Return</p>
-    </div>
-    <div class="w-100 w-25-ns pb4 pb0-ns">
-      <div class="bg-green w-100 w-90-m w5-l h4 br2"></div>
-      <p class="f5 lh5 pt2">Angel</p>
-      <p class="f4 lh4">The Rover's Return</p>
-    </div>
-    <div class="w-100 w-25-ns pb4 pb0-ns">
-      <div class="bg-green w-100 w-90-m w5-l h4 br2"></div>
-      <p class="f5 lh5 pt2">Angel</p>
-      <p class="f4 lh4">The Rover's Return</p>
-    </div>
+    <%= for venue <- @venues do %>
+      <%= component("venue_card", venue: venue, conn: @conn) %>
+    <% end %>
   </div>
   <div class="mv4 center tc tl-ns">
-    <a class="btn-primary no-underline" href="search/venues">Find One Near Me</a>
+    <%= primary_btn("Find One Near Me", "search/venues")%>
   </div>
 </section>
 
