@@ -113,3 +113,17 @@ Select the image you want to upload and click submit.
 If successful, you'll be taken back to the drink page and your image will display.
 
 <img width="250" alt="drink page with image" src="https://user-images.githubusercontent.com/8939909/48944158-83418780-ef1d-11e8-9480-118293245c86.png">
+
+To upload an image for a brand or a venue, follow the same steps, but using the `brands` and `venues` urls respectively.
+
+Also, for Brands, you can select the `Use as cover photo` box when uploading an image. 
+
+<img width="250" alt="screen shot 2018-11-26 at 15 12 37" src="https://user-images.githubusercontent.com/8939909/49022795-a3777d80-f18d-11e8-8fa2-fdbf93a50048.png">
+
+This will use this as the 'banner' image at the top of the brand page. 
+
+<img width="300" alt="screen shot 2018-11-26 at 15 15 42" src="https://user-images.githubusercontent.com/8939909/49023095-4f20cd80-f18e-11e8-8315-2e4e8fd26d31.png">
+
+If you don't select it, the image will be set as the standard image further down the page.
+
+<img width="300" alt="screen shot 2018-11-26 at 15 26 26" src="https://user-images.githubusercontent.com/8939909/49023590-70ce8480-f18f-11e8-8a99-74542d0ead2c.png">
