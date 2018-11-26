@@ -1,7 +1,9 @@
 <section class="center w-80 w-75-l mv5">
   <h2 class="f4 lh4">Edit Brand</h2>
 
-  <%= render "form.html", Map.put(assigns, :action, brand_path(@conn, :update, @brand)) %>
+
+  <%= custom_render_autoform(@conn, :update, 
+    [CsGuide.Resources.Brand], exclude: [:entry_id, :deleted, :drinks, :brand_images], path: brand_path(@conn, :update, @brand.entry_id), assigns: [changeset: @changeset, brand: @brand], update_field: :entry_id, assoc_query: &query/1) %>
 
   <span><%= link "Back", to: brand_path(@conn, :index) %></span>
 </section>

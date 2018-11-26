@@ -35,6 +35,9 @@ defmodule CsGuideWeb.Router do
 
     get("/drinks/:id/add_photo", DrinkController, :add_photo)
     post("/drinks/:id/", DrinkController, :upload_photo)
+
+    get("/brands/:id/add_photo", BrandController, :add_photo)
+    post("/brands/:id/", BrandController, :upload_photo)
   end
 
   scope "/search", CsGuideWeb do
