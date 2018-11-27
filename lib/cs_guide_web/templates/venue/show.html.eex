@@ -62,7 +62,7 @@
             <%= @venue.phone_number %>
           </p>
         <%= else %>
-          <a href="#" class="f6 lh6 cs-mid-blue dib v-top">
+          <a href="<%= @venue.entry_id %>/edit" class="f6 lh6 cs-mid-blue dib v-top">
             Add venue phone number
           </a>
         <% end %>
