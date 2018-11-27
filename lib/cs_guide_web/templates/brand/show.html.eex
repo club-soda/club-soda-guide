@@ -1,5 +1,6 @@
 <section class="center mt5 mb6">
   <%= if @brand.member do %>
+  <%= link "Upload Photo", to: brand_path(@conn, :add_photo, @brand.entry_id), class: "mt5 dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
     <%= if img = @brand.brand_images |> Enum.reverse |> Enum.find(fn i -> i.cover end) do %>
       <img class="db w-40 img-cover pt2 center mb6" src="https://s3-eu-west-1.amazonaws.com/club-soda-images/<%=img.entry_id%>" alt="Brand cover image">
     <% end %>
@@ -10,6 +11,9 @@
   <% end %>
 
   <section class="center w-50 flex-ns mb5">
+    <%= if @brand.member do %>
+      <%= link "Upload Photo", to: brand_path(@conn, :add_photo, @brand.entry_id), class: "dib dn-ns btn-primary no-underline" %>
+    <% end %>
     <div class="w-60-ns center">
       <%= if @brand.description do %>
         <p class="pb3"><%= @brand.description %></p>
