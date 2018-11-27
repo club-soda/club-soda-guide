@@ -28,14 +28,16 @@ defmodule CsGuide.Resources.Venue do
       :venue_types,
       CsGuide.Categories.VenueType,
       join_through: "venues_venue_types",
-      join_keys: [venue_id: :id, venue_type_id: :id]
+      join_keys: [venue_id: :id, venue_type_id: :id],
+      on_replace: :delete
     )
 
     many_to_many(
       :drinks,
       CsGuide.Resources.Drink,
       join_through: "venues_drinks",
-      join_keys: [venue_id: :id, drink_id: :id]
+      join_keys: [venue_id: :id, drink_id: :id],
+      on_replace: :delete
     )
 
     has_many(:venue_images, CsGuide.Images.VenueImage)
@@ -75,27 +77,8 @@ defmodule CsGuide.Resources.Venue do
   end
 
   def update(%__MODULE__{} = item, attrs) do
-    assocs =
-      Enum.map(__MODULE__.__schema__(:associations), fn a ->
-        schema = Map.get(__MODULE__.__schema__(:association, a), :queryable)
-
-        selected =
-          case Map.get(attrs, to_string(a)) do
-            nil -> []
-            selected -> Enum.map(selected, fn {k, v} -> k end)
-          end
-
-        {a,
-         from(s in schema,
-           where: s.entry_id in ^selected,
-           distinct: s.entry_id,
-           order_by: [desc: :inserted_at],
-           select: s
-         )}
-      end)
-
     item
-    |> CsGuide.Repo.preload(assocs)
+    |> __MODULE__.preload(__MODULE__.__schema__(:associations))
     |> Map.put(:id, nil)
     |> Map.put(:inserted_at, nil)
     |> Map.put(:updated_at, nil)

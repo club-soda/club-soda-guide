@@ -10,6 +10,7 @@ defmodule CsGuideWeb.PageController do
         v.favourite
       end)
       |> Enum.slice(0, 4)
+      |> Enum.sort(fn v1, v2 -> v1.cs_score >= v2.cs_score end)
 
     render(conn, "index.html", venues: venues)
   end
