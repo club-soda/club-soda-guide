@@ -75,45 +75,7 @@
     <div class="flex-ns flex-wrap justify-center pv4-ns">
       <!-- Drink cards -->
       <%= for {drink, index} <- Enum.with_index(@brand.drinks) do %>
-        <div class="w-third-m w-20-l shadow-4 br2 tr pb3 mh3 mv3 relative">
-          <div class="card-front-contents">
-            <div class="bb b--cs-light-pink bw3 mb3 tl h-27rem">
-              <h4 class="f4 lh4 pa3 shadow-4 br2 mt4 mb1 mh4 tc bg-sheer-white absolute top-1"><%= drink.brand.name %> <%= drink.name %></h4>
-              <%= if img = List.last(drink.drink_images) do %>
-                <img src="https://s3-eu-west-1.amazonaws.com/club-soda-images/<%=img.entry_id%>" alt="Photo of drink" class="min-w-5rem max-h-16rem db center pt4">
-              <% else %>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyT_ehuzfLvJKLPOAVjobqWtZjFO1--mgpQb_NJmq0wIfpEc5SyXkuPxpG" alt="Photo of drink" class="min-w-5rem max-h-16rem db center pt4">
-              <% end %>
-              <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib"><%= drink.abv %>% ABV</p>
-            </div>
-          </div>
-          <input type="checkbox" name="card-front" id="display-back-<%=index%>" class="display-back dn">
-          <label for="display-back-<%=index%>" class="cs-mid-blue f5 lh5 tr pr4 underline"></label>
-
-          <div class="card-back-contents dn absolute top-0 left-0 bg-white pt3 ph3">
-            <div class="tl h-25rem">
-              <div class="bb b--pink mt2 mh2 pb3 center">
-                <h4 class="f4 lh4 mb1"><%= drink.name %></h4>
-                <p class="f5 lh5 mv1">by</p>
-                <a class="f4 lh4 cs-mid-blue mv1" href="<%= drink.brand.entry_id %>"><%= drink.brand.name %></a>
-              </div>
-              <div class="flex flex-wrap">
-                <!-- Change this to category/ sub category -->
-                <%= if drink.drink_types do %>
-                  <%= for dt <- drink.drink_types do %>
-                    <p class="w-50 pv2 dib"><%= dt.name %></p>
-                  <% end %>
-                <% end %>
-                <%= if drink.abv do %>
-                  <p class="w-50 pv2 dib"><%= drink.abv %>% ABV</p>
-                <% end %>
-              </div>
-              <%= if drink.description do %>
-                <p class="pv2"><%= drink.description %></p>
-              <% end %>
-            </div>
-          </div>
-        </div>
+        <%= component("drink_card", drink: drink, index: index, conn: @conn) %>
       <% end %>
     </div>
   </section>
