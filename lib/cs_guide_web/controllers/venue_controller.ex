@@ -52,7 +52,7 @@ defmodule CsGuideWeb.VenueController do
         "venue" => venue = %{"drinks" => drinks, "num_cocktails" => num_cocktails}
       })
       when map_size(venue) <= 2 do
-    venue = Venue.get(id) |> Venue.preload([:venue_types, :venue_images])
+    venue = Venue.get(id) |> Venue.preload([:venue_types, :venue_images, :drinks])
 
     venue_params =
       venue
@@ -64,10 +64,9 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def update(conn, %{"id" => id, "venue" => venue_params}) do
-    venue = Venue.get(id) |> Venue.preload([:venue_types, :venue_images])
+    venue = Venue.get(id) |> Venue.preload([:venue_types, :venue_images, :drinks])
 
-    # do_update(conn, venue, venue_params)
-    case Venue.update(venue, venue_params) do
+    case Venue.update(venue, venue_params |> Map.put("drinks", venue.drinks)) do
       {:ok, venue} ->
         conn
         |> put_flash(:info, "Venue updated successfully.")

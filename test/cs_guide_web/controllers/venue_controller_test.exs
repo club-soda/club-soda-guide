@@ -17,9 +17,6 @@ defmodule CsGuideWeb.VenueControllerTest do
     phone_number: "01234567890",
     postcode: "EC1 5AD",
     venue_name: "The Example Pub",
-    venue_types: %{
-      "35f9e338-7c50-4883-8214-91e2c0ad5796" => "on"
-    },
     drinks: %{"AF Beer 1" => "on"},
     venue_types: %{"Bars" => "on"}
   }
