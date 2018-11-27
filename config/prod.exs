@@ -67,4 +67,5 @@ config :fields, Fields, secret_key_base: System.get_env("SECRET_KEY_BASE")
 # Configure your database
 config :cs_guide, CsGuide.Repo,
   adapter: Ecto.Adapters.Postgres,
-  pool_size: 10
+  pool_size: 10,
+  ssl: true
