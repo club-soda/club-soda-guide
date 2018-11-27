@@ -64,7 +64,7 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def update(conn, %{"id" => id, "venue" => venue_params}) do
-    venue = Venue.get(id)
+    venue = Venue.get(id) |> Venue.preload([:venue_types, :venue_images])
 
     # do_update(conn, venue, venue_params)
     case Venue.update(venue, venue_params) do
