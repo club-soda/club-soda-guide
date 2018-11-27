@@ -10,10 +10,20 @@ config :cs_guide, CsGuideWeb.Endpoint,
 config :logger, level: :warn
 
 # Configure your database
-config :cs_guide, CsGuide.Repo,
+if System.get_env("DATABASE_HOST") do
+  config :cs_guide, CsGuide.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  username: "postgres",
+  password: "",
+  database: "cs_guide_test",
+  hostname: System.get_env("DATABASE_HOST"),
+  pool: Ecto.Adapters.SQL.Sandbox
+else
+  config :cs_guide, CsGuide.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
   database: "cs_guide_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+end
