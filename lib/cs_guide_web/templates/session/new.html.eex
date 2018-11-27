@@ -1,0 +1,20 @@
+<section class="center w-80 w-75-l mv6-ns mv5">
+  <h3>Admin Login</h3>
+  <%= form_for @conn, @action, fn f -> %>
+    <div class="form-group">
+      <%= label f, :email, class: "control-label" %>
+      <%= email_input f, :email, class: "form-control" %>
+      <%= error_tag f, :email %>
+    </div>
+
+    <div class="form-group">
+      <%= label f, :password, class: "control-label" %>
+      <%= password_input f, :password, class: "form-control" %>
+      <%= error_tag f, :password %>
+    </div>
+
+    <div class="form-group">
+      <%= submit "Submit", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</section>
