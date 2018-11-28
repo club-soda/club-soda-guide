@@ -2,7 +2,13 @@
   <%= if @brand.member do %>
   <%= link "Upload Photo", to: brand_path(@conn, :add_photo, @brand.entry_id), class: "mt5 dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
     <%= if img = @brand.brand_images |> Enum.reverse |> Enum.find(fn i -> i.cover end) do %>
-      <img class="db w-40 img-cover pt2 center mb6" src="https://s3-eu-west-1.amazonaws.com/club-soda-images/<%=img.entry_id%>" alt="Brand cover image">
+      <div class="db bg-venue w-100"
+        style="background-image: url('https://s3-eu-west-1.amazonaws.com/club-soda-images/<%= img.entry_id %>');">
+      </div>
+    <% else %>
+      <div class="bg-blue-pink w-100 center tc mb5">
+      <h1 class="roboto-slab white f2 lh2 pv6"><%= @brand.name %></h1>
+    </div>
     <% end %>
   <%= else %>
     <div class="bg-blue-pink w-100 center tc mb5">
@@ -16,7 +22,7 @@
     <% end %>
     <div class="w-60-ns center">
       <%= if @brand.description do %>
-        <p class="pb3"><%= @brand.description %></p>
+        <p class="pv3 lh5"><%= @brand.description %></p>
       <%= else %>
         <div class="pb3">
           <a class="cs-mid-blue" href="<%= @brand.entry_id %>/edit">Add brand description</a>
@@ -87,7 +93,7 @@
   <section class="w-90 center pv5">
     <h2 class="roboto-slab f2 lh2 db tc pb4">Places that Serve <%= @brand.name %></h2>
     <div class="flex flex-wrap justify-center">
-        <%= for venue <- get_venues(@brand) |> Enum.slice(0,4) do %>
+        <%= for venue <- get_venues(@brand) |> Enum.filter(fn v -> !Enum.any?(v.venue_types, fn t -> String.downcase(t.name) == "retailers" end) end) do %>
           <%= component("venue_card", venue: venue, conn: @conn) %>
         <% end %>
     </div>
@@ -99,16 +105,17 @@
   <%= if @brand.member do %>
     <section class="w-90 center pv5">
       <h2 class="roboto-slab f2 lh2 db tc pb4">Where to Buy <%= @brand.name %></h2>
-      <%= for venue <- get_venues(@brand) do %>
-        <%= if venue.venue_types do %>
-          <%= for type <- venue.venue_types do %>
-            <%= if type.name == "Retailers" do %>
-              <p class="ph4"><%= venue.venue_name %></p>
+      <div class="flex flex-wrap justify-center">
+        <%= for venue <- get_venues(@brand) do %>
+          <%= if venue.venue_types do %>
+            <%= for type <- venue.venue_types do %>
+              <%= if String.downcase(type.name) == "retailers" do %>
+                <%= component("venue_card", venue: venue, conn: @conn) %>
+              <% end %>
             <% end %>
           <% end %>
         <% end %>
-
-      <% end %>
+      </div>
     </section>
   <% end %>
 
