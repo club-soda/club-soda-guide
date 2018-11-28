@@ -1,8 +1,11 @@
 <div class="w-100 w-25-ns pb4">
-
   <div class="bg-green w-100 w-90-m w5-l h4 br2 mb2 bg-venue-card"
     <%= if img = List.last(@venue.venue_images) do %>
       style="background-image: url('https://s3-eu-west-1.amazonaws.com/club-soda-images/<%=img.entry_id%>');"
+    <% else %>
+      <%= if ext = @venue.external_image do %>
+        style="background-image: url('<%= ext %>');"
+      <% end %>
     <% end %>
     >
   </div>
