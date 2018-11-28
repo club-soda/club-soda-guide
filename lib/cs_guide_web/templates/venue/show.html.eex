@@ -3,7 +3,7 @@
   <section class="flex-ns flex-wrap">
     <%= if img = List.last(@venue.venue_images) do %>
       <div class="db bg-venue w-100"
-        style="background-image: url('https://s3-eu-west-1.amazonaws.com/club-soda-images/<%= img.entry_id %>');">
+        style="background-image: url('https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%= img.entry_id %>');">
       </div>
     <% else %>
       <%= if @venue.external_image do %>

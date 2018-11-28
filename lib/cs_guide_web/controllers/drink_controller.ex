@@ -37,7 +37,9 @@ defmodule CsGuideWeb.DrinkController do
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyT_ehuzfLvJKLPOAVjobqWtZjFO1--mgpQb_NJmq0wIfpEc5SyXkuPxpG"
 
               img ->
-                "https://s3-eu-west-1.amazonaws.com/club-soda-images/#{img.entry_id}"
+                "https://s3-eu-west-1.amazonaws.com/#{Application.get_env(:ex_aws, :bucket)}/#{
+                  img.entry_id
+                }"
             end
         }
       end)
