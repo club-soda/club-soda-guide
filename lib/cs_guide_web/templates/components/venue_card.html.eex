@@ -9,6 +9,7 @@
       <% end %>
       >
     <% end %>
+    >
     </div>
 
     <span class="f4 lh5 cs-black no-underline"><%= @venue.venue_name %></span>
