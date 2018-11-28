@@ -11,7 +11,7 @@ defmodule CsGuide.Resources.Drink do
     field(:abv, :float)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
-    field(:description, :string, default: "")
+    field(:description, Fields.DescriptionPlaintextUnlimited, default: "")
     field(:weighting, :integer)
     field(:ingredients, :string)
 
