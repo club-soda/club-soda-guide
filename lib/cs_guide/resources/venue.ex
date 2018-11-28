@@ -73,7 +73,7 @@ defmodule CsGuide.Resources.Venue do
     |> insert_entry_id()
     |> __MODULE__.changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
-    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :name)
+    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
     |> Resources.require_assocs([:venue_types])
     |> Repo.insert()
   end
