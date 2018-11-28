@@ -87,6 +87,14 @@ under venue types in the new venue form. So you could add 'pub' as a new type an
 then when you create a new venue you would now have the ability to select 'pub'
 as the venue type when creating your new venue.
 
+## Brand pages
+
+The brand page will list all the drinks belonging to a brand, as well as all of the venues that stock or sell those drinks.
+
+To add a stockist, simply add a drink from this brand to the venue as you normally would.
+
+To add a 'where to buy' retailer, you'll need to create a venue, and give it a venue type of 'Retailers'. Then when you add the drink to this venue, it will display in the 'where to buy' section.
+
 
 ## Importing Data
 
@@ -127,3 +135,7 @@ This will use this as the 'banner' image at the top of the brand page.
 If you don't select it, the image will be set as the standard image further down the page.
 
 <img width="300" alt="screen shot 2018-11-26 at 15 26 26" src="https://user-images.githubusercontent.com/8939909/49023590-70ce8480-f18f-11e8-8a99-74542d0ead2c.png">
+
+Venue images and brand images should be close to a 12:4 ratio for best quality, but other sizes will be stretched or cropped to fit.
+
+Drink images should be close to a 9:16 ratio.
