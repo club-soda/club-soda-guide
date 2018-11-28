@@ -7,7 +7,7 @@
       >
     </div>
 
-    <span class="f4 lh5 cs-black no-underline" href="<%= venue_path(@conn, :show, @venue.entry_id) %>"><%= @venue.venue_name %></span>
+    <span class="f4 lh5 cs-black no-underline"><%= @venue.venue_name %></span>
     <p class="f5 lh5"><%= @venue.postcode %></p>
     <%= if @venue.venue_types do %>
       <%= for type <- @venue.venue_types do %>
