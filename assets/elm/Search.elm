@@ -7,7 +7,7 @@ import Json.Decode.Pipeline exposing (..)
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick)
+import Html.Events exposing (onClick, onInput)
 import Array exposing (..)
 import SharedTypes exposing (Drink)
 import DrinkCard exposing (drinkCard)
@@ -20,6 +20,7 @@ type alias Model =
     { drinks : List Drink
     , dtype_filter : String
     , abv_filter : String
+    , search_term : String
     }
 
 
@@ -44,6 +45,7 @@ init flags =
         ( { drinks = []
           , dtype_filter = dtype_filter
           , abv_filter = ""
+          , search_term = ""
           }
         , getDrinks
         )
@@ -84,6 +86,7 @@ type Msg
     = ReceiveDrinks (HttpData (List Drink))
     | SelectDrinkType String
     | SelectABVLevel String
+    | SearchDrink String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -101,6 +104,8 @@ update msg model =
         SelectABVLevel abv_level ->
             ( { model | abv_filter = abv_level }, Cmd.none )
 
+        SearchDrink term ->
+            ( { model | search_term = term }, Cmd.none )
 
 
 -- VIEW
@@ -122,6 +127,14 @@ view model =
         [ div [ class "w-90 center" ]
             [ (renderFilter model "Drink Type" drink_types SelectDrinkType)
             , (renderFilter model "ABV" abv_levels SelectABVLevel)
+            , div [ class "dib pr2"]
+                [
+                  input [ type_ "text"
+                        , placeholder "Search Drinks"
+                        , onInput SearchDrink
+                        , class "f6 lh6 cs-light-gray bg-white b--cs-light-gray br2 bw1 pv2 pl3 dib w6"
+                        ] []
+                ]
             ]
         , div [ class "relative" ]
             [ div [ class "flex-ns flex-wrap justify-center pt3 pb4-ns db dib-ns" ]
@@ -132,9 +145,11 @@ view model =
 
 filterDrinks : Model -> List (Html Msg)
 filterDrinks model =
-    List.filter (\d -> filterByType model d) model.drinks
-        |> List.filter (\d -> filterByABV model d)
-        |> renderDrinks
+    model.drinks
+      |> List.filter (\d -> filterByType model d)
+      |> List.filter (\d -> filterByABV model d)
+      |> List.filter (\d -> filteryByTerm model d)
+      |> renderDrinks
 
 
 filterByABV : Model -> Drink -> Bool
@@ -170,6 +185,13 @@ filterByType model drink =
                 || model.dtype_filter
                 == ""
 
+filteryByTerm : Model -> Drink -> Bool
+filteryByTerm model drink =
+  case model.search_term of
+    "" -> True
+
+    term -> (String.contains (String.toLower term) (String.toLower drink.name))
+            || (String.contains (String.toLower term) (String.toLower drink.description))
 
 renderDrinks : List Drink -> List (Html Msg)
 renderDrinks drinks =
