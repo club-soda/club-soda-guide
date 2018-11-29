@@ -4,15 +4,15 @@ import Browser
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick)
+import Html.Events exposing (onClick, onInput)
 import SharedTypes exposing (Venue)
 import Json.Decode as Json exposing (..)
 
-type alias Model = { venues : List Venue, filterType: Maybe String, filterScore: Maybe Float }
+type alias Model = { venues : List Venue, filterType: Maybe String, filterScore: Maybe Float, filterName: Maybe String }
 
 type alias Flags = {venues : List Venue}
 
-type Msg = None | FilterVenueType String | FilterVenueScore String
+type Msg = None | FilterVenueType String | FilterVenueScore String | FilterVenueName String
 
 onChange : (String -> msg) -> Attribute msg
 onChange msgConstructor =
@@ -20,14 +20,14 @@ onChange msgConstructor =
 
 
 init : Flags -> ( Model, Cmd Msg )
-init flags = (Model flags.venues Nothing Nothing, Cmd.none)
+init flags = (Model flags.venues Nothing Nothing Nothing, Cmd.none)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         None -> ( model, Cmd.none )
-        
+
         FilterVenueType venueType ->
           let
             filterType = case venueType of
@@ -37,6 +37,14 @@ update msg model =
             ( {model | filterType = filterType}, Cmd.none )
 
         FilterVenueScore venueScore -> ( {model | filterScore = String.toFloat venueScore}, Cmd.none )
+
+        FilterVenueName name ->
+          let
+            filterName = case name of
+              "" -> Nothing
+              _ -> Just name
+          in
+            ( {model | filterName = filterName}, Cmd.none )
 
 venue_types : List String
 venue_types = [ "Hotels", "Pubs", "Restaurants", "Bars", "Cafes"]
@@ -50,6 +58,14 @@ view model =
         [ div [ class "w-90 center" ]
               [ (renderFilter "Venue Type" venue_types FilterVenueType)
               , (renderFilter "Score" cs_score FilterVenueScore)
+              , div [ class "dib pr2"]
+                [
+                  input [ type_ "text"
+                        , placeholder "Venue Name"
+                        , onInput FilterVenueName
+                        , class "f6 lh6 cs-light-gray bg-white b--cs-light-gray br2 bw1 pv2 pl3 dib w6"
+                        ] []
+                ]
               ]
         , div [ class "w-90 center" ]
             [ div []
@@ -59,29 +75,36 @@ view model =
 
 filterVenues : Model -> List Venue
 filterVenues model =
-  case (model.filterType, model.filterScore) of
-    (Nothing, Nothing) -> model.venues
-    (Just typeVenue, Nothing) -> List.filter (filterByType typeVenue) model.venues
-    (Nothing, Just score) -> List.filter (filterByScore score) model.venues
-    (Just typeVenue, Just score) -> model.venues
-                               |> List.filter (filterByType typeVenue)
-                               |> List.filter (filterByScore score)
+  model.venues
+  |> filterByName model.filterName
+  |> filterByType model.filterType
+  |> filterByScore model.filterScore
 
 
-filterByType : String -> Venue -> Bool
-filterByType typeVenue venue  =
-  List.member typeVenue venue.types
+filterByName : Maybe String -> List Venue -> List Venue
+filterByName searchTerm venues =
+  case searchTerm of
+    Nothing -> venues
+    Just st -> List.filter (\v -> String.contains (String.toLower st) (String.toLower v.name)) venues
 
-filterByScore : Float -> Venue -> Bool
-filterByScore score venue =
-  venue.cs_score == score
+filterByType : Maybe String -> List Venue -> List Venue
+filterByType typeVenue venues  =
+  case typeVenue of
+    Nothing -> venues
+    Just t -> List.filter (\v -> List.member t v.types) venues
+
+filterByScore : Maybe Float -> List Venue -> List Venue
+filterByScore score venues =
+  case score of
+    Nothing -> venues
+    Just s -> List.filter (\v -> v.cs_score == s) venues
 
 renderFilter : String -> List String -> (String -> Msg) -> Html Msg
 renderFilter defaultTitle dropdownItems msgConstructor =
     div [ class "dib pr2" ]
         [ select
             [ onChange msgConstructor
-            , class "f6 lh6 cs-light-gray bg-white b--cs-light-gray br2 bw1 pv2 pl3 dib w6"
+            , class "f6 lh6 cs-light-gray bg-white b--cs-light-gray br2 bw1 pv2 ph3 dib w6"
             ]
             ([ option [ Html.Attributes.value "" ] [ text defaultTitle ] ]
                 ++ List.map (\dropdownItem -> renderDropdownItems dropdownItem) dropdownItems
