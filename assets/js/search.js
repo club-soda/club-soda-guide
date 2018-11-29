@@ -1,9 +1,9 @@
-var drink_type = window.location.search.slice(1).split("=")[1].replace(/_/g, " ") || "default";
 
   var search = document.getElementById('search');
-  var searchApp;
   if (search) {
-    searchApp = Elm.Search.init({
+    var params = window.location.search.slice(1).split("=")[1];
+    var drink_type = (params && params.replace(/_/g, " ")) || "default";
+    Elm.Search.init({
       node: search, flags: Object.assign({}, {dtype_filter : drink_type})
     })
   }
