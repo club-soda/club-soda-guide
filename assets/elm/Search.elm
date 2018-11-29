@@ -125,16 +125,11 @@ view : Model -> Html Msg
 view model =
     div [ class "mt6" ]
         [ div [ class "w-90 center" ]
-            [ (renderFilter model "Drink Type" drink_types SelectDrinkType)
-            , (renderFilter model "ABV" abv_levels SelectABVLevel)
-            , div [ class "dib pr2"]
-                [
-                  input [ type_ "text"
-                        , placeholder "Search Drinks"
-                        , onInput SearchDrink
-                        , class "f6 lh6 cs-light-gray bg-white b--cs-light-gray br2 bw1 pv2 pl3 dib w6"
-                        ] []
-                ]
+            [ div [class "w-25-l"]
+              [ renderSearch SearchDrink
+              , (renderFilter model "Drink Type" drink_types SelectDrinkType)
+              , (renderFilter model "ABV" abv_levels SelectABVLevel)
+              ]
             ]
         , div [ class "relative" ]
             [ div [ class "flex-ns flex-wrap justify-center pt3 pb4-ns db dib-ns" ]
@@ -208,10 +203,10 @@ renderDrinks drinks =
 
 renderFilter : Model -> String -> List String -> (String -> Msg) -> Html Msg
 renderFilter model defaultTitle dropdownItems msgConstructor =
-    div [ class "dib pr2" ]
+    div [ class <| "dib pr2" ]
         [ select
             [ onChange msgConstructor
-            , class "f6 lh6 cs-light-gray bg-white b--cs-light-gray br2 bw1 pv2 pl3 dib w6"
+            , class <| "f6 lh6 cs-light-gray bg-white b--cs-light-gray br2 bw1 pv2 pl3 dib w6 "
             ]
             ([ option [ Html.Attributes.value "" ] [ text defaultTitle ] ]
                 ++ List.map (\dropdownItem -> renderDropdownItems model dropdownItem) dropdownItems
@@ -227,7 +222,16 @@ renderDropdownItems model dropdownItem =
     else
         option [ Html.Attributes.value dropdownItem ] [ text dropdownItem ]
 
-
+renderSearch : (String -> Msg) -> Html Msg
+renderSearch msg =
+  div [ class "pv2"]
+    [
+      input [ type_ "text"
+            , placeholder "Search drinks..."
+            , onInput msg
+            , class "f6 lh6 cs-light-gray bg-white b--cs-light-gray br2 bw1 pv2 pl3 dib w-100"
+            ] []
+    ]
 
 -- MAIN
 
