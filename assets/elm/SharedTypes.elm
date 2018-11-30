@@ -10,3 +10,12 @@ type alias Drink =
     , description : String
     , image : String
     }
+
+type alias Venue =
+  { id: String
+  , name: String
+  , types: List String
+  , postcode: String
+  , cs_score: Float
+  , image: String
+  }
