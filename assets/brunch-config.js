@@ -50,7 +50,7 @@ exports.config = {
   // Configure your plugins
   plugins: {
     elmBrunch: {
-      mainModules: ["elm/DrinksCarousel.elm", "elm/Search.elm", "elm/SearchVenue.elm"],
+      mainModules: ["elm/DrinksCarousel.elm", "elm/SearchDrink.elm", "elm/SearchVenue.elm"],
       outputFolder: "js",
       outputFile: "main.js",
       makeParameters: []
