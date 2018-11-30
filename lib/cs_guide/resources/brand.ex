@@ -5,7 +5,7 @@ defmodule CsGuide.Resources.Brand do
 
   schema "brands" do
     field(:name, :string)
-    field(:description, :string)
+    field(:description, Fields.DescriptionPlaintextUnlimited)
     field(:member, :boolean, default: false)
     field(:logo, :string)
     field(:website, :string)
