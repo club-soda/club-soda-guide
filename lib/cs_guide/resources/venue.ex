@@ -9,7 +9,7 @@ defmodule CsGuide.Resources.Venue do
 
   schema "venues" do
     field(:venue_name, :string)
-    field(:description, :string)
+    field(:description, Fields.DescriptionPlaintextUnlimited)
     field(:address, Fields.Address)
     field(:city, Fields.Address)
     field(:postcode, Fields.Postcode)
