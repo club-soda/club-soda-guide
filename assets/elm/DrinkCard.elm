@@ -17,7 +17,7 @@ drinkCard index d =
                 ]
             ]
         , input [ type_ "checkbox", name "card-front", id <| "display-back-" ++ String.fromInt index, class "display-back dn" ] []
-        , label [ for <| "display-back-" ++ String.fromInt index, class "cs-mid-blue f5 lh5 tr pr4 underline" ] []
+        , label [ for <| "display-back-" ++ String.fromInt index, class "cs-mid-blue f5 lh5 tr pr4 underline pointer" ] []
         , div [ class "card-back-contents dn absolute top-0 left-0 bg-white pt3 ph3 w-100" ]
             [ div [ class "tl h-25rem" ]
                 [ div [ class "bb b--pink mt2 mh2 pb3 center" ]
