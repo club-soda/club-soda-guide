@@ -22,8 +22,8 @@
           </a>
         </div>
         <div class="w-80 mv2 dib tr">
-          <a href="/search/venues" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Venues</a>
           <a href="/search/drinks?drink_type=" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Drinks</a>
+          <a href="/search/venues" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Venues</a>
           <a href="/users/new" class="f5 lh5 ph4 pv2 mr3 mr5-l ba b--cs-pink cs-black no-underline br2">List a Venue</a>
         </div>
       </nav>
