@@ -7,6 +7,7 @@ defmodule CsGuideWeb.Router do
     plug(:fetch_flash)
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
+    plug(CsGuideWeb.Plugs.Auth)
   end
 
   pipeline :api do
@@ -20,6 +21,7 @@ defmodule CsGuideWeb.Router do
     get("/", PageController, :index)
     post("/signup", SignupController, :create)
 
+    resources("/admin", AdminController)
     resources("/users", UserController)
     resources("/venues", VenueController)
     resources("/venue_types", VenueTypeController)

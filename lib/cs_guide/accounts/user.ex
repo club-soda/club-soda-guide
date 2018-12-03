@@ -10,6 +10,7 @@ defmodule CsGuide.Accounts.User do
     field(:password, Fields.Password)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
+    field(:admin, :boolean, default: false)
 
     timestamps()
   end
@@ -17,7 +18,7 @@ defmodule CsGuide.Accounts.User do
   @doc false
   def changeset(user, attrs \\ %{}) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :admin])
     |> validate_required([:email])
     |> put_email_hash()
   end
