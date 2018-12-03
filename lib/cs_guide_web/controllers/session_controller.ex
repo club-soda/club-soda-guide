@@ -9,7 +9,7 @@ defmodule CsGuideWeb.SessionController do
     render(conn, "new.html", action: session_path(conn, :create))
   end
 
-  def create(conn, %{"user" => %{"email" => email, "password" => password}}) do
+  def create(conn, %{"email" => email, "password" => password}) do
     case Auth.validate_user(email, password) do
       {:ok, user} -> redirect(conn, to: "/admin")
       _ -> render(conn, "new.html", action: session_path(conn, :create))
