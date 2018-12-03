@@ -1,23 +1,28 @@
 <div class="w-100 w-25-ns pb4">
-
-  <div class="bg-green w-100 w-90-m w5-l h4 br2 mb2 bg-venue-card"
+  <a class="cs-black no-underline pointer" href="<%= venue_path(@conn, :show, @venue.entry_id) %>">
+    <div class="bg-green w-100 w-90-m w5-l h4 br2 mb2 bg-venue-card"
     <%= if img = List.last(@venue.venue_images) do %>
-      style="background-image: url('https://s3-eu-west-1.amazonaws.com/club-soda-images/<%=img.entry_id%>');"
+      style="background-image: url('https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%=img.entry_id%>');">
+    <% else %>
+      <%= if ext = @venue.external_image do %>
+        style="background-image: url('<%= ext %>');">
+      <% else %>
+      >
+      <% end %>
     <% end %>
-    >
-  </div>
+    </div>
 
-  <a class="f4 lh5 cs-black no-underline" href="<%= venue_path(@conn, :show, @venue.entry_id) %>"><%= @venue.venue_name %></a>
-  <p class="f5 lh5"><%= @venue.postcode %></p>
-  <%= if @venue.venue_types do %>
-    <%= for type <- @venue.venue_types do %>
-      <p><%= type.name %></p>
+    <span class="f4 lh5 cs-black no-underline"><%= @venue.venue_name %></span>
+    <p class="f5 lh5"><%= @venue.postcode %></p>
+    <%= if @venue.venue_types do %>
+      <%= for type <- @venue.venue_types do %>
+        <p><%= type.name %></p>
+      <% end %>
     <% end %>
-  <% end %>
-  <div class="pt2">
-    <%= if @venue.cs_score > 0 do %>
-      <img class="w4 v-btm" src="<%= static_path(@conn, "/images/score-#{@venue.cs_score}.png") %>" alt="Club Soda Score of <%= @venue.cs_score %>">
-    <% end %>
-  </div>
-
+    <div class="pt2">
+      <%= if @venue.cs_score > 0 do %>
+        <img class="w4 v-btm" src="<%= static_path(@conn, "/images/score-#{@venue.cs_score}.png") %>" alt="Club Soda Score of <%= @venue.cs_score %>">
+      <% end %>
+    </div>
+  </a>
 </div>

@@ -35,3 +35,7 @@ elm-stuff/
 .elixir_ls/
 
 /assets/package-lock.json
+
+.env
+
+seeds

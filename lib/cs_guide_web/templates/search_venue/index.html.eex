@@ -1,1 +1,4 @@
-<h1 class="mt5">VENUE SEARCH PAGE</h1>
+<div id="search-venue"></div>
+<script type="text/javascript">
+  const venues = <%= raw Poison.encode!(@venues) %>
+</script>

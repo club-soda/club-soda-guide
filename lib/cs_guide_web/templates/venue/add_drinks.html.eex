@@ -11,7 +11,7 @@
           <div id="drink-list-<%= i %>" class="dn pt1">
             <%= for d <- b.drinks do %>
               <div class="mv1 pl3">
-                <%= checkbox(f, String.to_atom(d.name), name: "venue[drinks][#{String.to_atom(d.entry_id)}]", value: d.name in @current_drinks, class: "") %>
+                <%= checkbox(f, String.to_atom(d.name), name: "venue[drinks][#{String.to_atom(d.entry_id)}]", value: d.entry_id in @current_drinks, class: "") %>
                 <%= label f, String.to_atom(d.name) %>
               </div>
             <% end %>

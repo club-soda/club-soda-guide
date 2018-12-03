@@ -3,12 +3,18 @@
   <section class="flex-ns flex-wrap">
     <%= if img = List.last(@venue.venue_images) do %>
       <div class="db bg-venue w-100"
-        style="background-image: url('https://s3-eu-west-1.amazonaws.com/club-soda-images/<%= img.entry_id %>');">
+        style="background-image: url('https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%= img.entry_id %>');">
       </div>
     <% else %>
-      <div class="db bg-venue w-100"
-        style="background-image: url('http://www.camera-m.com/img/placeholder-image-wide.png');">
-      </div>
+      <%= if @venue.external_image do %>
+        <div class="db bg-venue w-100"
+          style="background-image: url('<%= @venue.external_image %>');">
+        </div>
+      <% else %>
+        <div class="db bg-venue w-100"
+          style="background-image: url('http://www.camera-m.com/img/placeholder-image-wide.png');">
+        </div>
+      <% end %>
     <% end %>
     <div class="w-90 w-60-ns pt4 ph5-ns center tr">
       <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.entry_id), class: "dib dn-ns btn-primary no-underline" %>
@@ -62,7 +68,7 @@
             <%= @venue.phone_number %>
           </p>
         <%= else %>
-          <a href="#" class="f6 lh6 cs-mid-blue dib v-top">
+          <a href="<%= @venue.entry_id %>/edit" class="f6 lh6 cs-mid-blue dib v-top">
             Add venue phone number
           </a>
         <% end %>
@@ -113,7 +119,7 @@
       <a href="#" class="cs-mid-blue f5 lh5">Let us know.</a>
     </div>
   </section>
-                
+
   <section class="tc center pv5 w-90 w-100-ns">
     <h1 class="roboto-slab f2 lh2 dib">Drinks at <%= @venue.venue_name %></h1>
     <div class="flex-ns flex-wrap justify-center pv4-ns">

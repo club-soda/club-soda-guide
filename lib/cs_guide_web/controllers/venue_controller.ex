@@ -124,7 +124,7 @@ defmodule CsGuideWeb.VenueController do
 
     render(conn, "add_drinks.html",
       brands: brands,
-      current_drinks: Enum.map(venue.drinks, fn d -> d.name end),
+      current_drinks: Enum.map(venue.drinks, fn d -> d.entry_id end),
       changeset: changeset,
       action: venue_path(conn, :update, venue.entry_id)
     )

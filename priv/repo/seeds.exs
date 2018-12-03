@@ -46,7 +46,7 @@ defmodule CsGuide.Import do
   def venues_1(csv) do
     csv
     |> csv_to_map(
-      ~w(nil venue_name nil description venue_types nil nil nil nil nil nil nil address city region country postcode latitude longitude opening_hours phone_number email website twitter facebook nil nil nil instagram)a
+      ~w(nil venue_name nil description venue_types nil nil nil nil nil nil nil address city region country postcode latitude longitude opening_hours phone_number email website twitter facebook nil nil nil instagram external_image)a
     )
     |> Enum.each(fn v ->
       if v.venue_name != "" do
@@ -78,7 +78,13 @@ defmodule CsGuide.Import do
     )
     |> Enum.each(fn v ->
       Venue.get_by(venue_name: v.venue_name)
-      |> Venue.update(v)
+      |> Venue.preload(:venue_types)
+      |> (fn venue ->
+            Venue.update(
+              venue,
+              venue |> Map.from_struct() |> Map.put(:cs_score, IO.inspect(v.cs_score))
+            )
+          end).()
       |> case do
         {:ok, _} -> nil
         err -> IO.inspect(err)
@@ -104,14 +110,23 @@ defmodule CsGuide.Import do
       |> Map.put(:venue_types, "Bars")
       |> Map.put(
         :drinks,
-        Map.new([
-          {"Nanny State", "on"},
-          {"B:Free", "on"},
-          {"Sparkling Elderflower", "on"},
-          {"Rose Lemonade", "on"},
-          {"Ginger Beer", "on"},
-          {"Mediterranean Tonic Water", "on"}
-        ])
+        Map.new(
+          Enum.map(
+            [
+              {"Nanny State", "Brewdog"},
+              {"B:Free", "Budvar"},
+              {"Gently Sparkling Elderflower", "Fentimans"},
+              {"Rose Lemonade", "Fentimans"},
+              {"Ginger Beer", "Fentimans"},
+              {"Mediterranean Tonic Water", "Fever-Tree"}
+            ],
+            fn {d, b} ->
+              brand = Brand.get_by(name: b)
+              drink = Drink.get_by(name: d, brand_id: brand.id)
+              {drink.entry_id, "on"}
+            end
+          )
+        )
       )
       |> Map.put(:postcode, postcode)
       |> Map.put(:address, String.trim(address))

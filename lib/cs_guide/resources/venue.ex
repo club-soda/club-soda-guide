@@ -9,7 +9,7 @@ defmodule CsGuide.Resources.Venue do
 
   schema "venues" do
     field(:venue_name, :string)
-    field(:description, :string)
+    field(:description, Fields.DescriptionPlaintextUnlimited)
     field(:address, Fields.Address)
     field(:city, Fields.Address)
     field(:postcode, Fields.Postcode)
@@ -23,6 +23,7 @@ defmodule CsGuide.Resources.Venue do
     field(:num_cocktails, :integer)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
+    field(:external_image, :string)
 
     many_to_many(
       :venue_types,
@@ -61,7 +62,8 @@ defmodule CsGuide.Resources.Venue do
       :twitter,
       :instagram,
       :facebook,
-      :favourite
+      :favourite,
+      :external_image
     ])
     |> validate_required([:venue_name, :postcode, :venue_types])
   end
@@ -71,7 +73,7 @@ defmodule CsGuide.Resources.Venue do
     |> insert_entry_id()
     |> __MODULE__.changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
-    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :name)
+    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
     |> Resources.require_assocs([:venue_types])
     |> Repo.insert()
   end
