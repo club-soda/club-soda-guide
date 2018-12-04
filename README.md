@@ -105,9 +105,11 @@ the venues that stock or sell those drinks.
 
 To add a stockist, simply add a drink from this brand to the venue as you normally would.
 
-Member brands are also able to display retailers. To add a 'where to buy' retailer,
-you'll need to create a venue, and give it a venue type of 'Retailers'. Then
-when you add the drink to this venue, it will display in the 'where to buy' section.
+Member brands are also able to display 'where to buy' retailers. To add a 'where
+to buy' retailer, you'll need to create a venue, and give it a venue type of
+'Retailers'. Even if the brand is an online retailer you must provide a postcode
+as this is a required field. Then when you add the drink to this venue, it will
+display in the 'where to buy' section.
 
 ## Uploading Images
 
