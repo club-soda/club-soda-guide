@@ -100,11 +100,16 @@ as the venue type when creating your new venue.
 
 ## Brand pages
 
-The brand page will list all the drinks belonging to a brand, as well as all of the venues that stock or sell those drinks.
+The brand page will list all the drinks belonging to a brand, as well as all of
+the venues that stock or sell those drinks.
 
 To add a stockist, simply add a drink from this brand to the venue as you normally would.
 
-To add a 'where to buy' retailer, you'll need to create a venue, and give it a venue type of 'Retailers'. Then when you add the drink to this venue, it will display in the 'where to buy' section.
+Member brands are also able to display 'where to buy' retailers. To add a 'where
+to buy' retailer, you'll need to create a venue, and give it a venue type of
+'Retailers'. Even if the brand is an online retailer you must provide a postcode
+as this is a required field. Then when you add the drink to this venue, it will
+display in the 'where to buy' section.
 
 ## Uploading Images
 
@@ -126,11 +131,11 @@ If successful, you'll be taken back to the drink page and your image will displa
 
 To upload an image for a brand or a venue, follow the same steps, but using the `brands` and `venues` urls respectively.
 
-Also, for Brands, you can select the `Use as cover photo` box when uploading an image. 
+Also, for Brands, you can select the `Use as cover photo` box when uploading an image.
 
 <img width="250" alt="screen shot 2018-11-26 at 15 12 37" src="https://user-images.githubusercontent.com/8939909/49022795-a3777d80-f18d-11e8-8fa2-fdbf93a50048.png">
 
-This will use this as the 'banner' image at the top of the brand page. 
+This will use this as the 'banner' image at the top of the brand page.
 
 <img width="300" alt="screen shot 2018-11-26 at 15 15 42" src="https://user-images.githubusercontent.com/8939909/49023095-4f20cd80-f18e-11e8-8315-2e4e8fd26d31.png">
 
@@ -150,7 +155,7 @@ The existing data is imported through our [seeds file](priv/repo/seeds.exs).
 
 The environment variable `IMPORT_FILES_DIR` should be the path to the directory containing the csv files (For example, if those files are hosted on AWS S3, it would be the path of the S3 bucket).
 
-The files should be named correctly such that the format of te file matches the function that will be calling it. (That is, the brands file should be `brands.csv`, drinks `drinks.csv` and the venues `venues_1.csv`, `venues_2.csv` or `venues_3.csv`, depending on which format it is. These should be named correctly already, and as this import is only intended to be done once, shouldn't need to be changed. This documentation is just here as a guide if this import function ever needs to be extended.)
+The files should be named correctly such that the format of the file matches the function that will be calling it. (That is, the brands file should be `brands.csv`, drinks `drinks.csv` and the venues `venues_1.csv`, `venues_2.csv` or `venues_3.csv`, depending on which format it is. These should be named correctly already, and as this import is only intended to be done once, shouldn't need to be changed. This documentation is just here as a guide if this import function ever needs to be extended.)
 
 ### Creating Admin Users
 
