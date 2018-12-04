@@ -82,7 +82,7 @@ defmodule CsGuide.Import do
       |> (fn venue ->
             Venue.update(
               venue,
-              venue |> Map.from_struct() |> Map.put(:cs_score, IO.inspect(v.cs_score))
+              venue |> Map.from_struct() |> Map.put(:cs_score, v.cs_score)
             )
           end).()
       |> case do
