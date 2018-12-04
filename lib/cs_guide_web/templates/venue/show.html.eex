@@ -1,5 +1,7 @@
 <section class="relative">
-  <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.entry_id), class: "dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
+  <%= if @is_authenticated do %>
+    <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.entry_id), class: "dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
+  <% end %>
   <section class="flex-ns flex-wrap">
     <%= if img = List.last(@venue.venue_images) do %>
       <div class="db bg-venue w-100"
@@ -17,7 +19,9 @@
       <% end %>
     <% end %>
     <div class="w-90 w-60-ns pt4 ph5-ns center tr">
-      <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.entry_id), class: "dib dn-ns btn-primary no-underline" %>
+      <%= if @is_authenticated do %>
+        <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.entry_id), class: "dib dn-ns btn-primary no-underline" %>
+      <% end %>
       <div class="flex-ns items-center tl">
         <h1 class="roboto-slab f2 lh2 dib-ns pt4 pt0-ns"><%= @venue.venue_name %></h1>
         <%= for type <- @venue.venue_types do %>
@@ -26,10 +30,12 @@
       </div>
       <div class="tl pt3">
         <img class="w4 v-btm" src="<%= static_path(@conn, "/images/score-#{@venue.cs_score}.png") %>" alt="Club Soda Score of <%= @venue.cs_score %>">
-        <%= if @venue.cs_score == 0 do %>
-          <a class="cs-mid-blue dib mt2 mt0-ns pb1" href="/venues/<%= @venue.entry_id %>/add_drinks">Your Club Soda score is 0, improve it by listing drinks you stock.</a>
-        <%= else %>
-          <a class="cs-mid-blue dib mt2 mt0-ns pb1" href="/venues/<%= @venue.entry_id %>/add_drinks">Improve your score by adding more drinks to you stocklist.</a>
+        <%= if @is_authenticated do %>
+          <%= if @venue.cs_score == 0 do %>
+            <a class="cs-mid-blue dib mt2 mt0-ns pb1" href="/venues/<%= @venue.entry_id %>/add_drinks">Your Club Soda score is 0, improve it by listing drinks you stock.</a>
+          <%= else %>
+            <a class="cs-mid-blue dib mt2 mt0-ns pb1" href="/venues/<%= @venue.entry_id %>/add_drinks">Improve your score by adding more drinks to you stocklist.</a>
+          <% end %>
         <% end %>
       </div>
       <%= if @venue.description do %>
@@ -38,8 +44,10 @@
         </p>
       <%= else %>
         <p class="h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl">
-          No venue description,
-          <span class="cs-mid-blue pointer underline">add description.</span>
+          <%= if @is_authenticated do %>
+            No venue description,
+            <a href="<%= @venue.entry_id %>/edit" class="f6 lh6 cs-mid-blue dib v-top">add description.</a>
+          <% end %>
         </p>
       <% end %>
 
@@ -68,19 +76,23 @@
             <%= @venue.phone_number %>
           </p>
         <%= else %>
-          <a href="<%= @venue.entry_id %>/edit" class="f6 lh6 cs-mid-blue dib v-top">
-            Add venue phone number
-          </a>
+          <%= if @is_authenticated do %>
+            <a href="<%= @venue.entry_id %>/edit" class="f6 lh6 cs-mid-blue dib v-top">
+              Add venue phone number
+            </a>
+          <% end %>
         <% end %>
       </div>
       <div class="db pv1">
         <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
         <%= if @venue.website do %>
-        <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @venue.website %>">
-          <%= @venue.website %>
-        </a>
+          <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @venue.website %>">
+            <%= @venue.website %>
+          </a>
         <%= else %>
-        <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue website</a>
+          <%= if @is_authenticated do %>
+            <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue website</a>
+          <% end %>
         <% end %>
       </div>
       <div class="db pv1">
@@ -90,7 +102,9 @@
           <%= @venue.facebook %>
         </a>
         <%= else %>
-        <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue facebook</a>
+          <%= if @is_authenticated do %>
+            <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue facebook</a>
+          <% end %>
         <% end %>
       </div>
       <div class="db pv1">
@@ -100,7 +114,9 @@
           <%= @venue.instagram %>
         </a>
         <%= else %>
-        <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue instagram</a>
+          <%= if @is_authenticated do %>
+            <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue instagram</a>
+          <% end %>
         <% end %>
       </div>
       <div class="db pv1">
@@ -108,7 +124,9 @@
         <%= if @venue.twitter do %>
           <a href="<%= @venue.twitter %>" class="f6 lh6 cs-mid-blue underline dib v-top"><%= @venue.twitter %></a>
         <% else %>
-          <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue twitter</a>
+          <%= if @is_authenticated do %>
+            <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue twitter</a>
+          <% end %>
         <% end %>
       </div>
       <!-- To be added at a later date, see #119 -->
@@ -127,14 +145,16 @@
       <%= for {drink, index} <- Enum.with_index(@venue.drinks) do %>
         <%= component("drink_card", drink: drink, index: index, conn: @conn) %>
       <% end %>
-      <div class="w-third-m w-20-l shadow-4 br2 tr pb3 mh3 mv3 relative">
-        <div class="bb b--cs-light-pink bw3 mb3 tl h-27rem">
-          <h4 class="f4 lh4 pa3 shadow-4 br2 mt4 mb3 mh4 tc bg-sheer-white absolute top-1">Add Drinks Stocked</h4>
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyT_ehuzfLvJKLPOAVjobqWtZjFO1--mgpQb_NJmq0wIfpEc5SyXkuPxpG" alt="Photo of drink" class="w-5rem db center pt4">
-          <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib">% ABV</p>
+      <%= if @is_authenticated do %>
+        <div class="w-third-m w-20-l shadow-4 br2 tr pb3 mh3 mv3 relative">
+          <div class="bb b--cs-light-pink bw3 mb3 tl h-27rem">
+            <h4 class="f4 lh4 pa3 shadow-4 br2 mt4 mb3 mh4 tc bg-sheer-white absolute top-1">Add Drinks Stocked</h4>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyT_ehuzfLvJKLPOAVjobqWtZjFO1--mgpQb_NJmq0wIfpEc5SyXkuPxpG" alt="Photo of drink" class="w-5rem db center pt4">
+            <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib">% ABV</p>
+          </div>
+          <a href="/venues/<%= @venue.entry_id %>/add_drinks" class="cs-mid-blue f5 lh5 tr pr4">Add Drinks</a>
         </div>
-        <a href="/venues/<%= @venue.entry_id %>/add_drinks" class="cs-mid-blue f5 lh5 tr pr4">Add Drinks</a>
-      </div>
+      <% end %>
     </div>
   </section>
 </section>

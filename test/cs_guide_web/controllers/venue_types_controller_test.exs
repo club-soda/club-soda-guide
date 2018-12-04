@@ -1,6 +1,8 @@
 defmodule CsGuideWeb.VenueTypesControllerTest do
   use CsGuideWeb.ConnCase
 
+  import CsGuide.SetupHelpers
+
   alias CsGuide.Categories
 
   @create_attrs %{name: "some type"}
@@ -13,6 +15,15 @@ defmodule CsGuideWeb.VenueTypesControllerTest do
   end
 
   describe "index" do
+    test "does not list venue_types if not logged in", %{conn: conn} do
+      conn = get(conn, venue_type_path(conn, :index))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "index - admin" do
+    setup [:admin_login]
+
     test "lists all venue_type", %{conn: conn} do
       conn = get(conn, venue_type_path(conn, :index))
       assert html_response(conn, 200) =~ "Listing Venue Types"
@@ -20,6 +31,15 @@ defmodule CsGuideWeb.VenueTypesControllerTest do
   end
 
   describe "new venue_types" do
+    test "does not render form if not logged in", %{conn: conn} do
+      conn = get(conn, venue_type_path(conn, :new))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "new venue_types - admin" do
+    setup [:admin_login]
+
     test "renders form", %{conn: conn} do
       conn = get(conn, venue_type_path(conn, :new))
       assert html_response(conn, 200) =~ "New Venue types"
@@ -27,6 +47,8 @@ defmodule CsGuideWeb.VenueTypesControllerTest do
   end
 
   describe "create venue_types" do
+    setup [:admin_login]
+
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, venue_type_path(conn, :create), venue_type: @create_attrs)
 
@@ -46,6 +68,15 @@ defmodule CsGuideWeb.VenueTypesControllerTest do
   describe "edit venue_types" do
     setup [:create_venue_types]
 
+    test "does not render form when not logged in", %{conn: conn, venue_type: venue_types} do
+      conn = get(conn, venue_type_path(conn, :edit, venue_types.entry_id))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "edit venue_types - admin" do
+    setup [:create_venue_types, :admin_login]
+
     test "renders form for editing chosen venue_types", %{conn: conn, venue_type: venue_types} do
       conn = get(conn, venue_type_path(conn, :edit, venue_types.entry_id))
       assert html_response(conn, 200) =~ "Edit Venue type"
@@ -53,7 +84,7 @@ defmodule CsGuideWeb.VenueTypesControllerTest do
   end
 
   describe "update venue_types" do
-    setup [:create_venue_types]
+    setup [:create_venue_types, :admin_login]
 
     test "redirects when data is valid", %{conn: conn, venue_type: venue_types} do
       conn =

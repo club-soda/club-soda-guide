@@ -1,0 +1,10 @@
+<section class="center w-80 w-75-l mv6-ns mv5">
+  <h3>Admin Dashboard</h3>
+
+  <%= link "Venues", to: venue_path(@conn, :index), class: "db mv3" %>
+  <%= link "Drinks", to: drink_path(@conn, :index), class: "db mv3" %>
+  <%= link "Brands", to: brand_path(@conn, :index), class: "db mv3" %>
+  <%= link "Drink Types", to: drink_type_path(@conn, :index), class: "db mv3" %>
+  <%= link "Drink Styles", to: drink_style_path(@conn, :index), class: "db mv3" %>
+  <%= link "Venue Types", to: venue_type_path(@conn, :index), class: "db mv3" %>
+</section>

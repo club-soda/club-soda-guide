@@ -1,6 +1,8 @@
 defmodule CsGuideWeb.UserControllerTest do
   use CsGuideWeb.ConnCase
 
+  import CsGuide.SetupHelpers
+
   alias CsGuide.Accounts
 
   @create_attrs %{email: "some@email"}
@@ -13,6 +15,15 @@ defmodule CsGuideWeb.UserControllerTest do
   end
 
   describe "index" do
+    test "does not list users if not logged in", %{conn: conn} do
+      conn = get(conn, user_path(conn, :index))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "index - admin" do
+    setup [:admin_login]
+
     test "lists all users", %{conn: conn} do
       conn = get(conn, user_path(conn, :index))
       assert html_response(conn, 200) =~ "Listing Users"
@@ -27,6 +38,8 @@ defmodule CsGuideWeb.UserControllerTest do
   end
 
   describe "create user" do
+    setup [:admin_login]
+
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, user_path(conn, :create), user: @create_attrs)
 
@@ -41,6 +54,15 @@ defmodule CsGuideWeb.UserControllerTest do
   describe "edit user" do
     setup [:create_user]
 
+    test "does not render form if not logged in", %{conn: conn, user: user} do
+      conn = get(conn, user_path(conn, :edit, user.entry_id))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "edit user - admin" do
+    setup [:create_user, :admin_login]
+
     test "renders form for editing chosen user", %{conn: conn, user: user} do
       conn = get(conn, user_path(conn, :edit, user.entry_id))
       assert html_response(conn, 200) =~ "Edit User"
@@ -48,7 +70,7 @@ defmodule CsGuideWeb.UserControllerTest do
   end
 
   describe "update user" do
-    setup [:create_user]
+    setup [:create_user, :admin_login]
 
     test "redirects when data is valid", %{conn: conn, user: user} do
       conn = put(conn, user_path(conn, :update, user.entry_id), user: @update_attrs)

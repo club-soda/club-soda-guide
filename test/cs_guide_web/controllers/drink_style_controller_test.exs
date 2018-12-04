@@ -1,6 +1,8 @@
 defmodule CsGuideWeb.DrinkStyleControllerTest do
   use CsGuideWeb.ConnCase
 
+  import CsGuide.SetupHelpers
+
   alias CsGuide.Categories
 
   @create_attrs %{deleted: false, name: "some name"}
@@ -13,6 +15,15 @@ defmodule CsGuideWeb.DrinkStyleControllerTest do
   end
 
   describe "index" do
+    test "does not render if not logged in", %{conn: conn} do
+      conn = get(conn, drink_style_path(conn, :index))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "index - admin" do
+    setup [:admin_login]
+
     test "lists all drink_styles", %{conn: conn} do
       conn = get(conn, drink_style_path(conn, :index))
       assert html_response(conn, 200) =~ "Listing Drink Styles"
@@ -20,6 +31,15 @@ defmodule CsGuideWeb.DrinkStyleControllerTest do
   end
 
   describe "new drink_style" do
+    test "does not render form if not logged in", %{conn: conn} do
+      conn = get(conn, drink_style_path(conn, :new))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "new drink_style - admin" do
+    setup [:admin_login]
+
     test "renders form", %{conn: conn} do
       conn = get(conn, drink_style_path(conn, :new))
       assert html_response(conn, 200) =~ "New Drink style"
@@ -27,6 +47,8 @@ defmodule CsGuideWeb.DrinkStyleControllerTest do
   end
 
   describe "create drink_style" do
+    setup [:admin_login]
+
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, drink_style_path(conn, :create), drink_style: @create_attrs)
 
@@ -47,6 +69,15 @@ defmodule CsGuideWeb.DrinkStyleControllerTest do
   describe "edit drink_style" do
     setup [:create_drink_style]
 
+    test "does not render form if not logged in", %{conn: conn, drink_style: drink_style} do
+      conn = get(conn, drink_style_path(conn, :edit, drink_style.entry_id))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "edit drink_style - admin" do
+    setup [:create_drink_style, :admin_login]
+
     test "renders form for editing chosen drink_style", %{conn: conn, drink_style: drink_style} do
       conn = get(conn, drink_style_path(conn, :edit, drink_style.entry_id))
       assert html_response(conn, 200) =~ "Edit Drink style"
@@ -54,7 +85,7 @@ defmodule CsGuideWeb.DrinkStyleControllerTest do
   end
 
   describe "update drink_style" do
-    setup [:create_drink_style]
+    setup [:create_drink_style, :admin_login]
 
     test "redirects when data is valid", %{conn: conn, drink_style: drink_style} do
       conn =
