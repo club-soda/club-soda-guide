@@ -1,6 +1,8 @@
 defmodule CsGuideWeb.DrinkControllerTest do
   use CsGuideWeb.ConnCase
 
+  import CsGuide.SetupHelpers
+
   alias CsGuide.{Resources, Categories, Fixtures}
 
   @create_types Fixtures.create_types()
@@ -50,6 +52,15 @@ defmodule CsGuideWeb.DrinkControllerTest do
   end
 
   describe "index" do
+    test "cannot access page if not logged in", %{conn: conn} do
+      conn = get(conn, drink_path(conn, :index))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "index - admin" do
+    setup [:admin_login]
+
     test "lists all drinks", %{conn: conn} do
       conn = get(conn, drink_path(conn, :index))
       assert html_response(conn, 200) =~ "All Drinks"
@@ -57,6 +68,15 @@ defmodule CsGuideWeb.DrinkControllerTest do
   end
 
   describe "new drink" do
+    test "does not render form if not logged in", %{conn: conn} do
+      conn = get(conn, drink_path(conn, :new))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "new drink - admin" do
+    setup [:admin_login]
+
     test "renders form", %{conn: conn} do
       conn = get(conn, drink_path(conn, :new))
       assert html_response(conn, 200) =~ "New Drink"
@@ -66,6 +86,15 @@ defmodule CsGuideWeb.DrinkControllerTest do
   describe "edit drink" do
     setup [:drink_setup]
 
+    test "does not render form if not logged in", %{conn: conn, drink: drink} do
+      conn = get(conn, drink_path(conn, :edit, drink.entry_id))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "edit drink - admin" do
+    setup [:drink_setup, :admin_login]
+
     test "renders form for editing chosen drink", %{conn: conn, drink: drink} do
       conn = get(conn, drink_path(conn, :edit, drink.entry_id))
       assert html_response(conn, 200) =~ "Edit Drink"
@@ -73,7 +102,7 @@ defmodule CsGuideWeb.DrinkControllerTest do
   end
 
   describe "update drink" do
-    setup [:drink_setup]
+    setup [:drink_setup, :admin_login]
 
     test "redirects when data is valid", %{conn: conn, drink: drink} do
       conn = put(conn, drink_path(conn, :update, drink.entry_id), drink: @update_attrs)

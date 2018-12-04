@@ -37,11 +37,19 @@ drinks and venues that serve them. It will also provide brands and venues with
 the opportunity to connect and understand their consumers better. We hope this
 will drive a community that owns the mindful drinking movement.
 
+## Live Site
+
+The site is live at https://www.clubsodaguide.com
+
+The staging site, for testing of new features is at https://club-soda-guide-staging.herokuapp.com
+
 ## User Guide
+
+In the following guide, all urls should be appended to whichever site you are using from above, either the live or staging site.
 
 In the current iteration of the app, users can sign up and add their venue.
 
-To sign up, visit https://club-soda-guide-staging.herokuapp.com/users/new, or click on the 'List a Venue' button on the top left of any page.
+To sign up, visit `/users/new`, or click on the 'List a Venue' button on the top left of any page.
 
 <img src="https://user-images.githubusercontent.com/8939909/46817864-c681d580-cd77-11e8-8a50-ff87fa446391.png" alt="'List a Venue' Button" width="200"/>
 
@@ -49,32 +57,35 @@ From there, you will see a sign up form, enabling users to sign up with an email
 
 <img width="500" alt="Sample Venue Page" src="https://user-images.githubusercontent.com/8939909/46818567-7efc4900-cd79-11e8-8287-75bafadf2155.png">
 
-To see all venues that currently exist, you can visit https://club-soda-guide-staging.herokuapp.com/venues, where you'll see a list of all venues. From here you can click 'show' to visit the venue page, 'edit' to edit its details, or 'delete' to delete the venue listing.
+To see all venues that currently exist, you can visit `/admin/venues`, where you'll see a list of all venues. From here you can click 'show' to visit the venue page, 'edit' to edit its details, or 'delete' to delete the venue listing.
 
 <img width="500" alt="Venue listings" src="https://user-images.githubusercontent.com/8939909/46818459-32b10900-cd79-11e8-8268-a01b735c0ed2.png">
 
-The venue types and drinks that can be added to a venue listing can be added to by visiting https://club-soda-guide-staging.herokuapp.com/venue_types/new, or https://club-soda-guide-staging.herokuapp.com/drinks/new respectively.
+The venue types and drinks that can be added to a venue listing can be added to by visiting `/admin/venue_types/new`, or `/admin/drinks/new` respectively.
 
 <img width="275" alt="New drink" src="https://user-images.githubusercontent.com/8939909/46818775-edd9a200-cd79-11e8-8dfd-c4db560d0c6c.png">
 
 <img width="250" alt="New Venue Type" src="https://user-images.githubusercontent.com/8939909/46818794-f7fba080-cd79-11e8-8caa-f05f65becbeb.png">
 
-You can also see a list of all venue types, and drinks on https://club-soda-guide-staging.herokuapp.com/venue_types and https://club-soda-guide-staging.herokuapp.com/drinks, where you can show, edit and delete them as with the venues. (These pages are still undergoing work so do not currently look very nice, but are functional).
+You can also see a list of all venue types, and drinks on `/admin/venue_types` and `/admin/drinks`, where you can show, edit and delete them as with the venues. (These pages are still undergoing work so do not currently look very nice, but are functional).
 
 ## User Admin Guide
 
-The CS team has the ability to add, edit and delete various details to do with
-drinks, brands and venues on the site. At present these are not password protected.
+The CS team has the ability to add, edit and delete various details to do with drinks, brands and venues on the site.
+
+These are password protected and can be accessed by admins only. Please speak to a member of the dev team if you need an admin account.
 
 These are the elements of the site that can be amended in this way and their
 corresponding urls:
-- Users `/users`
-- Drinks `/drinks`
-  - Drink types `/drink_types`
-  - Drink style `/drink_styles`
-- Brands `/brands`
-- Venues `/venues`
-  - Venue type `/venue_types`
+- Users `/admin/users`
+- Drinks `/admin/drinks`
+  - Drink types `/admin/drink_types`
+  - Drink style `/admin/drink_styles`
+- Brands `/admin/brands`
+- Venues `/admin/venues`
+  - Venue type `/admin/venue_types`
+
+All of these links are also available by visiting `/admin`.
 
 Go to one of these links and you will have the option to create a new one,
 view/edit an existing one or delete an old one. Like this:
@@ -98,15 +109,6 @@ Member brands are also able to display retailers. To add a 'where to buy' retail
 you'll need to create a venue, and give it a venue type of 'Retailers'. Then
 when you add the drink to this venue, it will display in the 'where to buy' section.
 
-
-## Importing Data
-
-The existing data is imported through our [seeds file](priv/repo/seeds.exs).
-
-The environment variable `IMPORT_FILES_DIR` should be the path to the directory containing the csv files (For example, if those files are hosted on AWS S3, it would be the path of the S3 bucket).
-
-The files should be named correctly such that the format of the file matches the function that will be calling it. (That is, the brands file should be `brands.csv`, drinks `drinks.csv` and the venues `venues_1.csv`, `venues_2.csv` or `venues_3.csv`, depending on which format it is. These should be named correctly already, and as this import is only intended to be done once, shouldn't need to be changed. This documentation is just here as a guide if this import function ever needs to be extended.)
-
 ## Uploading Images
 
 To upload a drink image, go to `/drinks`, then select `show` on the drink you want to upload an image for.
@@ -127,11 +129,11 @@ If successful, you'll be taken back to the drink page and your image will displa
 
 To upload an image for a brand or a venue, follow the same steps, but using the `brands` and `venues` urls respectively.
 
-Also, for Brands, you can select the `Use as cover photo` box when uploading an image. 
+Also, for Brands, you can select the `Use as cover photo` box when uploading an image.
 
 <img width="250" alt="screen shot 2018-11-26 at 15 12 37" src="https://user-images.githubusercontent.com/8939909/49022795-a3777d80-f18d-11e8-8fa2-fdbf93a50048.png">
 
-This will use this as the 'banner' image at the top of the brand page. 
+This will use this as the 'banner' image at the top of the brand page.
 
 <img width="300" alt="screen shot 2018-11-26 at 15 15 42" src="https://user-images.githubusercontent.com/8939909/49023095-4f20cd80-f18e-11e8-8315-2e4e8fd26d31.png">
 
@@ -142,3 +144,25 @@ If you don't select it, the image will be set as the standard image further down
 Venue images and brand images should be close to a 12:4 ratio for best quality, but other sizes will be stretched or cropped to fit.
 
 Drink images should be close to a 9:16 ratio.
+
+## Dev Guide
+
+### Importing Data
+
+The existing data is imported through our [seeds file](priv/repo/seeds.exs).
+
+The environment variable `IMPORT_FILES_DIR` should be the path to the directory containing the csv files (For example, if those files are hosted on AWS S3, it would be the path of the S3 bucket).
+
+The files should be named correctly such that the format of the file matches the function that will be calling it. (That is, the brands file should be `brands.csv`, drinks `drinks.csv` and the venues `venues_1.csv`, `venues_2.csv` or `venues_3.csv`, depending on which format it is. These should be named correctly already, and as this import is only intended to be done once, shouldn't need to be changed. This documentation is just here as a guide if this import function ever needs to be extended.)
+
+### Creating Admin Users
+
+To create an admin user, open iex with `iex -S mix`.
+
+From here do:
+
+```
+iex> CsGuide.Accounts.User.insert(%{email: "", password: "", admin: true})
+```
+
+Filling in the empty strings as necessary.
