@@ -10,16 +10,16 @@
       <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns mh2-ns bg-cs-light-pink br2-ns cs-black pt-3rem" href="/search/drinks/?drink_type=wine">Wines</a>
       <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pv4 mh2-ns bg-cs-yellow br2-ns cs-black" href="/search/drinks/?drink_type=spirits_&_premixed">Spirits and</br>Premixed</a>
       <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns mh2-ns bg-cs-mint br2-ns cs-black pt-3rem" href="/search/drinks/?drink_type=soft_drink">Soft Drinks</a>
-      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pv4 mh2-ns bg-cs-black br2-ns white" href="/search/drinks/?drink_type=tonics_&_mixers">Flavoured</br>Tonics</a>
+      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pv4 mh2-ns bg-cs-black br2-ns white" href="/search/drinks/?drink_type=tonics_&_mixers">Tonics and</br> Mixers</a>
       <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns ml2-ns bg-cs-navy br2-ns white pt-3rem" href="/search/drinks/?drink_type=cider"><span class="v-mid">Ciders</span></a>
     </div>
   </div>
 </section>
 <section class="mt-30rem-s mt6-ns pv3 pv5-ns w-90 w-100-ns center">
-  <h2 class="w-90-ns center b pt3 f2 lh2 tc tl-ns">Great drinks for mindful drinkers</h2>
+  <h2 class="w-90-ns center b pt3 f2 lh2 tc tl-ns">Great Drinks For Mindful Drinkers</h2>
   <div id="drinks-carousel"></div>
   <div class="w-90-ns center tc tl-ns mv4">
-    <%= secondary_btn("View Selection", "/search/drinks")%>
+    <%= secondary_btn("View Drinks", "/search/drinks")%>
   </div>
 </section>
 
