@@ -26,31 +26,21 @@ defmodule CsGuideWeb.Plugs.Auth do
   end
 
   def authenticate_user(conn, opts \\ %{}) do
-    case opts[:admin] do
+    cond do
+      !conn.assigns[:current_user] ->
+        conn
+        |> Plug.Conn.put_session(:redirect_url, conn.request_path)
+        |> Phoenix.Controller.put_flash(:error, "You must be logged in to access that page")
+        |> Phoenix.Controller.redirect(to: CsGuideWeb.Router.Helpers.session_path(conn, :new))
+        |> halt()
+
+      !opts[:admin] || (opts[:admin] && conn.assigns[:admin]) ->
+        conn
+
       true ->
-        case conn.assigns[:current_user] && conn.assigns[:admin] do
-          true ->
-            conn
-
-          _ ->
-            conn
-            |> put_status(:not_found)
-            |> Phoenix.Controller.put_view(CsGuideWeb.ErrorView)
-            |> Phoenix.Controller.render("404.html")
-        end
-
-      false ->
-        case conn.assigns[:current_user] do
-          user_id ->
-            conn
-
-          nil ->
-            conn
-            |> Plug.Conn.put_session(:redirect_url, conn.request_path)
-            |> Phoenix.Controller.put_flash(:error, "You must be logged in to access that page")
-            |> Phoenix.Controller.redirect(to: CsGuideWeb.Router.Helpers.session_path(conn, :new))
-            |> halt()
-        end
+        conn
+        |> Phoenix.Controller.redirect(to: "/")
+        |> halt()
     end
   end
 

@@ -3,6 +3,8 @@ defmodule CsGuideWeb.VenueControllerTest do
   alias CsGuide.Fixtures
   alias CsGuide.{Resources, Categories}
 
+  import CsGuide.SetupHelpers
+
   @spirit "Spirit"
   @premixed "Premixed"
 
@@ -73,6 +75,15 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "index" do
+    test "does not list venues if not logged in", %{conn: conn} do
+      conn = get(conn, venue_path(conn, :index))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "index - admin" do
+    setup [:admin_login]
+
     test "lists all venues", %{conn: conn} do
       conn = get(conn, venue_path(conn, :index))
       assert html_response(conn, 200) =~ "All Venues"
@@ -80,6 +91,15 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "new venue" do
+    test "does not render form if not logged in", %{conn: conn} do
+      conn = get(conn, venue_path(conn, :new))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "new venue - admin" do
+    setup [:admin_login]
+
     test "renders form", %{conn: conn} do
       conn = get(conn, venue_path(conn, :new))
       assert html_response(conn, 200) =~ "New Venue"
@@ -87,7 +107,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "create venue" do
-    setup [:create_venue]
+    setup [:create_venue, :admin_login]
 
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
@@ -106,7 +126,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "Calculates correct CS Score:" do
-    setup [:drink_setup, :create_venue]
+    setup [:drink_setup, :create_venue, :admin_login]
 
     test "When no drinks are added the score is 0", %{conn: conn, drinks: drinks} do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
@@ -356,6 +376,15 @@ defmodule CsGuideWeb.VenueControllerTest do
   describe "edit venue" do
     setup [:create_venue]
 
+    test "does not render form when not logged in", %{conn: conn, venue: venue} do
+      conn = get(conn, venue_path(conn, :edit, venue.entry_id))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "edit venue - admin" do
+    setup [:create_venue, :admin_login]
+
     test "renders form for editing chosen venue", %{conn: conn, venue: venue} do
       conn = get(conn, venue_path(conn, :edit, venue.entry_id))
       assert html_response(conn, 200) =~ "Edit Venue"
@@ -363,7 +392,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "update venue" do
-    setup [:create_venue]
+    setup [:create_venue, :admin_login]
 
     test "renders errors when data is invalid", %{conn: conn, venue: venue} do
       conn = put(conn, venue_path(conn, :update, venue.entry_id), venue: @invalid_attrs)

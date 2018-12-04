@@ -3,6 +3,8 @@ defmodule CsGuideWeb.BrandControllerTest do
 
   alias CsGuide.Resources
 
+  import CsGuide.SetupHelpers
+
   @create_attrs %{
     description: "some description",
     logo: "some logo",
@@ -28,6 +30,15 @@ defmodule CsGuideWeb.BrandControllerTest do
   end
 
   describe "index" do
+    test "lcannot access page if not logged in", %{conn: conn} do
+      conn = get(conn, brand_path(conn, :index))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "index - admin" do
+    setup [:admin_login]
+
     test "lists all brands", %{conn: conn} do
       conn = get(conn, brand_path(conn, :index))
       assert html_response(conn, 200) =~ "Listing Brands"
@@ -35,6 +46,15 @@ defmodule CsGuideWeb.BrandControllerTest do
   end
 
   describe "new brand" do
+    test "does not render form if not logged in", %{conn: conn} do
+      conn = get(conn, brand_path(conn, :new))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "new brand - admin" do
+    setup [:admin_login]
+
     test "renders form", %{conn: conn} do
       conn = get(conn, brand_path(conn, :new))
       assert html_response(conn, 200) =~ "New Brand"
@@ -42,6 +62,8 @@ defmodule CsGuideWeb.BrandControllerTest do
   end
 
   describe "create brand" do
+    setup [:admin_login]
+
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, brand_path(conn, :create), brand: @create_attrs)
 
@@ -57,6 +79,15 @@ defmodule CsGuideWeb.BrandControllerTest do
   describe "edit brand" do
     setup [:create_brand]
 
+    test "non logged in user cannot access form", %{conn: conn, brand: brand} do
+      conn = get(conn, brand_path(conn, :edit, brand.entry_id))
+      assert html_response(conn, 302)
+    end
+  end
+
+  describe "edit brand - admin" do
+    setup [:create_brand, :admin_login]
+
     test "renders form for editing chosen brand", %{conn: conn, brand: brand} do
       conn = get(conn, brand_path(conn, :edit, brand.entry_id))
       assert html_response(conn, 200) =~ "Edit Brand"
@@ -64,7 +95,7 @@ defmodule CsGuideWeb.BrandControllerTest do
   end
 
   describe "update brand" do
-    setup [:create_brand]
+    setup [:create_brand, :admin_login]
 
     test "redirects when data is valid", %{conn: conn, brand: brand} do
       conn = put(conn, brand_path(conn, :update, brand.entry_id), brand: @update_attrs)
