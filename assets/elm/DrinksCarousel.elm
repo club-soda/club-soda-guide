@@ -41,12 +41,13 @@ drinksDecoder =
 
 drinkDecoder : Decoder Drink
 drinkDecoder =
-    Decode.map7 Drink
+    Decode.map8 Drink
         (field "name" string)
         (field "brand" string)
         (field "brandId" string)
         (field "abv" float)
         (field "drink_types" (Decode.list string))
+        (field "drink_styles" (Decode.list string))
         (field "description" string)
         (field "image" string)
 

@@ -7,6 +7,7 @@ type alias Drink =
     , brandId : String
     , abv : Float
     , drink_types : List String
+    , drink_styles : List String
     , description : String
     , image : String
     }
