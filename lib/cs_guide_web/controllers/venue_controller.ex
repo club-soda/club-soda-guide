@@ -33,7 +33,7 @@ defmodule CsGuideWeb.VenueController do
       id
       |> Venue.get()
       |> Venue.preload(
-        drinks: [:brand, :drink_types, :drink_images],
+        drinks: [:brand, :drink_types, :drink_styles, :drink_images],
         venue_types: [],
         venue_images: []
       )
