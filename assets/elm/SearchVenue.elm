@@ -83,9 +83,13 @@ view : Model -> Html Msg
 view model =
     div [ class "mt6" ]
         [ div [ class "w-90 center" ]
-            [ (renderFilter "Venue Type" venue_types FilterVenueType)
-            , (renderFilter "Score" cs_score FilterVenueScore)
-            , (renderSearch "Venue Name" FilterVenueName)
+            [ (renderSearch "Search Venues..." FilterVenueName)
+            , (renderFilter "Venue Type" venue_types FilterVenueType (Maybe.withDefault "" model.filterType))
+            , (renderFilter "Score" cs_score FilterVenueScore (case model.filterScore of
+              Just score -> String.fromFloat score
+              Nothing -> ""
+              )
+            )
             ]
         , div [ class "w-90 center" ]
             [ div []
@@ -135,8 +139,8 @@ filterByScore score venues =
 renderVenues : List Venue -> List (Html Msg)
 renderVenues venues =
     if List.isEmpty venues then
-        [ div []
-            [ p [] [ text "Your search didn't return any venues, change your filters and try again." ]
+        [ div [class "flex-ns flex-wrap justify-center pt3 pb4-ns db dib-ns"]
+            [ p [ class "tc"] [ text "Your search didn't return any venues, change your filters and try again." ]
             ]
         ]
     else

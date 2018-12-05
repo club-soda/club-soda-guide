@@ -128,11 +128,11 @@ view : Model -> Html Msg
 view model =
     div [ class "mt6" ]
         [ div [ class "w-90 center" ]
-            [ (renderFilter "Drink Type" drink_types SelectDrinkType)
-            , (renderFilter "ABV" abv_levels SelectABVLevel)
-            , (renderSearch "Search drinks..." SearchDrink)
+            [ (renderSearch "Search Drinks..." SearchDrink)
+            , (renderFilter "Drink Type" drink_types SelectDrinkType model.dtype_filter)
+            , (renderFilter "ABV" abv_levels SelectABVLevel model.abv_filter)
             ]
-        , div [ class "relative" ]
+        , div [ class "relative center w-90" ]
             [ div [ class "flex-ns flex-wrap justify-center pt3 pb4-ns db dib-ns" ]
                 (filterDrinks model)
             ]
@@ -201,7 +201,7 @@ renderDrinks drinks =
             |> toList
     else
         [ div []
-            [ p [] [ text "Your search didn't return any drinks, change your filters and try again." ]
+            [ p [class "tc"] [ text "Your search didn't return any drinks, change your filters and try again." ]
             ]
         ]
 
