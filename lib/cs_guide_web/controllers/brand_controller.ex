@@ -31,7 +31,13 @@ defmodule CsGuideWeb.BrandController do
       id
       |> Brand.get()
       |> Brand.preload(
-        drinks: [:drink_images, :brand, :drink_types, venues: [:venue_types, :venue_images]],
+        drinks: [
+          :drink_images,
+          :brand,
+          :drink_types,
+          :drink_styles,
+          venues: [:venue_types, :venue_images]
+        ],
         brand_images: []
       )
 
