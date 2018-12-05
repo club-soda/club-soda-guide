@@ -121,8 +121,7 @@ drink_types =
 
 abv_levels : List String
 abv_levels =
-    [ "0%", "0.05%", "0.5%", "1 - 2.5%", "2.5 - 8%" ]
-
+    [ "<0.05%", "0.05% - 0.5%", "0.51% - 1%", "1.1% - 3%", "3.1% +" ]
 
 view : Model -> Html Msg
 view model =
@@ -151,20 +150,20 @@ filterDrinks model =
 filterByABV : Model -> Drink -> Bool
 filterByABV model drink =
     case model.abv_filter of
-        "0%" ->
-            drink.abv == 0.0
+        "<0.05%" ->
+            drink.abv < 0.05
 
-        "0.05%" ->
-            drink.abv == 0.05
+        "0.05% - 0.5%" ->
+            (drink.abv >= 0.05 && drink.abv <= 0.5)
 
-        "0.5%" ->
-            drink.abv == 0.5
+        "0.51% - 1%" ->
+            (drink.abv >= 0.51 && drink.abv <= 1)
 
-        "1 - 2.5%" ->
-            (drink.abv >= 1 && drink.abv <= 2.5)
+        "1.1% - 3%" ->
+            (drink.abv >= 1.1 && drink.abv <= 3)
 
-        "2.5 - 8%" ->
-            (drink.abv >= 2.5 && drink.abv <= 8)
+        "3.1% +" ->
+            drink.abv > 3
 
         _ ->
             True
