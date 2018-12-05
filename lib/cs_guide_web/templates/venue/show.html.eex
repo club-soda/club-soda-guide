@@ -32,9 +32,8 @@
         <img class="w4 v-btm" src="<%= static_path(@conn, "/images/score-#{@venue.cs_score}.png") %>" alt="Club Soda Score of <%= @venue.cs_score %>">
         <%= if @is_authenticated do %>
           <%= if @venue.cs_score == 0 do %>
-            <a class="cs-mid-blue dib mt2 mt0-ns pb1" href="/venues/<%= @venue.entry_id %>/add_drinks">Your Club Soda score is 0, improve it by listing drinks you stock.</a>
           <%= else %>
-            <a class="cs-mid-blue dib mt2 mt0-ns pb1" href="/venues/<%= @venue.entry_id %>/add_drinks">Improve your score by adding more drinks to you stocklist.</a>
+            <%= link "Improve your score by adding more drinks to you stocklist.", to: venue_path(@conn, :add_drinks, @venue.entry_id), class: "cs-mid-blue dib mt2 mt0-ns pb1" %>
           <% end %>
         <% end %>
       </div>
@@ -46,7 +45,7 @@
         <p class="h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl">
           <%= if @is_authenticated do %>
             No venue description,
-            <a href="<%= @venue.entry_id %>/edit" class="f6 lh6 cs-mid-blue dib v-top">add description.</a>
+            <%= link "add description", to: venue_path(@conn, :edit, @venue.entry_id, class: "f6 lh6 cs-mid-blue dib v-top") %>
           <% end %>
         </p>
       <% end %>
@@ -77,9 +76,7 @@
           </p>
         <%= else %>
           <%= if @is_authenticated do %>
-            <a href="<%= @venue.entry_id %>/edit" class="f6 lh6 cs-mid-blue dib v-top">
-              Add venue phone number
-            </a>
+            <%= link "Add venue phone number", to: venue_path(@conn, :edit, @venue.entry_id, class: "f6 lh6 cs-mid-blue dib v-top") %>
           <% end %>
         <% end %>
       </div>
@@ -91,7 +88,7 @@
           </a>
         <%= else %>
           <%= if @is_authenticated do %>
-            <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue website</a>
+            <%= link "Add venue website", to: venue_path(@conn, :edit, @venue.entry_id, class: "f6 lh6 cs-mid-blue dib v-top") %>
           <% end %>
         <% end %>
       </div>
@@ -103,7 +100,7 @@
         </a>
         <%= else %>
           <%= if @is_authenticated do %>
-            <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue facebook</a>
+            <%= link "Add venue facebook", to: venue_path(@conn, :edit, @venue.entry_id, class: "f6 lh6 cs-mid-blue dib v-top") %>
           <% end %>
         <% end %>
       </div>
@@ -115,7 +112,7 @@
         </a>
         <%= else %>
           <%= if @is_authenticated do %>
-            <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue instagram</a>
+            <%= link "Add venue instagram", to: venue_path(@conn, :edit, @venue.entry_id, class: "f6 lh6 cs-mid-blue dib v-top") %>
           <% end %>
         <% end %>
       </div>
@@ -125,7 +122,7 @@
           <a href="<%= @venue.twitter %>" class="f6 lh6 cs-mid-blue underline dib v-top"><%= @venue.twitter %></a>
         <% else %>
           <%= if @is_authenticated do %>
-            <a href="<%= @venue.entry_id %>/edit" class="cs-mid-blue f6 lh6 v-top">Add venue twitter</a>
+            <%= link "Add venue twitter", to: venue_path(@conn, :edit, @venue.entry_id, class: "f6 lh6 cs-mid-blue dib v-top") %>
           <% end %>
         <% end %>
       </div>
@@ -152,7 +149,7 @@
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyT_ehuzfLvJKLPOAVjobqWtZjFO1--mgpQb_NJmq0wIfpEc5SyXkuPxpG" alt="Photo of drink" class="w-5rem db center pt4">
             <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib">% ABV</p>
           </div>
-          <a href="/venues/<%= @venue.entry_id %>/add_drinks" class="cs-mid-blue f5 lh5 tr pr4">Add Drinks</a>
+          <%= link "Add Drinks", to: venue_path(@conn, :add_drinks, @venue.entry_id), class: "cs-mid-blue f5 lh5 tr pr4" %>
         </div>
       <% end %>
     </div>
