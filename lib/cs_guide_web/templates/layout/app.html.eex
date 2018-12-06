@@ -15,17 +15,33 @@
 
   <body>
     <header>
-      <nav role="navigation" class="absolute top-0 left-0 z-1 flex items-center w-100">
-        <div class="w-20 mv3">
+      <nav role="navigation" class="absolute top-0 left-0 z-1 flex flex-wrap items-center w-100">
+        <div class="w-60 w-20-ns mv3">
           <a href="/">
             <img src="<%= static_path(@conn, "/images/logo.png") %>" alt="Club Soda Logo" class="ml3 ml5-l">
           </a>
         </div>
-        <div class="w-80 mv2 dib tr">
+
+        <input type="checkbox" id="burger" class="dn">
+        <label for="burger" class="dib dn-ns w-third tr menu_icons">
+          <img class="w2 burger_icon" src="<%= static_path(@conn, "/images/burger_menu.svg") %>" alt="Open Burger Menu">
+          <img class="w2 dn x_icon fr" src="<%= static_path(@conn, "/images/close_menu_x.svg") %>" alt="Close Burger Menu">
+        </label>
+
+        <!-- MOBILE MENU -->
+        <div class="menu dn tl pb4 bg-white cs-black w-100">
+          <a href="/search/drinks?drink_type=" class="db f5 lh5 pl3 pv2 cs-black no-underline">Drinks</a>
+          <a href="/search/venues" class="db f5 lh5 pl3 pt2 pb3 cs-black no-underline">Venues</a>
+          <a href="/users/new" class="f5 lh5 ml3 ph3 pv2 ba b--cs-pink cs-black no-underline br2">List a Venue</a>
+        </div>
+
+        <!-- DESKTOP MENU -->
+        <div class="w-80 mv2 dn dib-ns tr">
           <a href="/search/drinks?drink_type=" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Drinks</a>
           <a href="/search/venues" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Venues</a>
           <a href="/users/new" class="f5 lh5 ph4 pv2 mr3 mr5-l ba b--cs-pink cs-black no-underline br2">List a Venue</a>
         </div>
+
       </nav>
       <span class="logo"></span>
     </header>
