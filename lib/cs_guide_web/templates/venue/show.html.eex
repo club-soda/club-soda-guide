@@ -8,8 +8,10 @@
         style="background-image: url('https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%= img.entry_id %>');">
       </div>
     <% else %>
-      <div class="db bg-venue w-100"
-        style="background-image: url('http://www.camera-m.com/img/placeholder-image-wide.png');">
+      <div class="db w-100 center bg-light-gray tc">
+        <img class="center pv-10rem"/
+        alt="Placeholder Image"
+        src="https://user-images.githubusercontent.com/194400/49571717-f392d480-f931-11e8-96f2-a8d10cfe375e.png">
       </div>
     <% end %>
     <div class="w-90 w-60-ns pt4 ph5-ns center tr">
@@ -17,7 +19,7 @@
         <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.entry_id), class: "dib dn-ns btn-primary no-underline" %>
       <% end %>
       <div class="flex-ns items-center tl">
-        <h1 class="roboto-slab f2 lh2 dib-ns pt4 pt0-ns"><%= @venue.venue_name %></h1>
+        <h1 class="roboto-slab f2 lh2 dib-ns"><%= @venue.venue_name %></h1>
         <%= for type <- @venue.venue_types do %>
           <p class="dib ml4-ns ph3 pv1 white bg-cs-navy br2 f5 lh5 mb3 mb0-ns"><%= String.capitalize(type.name) %></p>
         <% end %>

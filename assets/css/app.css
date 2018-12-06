@@ -456,7 +456,13 @@ select {
   background: #00C6B3;
 }
 
-/* Burger menu */
+
+.pv-10rem {
+  padding-top: 10rem;
+  padding-bottom: 10rem;
+}
+
+/* Burger menu https://github.com/club-soda/club-soda-guide/issues/194 */
 @media (max-width: 48em) {
   #burger:checked ~ .menu {
     display: block;
