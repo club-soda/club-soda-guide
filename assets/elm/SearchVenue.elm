@@ -85,7 +85,7 @@ view model =
         [ div [ class "w-90 center" ]
             [ (renderSearch "Search Venues..." FilterVenueName)
             , (renderFilter "Venue Type" venue_types FilterVenueType (Maybe.withDefault "" model.filterType))
-            , (renderFilter "Score" cs_score FilterVenueScore (case model.filterScore of
+            , (renderFilter "Club Soda Score" cs_score FilterVenueScore (case model.filterScore of
               Just score -> String.fromFloat score
               Nothing -> ""
               )
