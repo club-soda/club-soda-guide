@@ -455,3 +455,8 @@ select {
 .alert-info {
   background: #00C6B3;
 }
+
+.pv-10rem {
+  padding-top: 10rem;
+  padding-bottom: 10rem;
+}
