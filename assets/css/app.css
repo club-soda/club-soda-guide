@@ -455,3 +455,16 @@ select {
 .alert-info {
   background: #00C6B3;
 }
+
+/* Burger menu */
+@media (max-width: 48em) {
+  #burger:checked ~ .menu {
+    display: block;
+  }
+  #burger:checked ~ .menu_icons .burger_icon {
+    display: none;
+  }
+  #burger:checked ~ .menu_icons .x_icon {
+    display: block;
+  }
+}
