@@ -81,7 +81,7 @@ cs_score =
 
 view : Model -> Html Msg
 view model =
-    div [ class "mt6" ]
+    div [ class "mt5 mt6-ns" ]
         [ div [ class "w-90 center" ]
             [ (renderSearch "Search Venues..." FilterVenueName)
             , (renderFilter "Venue Type" venue_types FilterVenueType (Maybe.withDefault "" model.filterType))

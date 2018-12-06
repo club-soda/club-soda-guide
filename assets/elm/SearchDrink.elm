@@ -125,7 +125,7 @@ abv_levels =
 
 view : Model -> Html Msg
 view model =
-    div [ class "mt6" ]
+    div [ class "mt5 mt6-ns" ]
         [ div [ class "w-90 center" ]
             [ (renderSearch "Search Drinks..." SearchDrink)
             , (renderFilter "Drink Type" drink_types SelectDrinkType model.dtype_filter)
