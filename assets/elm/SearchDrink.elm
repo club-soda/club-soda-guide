@@ -1,17 +1,19 @@
-module SearchDrink exposing (..)
+module SearchDrink exposing (Filter, Flags, HttpData, Model, Msg(..), SubFilters(..), abv_levels, drinkDecoder, drink_types, drinksDecoder, drinks_filter, filterByABV, filterByTerm, filterByType, filterDrinks, getDrinks, init, main, onChange, renderDrinks, subscriptions, update, view)
 
+import Array exposing (..)
 import Browser
+import Criteria
+import DrinkCard exposing (drinkCard)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events exposing (..)
 import Http
 import Json.Decode as Json exposing (..)
 import Json.Decode.Pipeline exposing (..)
-import Html exposing (..)
-import Html.Events exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput)
-import Array exposing (..)
-import SharedTypes exposing (Drink)
-import DrinkCard exposing (drinkCard)
 import Search exposing (..)
+import Set
+import SharedTypes exposing (Drink)
+
 
 
 -- MODEL
@@ -19,7 +21,7 @@ import Search exposing (..)
 
 type alias Model =
     { drinks : List Drink
-    , dtype_filter : String
+    , drink_filters : Criteria.State
     , abv_filter : String
     , search_term : String
     }
@@ -28,6 +30,14 @@ type alias Model =
 type alias Flags =
     { dtype_filter : String
     }
+
+
+type alias Filter =
+    ( String, SubFilters )
+
+
+type SubFilters
+    = SubFilters (List Filter)
 
 
 type alias HttpData data =
@@ -40,16 +50,17 @@ init flags =
         dtype_filter =
             if flags.dtype_filter == "default" then
                 ""
+
             else
                 flags.dtype_filter
     in
-        ( { drinks = []
-          , dtype_filter = dtype_filter
-          , abv_filter = ""
-          , search_term = ""
-          }
-        , getDrinks
-        )
+    ( { drinks = []
+      , drink_filters = Criteria.init
+      , abv_filter = ""
+      , search_term = ""
+      }
+    , getDrinks
+    )
 
 
 onChange : (String -> msg) -> Attribute msg
@@ -59,7 +70,7 @@ onChange msgConstructor =
 
 getDrinks : Cmd Msg
 getDrinks =
-    Http.get ("/json_drinks") drinksDecoder |> Http.send ReceiveDrinks
+    Http.get "/json_drinks" drinksDecoder |> Http.send ReceiveDrinks
 
 
 drinksDecoder : Decoder (List Drink)
@@ -86,9 +97,10 @@ drinkDecoder =
 
 type Msg
     = ReceiveDrinks (HttpData (List Drink))
-    | SelectDrinkType String
+      -- | SelectDrinkType String
     | SelectABVLevel String
     | SearchDrink String
+    | UpdateFilters Criteria.State
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -100,14 +112,16 @@ update msg model =
         ReceiveDrinks (Ok drinks) ->
             ( { model | drinks = drinks }, Cmd.none )
 
-        SelectDrinkType drink_type ->
-            ( { model | dtype_filter = drink_type }, Cmd.none )
-
+        -- SelectDrinkType drink_type ->
+        --     ( { model | dtype_filter = drink_type }, Cmd.none )
         SelectABVLevel abv_level ->
             ( { model | abv_filter = abv_level }, Cmd.none )
 
         SearchDrink term ->
             ( { model | search_term = term }, Cmd.none )
+
+        UpdateFilters state ->
+            ( { model | drink_filters = state }, Cmd.none )
 
 
 
@@ -119,17 +133,55 @@ drink_types =
     [ "Beer", "Wine", "Spirits & Premixed", "Soft Drink", "Tonics & Mixers", "Cider" ]
 
 
+drinks_filter : List Filter
+drinks_filter =
+    [ ( "Beer", SubFilters [] )
+    , ( "Wine", SubFilters [] )
+    , ( "Spirits & Premixed", SubFilters [] )
+    , ( "Soft Drink", SubFilters [] )
+    , ( "Tonics & Mixers", SubFilters [] )
+    , ( "Cider", SubFilters [] )
+    ]
+
+
+getFilterName : Filter -> String
+getFilterName ( filter, _ ) =
+    filter
+
+
+getFilterId : Filter -> String
+getFilterId ( filter, _ ) =
+    filter
+
+
+getSubFilters : Filter -> List Filter
+getSubFilters ( _, SubFilters subFilters ) =
+    subFilters
+
+
+criteriaConfig : Criteria.Config Msg Filter
+criteriaConfig =
+    Criteria.config
+        { title = "Drink Type"
+        , toMsg = UpdateFilters
+        , toId = getFilterId
+        , toString = getFilterName
+        , getSubFilters = getSubFilters
+        }
+
+
 abv_levels : List String
 abv_levels =
     [ "<0.05%", "0.05% - 0.5%", "0.51% - 1%", "1.1% - 3%", "3.1% +" ]
+
 
 view : Model -> Html Msg
 view model =
     div [ class "mt5 mt6-ns" ]
         [ div [ class "w-90 center" ]
-            [ (renderSearch "Search Drinks..." SearchDrink)
-            , (renderFilter "Drink Type" drink_types SelectDrinkType model.dtype_filter)
-            , (renderFilter "ABV" abv_levels SelectABVLevel model.abv_filter)
+            [ renderSearch "Search Drinks..." SearchDrink
+            , Criteria.view criteriaConfig model.drink_filters drinks_filter
+            , renderFilter "ABV" abv_levels SelectABVLevel model.abv_filter
             ]
         , div [ class "relative center w-90" ]
             [ div [ class "flex-ns flex-wrap justify-center pt3 pb4-ns db dib-ns" ]
@@ -141,7 +193,7 @@ view model =
 filterDrinks : Model -> List (Html Msg)
 filterDrinks model =
     model.drinks
-        |> List.filter (\d -> filterByType model d)
+        |> List.filter (\d -> filterByType (Set.toList <| Criteria.selectedIdFilters model.drink_filters) d)
         |> List.filter (\d -> filterByABV model d)
         |> List.filter (\d -> filterByTerm model d)
         |> renderDrinks
@@ -154,13 +206,13 @@ filterByABV model drink =
             drink.abv < 0.05
 
         "0.05% - 0.5%" ->
-            (drink.abv >= 0.05 && drink.abv <= 0.5)
+            drink.abv >= 0.05 && drink.abv <= 0.5
 
         "0.51% - 1%" ->
-            (drink.abv >= 0.51 && drink.abv <= 1)
+            drink.abv >= 0.51 && drink.abv <= 1
 
         "1.1% - 3%" ->
-            (drink.abv >= 1.1 && drink.abv <= 3)
+            drink.abv >= 1.1 && drink.abv <= 3
 
         "3.1% +" ->
             drink.abv > 3
@@ -169,16 +221,27 @@ filterByABV model drink =
             True
 
 
-filterByType : Model -> Drink -> Bool
-filterByType model drink =
-    case String.toLower model.dtype_filter of
-        "spirits and premixed" ->
-            List.any (\t -> ("spirit" == String.toLower t || "premixed" == String.toLower t)) drink.drink_types
+filterByType : List String -> Drink -> Bool
+filterByType filters drink =
+    case filters of
+        [] ->
+            True
 
         _ ->
-            List.any (\t -> String.toLower model.dtype_filter == String.toLower t) drink.drink_types
-                || model.dtype_filter
-                == ""
+            filters
+                |> List.map (\f -> List.member f drink.drink_types)
+                |> List.any ((==) True)
+
+
+
+-- case String.toLower "search term" of
+--     "spirits and premixed" ->
+--         List.any (\t -> "spirit" == String.toLower t || "premixed" == String.toLower t) drink.drink_types
+--
+--     _ ->
+--         List.any (\t -> String.toLower "search term" == String.toLower t) drink.drink_types
+--             || "search term"
+--             == ""
 
 
 filterByTerm : Model -> Drink -> Bool
@@ -188,8 +251,8 @@ filterByTerm model drink =
             True
 
         term ->
-            (String.contains (String.toLower term) (String.toLower drink.name))
-                || (String.contains (String.toLower term) (String.toLower drink.description))
+            String.contains (String.toLower term) (String.toLower drink.name)
+                || String.contains (String.toLower term) (String.toLower drink.description)
 
 
 renderDrinks : List Drink -> List (Html Msg)
@@ -198,9 +261,10 @@ renderDrinks drinks =
         Array.fromList drinks
             |> Array.indexedMap drinkCard
             |> toList
+
     else
         [ div []
-            [ p [class "tc"] [ text "Your search didn't return any drinks, change your filters and try again." ]
+            [ p [ class "tc" ] [ text "Your search didn't return any drinks, change your filters and try again." ]
             ]
         ]
 
