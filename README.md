@@ -113,7 +113,7 @@ display in the 'where to buy' section.
 
 ## Uploading Images
 
-To upload a drink image, go to `/drinks`, then select `show` on the drink you want to upload an image for.
+To upload a drink image, go to `admin/drinks`, then select `show` on the drink you want to upload an image for.
 
 <img width="500" alt="drinks list" src="https://user-images.githubusercontent.com/8939909/48944120-6442f580-ef1d-11e8-9173-31b01d4bf126.png">
 
@@ -121,7 +121,8 @@ There you will see an `Upload Image` button. Click this and it will take you to 
 
 <img width="250" alt="drink page" src="https://user-images.githubusercontent.com/8939909/48944137-73c23e80-ef1d-11e8-839c-621c1d07353e.png">
 
-Select the image you want to upload and click submit.
+Select the image you want to upload and click submit. Drinks images should ideally
+be 6:9 or 600px x 900px. Images can be uploaded in jpg or png format.
 
 <img width="250" alt="upload image page" src="https://user-images.githubusercontent.com/8939909/48944177-95bbc100-ef1d-11e8-8173-f36ba2e4a6ed.png">
 
@@ -129,7 +130,7 @@ If successful, you'll be taken back to the drink page and your image will displa
 
 <img width="250" alt="drink page with image" src="https://user-images.githubusercontent.com/8939909/48944158-83418780-ef1d-11e8-9480-118293245c86.png">
 
-To upload an image for a brand or a venue, follow the same steps, but using the `brands` and `venues` urls respectively.
+To upload an image for a brand or a venue, follow the same steps, but using the `admin/brands` and `admin/venues` urls respectively.
 
 Also, for Brands, you can select the `Use as cover photo` box when uploading an image.
 
@@ -143,9 +144,23 @@ If you don't select it, the image will be set as the standard image further down
 
 <img width="300" alt="screen shot 2018-11-26 at 15 26 26" src="https://user-images.githubusercontent.com/8939909/49023590-70ce8480-f18f-11e8-8a99-74542d0ead2c.png">
 
-Venue images and brand images should be close to a 12:4 ratio for best quality, but other sizes will be stretched or cropped to fit.
+Venue images and brand images should be close to a 12:4 ratio or 1280 x 426px for
+best quality, but other sizes will be stretched or cropped to fit.
 
-Drink images should be close to a 9:16 ratio.
+## Searching
+
+### Venues
+
+Example of a search on venues with "London"
+![search venues](https://user-images.githubusercontent.com/6057298/49628521-6d7f9800-f9dc-11e8-9a38-5d62f4873d5e.png)
+
+The search is run **case insensitive** on the **name** of the venues. The venues matching the search term are displayed alphabetically.
+
+### Drinks
+Example of a search on drinks with "beer"
+![image](https://user-images.githubusercontent.com/6057298/49628671-77ee6180-f9dd-11e8-8946-300c0c5e91e4.png)
+
+The search is run **case insensitive** on the **name** and on the **description** of the drinks.
 
 ## Dev Guide
 

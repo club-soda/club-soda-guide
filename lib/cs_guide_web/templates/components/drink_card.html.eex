@@ -21,10 +21,14 @@
         <%= link @drink.brand.name, to: brand_path(@conn, :show, @drink.brand.entry_id), class: "f4 lh4 cs-mid-blue mv1" %>
       </div>
       <div class="flex flex-wrap">
-        <!-- Change this to category/ sub category -->
         <%= if @drink.drink_types do %>
           <%= for dt <- @drink.drink_types do %>
             <p class="w-50 pv2 dib"><%= dt.name %></p>
+          <% end %>
+        <% end %>
+        <%= if @drink.drink_styles do %>
+          <%= for dt <- @drink.drink_styles do %>
+            <p class="w-50 pv2 dib"><%= dt.name %> STYLE</p>
           <% end %>
         <% end %>
         <%= if @drink.abv do %>

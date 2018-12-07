@@ -18,7 +18,7 @@ defmodule CsGuideWeb.DrinkController do
   def json_index(conn, _params) do
     drinks =
       Drink.all()
-      |> Drink.preload([:brand, :drink_types, :drink_images])
+      |> Drink.preload([:brand, :drink_types, :drink_styles, :drink_images])
 
     json(
       conn,
@@ -30,6 +30,7 @@ defmodule CsGuideWeb.DrinkController do
           brandId: d.brand.entry_id,
           abv: d.abv,
           drink_types: Enum.map(d.drink_types, fn t -> t.name end),
+          drink_styles: Enum.map(d.drink_styles, fn t -> t.name end),
           description: d.description,
           image:
             case List.last(d.drink_images) do

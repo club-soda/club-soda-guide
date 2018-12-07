@@ -35,6 +35,15 @@ drinkCard index d =
                                 Nothing ->
                                     ""
                         ]
+                    , p [ class "w-50 pv2 dib" ]
+                        [ text <|
+                            case List.head d.drink_styles of
+                                Just t ->
+                                    t
+
+                                Nothing ->
+                                    ""
+                        ]
                     , p [ class "w-50 pv2 dib" ] [ text <| String.fromFloat d.abv ++ "% ABV" ]
                     ]
                 , p [ class "pv2" ]

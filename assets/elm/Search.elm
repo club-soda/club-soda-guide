@@ -6,12 +6,13 @@ import Html.Events exposing (..)
 import Json.Decode as Json exposing (..)
 
 
-renderFilter : String -> List String -> (String -> msg) -> Html msg
-renderFilter defaultTitle dropdownItems msgConstructor =
+renderFilter : String -> List String -> (String -> msg) -> String -> Html msg
+renderFilter defaultTitle dropdownItems msgConstructor selected =
     div [ class "dib pr2" ]
         [ select
             [ onChange msgConstructor
-            , class "f6 lh6 cs-light-gray bg-white b--cs-light-gray br2 bw1 pv2 ph3 dib w6"
+            , class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6"
+            , classList [("cs-gray", ( selected == "" ))]
             ]
             ([ option [ Html.Attributes.value "" ] [ text defaultTitle ] ]
                 ++ List.map (\dropdownItem -> renderDropdownItems dropdownItem) dropdownItems
@@ -26,12 +27,12 @@ renderDropdownItems dropdownItem =
 
 renderSearch : String -> (String -> msg) -> Html msg
 renderSearch text msg =
-    div [ class "dib pr2" ]
+    div [ class "db mb3 w-50" ]
         [ input
             [ type_ "text"
             , placeholder text
             , onInput msg
-            , class "f6 lh6 cs-light-gray bg-white b--cs-light-gray br2 bw1 pv2 pl3 dib w6"
+            , class "f6 lh6 cs-black bg-white ba b--cs-light-gray br2 pv2 pl3 pr6"
             ]
             []
         ]

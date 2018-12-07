@@ -23,7 +23,6 @@ defmodule CsGuide.Resources.Venue do
     field(:num_cocktails, :integer)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
-    field(:external_image, :string)
 
     many_to_many(
       :venue_types,
@@ -70,8 +69,7 @@ defmodule CsGuide.Resources.Venue do
       :twitter,
       :instagram,
       :facebook,
-      :favourite,
-      :external_image
+      :favourite
     ])
     |> cast_assoc(:users)
     |> validate_required([:venue_name, :postcode, :venue_types])

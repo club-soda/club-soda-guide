@@ -69,12 +69,13 @@ drinksDecoder =
 
 drinkDecoder : Decoder Drink
 drinkDecoder =
-    Json.map7 Drink
+    Json.map8 Drink
         (field "name" string)
         (field "brand" string)
         (field "brandId" string)
         (field "abv" float)
         (field "drink_types" (Json.list string))
+        (field "drink_styles" (Json.list string))
         (field "description" string)
         (field "image" string)
 
@@ -120,18 +121,17 @@ drink_types =
 
 abv_levels : List String
 abv_levels =
-    [ "0%", "0.05%", "0.5%", "1 - 2.5%", "2.5 - 8%" ]
-
+    [ "<0.05%", "0.05% - 0.5%", "0.51% - 1%", "1.1% - 3%", "3.1% +" ]
 
 view : Model -> Html Msg
 view model =
-    div [ class "mt6" ]
+    div [ class "mt5 mt6-ns" ]
         [ div [ class "w-90 center" ]
-            [ (renderFilter "Drink Type" drink_types SelectDrinkType)
-            , (renderFilter "ABV" abv_levels SelectABVLevel)
-            , (renderSearch "Search drinks..." SearchDrink)
+            [ (renderSearch "Search Drinks..." SearchDrink)
+            , (renderFilter "Drink Type" drink_types SelectDrinkType model.dtype_filter)
+            , (renderFilter "ABV" abv_levels SelectABVLevel model.abv_filter)
             ]
-        , div [ class "relative" ]
+        , div [ class "relative center w-90" ]
             [ div [ class "flex-ns flex-wrap justify-center pt3 pb4-ns db dib-ns" ]
                 (filterDrinks model)
             ]
@@ -150,20 +150,20 @@ filterDrinks model =
 filterByABV : Model -> Drink -> Bool
 filterByABV model drink =
     case model.abv_filter of
-        "0%" ->
-            drink.abv == 0.0
+        "<0.05%" ->
+            drink.abv < 0.05
 
-        "0.05%" ->
-            drink.abv == 0.05
+        "0.05% - 0.5%" ->
+            (drink.abv >= 0.05 && drink.abv <= 0.5)
 
-        "0.5%" ->
-            drink.abv == 0.5
+        "0.51% - 1%" ->
+            (drink.abv >= 0.51 && drink.abv <= 1)
 
-        "1 - 2.5%" ->
-            (drink.abv >= 1 && drink.abv <= 2.5)
+        "1.1% - 3%" ->
+            (drink.abv >= 1.1 && drink.abv <= 3)
 
-        "2.5 - 8%" ->
-            (drink.abv >= 2.5 && drink.abv <= 8)
+        "3.1% +" ->
+            drink.abv > 3
 
         _ ->
             True
@@ -200,7 +200,7 @@ renderDrinks drinks =
             |> toList
     else
         [ div []
-            [ p [] [ text "Your search didn't return any drinks, change your filters and try again." ]
+            [ p [class "tc"] [ text "Your search didn't return any drinks, change your filters and try again." ]
             ]
         ]
 

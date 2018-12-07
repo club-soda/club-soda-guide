@@ -41,6 +41,21 @@ select {
   color: #333333;
 }
 
+/* Colour of placeholder input text */
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #999999;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #999999;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #999999;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: #999999;
+}
+
 .bg-cs-black {
   background-color: #333333;
 }
@@ -439,4 +454,23 @@ select {
 
 .alert-info {
   background: #00C6B3;
+}
+
+
+.pv-10rem {
+  padding-top: 10rem;
+  padding-bottom: 10rem;
+}
+
+/* Burger menu https://github.com/club-soda/club-soda-guide/issues/194 */
+@media (max-width: 48em) {
+  #burger:checked ~ .menu {
+    display: block;
+  }
+  #burger:checked ~ .menu_icons .burger_icon {
+    display: none;
+  }
+  #burger:checked ~ .menu_icons .x_icon {
+    display: block;
+  }
 }
