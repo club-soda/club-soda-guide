@@ -147,6 +147,21 @@ If you don't select it, the image will be set as the standard image further down
 Venue images and brand images should be close to a 12:4 ratio or 1280 x 426px for
 best quality, but other sizes will be stretched or cropped to fit.
 
+## Searching
+
+### Venues
+
+Example of a search on venues with "London"
+![search venues](https://user-images.githubusercontent.com/6057298/49628521-6d7f9800-f9dc-11e8-9a38-5d62f4873d5e.png)
+
+The search is run **case insensitive** on the **name** of the venues. The venues matching the search term are displayed alphabetically.
+
+### Drinks
+Example of a search on drinks with "beer"
+![image](https://user-images.githubusercontent.com/6057298/49628671-77ee6180-f9dd-11e8-8946-300c0c5e91e4.png)
+
+The search is run **case insensitive** on the **name** and on the **description** of the drinks.
+
 ## Dev Guide
 
 ### Importing Data
