@@ -142,7 +142,7 @@ defmodule CsGuideWeb.VenueController do
         {:ok, venue_image}
       else
         val ->
-          Repo.rollback(val)
+          CsGuide.Repo.rollback(val)
       end
     end)
     |> case do
