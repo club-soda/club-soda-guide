@@ -1,8 +1,7 @@
-defmodule CsGuideWeb.VenueController do
+defmodule CsGuideWeb.RetailerController do
   use CsGuideWeb, :controller
 
   alias CsGuide.Resources.{Venue, Drink, Brand}
-  alias CsGuide.Images.VenueImage
 
   import Ecto.Query, only: [from: 2, subquery: 1]
 
@@ -14,7 +13,7 @@ defmodule CsGuideWeb.VenueController do
         v.venue_types
       end)
       |> Enum.filter(fn v ->
-        if Enum.find(v.venue_types, fn type -> String.downcase(type.name) !== "retailers" end) do
+        if Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailers" end) do
           v
         end
       end)
@@ -32,25 +31,12 @@ defmodule CsGuideWeb.VenueController do
     case Venue.insert(venue_params) do
       {:ok, venue} ->
         conn
-        |> put_flash(:info, "Venue created successfully.")
-        |> redirect(to: venue_path(conn, :show, venue.entry_id))
+        |> put_flash(:info, "Retailer created successfully.")
+        |> redirect(to: retailer_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
-  end
-
-  def show(conn, %{"id" => id}) do
-    venue =
-      id
-      |> Venue.get()
-      |> Venue.preload(
-        drinks: [:brand, :drink_types, :drink_styles, :drink_images],
-        venue_types: [],
-        venue_images: []
-      )
-
-    render(conn, "show.html", venue: venue, is_authenticated: conn.assigns[:admin])
   end
 
   def edit(conn, %{"id" => id}) do
@@ -81,8 +67,8 @@ defmodule CsGuideWeb.VenueController do
     case Venue.update(venue, venue_params |> Map.put("drinks", venue.drinks)) do
       {:ok, venue} ->
         conn
-        |> put_flash(:info, "Venue updated successfully.")
-        |> redirect(to: venue_path(conn, :show, venue.entry_id))
+        |> put_flash(:info, "Retailer updated successfully.")
+        |> redirect(to: retailer_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", venue: venue, changeset: changeset)
@@ -116,49 +102,11 @@ defmodule CsGuideWeb.VenueController do
              )
            ) do
       conn
-      |> put_flash(:info, "Venue updated successfully.")
-      |> redirect(to: venue_path(conn, :show, venue.entry_id))
+      |> put_flash(:info, "Retailer updated successfully.")
+      |> redirect(to: retailer_path(conn, :index))
     else
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", venue: venue, changeset: changeset)
-    end
-  end
-
-  def add_drinks(conn, %{"id" => id}) do
-    venue =
-      id
-      |> Venue.get()
-      |> Venue.preload(drinks: [:brand], venue_types: [])
-
-    brands = Brand.all() |> Brand.preload(:drinks)
-
-    changeset = Venue.changeset(venue)
-
-    render(conn, "add_drinks.html",
-      brands: brands,
-      current_drinks: Enum.map(venue.drinks, fn d -> d.entry_id end),
-      changeset: changeset,
-      action: venue_path(conn, :update, venue.entry_id)
-    )
-  end
-
-  def add_photo(conn, %{"id" => id}) do
-    render(conn, "add_photo.html", id: id)
-  end
-
-  def upload_photo(conn, params) do
-    CsGuide.Repo.transaction(fn ->
-      with {:ok, venue_image} <- VenueImage.insert(%{venue: params["id"]}),
-           {:ok, _} <- CsGuide.Resources.upload_photo(params, venue_image.entry_id) do
-        {:ok, venue_image}
-      else
-        val ->
-          Repo.rollback(val)
-      end
-    end)
-    |> case do
-      {:ok, _} -> redirect(conn, to: venue_path(conn, :show, params["id"]))
-      {:error, _} -> render(conn, "add_photo.html", id: params["id"], error: true)
     end
   end
 end

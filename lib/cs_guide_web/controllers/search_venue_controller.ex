@@ -7,6 +7,14 @@ defmodule CsGuideWeb.SearchVenueController do
     venues =
       Venue.all()
       |> Venue.preload([:venue_types, :venue_images])
+      |> Enum.filter(fn v ->
+        v.venue_types
+      end)
+      |> Enum.filter(fn v ->
+        if Enum.find(v.venue_types, fn type -> String.downcase(type.name) !== "retailers" end) do
+          v
+        end
+      end)
       |> Enum.sort_by(& &1.venue_name)
 
     cards = Enum.map(venues, fn v -> get_venue_card(v) end)
