@@ -12,8 +12,8 @@ defmodule CsGuide.AccountsTest do
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
-        attrs
-        |> Enum.into(@valid_attrs)
+        %User{}
+        |> User.changeset(Enum.into(attrs, @valid_attrs))
         |> User.insert()
 
       user
@@ -30,24 +30,25 @@ defmodule CsGuide.AccountsTest do
     end
 
     test "insert/1 with valid data creates a user" do
-      assert {:ok, %User{} = user} = User.insert(@valid_attrs)
+      assert {:ok, %User{} = user} = %User{} |> User.changeset(@valid_attrs) |> User.insert()
       assert user.email == "some@email"
     end
 
     test "insert/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = User.insert(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               %User{} |> User.changeset(@invalid_attrs) |> User.insert()
     end
 
     test "update/2 with valid data updates the user" do
       user = user_fixture()
-      assert {:ok, user} = User.update(user, @update_attrs)
+      assert {:ok, user} = User.changeset(user, @update_attrs) |> User.update()
       assert %User{} = user
       assert user.email == "some@updated.email"
     end
 
     test "update/2 with invalid data returns error changeset" do
       user = user_fixture()
-      assert {:error, %Ecto.Changeset{}} = User.update(user, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = User.changeset(user, @invalid_attrs) |> User.update()
     end
 
     test "changeset/1 returns a user changeset" do

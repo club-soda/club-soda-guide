@@ -111,7 +111,7 @@ defmodule CsGuideWeb.DrinkController do
         {:ok, drink_image}
       else
         val ->
-          Repo.rollback(val)
+          CsGuide.Repo.rollback(val)
       end
     end)
     |> case do

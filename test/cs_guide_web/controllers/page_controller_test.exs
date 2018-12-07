@@ -40,7 +40,8 @@ defmodule CsGuideWeb.PageControllerTest do
   end
 
   def fixture(:venue) do
-    %{name: "Pubs"}
+    %Categories.VenueType{}
+    |> Categories.VenueType.changeset(%{name: "Pubs"})
     |> Categories.VenueType.insert()
 
     @venues

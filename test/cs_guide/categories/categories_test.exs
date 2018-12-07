@@ -11,8 +11,8 @@ defmodule CsGuide.CategoriesTest do
 
     def venue_types_fixture(attrs \\ %{}) do
       {:ok, venue_types} =
-        attrs
-        |> Enum.into(@valid_attrs)
+        %VenueType{}
+        |> VenueType.changeset(Enum.into(attrs, @valid_attrs))
         |> VenueType.insert()
 
       venue_types
@@ -29,17 +29,23 @@ defmodule CsGuide.CategoriesTest do
     end
 
     test "insert/1 with valid data creates a venue_types" do
-      assert {:ok, %VenueType{} = venue_types} = VenueType.insert(@valid_attrs)
+      assert {:ok, %VenueType{} = venue_types} =
+               %VenueType{} |> VenueType.changeset(@valid_attrs) |> VenueType.insert()
+
       assert venue_types.name == "some type"
     end
 
     test "insert/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = VenueType.insert(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               %VenueType{} |> VenueType.changeset(@invalid_attrs) |> VenueType.insert()
     end
 
     test "update/2 with valid data updates the venue_types" do
       venue_types = venue_types_fixture()
-      assert {:ok, venue_types} = VenueType.update(venue_types, @update_attrs)
+
+      assert {:ok, venue_types} =
+               venue_types |> VenueType.changeset(@update_attrs) |> VenueType.update()
+
       assert %VenueType{} = venue_types
       assert venue_types.name == "some updated type"
     end
@@ -47,7 +53,8 @@ defmodule CsGuide.CategoriesTest do
     test "update/2 with invalid data returns error changeset" do
       venue_types = venue_types_fixture()
 
-      assert {:error, %Ecto.Changeset{}} = VenueType.update(venue_types, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               venue_types |> VenueType.changeset(@invalid_attrs) |> VenueType.update()
 
       assert venue_types == VenueType.get(venue_types.entry_id)
     end
@@ -59,14 +66,14 @@ defmodule CsGuide.CategoriesTest do
   end
 
   describe "drink_styles" do
-    @valid_attrs %{deleted: false, entry_id: "some entry_id", name: "some name"}
-    @update_attrs %{deleted: false, entry_id: "some updated entry_id", name: "some updated name"}
-    @invalid_attrs %{deleted: nil, entry_id: nil, name: nil}
+    @valid_attrs %{deleted: false, name: "some name"}
+    @update_attrs %{deleted: false, name: "some updated name"}
+    @invalid_attrs %{deleted: nil, name: nil}
 
     def drink_style_fixture(attrs \\ %{}) do
       {:ok, drink_style} =
-        attrs
-        |> Enum.into(@valid_attrs)
+        %DrinkStyle{}
+        |> DrinkStyle.changeset(Enum.into(attrs, @valid_attrs))
         |> DrinkStyle.insert()
 
       drink_style
@@ -83,29 +90,34 @@ defmodule CsGuide.CategoriesTest do
     end
 
     test "insert/1 with valid data creates a drink_style" do
-      assert {:ok, %DrinkStyle{} = drink_style} = DrinkStyle.insert(@valid_attrs)
+      assert {:ok, %DrinkStyle{} = drink_style} =
+               %DrinkStyle{} |> DrinkStyle.changeset(@valid_attrs) |> DrinkStyle.insert()
+
       assert drink_style.deleted == false
-      assert drink_style.entry_id == "some entry_id"
       assert drink_style.name == "some name"
     end
 
     test "insert/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = DrinkStyle.insert(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               %DrinkStyle{} |> DrinkStyle.changeset(@invalid_attrs) |> DrinkStyle.insert()
     end
 
     test "update/2 with valid data updates the drink_style" do
       drink_style = drink_style_fixture()
-      assert {:ok, drink_style} = DrinkStyle.update(drink_style, @update_attrs)
+
+      assert {:ok, drink_style} =
+               drink_style |> DrinkStyle.changeset(@update_attrs) |> DrinkStyle.update()
+
       assert %DrinkStyle{} = drink_style
       assert drink_style.deleted == false
-      assert drink_style.entry_id == "some updated entry_id"
       assert drink_style.name == "some updated name"
     end
 
     test "update/2 with invalid data returns error changeset" do
       drink_style = drink_style_fixture()
 
-      assert {:error, %Ecto.Changeset{}} = DrinkStyle.update(drink_style, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               drink_style |> DrinkStyle.changeset(@invalid_attrs) |> DrinkStyle.update()
 
       assert drink_style == DrinkStyle.get(drink_style.entry_id)
     end
