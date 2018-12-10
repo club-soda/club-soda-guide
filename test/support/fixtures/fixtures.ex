@@ -8,8 +8,7 @@ defmodule CsGuide.Fixtures do
 
       Fixtures.create_drinks()
   """
-  @spirit "Spirit"
-  @premixed "Premixed"
+  @spirits_premixed "Spirits & Premixed"
 
   def create_drinks do
     [
@@ -123,7 +122,7 @@ defmodule CsGuide.Fixtures do
         abv: "0.0",
         description: "Description of drink",
         weighting: 1,
-        drink_types: %{"Tonic" => "on"}
+        drink_types: %{"Tonics & Mixers" => "on"}
       },
       %{
         entry_id: "587bee17-2034-4466-8396-d5277b1eee42",
@@ -131,7 +130,7 @@ defmodule CsGuide.Fixtures do
         abv: "0.0",
         description: "Description of drink",
         weighting: 1,
-        drink_types: %{"Mixer" => "on"}
+        drink_types: %{"Tonics & Mixers" => "on"}
       },
       %{
         entry_id: "587bee17-2034-4466-8396-d5277b1eee43",
@@ -139,7 +138,7 @@ defmodule CsGuide.Fixtures do
         abv: "0.0",
         description: "Description of drink",
         weighting: 1,
-        drink_types: %{"Mixer" => "on"}
+        drink_types: %{"Tonics & Mixers" => "on"}
       },
       %{
         entry_id: "587bee17-2034-4466-8396-d5277b1eee51",
@@ -147,7 +146,7 @@ defmodule CsGuide.Fixtures do
         abv: "0.0",
         description: "Description of drink",
         weighting: 1,
-        drink_types: %{@spirit => "on"}
+        drink_types: %{@spirits_premixed => "on"}
       },
       %{
         entry_id: "587bee17-2034-4466-8396-d5277b1eee52",
@@ -155,7 +154,7 @@ defmodule CsGuide.Fixtures do
         abv: "0.0",
         description: "Description of drink",
         weighting: 1,
-        drink_types: %{@premixed => "on"}
+        drink_types: %{@spirits_premixed => "on"}
       }
     ]
   end
@@ -172,16 +171,10 @@ defmodule CsGuide.Fixtures do
         name: "Soft Drink"
       },
       %{
-        name: "Tonic"
+        name: "Tonics & Mixers"
       },
       %{
-        name: "Mixer"
-      },
-      %{
-        name: @spirit
-      },
-      %{
-        name: @premixed
+        name: @spirits_premixed
       },
       %{
         name: "Cider"

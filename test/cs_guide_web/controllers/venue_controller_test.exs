@@ -5,8 +5,7 @@ defmodule CsGuideWeb.VenueControllerTest do
 
   import CsGuide.SetupHelpers
 
-  @spirit "Spirit"
-  @premixed "Premixed"
+  @spirits_premixed "Spirits and Premixed"
 
   @create_brand Fixtures.create_brand()
   @create_types Fixtures.create_types()
