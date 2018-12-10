@@ -11,7 +11,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   @create_brand Fixtures.create_brand()
   @create_types Fixtures.create_types()
   @create_drinks Fixtures.create_drinks()
-  @create_venue_type Fixtures.create_venue_type()
+  @create_venue_types Fixtures.create_venue_types()
 
   @create_attrs %{
     address: "number and road",
@@ -32,10 +32,13 @@ defmodule CsGuideWeb.VenueControllerTest do
   @invalid_attrs %{phone_number: nil, postcode: nil, venue_name: nil}
 
   def fixture(:venue) do
-    {:ok, type} =
-      %Categories.VenueType{}
-      |> Categories.VenueType.changeset(@create_venue_type)
-      |> Categories.VenueType.insert()
+    @create_venue_types
+    |> Enum.map(fn vt ->
+      {:ok, venue_type} =
+        %Categories.VenueType{}
+        |> Categories.VenueType.changeset(vt)
+        |> Categories.VenueType.insert()
+    end)
 
     {:ok, venue} =
       @create_attrs
@@ -298,7 +301,6 @@ defmodule CsGuideWeb.VenueControllerTest do
       lowAlcWine1 = Enum.find(drinks, fn d -> d.name == "Low Alc Wine 1" end)
       afBeer1 = Enum.find(drinks, fn d -> d.name == "AF Beer 1" end)
       afBeer2 = Enum.find(drinks, fn d -> d.name == "AF Beer 2" end)
-      # lowAlcBeer1 = Enum.find(drinks, fn d -> d.name == "Low Alc Beer 1" end)
       afCider1 = Enum.find(drinks, fn d -> d.name == "AF Cider 1" end)
 
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)

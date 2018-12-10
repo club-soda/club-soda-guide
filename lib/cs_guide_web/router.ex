@@ -50,6 +50,7 @@ defmodule CsGuideWeb.Router do
     resources("/", AdminController, only: [:index])
     resources("/users", UserController, except: [:new, :create])
     resources("/venues", VenueController, except: [:show])
+    resources("/retailers", RetailerController, except: [:show])
     resources("/drinks", DrinkController, except: [:show])
     resources("/brands", BrandController, except: [:show])
 

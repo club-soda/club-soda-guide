@@ -201,7 +201,7 @@ defmodule CsGuide.Fixtures do
     }
   end
 
-  def create_venue_type do
-    %{name: "Bars"}
+  def create_venue_types do
+    [%{name: "Bars"}, %{name: "Retailers"}]
   end
 end
