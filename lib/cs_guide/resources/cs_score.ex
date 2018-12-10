@@ -1,6 +1,5 @@
 defmodule CsGuide.Resources.CsScore do
-  @spirit "Spirit"
-  @premixed "Premixed"
+  @spirits_premixed "Spirits & Premixed"
 
   def calculateScore(drinks, num_cocktails) do
     score =
@@ -18,7 +17,7 @@ defmodule CsGuide.Resources.CsScore do
           drinks
           |> Enum.map(fn d ->
             cond do
-              isMultipleDrinkTypes(d, @spirit, @premixed) ->
+              isDrinkType(d, @spirits_premixed) ->
                 1
 
               true ->
@@ -55,7 +54,7 @@ defmodule CsGuide.Resources.CsScore do
           if d.abv > 0.5 && isDrinkType(d, "Beer") do
             {:beer, 1}
           else
-            if isMultipleDrinkTypes(d, "Tonic", "Mixer") do
+            if isDrinkType(d, "Tonics & Mixers") do
               {:tonic_mixer, 0.5}
             else
               {:none, 0}
