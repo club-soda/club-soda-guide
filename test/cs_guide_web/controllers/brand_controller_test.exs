@@ -1,7 +1,7 @@
 defmodule CsGuideWeb.BrandControllerTest do
   use CsGuideWeb.ConnCase
 
-  alias CsGuide.Resources
+  alias CsGuide.Resources.Brand
 
   import CsGuide.SetupHelpers
 
@@ -23,8 +23,9 @@ defmodule CsGuideWeb.BrandControllerTest do
 
   def fixture(:brand) do
     {:ok, brand} =
-      @create_attrs
-      |> Resources.Brand.insert()
+      %Brand{}
+      |> Brand.changeset(@create_attrs)
+      |> Brand.insert()
 
     brand
   end

@@ -1,6 +1,6 @@
 <section class="center w-80 w-75-l mv5">
   <h2 class="f4 lh4">New Retailer</h2>
-  <%= render_autoform(@conn, :create, CsGuide.Resources.Venue, assigns: [changeset: @changeset], exclude:
+  <%= custom_render_autoform(@conn, :create, [CsGuide.Resources.Venue], assigns: [changeset: @changeset], exclude:
    [:description,
     :address,
     :city,
@@ -14,6 +14,7 @@
     :drinks,
     :num_cocktails,
     :cs_score,
-    :venue_images])
+    :venue_images,
+    :users])
     %>
 </section>

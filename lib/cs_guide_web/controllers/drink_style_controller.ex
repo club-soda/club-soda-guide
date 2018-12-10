@@ -15,7 +15,7 @@ defmodule CsGuideWeb.DrinkStyleController do
   end
 
   def create(conn, %{"drink_style" => drink_style_params}) do
-    case DrinkStyle.insert(drink_style_params) do
+    case %DrinkStyle{} |> DrinkStyle.changeset(drink_style_params) |> DrinkStyle.insert() do
       {:ok, drink_style} ->
         conn
         |> put_flash(:info, "Drink style created successfully.")
@@ -40,7 +40,9 @@ defmodule CsGuideWeb.DrinkStyleController do
   def update(conn, %{"id" => id, "drink_style" => drink_style_params}) do
     drink_style = DrinkStyle.get(id)
 
-    case DrinkStyle.update(drink_style, drink_style_params) do
+    case drink_style
+         |> DrinkStyle.changeset(drink_style_params)
+         |> DrinkStyle.update() do
       {:ok, drink_style} ->
         conn
         |> put_flash(:info, "Drink style updated successfully.")

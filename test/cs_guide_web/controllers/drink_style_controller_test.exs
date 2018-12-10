@@ -3,14 +3,16 @@ defmodule CsGuideWeb.DrinkStyleControllerTest do
 
   import CsGuide.SetupHelpers
 
-  alias CsGuide.Categories
+  alias CsGuide.Categories.DrinkStyle
 
   @create_attrs %{deleted: false, name: "some name"}
   @update_attrs %{deleted: false, name: "some updated name"}
   @invalid_attrs %{deleted: nil, entry_id: nil, name: nil}
 
   def fixture(:drink_style) do
-    {:ok, drink_style} = Categories.DrinkStyle.insert(@create_attrs)
+    {:ok, drink_style} =
+      %DrinkStyle{} |> DrinkStyle.changeset(@create_attrs) |> DrinkStyle.insert()
+
     drink_style
   end
 

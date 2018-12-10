@@ -21,7 +21,7 @@ defmodule CsGuide.Categories.DrinkStyle do
   @doc false
   def changeset(drink_style, attrs) do
     drink_style
-    |> cast(attrs, [:name, :entry_id, :deleted])
-    |> validate_required([:name, :entry_id, :deleted])
+    |> cast(attrs, [:name, :deleted])
+    |> validate_required([:name, :deleted])
   end
 end

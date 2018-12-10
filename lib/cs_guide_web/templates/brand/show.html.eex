@@ -110,7 +110,7 @@
           <%= if venue.venue_types do %>
             <%= for type <- venue.venue_types do %>
               <%= if String.downcase(type.name) == "retailers" do %>
-                <a class="f6 lh6 cs-mid-blue underline dib v-top" href="http://<%= venue.website %>">
+                <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= venue.website %>">
                   <%= venue.venue_name %>
                 </a>
               <% end %>

@@ -3,14 +3,14 @@ defmodule CsGuideWeb.VenueTypesControllerTest do
 
   import CsGuide.SetupHelpers
 
-  alias CsGuide.Categories
+  alias CsGuide.Categories.VenueType
 
   @create_attrs %{name: "some type"}
   @update_attrs %{name: "some updated type"}
   @invalid_attrs %{name: nil}
 
   def fixture(:venue_types) do
-    {:ok, venue_types} = Categories.VenueType.insert(@create_attrs)
+    {:ok, venue_types} = %VenueType{} |> VenueType.changeset(@create_attrs) |> VenueType.insert()
     venue_types
   end
 
