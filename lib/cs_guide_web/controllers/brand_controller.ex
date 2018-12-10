@@ -15,7 +15,7 @@ defmodule CsGuideWeb.BrandController do
   end
 
   def create(conn, %{"brand" => brand_params}) do
-    case Brand.insert(brand_params) do
+    case %Brand{} |> Brand.changeset(brand_params) |> Brand.insert() do
       {:ok, brand} ->
         conn
         |> put_flash(:info, "Brand created successfully.")
@@ -53,7 +53,7 @@ defmodule CsGuideWeb.BrandController do
   def update(conn, %{"id" => id, "brand" => brand_params}) do
     brand = Brand.get(id)
 
-    case Brand.update(brand, brand_params) do
+    case brand |> Brand.changeset(brand_params) |> Brand.update() do
       {:ok, brand} ->
         conn
         |> put_flash(:info, "Brand updated successfully.")

@@ -31,11 +31,11 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
 
       assert html_response(conn, 200) =~ "The Not Favourite Pub"
     end
-
   end
 
   def fixture(:venue) do
-    %{name: "Pubs"}
+    %Categories.VenueType{}
+    |> Categories.VenueType.changeset(%{name: "Pubs"})
     |> Categories.VenueType.insert()
 
     @venues

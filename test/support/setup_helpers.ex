@@ -8,7 +8,10 @@ defmodule CsGuide.SetupHelpers do
   @endpoint CsGuideWeb.Endpoint
 
   def admin_login(_) do
-    {:ok, admin} = User.insert(%{email: "admin@email", password: "password", admin: true})
+    {:ok, admin} =
+      %User{}
+      |> User.changeset(%{email: "admin@email", password: "password", admin: true})
+      |> User.insert()
 
     {:ok,
      conn:

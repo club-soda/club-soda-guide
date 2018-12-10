@@ -1,15 +1,23 @@
 defmodule CsGuideWeb.AuthControllerTest do
   use CsGuideWeb.ConnCase
 
-  alias CsGuide.Accounts
+  alias CsGuide.Accounts.User
 
   def create_user(_) do
-    {:ok, user} = Accounts.User.insert(%{email: "test@email", password: "password"})
+    {:ok, user} =
+      %User{}
+      |> User.changeset(%{email: "test@email", password: "password"})
+      |> User.insert()
+
     {:ok, user: user}
   end
 
   def create_admin(_) do
-    {:ok, user} = Accounts.User.insert(%{email: "admin@email", password: "password", admin: true})
+    {:ok, user} =
+      %User{}
+      |> User.changeset(%{email: "admin@email", password: "password", admin: true})
+      |> User.insert()
+
     {:ok, user: user}
   end
 

@@ -3,14 +3,14 @@ defmodule CsGuideWeb.UserControllerTest do
 
   import CsGuide.SetupHelpers
 
-  alias CsGuide.Accounts
+  alias CsGuide.Accounts.User
 
   @create_attrs %{email: "some@email"}
   @update_attrs %{email: "some@updated.email"}
   @invalid_attrs %{email: nil}
 
   def fixture(:user) do
-    {:ok, user} = Accounts.User.insert(@create_attrs)
+    {:ok, user} = %User{} |> User.changeset(@create_attrs) |> User.insert()
     user
   end
 

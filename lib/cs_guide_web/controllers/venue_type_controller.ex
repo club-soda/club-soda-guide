@@ -14,7 +14,7 @@ defmodule CsGuideWeb.VenueTypeController do
   end
 
   def create(conn, %{"venue_type" => venue_type_params}) do
-    case VenueType.insert(venue_type_params) do
+    case %VenueType{} |> VenueType.changeset(venue_type_params) |> VenueType.insert() do
       {:ok, venue_type} ->
         conn
         |> put_flash(:info, "Venue types created successfully.")
@@ -39,7 +39,7 @@ defmodule CsGuideWeb.VenueTypeController do
   def update(conn, %{"id" => id, "venue_type" => venue_type_params}) do
     venue_type = VenueType.get(id)
 
-    case VenueType.update(venue_type, venue_type_params) do
+    case venue_type |> VenueType.changeset(venue_type_params) |> VenueType.update() do
       {:ok, venue_type} ->
         conn
         |> put_flash(:info, "Venue types updated successfully.")

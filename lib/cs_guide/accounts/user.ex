@@ -12,6 +12,14 @@ defmodule CsGuide.Accounts.User do
     field(:deleted, :boolean, default: false)
     field(:admin, :boolean, default: false)
 
+    many_to_many(
+      :venues,
+      CsGuide.Resources.Venue,
+      join_through: "venues_users",
+      join_keys: [user_id: :id, venue_id: :id],
+      on_replace: :delete
+    )
+
     timestamps()
   end
 
