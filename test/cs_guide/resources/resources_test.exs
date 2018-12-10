@@ -32,7 +32,8 @@ defmodule CsGuide.ResourcesTest do
     }
 
     def venue_fixture(attrs \\ %{}) do
-      %{name: @venue_type_name}
+      %VenueType{}
+      |> VenueType.changeset(%{name: @venue_type_name})
       |> VenueType.insert()
 
       {:ok, venue} =
@@ -58,7 +59,11 @@ defmodule CsGuide.ResourcesTest do
     end
 
     test "insert/1 with valid data creates a venue" do
-      assert {:ok, %VenueType{}} = VenueType.insert(%{name: @venue_type_name})
+      assert {:ok, %VenueType{}} =
+               %VenueType{}
+               |> VenueType.changeset(%{name: @venue_type_name})
+               |> VenueType.insert()
+
       assert {:ok, %Venue{} = venue} = Venue.insert(@valid_attrs)
       assert venue.phone_number == "01234567890"
       assert venue.postcode == "EC1 5AD"
@@ -98,7 +103,7 @@ defmodule CsGuide.ResourcesTest do
     @invalid_attrs %{abv: nil, name: nil}
 
     def drink_fixture(attrs \\ %{}) do
-      {:ok, brand} = Brand.insert(@create_brand)
+      {:ok, brand} = %Brand{} |> Brand.changeset(@create_brand) |> Brand.insert()
 
       {:ok, drink} =
         attrs
@@ -158,8 +163,8 @@ defmodule CsGuide.ResourcesTest do
 
     def brand_fixture(attrs \\ %{}) do
       {:ok, brand} =
-        attrs
-        |> Enum.into(@valid_attrs)
+        %Brand{}
+        |> Brand.changeset(Enum.into(attrs, @valid_attrs))
         |> Brand.insert()
 
       brand
@@ -176,7 +181,7 @@ defmodule CsGuide.ResourcesTest do
     end
 
     test "insert/1 with valid data creates a brand" do
-      assert {:ok, %Brand{} = brand} = Brand.insert(@valid_attrs)
+      assert {:ok, %Brand{} = brand} = %Brand{} |> Brand.changeset(@valid_attrs) |> Brand.insert()
       assert brand.description == "some description"
       assert brand.member == true
       assert brand.name == "some name"
@@ -185,12 +190,13 @@ defmodule CsGuide.ResourcesTest do
     end
 
     test "insert/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Brand.insert(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               %Brand{} |> Brand.changeset(@invalid_attrs) |> Brand.insert()
     end
 
     test "update/2 with valid data updates the brand" do
       brand = brand_fixture()
-      assert {:ok, brand} = Brand.update(brand, @update_attrs)
+      assert {:ok, brand} = brand |> Brand.changeset(@update_attrs) |> Brand.update()
       assert %Brand{} = brand
       assert brand.description == "some updated description"
       assert brand.member == false
@@ -201,7 +207,10 @@ defmodule CsGuide.ResourcesTest do
 
     test "update/2 with invalid data returns error changeset" do
       brand = brand_fixture()
-      assert {:error, %Ecto.Changeset{}} = Brand.update(brand, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               brand |> Brand.changeset(@invalid_attrs) |> Brand.update()
+
       assert brand == Brand.get(brand.entry_id)
     end
 

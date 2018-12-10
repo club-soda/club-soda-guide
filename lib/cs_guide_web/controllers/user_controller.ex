@@ -11,12 +11,17 @@ defmodule CsGuideWeb.UserController do
 
   def new(conn, _params) do
     user_changeset = User.changeset(%User{}, %{})
-    venue_changeset = Venue.changeset(%Venue{}, %{})
-    render(conn, "new.html", user_changeset: user_changeset, venue_changeset: venue_changeset)
+    venue_changeset = Venue.changeset(%Venue{users: [user_changeset]}, %{})
+
+    render(conn, "new.html",
+      user_changeset: user_changeset,
+      venue_changeset: venue_changeset,
+      changeset: venue_changeset
+    )
   end
 
   def create(conn, %{"user" => user_params}) do
-    case User.insert(user_params) do
+    case %User{} |> User.changeset(user_params) |> User.insert() do
       {:ok, user} ->
         conn
         |> put_flash(:info, "User created successfully.")
@@ -41,7 +46,7 @@ defmodule CsGuideWeb.UserController do
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = User.get(id)
 
-    case User.update(user, user_params) do
+    case user |> User.changeset(user_params) |> User.update() do
       {:ok, user} ->
         conn
         |> put_flash(:info, "User updated successfully.")

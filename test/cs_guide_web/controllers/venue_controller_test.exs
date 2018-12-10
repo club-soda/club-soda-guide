@@ -32,7 +32,10 @@ defmodule CsGuideWeb.VenueControllerTest do
   @invalid_attrs %{phone_number: nil, postcode: nil, venue_name: nil}
 
   def fixture(:venue) do
-    {:ok, type} = @create_venue_type |> Categories.VenueType.insert()
+    {:ok, type} =
+      %Categories.VenueType{}
+      |> Categories.VenueType.changeset(@create_venue_type)
+      |> Categories.VenueType.insert()
 
     {:ok, venue} =
       @create_attrs
@@ -57,7 +60,8 @@ defmodule CsGuideWeb.VenueControllerTest do
 
   def fixture(:brand) do
     {:ok, brand} =
-      @create_brand
+      %Resources.Brand{}
+      |> Resources.Brand.changeset(@create_brand)
       |> Resources.Brand.insert()
 
     brand
@@ -67,7 +71,11 @@ defmodule CsGuideWeb.VenueControllerTest do
     types =
       @create_types
       |> Enum.map(fn t ->
-        {:ok, type} = Categories.DrinkType.insert(t)
+        {:ok, type} =
+          %Categories.DrinkType{}
+          |> Categories.DrinkType.changeset(t)
+          |> Categories.DrinkType.insert()
+
         type
       end)
 

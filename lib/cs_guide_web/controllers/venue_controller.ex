@@ -64,11 +64,12 @@ defmodule CsGuideWeb.VenueController do
         "venue" => venue = %{"drinks" => drinks, "num_cocktails" => num_cocktails}
       })
       when map_size(venue) <= 2 do
-    venue = Venue.get(id) |> Venue.preload([:venue_types, :venue_images, :drinks])
+    venue = Venue.get(id) |> Venue.preload([:venue_types, :venue_images, :drinks, :users])
 
     venue_params =
       venue
       |> Map.from_struct()
+      |> Map.drop([:users])
       |> Map.put(:drinks, drinks)
       |> Map.put(:num_cocktails, num_cocktails)
 
@@ -76,7 +77,7 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def update(conn, %{"id" => id, "venue" => venue_params}) do
-    venue = Venue.get(id) |> Venue.preload([:venue_types, :venue_images, :drinks])
+    venue = Venue.get(id) |> Venue.preload([:venue_types, :venue_images, :drinks, :users])
 
     case Venue.update(venue, venue_params |> Map.put("drinks", venue.drinks)) do
       {:ok, venue} ->
@@ -153,7 +154,7 @@ defmodule CsGuideWeb.VenueController do
         {:ok, venue_image}
       else
         val ->
-          Repo.rollback(val)
+          CsGuide.Repo.rollback(val)
       end
     end)
     |> case do

@@ -40,6 +40,14 @@ defmodule CsGuide.Resources.Venue do
       on_replace: :delete
     )
 
+    many_to_many(
+      :users,
+      CsGuide.Accounts.User,
+      join_through: "venues_users",
+      join_keys: [venue_id: :id, user_id: :id],
+      on_replace: :delete
+    )
+
     has_many(:venue_images, CsGuide.Images.VenueImage)
 
     timestamps()
@@ -63,13 +71,14 @@ defmodule CsGuide.Resources.Venue do
       :facebook,
       :favourite
     ])
+    |> cast_assoc(:users)
     |> validate_required([:venue_name, :postcode, :venue_types])
   end
 
   def insert(attrs) do
     %__MODULE__{}
-    |> insert_entry_id()
     |> __MODULE__.changeset(attrs)
+    |> insert_entry_id()
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
     |> Resources.require_assocs([:venue_types])

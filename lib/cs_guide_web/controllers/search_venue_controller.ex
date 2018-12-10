@@ -15,7 +15,7 @@ defmodule CsGuideWeb.SearchVenueController do
           v
         end
       end)
-      |> Enum.sort_by(& &1.venue_name)
+      |> Enum.sort_by(&{5 - &1.cs_score, &1.venue_name})
 
     cards = Enum.map(venues, fn v -> get_venue_card(v) end)
     render(conn, "index.html", venues: cards)
