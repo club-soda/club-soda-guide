@@ -42,6 +42,7 @@ defmodule CsGuideWeb.Router do
 
     resources("/drinks", SearchDrinkController, only: [:index])
     resources("/venues", SearchVenueController, only: [:index])
+    resources("/all", SearchAllController, only: [:index])
   end
 
   scope "/admin", CsGuideWeb do

@@ -14,3 +14,10 @@ if (searchVenue) {
     node: searchVenue, flags: { venues: venues }
   })
 }
+
+var searchAll = document.getElementById('search-all');
+if (searchAll) {
+  Elm.SearchAll.init({
+    node: searchAll, flags: { drinks: drinks, venues: venues }
+  })
+}
