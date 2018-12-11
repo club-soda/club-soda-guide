@@ -138,13 +138,44 @@ getSubFilters ( _, SubFilters subFilters ) =
 
 criteriaConfig : Criteria.Config Msg Filter
 criteriaConfig =
-    Criteria.config
+    let
+        defaulCustomisations =
+            Criteria.defaultCustomisations
+    in
+    Criteria.customConfig
         { title = "Drink Type"
         , toMsg = UpdateFilters
         , toId = getFilterId
         , toString = getFilterName
         , getSubFilters = getSubFilters
+        , customisations =
+            { defaulCustomisations
+                | mainDivAttrs = mainDivAttrs
+                , filtersDivAttrs = filtersDivAttrs
+                , buttonAttrs = buttonAttrs
+                , filterLabelAttrs = filterLabelAttrs
+            }
         }
+
+
+mainDivAttrs : List (Attribute Msg)
+mainDivAttrs =
+    [ class "relative bg-white dib z-max" ]
+
+
+filtersDivAttrs : List (Attribute Msg)
+filtersDivAttrs =
+    [ class "absolute w100 ba bw1" ]
+
+
+buttonAttrs : List (Attribute Msg)
+buttonAttrs =
+    [ class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6 cs-gray mr2" ]
+
+
+filterLabelAttrs : Filter -> Criteria.State -> List (Attribute Msg)
+filterLabelAttrs filter stateCriteria =
+    [ class "pa2 pointer" ]
 
 
 abv_levels : List String
