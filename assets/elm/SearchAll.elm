@@ -1,6 +1,8 @@
 module SearchAll exposing (main)
 
+import Array exposing (..)
 import Browser
+import DrinkCard exposing (drinkCard)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -55,13 +57,26 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div [ class "mt5 mt6-ns" ]
-        [ div [ class "w-90 center" ]
+        [ div [ class "relative w-90 center" ]
             [ p [] [ text "Filters Section" ] ]
-        , div [ class "w-90 center" ]
-            [ renderSearch model ]
+        , div [ class "relative w-90 center" ]
+            [ h1 [] [ text "Drinks" ]
+            , renderDrinks model.drinks
+            , h1 [] [ text "Venues" ]
+            , renderVenues model.venues
+            ]
         ]
 
 
-renderSearch : Model -> Html Msg
-renderSearch model =
-    div [] []
+renderDrinks : List SharedTypes.Drink -> Html Msg
+renderDrinks drinks =
+    div [ class "flex-ns flex-wrap justify-center pt3 pb4-ns db dib-ns" ]
+        (Array.fromList drinks
+            |> Array.indexedMap drinkCard
+            |> toList
+        )
+
+
+renderVenues : List SharedTypes.Venue -> Html Msg
+renderVenues venues =
+    div [] (Search.renderVenues venues)

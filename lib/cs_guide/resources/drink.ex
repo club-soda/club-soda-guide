@@ -101,4 +101,26 @@ defmodule CsGuide.Resources.Drink do
     )
     |> CsGuide.Repo.insert()
   end
+
+  def get_drink_card(%__MODULE__{} = drink) do
+    %{
+      name: drink.name,
+      brand: drink.brand.name,
+      brandId: drink.brand.entry_id,
+      abv: drink.abv,
+      drink_types: Enum.map(drink.drink_types, fn t -> t.name end),
+      drink_styles: Enum.map(drink.drink_styles, fn t -> t.name end),
+      description: drink.description,
+      image:
+        case List.last(drink.drink_images) do
+          nil ->
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyT_ehuzfLvJKLPOAVjobqWtZjFO1--mgpQb_NJmq0wIfpEc5SyXkuPxpG"
+
+          img ->
+            "https://s3-eu-west-1.amazonaws.com/#{Application.get_env(:ex_aws, :bucket)}/#{
+              img.entry_id
+            }"
+        end
+    }
+  end
 end

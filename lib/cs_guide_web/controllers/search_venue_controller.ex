@@ -17,25 +17,9 @@ defmodule CsGuideWeb.SearchVenueController do
       end)
       |> Enum.sort_by(&{5 - &1.cs_score, &1.venue_name})
 
-    cards = Enum.map(venues, fn v -> get_venue_card(v) end)
+    cards = Enum.map(venues, fn v -> Venue.get_venue_card(v) end)
     render(conn, "index.html", venues: cards)
   end
 
-  defp get_venue_card(venue) do
-    %{
-      id: venue.entry_id,
-      name: venue.venue_name,
-      types: Enum.map(venue.venue_types, fn v -> v.name end),
-      postcode: venue.postcode,
-      cs_score: venue.cs_score,
-      image:
-        if img = List.first(venue.venue_images) do
-          "https://s3-eu-west-1.amazonaws.com/#{Application.get_env(:ex_aws, :bucket)}/#{
-            img.entry_id
-          }"
-        else
-          ""
-        end
-    }
-  end
+
 end
