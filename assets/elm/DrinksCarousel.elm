@@ -94,7 +94,7 @@ update msg model =
         IncrementIndexes ->
             let
                 newIndex =
-                    if model.carouselIndex <= 1 then
+                    if model.carouselIndex <= 8 then
                         model.carouselIndex + 1
                     else
                         0
@@ -116,7 +116,7 @@ update msg model =
                 newIndex =
                     case dir of
                         "right" ->
-                            if model.carouselIndex >= 1 then
+                            if model.carouselIndex >= 8 then
                                 model.carouselIndex - 1
                             else
                                 11
@@ -158,7 +158,33 @@ view model =
 
 renderDrinksCarousel : Model -> Int -> List (Html Msg)
 renderDrinksCarousel model displayXDrinks =
-    Array.fromList model.drinks
+  let
+      arrayIsFour =
+        if (Array.fromList model.drinks
+          |> Array.slice model.carouselIndex (model.carouselIndex + displayXDrinks)
+          |> Array.length) == 4
+        then
+          True
+        else
+          False
+
+      originalFour =
+        Array.fromList model.drinks
+          |> Array.slice 0 4
+          |> Array.indexedMap drinkCard
+  in
+    if arrayIsFour then
+      Array.fromList model.drinks
         |> Array.slice model.carouselIndex (model.carouselIndex + displayXDrinks)
         |> Array.indexedMap drinkCard
+        |> toList
+    else
+      -- Add from the original array to the new array
+      -- Need the values from the original array to concat to the end
+      -- Need to know how much of the original array you need or could slice on 4?
+      Array.fromList model.drinks
+        |> Array.slice model.carouselIndex (model.carouselIndex + displayXDrinks)
+        |> Array.indexedMap drinkCard
+        |> append(originalFour)
+        |> Array.slice 0 4
         |> toList
