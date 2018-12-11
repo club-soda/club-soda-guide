@@ -148,15 +148,17 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div [ class "relative" ]
-        [ p [ class "f1 b pointer absolute-vertical-center left-2", onClick DecrementIndexes ] [ text "<" ]
-        , div [ class "flex-ns flex-wrap justify-center pv4-ns db dib-ns", id "carousel" ]
-            (renderDrinksCarousel model)
-        , p [ class "f1 b pointer absolute-vertical-center right-2", onClick IncrementIndexes ] [ text ">" ]
+        [ p [ class "dn db-ns f1 b pointer absolute-vertical-center left-2", onClick DecrementIndexes ] [ text "<" ]
+        , div [ class "flex-ns flex-wrap justify-center pv4-ns dn dib-ns" ]
+            (renderDrinksCarousel model 4)
+        , div [ class "flex-wrap justify-center db dn-ns", id "carousel" ]
+            (renderDrinksCarousel model 1)
+        , p [ class "dn db-ns f1 b pointer absolute-vertical-center right-2", onClick IncrementIndexes ] [ text ">" ]
         ]
 
-
-renderDrinksCarousel model =
+renderDrinksCarousel : Model -> Int -> List (Html Msg)
+renderDrinksCarousel model displayXDrinks =
     Array.fromList model.drinks
-        |> Array.slice model.carouselIndex (model.carouselIndex + 4)
+        |> Array.slice model.carouselIndex (model.carouselIndex + displayXDrinks)
         |> Array.indexedMap drinkCard
         |> toList
