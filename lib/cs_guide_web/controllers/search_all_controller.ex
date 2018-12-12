@@ -3,7 +3,7 @@ defmodule CsGuideWeb.SearchAllController do
 
   alias CsGuide.Resources.{Drink, Venue}
 
-  def index(conn, _params) do
+  def index(conn, params) do
     venues =
       Venue.all()
       |> Venue.preload([:venue_types, :venue_images])
@@ -25,7 +25,7 @@ defmodule CsGuideWeb.SearchAllController do
 
     drink_cards = Enum.map(drinks, fn d -> Drink.get_drink_card(d) end)
 
-    render(conn, "index.html", venues: venue_cards, drinks: drink_cards)
+    render(conn, "index.html", venues: venue_cards, drinks: drink_cards, term: params["term"])
   end
 
 end

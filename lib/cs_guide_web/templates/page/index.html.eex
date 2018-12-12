@@ -1,7 +1,17 @@
 <section class="bg-hero relative pb5">
   <div class="w-100 h-100 mb4 mb0-ns">
-    <h1 class="w-90 w-40-ns absolute-center tc center f2 lh2 roboto-slab">
+    <div class="w-90 w-40-ns  absolute-center">
+
+    <h1 class="tc center f2 lh2 roboto-slab">
       The best low and no alcohol drinks and where to find them</h1>
+      <div class="tc mt3">
+        <%= form_for @conn, search_all_path(@conn, :index), [method: :get], fn f -> %>
+          <%= text_input f, :term, placeholder: "search drinks and venues", class: "dib w-75"  %>
+          <%= submit "Search", class: "dib w-15" %>
+        <% end %>
+      </div>
+
+    </div>
   </div>
   <div class="w-90-ns center db">
     <h2 class="b pv3 f2 lh2 w-90 w-100-ns center tc tl-ns">Explore All Drinks</h2>

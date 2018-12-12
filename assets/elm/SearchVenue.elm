@@ -18,8 +18,7 @@ type alias Flags =
 
 
 type Msg
-    = None
-    | FilterVenueType String
+    = FilterVenueType String
     | FilterVenueScore String
     | FilterVenueName String
 
@@ -37,9 +36,6 @@ init flags =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        None ->
-            ( model, Cmd.none )
-
         FilterVenueType venueType ->
             let
                 filterType =

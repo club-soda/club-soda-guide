@@ -18,6 +18,6 @@ if (searchVenue) {
 var searchAll = document.getElementById('search-all');
 if (searchAll) {
   Elm.SearchAll.init({
-    node: searchAll, flags: { drinks: drinks, venues: venues }
+    node: searchAll, flags: { drinks: drinks, venues: venues, term: term }
   })
 }
