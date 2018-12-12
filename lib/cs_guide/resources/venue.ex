@@ -96,4 +96,22 @@ defmodule CsGuide.Resources.Venue do
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
     |> Repo.insert()
   end
+
+  def get_venue_card(%__MODULE__{} = venue) do
+    %{
+      id: venue.entry_id,
+      name: venue.venue_name,
+      types: Enum.map(venue.venue_types, fn v -> v.name end),
+      postcode: venue.postcode,
+      cs_score: venue.cs_score,
+      image:
+        if img = List.first(venue.venue_images) do
+          "https://s3-eu-west-1.amazonaws.com/#{Application.get_env(:ex_aws, :bucket)}/#{
+            img.entry_id
+          }"
+        else
+          ""
+        end
+    }
+  end
 end

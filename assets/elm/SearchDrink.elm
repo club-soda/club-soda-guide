@@ -7,8 +7,6 @@ import DrinkCard exposing (drinkCard)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Http
-import Json.Decode as Json exposing (Decoder, at, field, float, list, map, string)
 import Search exposing (renderFilter, renderSearch)
 import Set
 import SharedTypes exposing (Drink)
@@ -34,17 +32,14 @@ type alias Model =
     , drink_filters : Criteria.State
     , abv_filter : String
     , search_term : String
-    , gettingDrinks : Bool
     }
 
 
 type alias Flags =
-    { dtype_filter : String
+    { drinks : List Drink
+    , dtype_filter : String
+    , term : String
     }
-
-
-type alias HttpData data =
-    Result Http.Error data
 
 
 init : Flags -> ( Model, Cmd Msg )
@@ -57,42 +52,13 @@ init flags =
             else
                 flags.dtype_filter
     in
-    ( { drinks = []
+    ( { drinks = flags.drinks
       , drink_filters = Criteria.init
       , abv_filter = ""
-      , search_term = ""
-      , gettingDrinks = True
+      , search_term = flags.term
       }
-    , getDrinks
+    , Cmd.none
     )
-
-
-onChange : (String -> msg) -> Attribute msg
-onChange msgConstructor =
-    Html.Events.on "change" <| Json.map msgConstructor <| Json.at [ "target", "value" ] Json.string
-
-
-getDrinks : Cmd Msg
-getDrinks =
-    Http.get "/json_drinks" drinksDecoder |> Http.send ReceiveDrinks
-
-
-drinksDecoder : Decoder (List Drink)
-drinksDecoder =
-    Json.list drinkDecoder
-
-
-drinkDecoder : Decoder Drink
-drinkDecoder =
-    Json.map8 Drink
-        (field "name" string)
-        (field "brand" string)
-        (field "brandId" string)
-        (field "abv" float)
-        (field "drink_types" (Json.list string))
-        (field "drink_styles" (Json.list string))
-        (field "description" string)
-        (field "image" string)
 
 
 
@@ -100,8 +66,7 @@ drinkDecoder =
 
 
 type Msg
-    = ReceiveDrinks (HttpData (List Drink))
-    | SelectABVLevel String
+    = SelectABVLevel String
     | SearchDrink String
     | UpdateFilters Criteria.State
 
@@ -109,12 +74,6 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ReceiveDrinks (Err _) ->
-            ( model, Cmd.none )
-
-        ReceiveDrinks (Ok drinks) ->
-            ( { model | drinks = drinks, gettingDrinks = False }, Cmd.none )
-
         SelectABVLevel abv_level ->
             ( { model | abv_filter = abv_level }, Cmd.none )
 
@@ -185,7 +144,7 @@ view : Model -> Html Msg
 view model =
     div [ class "mt5 mt6-ns" ]
         [ div [ class "w-90 center" ]
-            [ renderSearch "Search Drinks..." SearchDrink
+            [ renderSearch "Search Drinks..." model.search_term SearchDrink
             , Criteria.view criteriaConfig model.drink_filters drinksTypeAndStyle
             , renderFilter "ABV" abv_levels SelectABVLevel model.abv_filter
             ]
@@ -202,7 +161,7 @@ filterDrinks model =
         |> List.filter (\d -> filterByTypeAndStyle (Set.toList <| Criteria.selectedIdFilters model.drink_filters) d)
         |> List.filter (\d -> filterByABV model d)
         |> List.filter (\d -> filterByTerm model d)
-        |> renderDrinks model.gettingDrinks
+        |> renderDrinks
 
 
 filterByABV : Model -> Drink -> Bool
@@ -261,8 +220,8 @@ filterByTerm model drink =
                 || String.contains (String.toLower term) (String.toLower drink.description)
 
 
-renderDrinks : Bool -> List Drink -> List (Html Msg)
-renderDrinks gettingDrinks drinks =
+renderDrinks : List Drink -> List (Html Msg)
+renderDrinks drinks =
     if List.length drinks >= 1 then
         Array.fromList drinks
             |> Array.indexedMap drinkCard
@@ -270,11 +229,7 @@ renderDrinks gettingDrinks drinks =
 
     else
         [ div []
-            [ if gettingDrinks then
-                p [ class "tc" ] [ text "Searching drinks..." ]
-
-              else
-                p [ class "tc" ] [ text "Your search didn't return any drinks, change your filters and try again." ]
+            [ p [ class "tc" ] [ text "Your search didn't return any drinks, change your filters and try again." ]
             ]
         ]
 
