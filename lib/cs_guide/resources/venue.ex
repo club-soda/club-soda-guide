@@ -75,9 +75,39 @@ defmodule CsGuide.Resources.Venue do
     |> validate_required([:venue_name, :postcode, :venue_types])
   end
 
+  def retailer_changeset(venue, attrs \\ %{}) do
+    venue
+    |> cast(attrs, [
+      :venue_name,
+      :postcode,
+      :phone_number,
+      :cs_score,
+      :description,
+      :num_cocktails,
+      :website,
+      :address,
+      :city,
+      :twitter,
+      :instagram,
+      :facebook,
+      :favourite
+    ])
+    |> validate_required([:venue_name, :website, :venue_types])
+  end
+
   def insert(attrs) do
     %__MODULE__{}
     |> __MODULE__.changeset(attrs)
+    |> insert_entry_id()
+    |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
+    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
+    |> Resources.require_assocs([:venue_types])
+    |> Repo.insert()
+  end
+
+  def retailer_insert(attrs) do
+    %__MODULE__{}
+    |> __MODULE__.retailer_changeset(attrs)
     |> insert_entry_id()
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
@@ -92,6 +122,18 @@ defmodule CsGuide.Resources.Venue do
     |> Map.put(:inserted_at, nil)
     |> Map.put(:updated_at, nil)
     |> __MODULE__.changeset(attrs)
+    |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
+    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
+    |> Repo.insert()
+  end
+
+  def retailer_update(%__MODULE__{} = item, attrs) do
+    item
+    |> __MODULE__.preload(__MODULE__.__schema__(:associations))
+    |> Map.put(:id, nil)
+    |> Map.put(:inserted_at, nil)
+    |> Map.put(:updated_at, nil)
+    |> __MODULE__.retailer_changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
     |> Repo.insert()
