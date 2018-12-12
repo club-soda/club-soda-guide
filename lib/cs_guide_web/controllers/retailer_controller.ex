@@ -23,12 +23,14 @@ defmodule CsGuideWeb.RetailerController do
   end
 
   def new(conn, _params) do
-    changeset = Venue.changeset(%Venue{}, %{})
+    changeset = Venue.retailer_changeset(%Venue{}, %{})
     render(conn, "new.html", changeset: changeset)
   end
 
   def create(conn, %{"venue" => venue_params}) do
-    case Venue.insert(venue_params) do
+    venue_params = Map.put(venue_params, "venue_types", %{"Retailers" => "on"})
+
+    case Venue.retailer_insert(venue_params) do
       {:ok, venue} ->
         conn
         |> put_flash(:info, "Retailer created successfully.")
@@ -41,30 +43,21 @@ defmodule CsGuideWeb.RetailerController do
 
   def edit(conn, %{"id" => id}) do
     venue = Venue.get(id) |> Venue.preload(:venue_types)
-    changeset = Venue.changeset(venue)
+    changeset = Venue.retailer_changeset(venue)
     render(conn, "edit.html", venue: venue, changeset: changeset)
   end
 
-  def update(conn, %{
-        "id" => id,
-        "venue" => venue = %{"drinks" => drinks, "num_cocktails" => num_cocktails}
-      })
-      when map_size(venue) <= 2 do
-    venue = Venue.get(id) |> Venue.preload([:venue_types, :venue_images, :drinks])
+  def update(conn, %{"id" => id, "venue" => venue_params}) do
+    venue =
+      Venue.get(id)
+      |> Venue.preload([:venue_types, :venue_images, :drinks])
 
     venue_params =
-      venue
-      |> Map.from_struct()
-      |> Map.put(:drinks, drinks)
-      |> Map.put(:num_cocktails, num_cocktails)
+      venue_params
+      |> Map.put("drinks", venue.drinks)
+      |> Map.put("venue_types", %{"Retailers" => "on"})
 
-    do_update(conn, venue, venue_params)
-  end
-
-  def update(conn, %{"id" => id, "venue" => venue_params}) do
-    venue = Venue.get(id) |> Venue.preload([:venue_types, :venue_images, :drinks])
-
-    case Venue.update(venue, venue_params |> Map.put("drinks", venue.drinks)) do
+    case Venue.retailer_update(venue, venue_params) do
       {:ok, venue} ->
         conn
         |> put_flash(:info, "Retailer updated successfully.")
