@@ -29,9 +29,9 @@ import TypeAndStyle
 
 type alias Model =
     { drinks : List Drink
-    , drink_filters : Criteria.State
-    , abv_filter : String
-    , search_term : String
+    , drinkFilters : Criteria.State
+    , abvFilter : String
+    , searchTerm : Maybe String
     }
 
 
@@ -53,9 +53,14 @@ init flags =
                 flags.dtype_filter
     in
     ( { drinks = flags.drinks
-      , drink_filters = Criteria.init
-      , abv_filter = ""
-      , search_term = flags.term
+      , drinkFilters = Criteria.init
+      , abvFilter = ""
+      , searchTerm =
+            if String.isEmpty flags.term then
+                Nothing
+
+            else
+                Just flags.term
       }
     , Cmd.none
     )
@@ -75,13 +80,21 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         SelectABVLevel abv_level ->
-            ( { model | abv_filter = abv_level }, Cmd.none )
+            ( { model | abvFilter = abv_level }, Cmd.none )
 
         SearchDrink term ->
-            ( { model | search_term = term }, Cmd.none )
+            let
+                searchTerm =
+                    if String.isEmpty term then
+                        Nothing
+
+                    else
+                        Just term
+            in
+            ( { model | searchTerm = searchTerm }, Cmd.none )
 
         UpdateFilters state ->
-            ( { model | drink_filters = state }, Cmd.none )
+            ( { model | drinkFilters = state }, Cmd.none )
 
 
 
@@ -144,9 +157,9 @@ view : Model -> Html Msg
 view model =
     div [ class "mt5 mt6-ns" ]
         [ div [ class "w-90 center" ]
-            [ renderSearch "Search Drinks..." model.search_term SearchDrink
-            , Criteria.view criteriaConfig model.drink_filters drinksTypeAndStyle
-            , renderFilter "ABV" abv_levels SelectABVLevel model.abv_filter
+            [ renderSearch "Search Drinks..." (Maybe.withDefault "" model.searchTerm) SearchDrink
+            , Criteria.view criteriaConfig model.drinkFilters drinksTypeAndStyle
+            , renderFilter "ABV" abv_levels SelectABVLevel model.abvFilter
             ]
         , div [ class "relative center w-90" ]
             [ div [ class "flex-ns flex-wrap justify-center pt3 pb4-ns db dib-ns" ]
@@ -158,15 +171,15 @@ view model =
 filterDrinks : Model -> List (Html Msg)
 filterDrinks model =
     model.drinks
-        |> List.filter (\d -> filterByTypeAndStyle (Set.toList <| Criteria.selectedIdFilters model.drink_filters) d)
+        |> List.filter (\d -> filterByTypeAndStyle (Set.toList <| Criteria.selectedIdFilters model.drinkFilters) d)
         |> List.filter (\d -> filterByABV model d)
-        |> List.filter (\d -> filterByTerm model d)
+        |> List.filter (\d -> SharedTypes.searchDrinkByTerm model.searchTerm d)
         |> renderDrinks
 
 
 filterByABV : Model -> Drink -> Bool
 filterByABV model drink =
-    case model.abv_filter of
+    case model.abvFilter of
         "<0.05%" ->
             drink.abv < 0.05
 
@@ -207,17 +220,6 @@ filterByTypeAndStyle filters drink =
                                 List.member f drink.drink_styles
                     )
                 |> List.any ((==) True)
-
-
-filterByTerm : Model -> Drink -> Bool
-filterByTerm model drink =
-    case model.search_term of
-        "" ->
-            True
-
-        term ->
-            String.contains (String.toLower term) (String.toLower drink.name)
-                || String.contains (String.toLower term) (String.toLower drink.description)
 
 
 renderDrinks : List Drink -> List (Html Msg)

@@ -91,12 +91,9 @@ view model =
             , renderFilter "Club Soda Score"
                 cs_score
                 FilterVenueScore
-                (case model.filterScore of
-                    Just score ->
-                        String.fromFloat score
-
-                    Nothing ->
-                        ""
+                (model.filterScore
+                    |> Maybe.map String.fromFloat
+                    |> Maybe.withDefault ""
                 )
             ]
         , div [ class "w-90 center" ]
@@ -116,12 +113,7 @@ filterVenues model =
 
 filterByName : Maybe String -> List Venue -> List Venue
 filterByName searchTerm venues =
-    case searchTerm of
-        Nothing ->
-            venues
-
-        Just st ->
-            List.filter (\v -> String.contains (String.toLower st) (String.toLower v.name)) venues
+    List.filter (SharedTypes.searchVenueByTerm searchTerm) venues
 
 
 filterByType : Maybe String -> List Venue -> List Venue
