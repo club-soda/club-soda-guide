@@ -13,22 +13,16 @@ defmodule CsGuideWeb.RetailerControllerTest do
   @create_venue_types Fixtures.create_venue_types()
 
   @create_attrs %{
-    address: "number and road",
-    city: "London",
-    phone_number: "01234567890",
-    postcode: "EC1 5AD",
     venue_name: "Amazon",
-    drinks: %{"AF Beer 1" => "on"},
+    website: "http://www.test.com",
     venue_types: %{"Retailers" => "on"}
   }
   @update_attrs %{
-    phone_number: "09876543210",
-    postcode: "EC2 7FY",
-    venue_name: "Updated Amazon",
-    drinks: %{"AF Beer 1" => "on"},
+    venue_name: "Amazon",
+    website: "http://www.updatedtest.com",
     venue_types: %{"Retailers" => "on"}
   }
-  @invalid_attrs %{phone_number: nil, postcode: nil, venue_name: nil}
+  @invalid_attrs %{venue_types: nil, website: nil, venue_name: nil}
 
   def fixture(:retailer) do
     @create_venue_types
@@ -41,7 +35,7 @@ defmodule CsGuideWeb.RetailerControllerTest do
 
     {:ok, retailer} =
       @create_attrs
-      |> Resources.Venue.insert()
+      |> Resources.Venue.retailer_insert()
 
     retailer
   end
