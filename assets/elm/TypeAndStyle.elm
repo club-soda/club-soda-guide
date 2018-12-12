@@ -1,104 +1,174 @@
-module TypeAndStyle exposing (Filter, SubFilters(..), drinksTypeAndStyle)
+module TypeAndStyle exposing
+    ( Filter
+    , FilterType(..)
+    , SubFilters(..)
+    , drinksTypeAndStyle
+    , getFilterById
+    , getFilterId
+    , getFilterName
+    , getFilterType
+    )
 
 
 type alias Filter =
-    ( String, SubFilters )
+    ( FilterType, String, SubFilters )
 
 
 type SubFilters
     = SubFilters (List Filter)
 
 
+type alias FilterId =
+    String
+
+
+type FilterType
+    = Type
+    | Style
+
+
+drinksTypeAndStyle : List Filter
 drinksTypeAndStyle =
     [ beer, cider, softDrink, spiritsAndPremixed, tonicAndMixers, wine ]
 
 
 beer : Filter
 beer =
-    ( "Beer"
+    ( Type
+    , "Beer"
     , SubFilters
-        [ ( "Amber ale", SubFilters [] )
-        , ( "Buchabeer", SubFilters [] )
-        , ( "Flemish Primitive", SubFilters [] )
-        , ( "IPA", SubFilters [] )
-        , ( "Fruit Beer", SubFilters [] )
-        , ( "Lager", SubFilters [] )
-        , ( "Malt drink", SubFilters [] )
-        , ( "Mild", SubFilters [] )
-        , ( "Pale Ale", SubFilters [] )
-        , ( "Pilsner", SubFilters [] )
-        , ( "Radler", SubFilters [] )
-        , ( "Shandy", SubFilters [] )
-        , ( "Sour", SubFilters [] )
-        , ( "Spiced Ale", SubFilters [] )
-        , ( "Stouts & Porters", SubFilters [] )
-        , ( "Wheat Beer", SubFilters [] )
+        [ ( Style, "Amber ale", SubFilters [] )
+        , ( Style, "Buchabeer", SubFilters [] )
+        , ( Style, "Flemish Primitive", SubFilters [] )
+        , ( Style, "IPA", SubFilters [] )
+        , ( Style, "Fruit Beer", SubFilters [] )
+        , ( Style, "Lager", SubFilters [] )
+        , ( Style, "Malt drink", SubFilters [] )
+        , ( Style, "Mild", SubFilters [] )
+        , ( Style, "Pale Ale", SubFilters [] )
+        , ( Style, "Pilsner", SubFilters [] )
+        , ( Style, "Radler", SubFilters [] )
+        , ( Style, "Shandy", SubFilters [] )
+        , ( Style, "Sour", SubFilters [] )
+        , ( Style, "Spiced Ale", SubFilters [] )
+        , ( Style, "Stouts & Porters", SubFilters [] )
+        , ( Style, "Wheat Beer", SubFilters [] )
         ]
     )
 
 
 cider : Filter
 cider =
-    ( "Cider", SubFilters [ ( "Cider", SubFilters [] ), ( "Fruit Cider", SubFilters [] ), ( "Perry", SubFilters [] ) ] )
+    ( Type, "Cider", SubFilters [ ( Style, "Cider", SubFilters [] ), ( Style, "Fruit Cider", SubFilters [] ), ( Style, "Perry", SubFilters [] ) ] )
 
 
 softDrink : Filter
 softDrink =
-    ( "Soft Drink"
+    ( Type
+    , "Soft Drink"
     , SubFilters
-        [ ( "Cola", SubFilters [] )
-        , ( "Cordial", SubFilters [] )
-        , ( "Cordial", SubFilters [] )
-        , ( "Seasonal", SubFilters [] )
-        , ( "Fruit Drinks", SubFilters [] )
-        , ( "Ginger Ale", SubFilters [] )
-        , ( "Ginger Beer", SubFilters [] )
-        , ( "Kombucha", SubFilters [] )
-        , ( "Lemonade", SubFilters [] )
-        , ( "Mocktails", SubFilters [] )
-        , ( "Pre Mixed Drink", SubFilters [] )
-        , ( "Rocktails", SubFilters [] )
-        , ( "Shandy", SubFilters [] )
-        , ( "Shrub", SubFilters [] )
-        , ( "Soda", SubFilters [] )
-        , ( "Sparkling Pressé", SubFilters [] )
-        , ( "Tonic Water", SubFilters [] )
+        [ ( Style, "Cola", SubFilters [] )
+        , ( Style, "Cordial", SubFilters [] )
+        , ( Style, "Cordial", SubFilters [] )
+        , ( Style, "Seasonal", SubFilters [] )
+        , ( Style, "Fruit Drinks", SubFilters [] )
+        , ( Style, "Ginger Ale", SubFilters [] )
+        , ( Style, "Ginger Beer", SubFilters [] )
+        , ( Style, "Kombucha", SubFilters [] )
+        , ( Style, "Lemonade", SubFilters [] )
+        , ( Style, "Mocktails", SubFilters [] )
+        , ( Style, "Pre Mixed Drink", SubFilters [] )
+        , ( Style, "Rocktails", SubFilters [] )
+        , ( Style, "Shandy", SubFilters [] )
+        , ( Style, "Shrub", SubFilters [] )
+        , ( Style, "Soda", SubFilters [] )
+        , ( Style, "Sparkling Pressé", SubFilters [] )
+        , ( Style, "Tonic Water", SubFilters [] )
         ]
     )
 
 
 spiritsAndPremixed : Filter
 spiritsAndPremixed =
-    ( "Spirits & Premixed"
+    ( Type
+    , "Spirits & Premixed"
     , SubFilters
-        [ ( "Botanical", SubFilters [] )
-        , ( "Cordial", SubFilters [] )
-        , ( "Mixer", SubFilters [] )
-        , ( "Mocktails", SubFilters [] )
-        , ( "Pre Mixed Drink", SubFilters [] )
-        , ( "Spirit", SubFilters [] )
+        [ ( Style, "Botanical", SubFilters [] )
+        , ( Style, "Cordial", SubFilters [] )
+        , ( Style, "Mixer", SubFilters [] )
+        , ( Style, "Mocktails", SubFilters [] )
+        , ( Style, "Pre Mixed Drink", SubFilters [] )
+        , ( Style, "Spirit", SubFilters [] )
         ]
     )
 
 
 tonicAndMixers : Filter
 tonicAndMixers =
-    ( "Tonics & Mixers"
+    ( Type
+    , "Tonics & Mixers"
     , SubFilters
-        [ ( "Mixer", SubFilters [] )
-        , ( "Soda", SubFilters [] )
-        , ( "Tonic Water", SubFilters [] )
+        [ ( Style, "Mixer", SubFilters [] )
+        , ( Style, "Soda", SubFilters [] )
+        , ( Style, "Tonic Water", SubFilters [] )
         ]
     )
 
 
 wine : Filter
 wine =
-    ( "Wine"
+    ( Type
+    , "Wine"
     , SubFilters
-        [ ( "Red Wine", SubFilters [] )
-        , ( "Rose Wine", SubFilters [] )
-        , ( "Sparkling Wine", SubFilters [] )
-        , ( "White Wine", SubFilters [] )
+        [ ( Style, "Red Wine", SubFilters [] )
+        , ( Style, "Rose Wine", SubFilters [] )
+        , ( Style, "Sparkling Wine", SubFilters [] )
+        , ( Style, "White Wine", SubFilters [] )
         ]
     )
+
+
+getFilterName : Filter -> String
+getFilterName ( _, filter, _ ) =
+    filter
+
+
+getFilterId : Filter -> FilterId
+getFilterId ( _, filter, _ ) =
+    filter
+
+
+getFilterById : FilterId -> List Filter -> Maybe Filter
+getFilterById filterId filters =
+    let
+        filter =
+            List.head filters
+
+        rest =
+            List.tail filters
+    in
+    case filter of
+        Nothing ->
+            Nothing
+
+        Just ( _, id, SubFilters subFilters ) ->
+            if id == filterId then
+                filter
+
+            else
+                case getFilterById filterId subFilters of
+                    Just f ->
+                        Just f
+
+                    Nothing ->
+                        case rest of
+                            Nothing ->
+                                Nothing
+
+                            Just r ->
+                                getFilterById filterId r
+
+
+getFilterType : Filter -> FilterType
+getFilterType ( typeFilter, _, _ ) =
+    typeFilter

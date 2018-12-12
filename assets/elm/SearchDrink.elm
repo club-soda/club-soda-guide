@@ -12,7 +12,17 @@ import Json.Decode as Json exposing (Decoder, at, field, float, list, map, strin
 import Search exposing (renderFilter, renderSearch)
 import Set
 import SharedTypes exposing (Drink)
-import TypeAndStyle exposing (Filter, SubFilters(..), drinksTypeAndStyle)
+import TypeAndStyle
+    exposing
+        ( Filter
+        , FilterType
+        , SubFilters(..)
+        , drinksTypeAndStyle
+        , getFilterById
+        , getFilterId
+        , getFilterName
+        , getFilterType
+        )
 
 
 
@@ -105,8 +115,6 @@ update msg model =
         ReceiveDrinks (Ok drinks) ->
             ( { model | drinks = drinks, gettingDrinks = False }, Cmd.none )
 
-        -- SelectDrinkType drink_type ->
-        --     ( { model | dtype_filter = drink_type }, Cmd.none )
         SelectABVLevel abv_level ->
             ( { model | abv_filter = abv_level }, Cmd.none )
 
@@ -121,18 +129,8 @@ update msg model =
 -- VIEW
 
 
-getFilterName : Filter -> String
-getFilterName ( filter, _ ) =
-    filter
-
-
-getFilterId : Filter -> String
-getFilterId ( filter, _ ) =
-    filter
-
-
 getSubFilters : Filter -> List Filter
-getSubFilters ( _, SubFilters subFilters ) =
+getSubFilters ( _, _, SubFilters subFilters ) =
     subFilters
 
 
@@ -201,7 +199,7 @@ view model =
 filterDrinks : Model -> List (Html Msg)
 filterDrinks model =
     model.drinks
-        |> List.filter (\d -> filterByType (Set.toList <| Criteria.selectedIdFilters model.drink_filters) d)
+        |> List.filter (\d -> filterByTypeAndStyle (Set.toList <| Criteria.selectedIdFilters model.drink_filters) d)
         |> List.filter (\d -> filterByABV model d)
         |> List.filter (\d -> filterByTerm model d)
         |> renderDrinks model.gettingDrinks
@@ -229,15 +227,26 @@ filterByABV model drink =
             True
 
 
-filterByType : List String -> Drink -> Bool
-filterByType filters drink =
+filterByTypeAndStyle : List String -> Drink -> Bool
+filterByTypeAndStyle filters drink =
     case filters of
         [] ->
             True
 
         _ ->
             filters
-                |> List.map (\f -> List.member f drink.drink_types)
+                |> List.map
+                    (\f ->
+                        case getFilterById f drinksTypeAndStyle of
+                            Nothing ->
+                                False
+
+                            Just ( TypeAndStyle.Type, _, _ ) ->
+                                List.member f drink.drink_types
+
+                            Just ( TypeAndStyle.Style, _, _ ) ->
+                                List.member f drink.drink_styles
+                    )
                 |> List.any ((==) True)
 
 
