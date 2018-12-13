@@ -30,7 +30,7 @@ defmodule CsGuideWeb.Router do
     resources("/users", UserController, only: [:new, :create])
     resources("/venues", VenueController, only: [:show])
     resources("/drinks", DrinkController, only: [:show])
-    resources("/brands", BrandController, only: [:show])
+    get("/brands/:name", BrandController, :show)
 
     resources("/sessions", SessionController, only: [:new, :create])
 
@@ -52,7 +52,7 @@ defmodule CsGuideWeb.Router do
     resources("/venues", VenueController, except: [:show])
     resources("/retailers", RetailerController, except: [:show])
     resources("/drinks", DrinkController, except: [:show])
-    resources("/brands", BrandController, except: [:show])
+    resources("/brands", BrandController, except: [:show], param: "name")
 
     resources("/venue_types", VenueTypeController)
     resources("/drink_types", DrinkTypeController)
@@ -61,11 +61,11 @@ defmodule CsGuideWeb.Router do
     get("/venues/:id/add_drinks", VenueController, :add_drinks)
     get("/venues/:id/add_photo", VenueController, :add_photo)
     get("/drinks/:id/add_photo", DrinkController, :add_photo)
-    get("/brands/:id/add_photo", BrandController, :add_photo)
+    get("/brands/:name/add_photo", BrandController, :add_photo)
 
     post("/venues/:id/", VenueController, :upload_photo)
     post("/drinks/:id/", DrinkController, :upload_photo)
-    post("/brands/:id/", BrandController, :upload_photo)
+    post("/brands/:name/", BrandController, :upload_photo)
   end
 
   # Other scopes may use custom stacks.
