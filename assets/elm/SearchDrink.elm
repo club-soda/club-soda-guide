@@ -163,7 +163,7 @@ mainDivAttrs =
 
 filtersDivAttrs : List (Attribute Msg)
 filtersDivAttrs =
-    [ class "absolute w100 ba bw1" ]
+    [ class "absolute w-200 bg-white shadow-1 bw1 dropdown" ]
 
 
 buttonAttrs : List (Attribute Msg)
@@ -173,7 +173,7 @@ buttonAttrs =
 
 filterLabelAttrs : Filter -> Criteria.State -> List (Attribute Msg)
 filterLabelAttrs filter stateCriteria =
-    [ class "pa2 pointer" ]
+    [ class "pl2 pointer lh5 f5" ]
 
 
 abv_levels : List String
