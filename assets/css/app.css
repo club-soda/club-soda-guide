@@ -229,6 +229,10 @@ select {
   width: 5rem;
 }
 
+.w-200 {
+  width: 200%;
+}
+
 .min-w-5rem {
   min-width: 5rem;
 }
