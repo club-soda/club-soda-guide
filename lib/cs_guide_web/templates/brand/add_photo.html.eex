@@ -1,7 +1,7 @@
 <section class="center w-80 w-75-l mv6">
   <h2 class="f4 lh4">Upload a photo for this brand</h2>
 
-  <%= form_for @conn, brand_path(@conn, :upload_photo, @id), [multipart: true], fn f -> %>
+  <%= form_for @conn, brand_path(@conn, :upload_photo, @name), [multipart: true], fn f -> %>
     <div class="form-group mb4">
       <label class="db pt4 pb3">Select brand photo</label>
       <%= file_input f, :photo, class: "form-control" %>

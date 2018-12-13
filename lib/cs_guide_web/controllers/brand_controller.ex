@@ -26,10 +26,9 @@ defmodule CsGuideWeb.BrandController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, %{"name" => name}) do
     brand =
-      id
-      |> Brand.get()
+      Brand.get_by([name: name], case_insensitive: true)
       |> Brand.preload(
         drinks: [
           :drink_images,
@@ -44,28 +43,28 @@ defmodule CsGuideWeb.BrandController do
     render(conn, "show.html", brand: brand)
   end
 
-  def edit(conn, %{"id" => id}) do
-    brand = Brand.get(id)
+  def edit(conn, %{"name" => name}) do
+    brand = Brand.get_by([name: name], case_insensitive: true)
     changeset = Brand.changeset(brand, %{})
     render(conn, "edit.html", brand: brand, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "brand" => brand_params}) do
-    brand = Brand.get(id)
+  def update(conn, %{"name" => name, "brand" => brand_params}) do
+    brand = Brand.get_by([name: name], case_insensitive: true)
 
     case brand |> Brand.changeset(brand_params) |> Brand.update() do
       {:ok, brand} ->
         conn
         |> put_flash(:info, "Brand updated successfully.")
-        |> redirect(to: brand_path(conn, :show, brand.entry_id))
+        |> redirect(to: brand_path(conn, :show, brand.name))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", brand: brand, changeset: changeset)
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    brand = Brand.get(id)
+  def delete(conn, %{"name" => name}) do
+    brand = Brand.get_by([name: name], case_insensitive: true)
     {:ok, _brand} = Brand.delete(brand)
 
     conn
@@ -73,8 +72,17 @@ defmodule CsGuideWeb.BrandController do
     |> redirect(to: brand_path(conn, :index))
   end
 
-  def add_photo(conn, %{"id" => id}) do
-    render(conn, "add_photo.html", id: id)
+  def add_photo(conn, %{"name" => name}) do
+    case Brand.get_by([name: name], case_insensitive: true) do
+      nil ->
+        conn
+        |> put_status(:not_found)
+        |> put_view(CsGuideWeb.ErrorView)
+        |> render("404.html")
+
+      brand ->
+        render(conn, "add_photo.html", name: name)
+    end
   end
 
   def upload_photo(conn, params) do

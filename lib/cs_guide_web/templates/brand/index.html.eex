@@ -17,9 +17,9 @@
         <td class="pa3"><%= brand.member %></td>
 
         <td class="text-right">
-          <span><%= link "Show", to: brand_path(@conn, :show, brand.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
-          <span><%= link "Edit", to: brand_path(@conn, :edit, brand.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
-          <span><%= link "Delete", to: brand_path(@conn, :delete, brand.entry_id), method: :delete, data: [confirm: "Are you sure?"], class: "ph3 pv3-ns cs-mid-blue" %></span>
+          <span><%= link "Show", to: brand_path(@conn, :show, brand.name), class: "ph3 pv3-ns cs-mid-blue" %></span>
+          <span><%= link "Edit", to: brand_path(@conn, :edit, brand.name), class: "ph3 pv3-ns cs-mid-blue" %></span>
+          <span><%= link "Delete", to: brand_path(@conn, :delete, brand.name), method: :delete, data: [confirm: "Are you sure?"], class: "ph3 pv3-ns cs-mid-blue" %></span>
         </td>
       </tr>
   <% end %>

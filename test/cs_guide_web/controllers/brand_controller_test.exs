@@ -81,7 +81,7 @@ defmodule CsGuideWeb.BrandControllerTest do
     setup [:create_brand]
 
     test "non logged in user cannot access form", %{conn: conn, brand: brand} do
-      conn = get(conn, brand_path(conn, :edit, brand.entry_id))
+      conn = get(conn, brand_path(conn, :edit, brand.name))
       assert html_response(conn, 302)
     end
   end
@@ -90,7 +90,7 @@ defmodule CsGuideWeb.BrandControllerTest do
     setup [:create_brand, :admin_login]
 
     test "renders form for editing chosen brand", %{conn: conn, brand: brand} do
-      conn = get(conn, brand_path(conn, :edit, brand.entry_id))
+      conn = get(conn, brand_path(conn, :edit, brand.name))
       assert html_response(conn, 200) =~ "Edit Brand"
     end
   end
@@ -99,15 +99,15 @@ defmodule CsGuideWeb.BrandControllerTest do
     setup [:create_brand, :admin_login]
 
     test "redirects when data is valid", %{conn: conn, brand: brand} do
-      conn = put(conn, brand_path(conn, :update, brand.entry_id), brand: @update_attrs)
-      assert redirected_to(conn) == brand_path(conn, :show, brand.entry_id)
+      conn = put(conn, brand_path(conn, :update, brand.name), brand: @update_attrs)
+      assert redirected_to(conn) == brand_path(conn, :show, @update_attrs.name)
 
-      conn = get(conn, brand_path(conn, :show, brand.entry_id))
+      conn = get(conn, brand_path(conn, :show, @update_attrs.name))
       assert html_response(conn, 200) =~ "some updated description"
     end
 
     test "renders errors when data is invalid", %{conn: conn, brand: brand} do
-      conn = put(conn, brand_path(conn, :update, brand.entry_id), brand: @invalid_attrs)
+      conn = put(conn, brand_path(conn, :update, brand.name), brand: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Brand"
     end
   end
