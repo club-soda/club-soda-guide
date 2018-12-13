@@ -20,9 +20,17 @@ defmodule CsGuideWeb.Router do
     plug(:authenticate_user, admin: true)
   end
 
+  pipeline :venue_id do
+    plug(:assign_venue_id)
+  end
+
+  pipeline :venue_owner do
+    plug(:authenticate_venue_owner)
+  end
+
   scope "/", CsGuideWeb do
     # Use the default browser stack
-    pipe_through(:browser)
+    pipe_through([:browser, :venue_id])
 
     get("/", PageController, :index)
     post("/signup", SignupController, :create)
@@ -49,7 +57,7 @@ defmodule CsGuideWeb.Router do
 
     resources("/", AdminController, only: [:index])
     resources("/users", UserController, except: [:new, :create])
-    resources("/venues", VenueController, except: [:show])
+    resources("/venues", VenueController, only: [:index, :new, :create, :delete])
     resources("/retailers", RetailerController, except: [:show])
     resources("/drinks", DrinkController, except: [:show])
     resources("/brands", BrandController, except: [:show], param: "name")
@@ -58,14 +66,20 @@ defmodule CsGuideWeb.Router do
     resources("/drink_types", DrinkTypeController)
     resources("/drink_styles", DrinkStyleController)
 
-    get("/venues/:id/add_drinks", VenueController, :add_drinks)
-    get("/venues/:id/add_photo", VenueController, :add_photo)
     get("/drinks/:id/add_photo", DrinkController, :add_photo)
     get("/brands/:name/add_photo", BrandController, :add_photo)
 
-    post("/venues/:id/", VenueController, :upload_photo)
     post("/drinks/:id/", DrinkController, :upload_photo)
     post("/brands/:name/", BrandController, :upload_photo)
+  end
+
+  scope "/admin", CsGuideWeb do
+    pipe_through([:browser, :venue_owner])
+    get("/venues/:id/add_drinks", VenueController, :add_drinks)
+    get("/venues/:id/add_photo", VenueController, :add_photo)
+
+    post("/venues/:id/", VenueController, :upload_photo)
+    resources("/venues", VenueController, only: [:edit, :update])
   end
 
   # Other scopes may use custom stacks.
