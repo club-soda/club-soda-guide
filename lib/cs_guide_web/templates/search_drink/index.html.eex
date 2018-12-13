@@ -1,1 +1,4 @@
 <div id="search"></div>
+<script type="text/javascript">
+  const drinks = <%= raw Poison.encode!(@drinks) %>
+</script>

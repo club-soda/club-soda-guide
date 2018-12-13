@@ -7,8 +7,6 @@ import DrinkCard exposing (drinkCard)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Http
-import Json.Decode as Json exposing (Decoder, at, field, float, list, map, string)
 import Search exposing (renderFilter, renderSearch)
 import Set
 import SharedTypes exposing (Drink)
@@ -31,68 +29,41 @@ import TypeAndStyle
 
 type alias Model =
     { drinks : List Drink
-    , drink_filters : Criteria.State
-    , abv_filter : String
-    , search_term : String
-    , gettingDrinks : Bool
+    , drinkFilters : Criteria.State
+    , abvFilter : String
+    , searchTerm : Maybe String
     }
 
 
 type alias Flags =
-    { dtype_filter : String
+    { drinks : List Drink
+    , dtype_filter : String
+    , term : String
     }
-
-
-type alias HttpData data =
-    Result Http.Error data
 
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
     let
         dtype_filter =
-            if flags.dtype_filter == "default" then
-                ""
+            if flags.dtype_filter == "none" then
+                []
 
             else
-                flags.dtype_filter
+                [ flags.dtype_filter ]
     in
-    ( { drinks = []
-      , drink_filters = Criteria.init []
-      , abv_filter = ""
-      , search_term = ""
-      , gettingDrinks = True
+    ( { drinks = flags.drinks
+      , drinkFilters = Criteria.init dtype_filter
+      , abvFilter = ""
+      , searchTerm =
+            if String.isEmpty flags.term then
+                Nothing
+
+            else
+                Just flags.term
       }
-    , getDrinks
+    , Cmd.none
     )
-
-
-onChange : (String -> msg) -> Attribute msg
-onChange msgConstructor =
-    Html.Events.on "change" <| Json.map msgConstructor <| Json.at [ "target", "value" ] Json.string
-
-
-getDrinks : Cmd Msg
-getDrinks =
-    Http.get "/json_drinks" drinksDecoder |> Http.send ReceiveDrinks
-
-
-drinksDecoder : Decoder (List Drink)
-drinksDecoder =
-    Json.list drinkDecoder
-
-
-drinkDecoder : Decoder Drink
-drinkDecoder =
-    Json.map8 Drink
-        (field "name" string)
-        (field "brand" string)
-        (field "brandId" string)
-        (field "abv" float)
-        (field "drink_types" (Json.list string))
-        (field "drink_styles" (Json.list string))
-        (field "description" string)
-        (field "image" string)
 
 
 
@@ -100,8 +71,7 @@ drinkDecoder =
 
 
 type Msg
-    = ReceiveDrinks (HttpData (List Drink))
-    | SelectABVLevel String
+    = SelectABVLevel String
     | SearchDrink String
     | UpdateFilters Criteria.State
 
@@ -109,20 +79,22 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ReceiveDrinks (Err _) ->
-            ( model, Cmd.none )
-
-        ReceiveDrinks (Ok drinks) ->
-            ( { model | drinks = drinks, gettingDrinks = False }, Cmd.none )
-
         SelectABVLevel abv_level ->
-            ( { model | abv_filter = abv_level }, Cmd.none )
+            ( { model | abvFilter = abv_level }, Cmd.none )
 
         SearchDrink term ->
-            ( { model | search_term = term }, Cmd.none )
+            let
+                searchTerm =
+                    if String.isEmpty term then
+                        Nothing
+
+                    else
+                        Just term
+            in
+            ( { model | searchTerm = searchTerm }, Cmd.none )
 
         UpdateFilters state ->
-            ( { model | drink_filters = state }, Cmd.none )
+            ( { model | drinkFilters = state }, Cmd.none )
 
 
 
@@ -191,7 +163,7 @@ filterNameAttrs _ _ =
 
 filterImgToggleAttrs : List (Attribute Msg)
 filterImgToggleAttrs =
-    [ class "fr", style "padding-right" "0.5rem" ]
+    [ class "fr pointer", style "padding-right" "0.5rem" ]
 
 
 abv_levels : List String
@@ -203,9 +175,9 @@ view : Model -> Html Msg
 view model =
     div [ class "mt5 mt6-ns" ]
         [ div [ class "w-90 center" ]
-            [ renderSearch "Search Drinks..." SearchDrink
-            , Criteria.view criteriaConfig model.drink_filters drinksTypeAndStyle
-            , renderFilter "ABV" abv_levels SelectABVLevel model.abv_filter
+            [ renderSearch "Search Drinks..." (Maybe.withDefault "" model.searchTerm) SearchDrink
+            , Criteria.view criteriaConfig model.drinkFilters drinksTypeAndStyle
+            , renderFilter "ABV" abv_levels SelectABVLevel model.abvFilter
             ]
         , div [ class "relative center w-90" ]
             [ div [ class "flex-ns flex-wrap justify-center pt3 pb4-ns db dib-ns" ]
@@ -217,15 +189,15 @@ view model =
 filterDrinks : Model -> List (Html Msg)
 filterDrinks model =
     model.drinks
-        |> List.filter (\d -> filterByTypeAndStyle (Set.toList <| Criteria.selectedIdFilters model.drink_filters) d)
+        |> List.filter (\d -> filterByTypeAndStyle (Set.toList <| Criteria.selectedIdFilters model.drinkFilters) d)
         |> List.filter (\d -> filterByABV model d)
-        |> List.filter (\d -> filterByTerm model d)
-        |> renderDrinks model.gettingDrinks
+        |> List.filter (\d -> SharedTypes.searchDrinkByTerm model.searchTerm d)
+        |> renderDrinks
 
 
 filterByABV : Model -> Drink -> Bool
 filterByABV model drink =
-    case model.abv_filter of
+    case model.abvFilter of
         "<0.05%" ->
             drink.abv < 0.05
 
@@ -268,19 +240,8 @@ filterByTypeAndStyle filters drink =
                 |> List.any ((==) True)
 
 
-filterByTerm : Model -> Drink -> Bool
-filterByTerm model drink =
-    case model.search_term of
-        "" ->
-            True
-
-        term ->
-            String.contains (String.toLower term) (String.toLower drink.name)
-                || String.contains (String.toLower term) (String.toLower drink.description)
-
-
-renderDrinks : Bool -> List Drink -> List (Html Msg)
-renderDrinks gettingDrinks drinks =
+renderDrinks : List Drink -> List (Html Msg)
+renderDrinks drinks =
     if List.length drinks >= 1 then
         Array.fromList drinks
             |> Array.indexedMap drinkCard
@@ -288,11 +249,7 @@ renderDrinks gettingDrinks drinks =
 
     else
         [ div []
-            [ if gettingDrinks then
-                p [ class "tc" ] [ text "Searching drinks..." ]
-
-              else
-                p [ class "tc" ] [ text "Your search didn't return any drinks, change your filters and try again." ]
+            [ p [ class "tc" ] [ text "Your search didn't return any drinks, change your filters and try again." ]
             ]
         ]
 

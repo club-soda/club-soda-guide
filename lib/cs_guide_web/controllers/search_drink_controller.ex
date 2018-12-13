@@ -4,16 +4,13 @@ defmodule CsGuideWeb.SearchDrinkController do
   alias CsGuide.Resources.Drink
 
   def index(conn, _params) do
+    drinks = Drink.all()
+    |> Drink.preload([:brand, :drink_types, :drink_styles, :drink_images])
+    |> Enum.sort_by(fn d -> Map.get(d, :weighting, 0) end, &>=/2)
 
-    render(conn, "index.html")
-  end
+    drink_cards = Enum.map(drinks, fn d -> Drink.get_drink_card(d) end)
 
-  defp has_drink_type?(drink_types) do
-    drink_types !== []
-  end
-
-  defp matches_d_type_filter?(drink_type, type_filter) do
-    String.downcase(drink_type.name) == String.downcase(type_filter)
+    render(conn, "index.html", drinks: drink_cards)
   end
 
 end

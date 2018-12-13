@@ -1,17 +1,27 @@
 <section class="bg-hero relative pb5">
   <div class="w-100 h-100 mb4 mb0-ns">
-    <h1 class="w-90 w-40-ns absolute-center tc center f2 lh2 roboto-slab">
+    <div class="w-90 w-40-ns  absolute-center">
+
+    <h1 class="tc center f2 lh2 roboto-slab">
       The best low and no alcohol drinks and where to find them</h1>
+      <div class="tc mt3">
+        <%= form_for @conn, search_all_path(@conn, :index), [method: :get], fn f -> %>
+          <%= text_input f, :term, placeholder: "search drinks and venues", class: "dib w-75"  %>
+          <%= submit "Search", class: "dn dib-l w-15" %>
+        <% end %>
+      </div>
+
+    </div>
   </div>
   <div class="w-90-ns center db">
     <h2 class="b pv3 f2 lh2 w-90 w-100-ns center tc tl-ns">Explore All Drinks</h2>
     <div class="roboto-slab flex flex-wrap flex-nowrap-ns justify-between tc">
-      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns mr2-ns bg-cs-pink br2-ns white pt-3rem" href="/search/drinks/?drink_type=beer">Beers</a>
-      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns mh2-ns bg-cs-light-pink br2-ns cs-black pt-3rem" href="/search/drinks/?drink_type=wine">Wines</a>
-      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pv4 mh2-ns bg-cs-yellow br2-ns cs-black" href="/search/drinks/?drink_type=spirits_&_premixed">Spirits and</br>Premixed</a>
-      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns mh2-ns bg-cs-mint br2-ns cs-black pt-3rem" href="/search/drinks/?drink_type=soft_drink">Soft Drinks</a>
-      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pv4 mh2-ns bg-cs-black br2-ns white" href="/search/drinks/?drink_type=tonics_&_mixers">Tonics and</br> Mixers</a>
-      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns ml2-ns bg-cs-navy br2-ns white pt-3rem" href="/search/drinks/?drink_type=cider"><span class="v-mid">Ciders</span></a>
+      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns mr2-ns bg-cs-pink br2-ns white pt-3rem" href="/search/drinks/?drink_type=Beer">Beers</a>
+      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns mh2-ns bg-cs-light-pink br2-ns cs-black pt-3rem" href="/search/drinks/?drink_type=Wine">Wines</a>
+      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pv4 mh2-ns bg-cs-yellow br2-ns cs-black" href="/search/drinks/?drink_type=Spirits_and_Premixed">Spirits and</br>Premixed</a>
+      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns mh2-ns bg-cs-mint br2-ns cs-black pt-3rem" href="/search/drinks/?drink_type=Soft_Drink">Soft Drinks</a>
+      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pv4 mh2-ns bg-cs-black br2-ns white" href="/search/drinks/?drink_type=Tonics_and_Mixers">Tonics and</br> Mixers</a>
+      <a class="w-50 w-sixth-ns shadow-4-ns no-underline f4 lh4 pb-3rem-s pb4-ns ml2-ns bg-cs-navy br2-ns white pt-3rem" href="/search/drinks/?drink_type=Cider"><span class="v-mid">Ciders</span></a>
     </div>
   </div>
 </section>
