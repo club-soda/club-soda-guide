@@ -1,8 +1,14 @@
 var search = document.getElementById('search');
 if (search) {
+  var types = {
+    "Tonics and Mixers": "Tonics & Mixers",
+    "Spirits and Premixed": "Spirits & Premixed"
+  };
+
   var params = window.location.search;
   var qs = getQueryParams(params)
-  var drink_type = (qs.drink_type && qs.drink_type.replace(/_/g, " ")) || "default";
+  var drink_type = (qs.drink_type && qs.drink_type.replace(/_/g, " ")) || "none";
+  drink_type = types[drink_type] || drink_type;
   var term = qs.term || "";
   Elm.SearchDrink.init({
     node: search, flags: Object.assign({}, { dtype_filter: drink_type, drinks: drinks, term: term  })

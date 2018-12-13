@@ -46,14 +46,14 @@ init : Flags -> ( Model, Cmd Msg )
 init flags =
     let
         dtype_filter =
-            if flags.dtype_filter == "default" then
-                ""
+            if flags.dtype_filter == "none" then
+                []
 
             else
-                flags.dtype_filter
+                [ flags.dtype_filter ]
     in
     ( { drinks = flags.drinks
-      , drinkFilters = Criteria.init []
+      , drinkFilters = Criteria.init dtype_filter
       , abvFilter = ""
       , searchTerm =
             if String.isEmpty flags.term then
