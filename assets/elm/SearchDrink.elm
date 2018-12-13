@@ -58,7 +58,7 @@ init flags =
                 flags.dtype_filter
     in
     ( { drinks = []
-      , drink_filters = Criteria.init
+      , drink_filters = Criteria.init []
       , abv_filter = ""
       , search_term = ""
       , gettingDrinks = True
@@ -150,8 +150,11 @@ criteriaConfig =
             { defaulCustomisations
                 | mainDivAttrs = mainDivAttrs
                 , filtersDivAttrs = filtersDivAttrs
+                , filterDivAttrs = filterDivAttrs
                 , buttonAttrs = buttonAttrs
                 , filterLabelAttrs = filterLabelAttrs
+                , filterNameAttrs = filterNameAttrs
+                , filterImgToggleAttrs = filterImgToggleAttrs
             }
         }
 
@@ -166,6 +169,11 @@ filtersDivAttrs =
     [ class "absolute w-200 bg-white shadow-1 bw1 dropdown" ]
 
 
+filterDivAttrs : Filter -> Criteria.State -> List (Attribute Msg)
+filterDivAttrs _ _ =
+    [ style "padding" "0.5rem 0" ]
+
+
 buttonAttrs : List (Attribute Msg)
 buttonAttrs =
     [ class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6 cs-gray mr2" ]
@@ -174,6 +182,16 @@ buttonAttrs =
 filterLabelAttrs : Filter -> Criteria.State -> List (Attribute Msg)
 filterLabelAttrs filter stateCriteria =
     [ class "pl2 pointer lh5 f5" ]
+
+
+filterNameAttrs : Filter -> Criteria.State -> List (Attribute Msg)
+filterNameAttrs _ _ =
+    [ style "margin-left" "1rem" ]
+
+
+filterImgToggleAttrs : List (Attribute Msg)
+filterImgToggleAttrs =
+    [ class "fr", style "padding-right" "0.5rem" ]
 
 
 abv_levels : List String

@@ -69,7 +69,6 @@ softDrink =
     , SubFilters
         [ ( Style, "Cola", SubFilters [] )
         , ( Style, "Cordial", SubFilters [] )
-        , ( Style, "Cordial", SubFilters [] )
         , ( Style, "Seasonal", SubFilters [] )
         , ( Style, "Fruit Drinks", SubFilters [] )
         , ( Style, "Ginger Ale", SubFilters [] )

@@ -478,18 +478,3 @@ select {
     display: block;
   }
 }
-
-/* Drink Type Dropdown on Drinks page */
-
-.dropdown > div {
-  padding: 0.5rem 0;
-}
-
-.dropdown > div > label > input {
-  margin-right: 1rem;
-}
-
-.dropdown > div > span {
-  float: right;
-  padding-right: 0.5rem;
-}
