@@ -29,6 +29,7 @@ defmodule CsGuide.Accounts.User do
     |> cast(attrs, [:email, :password, :admin])
     |> validate_required([:email])
     |> put_email_hash()
+    |> unique_constraint(:email_hash)
   end
 
   def put_email_hash(user) do
