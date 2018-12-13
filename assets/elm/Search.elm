@@ -1,4 +1,4 @@
-module Search exposing (..)
+module Search exposing (renderFilter, renderSearch)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -12,7 +12,7 @@ renderFilter defaultTitle dropdownItems msgConstructor selected =
         [ select
             [ onChange msgConstructor
             , class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6"
-            , classList [("cs-gray", ( selected == "" ))]
+            , classList [ ( "cs-gray", selected == "" ) ]
             ]
             ([ option [ Html.Attributes.value "" ] [ text defaultTitle ] ]
                 ++ List.map (\dropdownItem -> renderDropdownItems dropdownItem) dropdownItems
