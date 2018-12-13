@@ -55,5 +55,11 @@ defmodule CsGuide.AccountsTest do
       user = user_fixture()
       assert %Ecto.Changeset{} = User.changeset(user)
     end
+
+    test "cannot duplicate email addresses" do
+      user = user_fixture()
+
+      assert {:error, user_2} = %User{} |> User.changeset(@valid_attrs) |> User.insert()
+    end
   end
 end
