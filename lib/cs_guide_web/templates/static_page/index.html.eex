@@ -1,0 +1,36 @@
+<section class="center w-80 w-75-l mv6">
+  <h2 class="f4 lh4 dib">All Static Pages</h2>
+  <span class="fr"><%= link "New Static Page", to: static_page_path(@conn, :new), class: "btn-primary no-underline" %></span>
+
+  <table class="mt3 mb5 w-100">
+    <thead>
+      <tr class="tl">
+        <th class="pv3 pr3 f5 lh5 b">Page Title</th>
+        <th class="pa3 f5 lh5 b">Title (as shown in menu)</th>
+        <th class="pa3 f5 lh5 b dn dib-ns">Browser Title</th>
+        <th class="pa3 f5 lh5 b dn dib-ns">Display in Menu</th>
+        <th class="pa3 f5 lh5 b dn dib-ns">Display in Footer</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="">
+      <%= for page <- @static_pages do %>
+        <tr class="bt bb b--cs-light-gray">
+          <td class="pv3 pr3"><%= page.page_title %></td>
+          <td class="pa3"><%= page.title_in_menu %></td>
+          <td class="pa3 dn dib-ns"><%= page.browser_title %></td>
+          <td class="pa3 dn dib-ns"><%= page.display_in_menu %></td>
+          <td class="pa3 dn dib-ns"><%= page.display_in_footer %></td>
+          <td class="pv3 pa3-ns tr">
+            <span><%= link "Edit", to: static_page_path(@conn, :edit, page.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
+            <span>
+              <%= link "Delete", to: static_page_path(@conn, :delete, page.entry_id),
+              method: :delete, data: [confirm: "Are you sure you'd like to delete this static page?"],
+              class: "cs-mid-blue ph3 pv3-ns" %>
+            </span>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

@@ -35,6 +35,7 @@ defmodule CsGuideWeb.Router do
     resources("/sessions", SessionController, only: [:new, :create])
 
     get("/json_drinks", DrinkController, :json_index)
+    get("/:page_name", StaticPageController, :show)
   end
 
   scope "/search", CsGuideWeb do
@@ -49,6 +50,7 @@ defmodule CsGuideWeb.Router do
     pipe_through([:browser, :admin])
 
     resources("/", AdminController, only: [:index])
+    resources("/static_pages", StaticPageController, except: [:show])
     resources("/users", UserController, except: [:new, :create])
     resources("/venues", VenueController, except: [:show])
     resources("/retailers", RetailerController, except: [:show])

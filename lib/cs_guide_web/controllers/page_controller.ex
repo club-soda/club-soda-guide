@@ -1,6 +1,7 @@
 defmodule CsGuideWeb.PageController do
   use CsGuideWeb, :controller
   alias CsGuide.Resources.Venue
+  alias CsGuide.StaticPage
 
   def index(conn, _params) do
     venues =
@@ -12,6 +13,12 @@ defmodule CsGuideWeb.PageController do
       |> Enum.slice(0, 4)
       |> Enum.sort(fn v1, v2 -> v1.cs_score >= v2.cs_score end)
 
-    render(conn, "index.html", venues: venues)
+    static_pages =
+      StaticPage.all()
+      |> Enum.filter(fn p ->
+        p.display_in_menu || p.display_in_footer
+      end)
+
+    render(conn, "index.html", venues: venues, static_pages: static_pages)
   end
 end

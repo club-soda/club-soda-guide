@@ -1,0 +1,8 @@
+<section class="center w-80 w-75-l mv5">
+  <h2 class="f4 lh4">New Static Page</h2>
+  <%= custom_render_autoform(@conn, :create, [CsGuide.StaticPage], assigns: [changeset: @changeset], exclude:
+   [:deleted,
+    :entry_id
+    ])
+    %>
+</section>
