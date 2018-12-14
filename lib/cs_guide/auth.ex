@@ -23,10 +23,10 @@ defmodule CsGuide.Auth do
   end
 
   def venue_owner(conn, venue) do
-    current_venue_ids = conn.assigns[:venue_id] || ""
-    venue_ids = current_venue_ids <> "," <> venue.entry_id
+    venue_id = venue.entry_id
+
     conn
-    |> Plug.Conn.put_session(:venue_id, venue_ids)
+    |> Plug.Conn.put_session(:venue_id, venue_id)
     |> Plug.Conn.configure_session(renew: true)
   end
 end

@@ -7,8 +7,7 @@ defmodule CsGuideWeb.Plugs.Auth do
 
   def call(conn, _params) do
     user_id = Plug.Conn.get_session(conn, :user_id)
-    venue_ids = Plug.Conn.get_session(conn, :venue_id)
-    venue_assign = (is_binary(venue_ids) && String.split(venue_ids, ",")) || []
+    venue_id = Plug.Conn.get_session(conn, :venue_id)
 
     with true <- is_binary(user_id),
          %User{} = user <- User.get(user_id),
@@ -16,17 +15,17 @@ defmodule CsGuideWeb.Plugs.Auth do
       conn
       |> put_current_user(user_id)
       |> assign(:admin, true)
-      |> assign(:venue_id, venue_assign)
+      |> assign(:venue_id, venue_id)
     else
       nil ->
         conn
         |> assign(:current_user, nil)
         |> assign(:user_signed_in?, false)
-        |> assign(:venue_id, venue_assign)
+        |> assign(:venue_id, venue_id)
 
       false ->
         put_current_user(conn, user_id)
-        |> assign(:venue_id, venue_assign)
+        |> assign(:venue_id, venue_id)
     end
   end
 
@@ -35,14 +34,12 @@ defmodule CsGuideWeb.Plugs.Auth do
       !opts[:admin] || (opts[:admin] && conn.assigns[:admin]) ->
         conn
 
-
       !conn.assigns[:current_user] ->
         conn
         |> Plug.Conn.put_session(:redirect_url, conn.request_path)
         |> Phoenix.Controller.put_flash(:error, "You must be logged in to access that page")
         |> Phoenix.Controller.redirect(to: CsGuideWeb.Router.Helpers.session_path(conn, :new))
         |> halt()
-
 
       true ->
         conn
@@ -52,10 +49,12 @@ defmodule CsGuideWeb.Plugs.Auth do
   end
 
   def authenticate_venue_owner(conn, opts \\ %{}) do
-    venue_owner = Enum.member?(conn.assigns[:venue_id], conn.params["id"])
+    venue_owner = conn.assigns[:venue_id] == conn.params["id"]
+
     cond do
       conn.assigns[:admin] || venue_owner ->
         conn
+
       true ->
         conn
         |> Phoenix.Controller.redirect(to: "/")
@@ -72,6 +71,4 @@ defmodule CsGuideWeb.Plugs.Auth do
     |> assign(:current_user, user_id)
     |> assign(:user_signed_in?, true)
   end
-
-
 end
