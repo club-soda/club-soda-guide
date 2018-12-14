@@ -1,13 +1,14 @@
 defmodule CsGuideWeb.SignupController do
   use CsGuideWeb, :controller
 
-  alias CsGuide.{Accounts.User, Resources.Venue}
+  alias CsGuide.{Accounts.User, Resources.Venue, Auth}
 
   def create(conn, %{"venue" => %{"users" => users} = venue} = params) do
     case Venue.insert(venue) do
       {:ok, venue} ->
         conn
         |> put_flash(:info, "Venue created successfully.")
+        |> Auth.venue_owner(venue)
         |> redirect(to: venue_path(conn, :show, venue.entry_id))
 
       {:error, %Ecto.Changeset{} = changeset} ->
