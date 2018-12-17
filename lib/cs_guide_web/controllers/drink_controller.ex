@@ -4,8 +4,6 @@ defmodule CsGuideWeb.DrinkController do
   alias CsGuide.Resources.Drink
   alias CsGuide.Images.DrinkImage
 
-  import Ecto.Query, only: [from: 2, subquery: 1]
-
   def index(conn, _params) do
     drinks =
       Drink.all()
@@ -67,7 +65,7 @@ defmodule CsGuideWeb.DrinkController do
 
   def create(conn, %{"drink" => drink_params}) do
     case Drink.insert(drink_params) do
-      {:ok, drink} ->
+      {:ok, _drink} ->
         conn
         |> put_flash(:info, "Drink created successfully.")
         |> redirect(to: drink_path(conn, :index))

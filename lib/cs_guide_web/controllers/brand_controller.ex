@@ -16,7 +16,7 @@ defmodule CsGuideWeb.BrandController do
 
   def create(conn, %{"brand" => brand_params}) do
     case %Brand{} |> Brand.changeset(brand_params) |> Brand.insert() do
-      {:ok, brand} ->
+      {:ok, _brand} ->
         conn
         |> put_flash(:info, "Brand created successfully.")
         |> redirect(to: brand_path(conn, :index))
@@ -27,6 +27,7 @@ defmodule CsGuideWeb.BrandController do
   end
 
   def show(conn, %{"name" => name}) do
+    name = check_brand_name(name)
     brand =
       Brand.get_by([name: name], case_insensitive: true)
       |> Brand.preload(
@@ -80,7 +81,7 @@ defmodule CsGuideWeb.BrandController do
         |> put_view(CsGuideWeb.ErrorView)
         |> render("404.html")
 
-      brand ->
+      _brand ->
         render(conn, "add_photo.html", name: name)
     end
   end
@@ -102,6 +103,15 @@ defmodule CsGuideWeb.BrandController do
     |> case do
       {:ok, _} -> redirect(conn, to: brand_path(conn, :show, params["id"]))
       {:error, _} -> render(conn, "add_photo.html", id: params["id"], error: true)
+    end
+  end
+
+  defp check_brand_name(name) do
+    brands_with_hyphens = ~w(Fritz-Kola)
+    if Enum.any?(brands_with_hyphens, &(&1 == name)) do
+      name
+    else
+      name |> String.split("-") |> Enum.join(" ")
     end
   end
 end
