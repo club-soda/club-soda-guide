@@ -54,27 +54,4 @@ defmodule CsGuideWeb.StaticPageController do
         render(conn, "edit.html", static_page: static_page, changeset: changeset)
     end
   end
-
-  defp do_update(conn, static_page, static_page_params) do
-    query = fn s, m ->
-      sub =
-        from(mod in Map.get(m.__schema__(:association, s), :queryable),
-          distinct: mod.entry_id,
-          order_by: [desc: :inserted_at],
-          select: mod
-        )
-
-      from(m in subquery(sub), where: not m.deleted, select: m)
-    end
-
-    with {:ok, static_page} <- static_page.update(static_page, static_page_params),
-         {:ok, static_page} <- StaticPage.update(static_page) do
-      conn
-      |> put_flash(:info, "Static Page updated successfully.")
-      |> redirect(to: static_page_path(conn, :index))
-    else
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", static_page: static_page, changeset: changeset)
-    end
-  end
 end
