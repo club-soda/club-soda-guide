@@ -90,14 +90,14 @@ view model =
     in
     div [ class "mt5 mt6-ns" ]
         [ div [ class "relative w-90 center" ]
-            [ input [ onInput UpdateSearchTerm, value searchTerm, placeholder "search drinks and venues" ] []
-            , p [] [ text <| resultDescription totalDrinks totalVenues ]
+            [ input [ class "f6 lh6 cs-black bg-white ba b--cs-light-gray br2 pv2 pl3 w-15rem", onInput UpdateSearchTerm, value searchTerm, placeholder "Search drinks and venues" ] []
+            , p [ class "pv3 f6 lh6" ] [ text <| resultDescription totalDrinks totalVenues ]
             ]
-        , div [ class "relative w-90 center" ]
-            [ h1 [ class "f2 lh2" ] [ text "Drinks" ]
+        , div [ class "relative w-90 center pb5" ]
+            [ h1 [ class "center b pt3 f2 lh2" ] [ text "Drinks" ]
             , renderDrinks <| List.take 4 drinks
             , drinksPage totalDrinks 4 searchTerm
-            , h1 [ class "f2 lh2" ] [ text "Venues" ]
+            , h1 [ class "center b pt5 f2 lh2" ] [ text "Venues" ]
             , renderVenues <| List.take 4 venues
             , venuesPage totalVenues 4 searchTerm
             ]
@@ -107,7 +107,7 @@ view model =
 drinksPage : Int -> Int -> String -> Html Msg
 drinksPage totalDrinks drinksDisplayed searchTerm =
     if (totalDrinks - drinksDisplayed) <= 0 then
-        a [ href <| "/search/drinks?term=" ++ searchTerm ] [ text "View all drinks" ]
+        a [ href <| "/search/drinks" ] [ text "View all drinks" ]
 
     else
         a [ href <| "/search/drinks?term=" ++ searchTerm ] [ text <| "See all (" ++ String.fromInt totalDrinks ++ ")" ]
@@ -116,7 +116,7 @@ drinksPage totalDrinks drinksDisplayed searchTerm =
 venuesPage : Int -> Int -> String -> Html Msg
 venuesPage totalVenues venuesDisplayed searchTerm =
     if (totalVenues - venuesDisplayed) <= 0 then
-        a [ href <| "/search/venues?term=" ++ searchTerm ] [ text "View all venues" ]
+        a [ href <| "/search/venues" ] [ text "View all venues" ]
 
     else
         a [ href <| "/search/venues?term=" ++ searchTerm ] [ text <| "See all (" ++ String.fromInt totalVenues ++ ")" ]
@@ -157,10 +157,10 @@ renderDrinks : List SharedTypes.Drink -> Html Msg
 renderDrinks drinks =
     case drinks of
         [] ->
-            p [] [ text "no drinks match the search term" ]
+            p [] [ text "No drinks match the search term" ]
 
         _ ->
-            div [ class "flex-ns flex-wrap justify-center pt3 pb4-ns db dib-ns" ]
+            div [ class "flex-ns flex-wrap justify-center pt3 pb4 db dib-ns" ]
                 (Array.fromList drinks
                     |> Array.indexedMap drinkCard
                     |> toList
