@@ -50,7 +50,8 @@ defmodule CsGuideWeb.VenueController do
         venue_images: []
       )
 
-    render(conn, "show.html", venue: venue, is_authenticated: conn.assigns[:admin])
+    venue_owner = conn.assigns[:venue_id] == id
+    render(conn, "show.html", venue: venue, is_authenticated: conn.assigns[:admin] || venue_owner)
   end
 
   def edit(conn, %{"id" => id}) do
