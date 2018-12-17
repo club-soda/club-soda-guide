@@ -28,7 +28,7 @@
         <% end %>
         <%= if @drink.drink_styles do %>
           <%= for dt <- @drink.drink_styles do %>
-            <p class="w-50 pv2 dib"><%= dt.name %> STYLE</p>
+            <p class="w-50 pv2 dib"><%= dt.name %></p>
           <% end %>
         <% end %>
         <%= if @drink.abv do %>
