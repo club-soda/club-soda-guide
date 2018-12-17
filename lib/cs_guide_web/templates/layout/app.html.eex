@@ -33,7 +33,11 @@
           <a href="/search/drinks?drink_type=" class="db f5 lh5 pl3 pv2 cs-black no-underline">Drinks</a>
           <a href="/search/venues" class="db f5 lh5 pl3 pt2 pb3 cs-black no-underline">Venues</a>
           <a href="/users/new" class="db f5 lh5 pl3 pt2 pb3 cs-black no-underline">List a Venue</a>
-
+          <%= for page <- @static_page_links do %>
+            <%= if page.display_in_menu do %>
+              <%= link page.title_in_menu, to: static_page_path(@conn, :show, page.page_title), class: "db f5 lh5 pl3 pt2 pb3 cs-black no-underline" %>
+            <% end %>
+          <% end %>
         </div>
 
         <!-- DESKTOP MENU -->
@@ -41,7 +45,11 @@
           <a href="/search/drinks?drink_type=" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Drinks</a>
           <a href="/search/venues" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Venues</a>
           <a href="/users/new" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">List a Venue</a>
-
+          <%= for page <- @static_page_links do %>
+            <%= if page.display_in_menu do %>
+              <%= link page.title_in_menu, to: static_page_path(@conn, :show, page.page_title), class: "f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2" %>
+            <% end %>
+          <% end %>
         </div>
 
       </nav>
@@ -54,7 +62,11 @@
     </main>
     <footer class="mt6 pv5 bg-cs-light-gray">
       <div class="w-90 w-75-ns center">
-
+        <%= for page <- @static_page_links do %>
+          <%= if page.display_in_footer do %>
+            <%= link page.title_in_menu, to: static_page_path(@conn, :show, page.page_title), class: "pr4 ph5-ns pv3 cs-black" %>
+          <% end %>
+        <% end %>
       </div>
     </footer>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>

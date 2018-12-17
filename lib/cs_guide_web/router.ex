@@ -10,6 +10,7 @@ defmodule CsGuideWeb.Router do
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
     plug(CsGuideWeb.Plugs.Auth)
+    plug(CsGuideWeb.Plugs.StaticPages)
   end
 
   pipeline :api do
