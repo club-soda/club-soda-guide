@@ -1,6 +1,8 @@
 <section class="center mt5 mb6">
   <%= if @brand.member do %>
-    <%= link "Upload Photo", to: brand_path(@conn, :add_photo, @brand.name), class: "mt5 dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
+    <%= if @is_authenticated do %>
+      <%= link "Upload Photo", to: brand_path(@conn, :add_photo, @brand.name), class: "mt5 dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
+    <% end %>
     <%= if img = @brand.brand_images |> Enum.reverse |> Enum.find(fn i -> i.cover end) do %>
       <div class="db bg-venue w-100"
         style="background-image: url('https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%= img.name %>');">
@@ -18,15 +20,19 @@
 
   <section class="center w-50 flex-ns mb5">
     <%= if @brand.member do %>
-      <%= link "Upload Photo", to: brand_path(@conn, :add_photo, @brand.name), class: "dib dn-ns btn-primary no-underline" %>
+      <%= if @is_authenticated do %>
+        <%= link "Upload Photo", to: brand_path(@conn, :add_photo, @brand.name), class: "dib dn-ns btn-primary no-underline" %>
+      <% end %>
     <% end %>
     <div class="w-60-ns center">
       <%= if @brand.description do %>
         <p class="pv3 lh5"><%= @brand.description %></p>
       <% else %>
-        <div class="pb3">
-          <a class="cs-mid-blue" href="<%= @brand.name %>/edit">Add brand description</a>
-        </div>
+        <%= if @is_authenticated do %>
+          <div class="pb3">
+            <a class="cs-mid-blue" href="<%= @brand.name %>/edit">Add brand description</a>
+          </div>
+        <% end %>
       <% end %>
       <div class="db pv1">
         <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
@@ -35,7 +41,9 @@
             <%= @brand.website %>
           </a>
         <% else %>
-          <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand website</a>
+          <%= if @is_authenticated do %>
+            <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand website</a>
+          <% end %>
         <% end %>
       </div>
       <%= if @brand.member do %>
@@ -46,7 +54,9 @@
               <%= @brand.facebook %>
             </a>
           <% else %>
-            <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand facebook</a>
+            <%= if @is_authenticated do %>
+              <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand facebook</a>
+            <% end %>
           <% end %>
         </div>
         <div class="db pv1">
@@ -56,7 +66,9 @@
               <%= @brand.instagram %>
             </a>
           <% else %>
-            <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand instagram</a>
+            <%= if @is_authenticated do %>
+              <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand instagram</a>
+            <% end %>
           <% end %>
         </div>
       <% end %>
@@ -74,7 +86,9 @@
         <%= if @brand.copy do %>
           <p><%= @brand.copy %></p>
         <% else %>
-          <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand copy</a>
+          <%= if @is_authenticated do %>
+            <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand copy</a>
+          <% end %>
         <% end %>
       </div>
     </section>

@@ -41,7 +41,7 @@ defmodule CsGuideWeb.BrandController do
         brand_images: []
       )
 
-    render(conn, "show.html", brand: brand)
+    render(conn, "show.html", brand: brand, is_authenticated: conn.assigns[:admin])
   end
 
   def edit(conn, %{"name" => name}) do
