@@ -35,7 +35,6 @@ defmodule CsGuideWeb.Router do
     resources("/sessions", SessionController, only: [:new, :create])
 
     get("/json_drinks", DrinkController, :json_index)
-    get("/:page_name", StaticPageController, :show)
   end
 
   scope "/search", CsGuideWeb do
@@ -50,7 +49,7 @@ defmodule CsGuideWeb.Router do
     pipe_through([:browser, :admin])
 
     resources("/", AdminController, only: [:index])
-    resources("/static_pages", StaticPageController, except: [:show])
+    resources("/static_pages", StaticPageController, except: [:show], param: "page_title")
     resources("/users", UserController, except: [:new, :create])
     resources("/venues", VenueController, except: [:show])
     resources("/retailers", RetailerController, except: [:show])
@@ -69,6 +68,12 @@ defmodule CsGuideWeb.Router do
     post("/venues/:id/", VenueController, :upload_photo)
     post("/drinks/:id/", DrinkController, :upload_photo)
     post("/brands/:name/", BrandController, :upload_photo)
+  end
+
+  scope "/", CsGuideWeb do
+    pipe_through(:browser)
+
+    get("/:page_title", StaticPageController, :show)
   end
 
   # Other scopes may use custom stacks.

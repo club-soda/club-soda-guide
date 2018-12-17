@@ -22,7 +22,7 @@
           <td class="pa3 dn dib-ns"><%= page.display_in_menu %></td>
           <td class="pa3 dn dib-ns"><%= page.display_in_footer %></td>
           <td class="pv3 pa3-ns tr">
-            <span><%= link "Edit", to: static_page_path(@conn, :edit, page.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
+            <span><%= link "Edit", to: static_page_path(@conn, :edit, page.page_title), class: "ph3 pv3-ns cs-mid-blue" %></span>
             <span>
               <%= link "Delete", to: static_page_path(@conn, :delete, page.entry_id),
               method: :delete, data: [confirm: "Are you sure you'd like to delete this static page?"],

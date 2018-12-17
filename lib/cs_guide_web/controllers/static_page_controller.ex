@@ -28,22 +28,21 @@ defmodule CsGuideWeb.StaticPageController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    static_page =
-      id
-      |> StaticPage.get()
+  def show(conn, %{"page_title" => page_title}) do
+    static_page = StaticPage.get_by([page_title: page_title], case_insensitive: true)
 
-    render(conn, "show.html", static_page: static_page, is_authenticated: conn.assigns[:admin])
+    render(conn, "show.html", static_page: static_page)
   end
 
-  def edit(conn, %{"id" => id}) do
-    static_page = StaticPage.get(id)
+  def edit(conn, %{"page_title" => page_title}) do
+    static_page = StaticPage.get_by([page_title: page_title], case_insensitive: true)
+
     changeset = StaticPage.changeset(static_page)
     render(conn, "edit.html", static_page: static_page, changeset: changeset)
   end
 
-  def update(conn, %{"id" => id, "static_page" => static_page_params}) do
-    static_page = StaticPage.get(id)
+  def update(conn, %{"page_title" => page_title, "static_page" => static_page_params}) do
+    static_page = StaticPage.get_by([page_title: page_title], case_insensitive: true)
 
     case static_page |> StaticPage.changeset(static_page_params) |> StaticPage.update() do
       {:ok, static_page} ->
@@ -52,7 +51,7 @@ defmodule CsGuideWeb.StaticPageController do
         |> redirect(to: static_page_path(conn, :show, static_page.page_title))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", brand: static_page, changeset: changeset)
+        render(conn, "edit.html", static_page: static_page, changeset: changeset)
     end
   end
 

@@ -1,6 +1,6 @@
 <section class="center w-80 w-75-l mv6-ns mv5">
   <h2 class="f4 lh4">Edit Static Page</h2>
-  <%= custom_render_autoform(@conn, :update, [CsGuide.StaticPage], assigns: [changeset: @changeset], update_field: :entry_id, assoc_query: &query/1, exclude:
+  <%= custom_render_autoform(@conn, :update, [CsGuide.StaticPage], path: static_page_path(@conn, :update, @static_page.page_title), assigns: [changeset: @changeset, static_page: @static_page], update_field: :entry_id, assoc_query: &query/1, exclude:
   [:deleted,
    :entry_id
    ])
