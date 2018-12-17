@@ -33,6 +33,10 @@ select {
   background-color: #00C6B3;
 }
 
+.b--cs-navy {
+  border-color: #2E304F;
+}
+
 .bg-cs-navy {
   background-color: #2E304F;
 }
@@ -132,6 +136,12 @@ select {
 
 .lh6 {
   line-height: 1.25rem; /* 20px */
+}
+
+@media (min-width: 48em ) {
+  .lh2-ns {
+    line-height: 3.375rem; /* 54px */
+  }
 }
 
 /* Font Size */
@@ -378,7 +388,7 @@ select {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -80%);
 }
 
 .absolute-horizontal-center {
