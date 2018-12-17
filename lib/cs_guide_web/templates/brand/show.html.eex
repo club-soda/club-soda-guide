@@ -10,7 +10,7 @@
         <h1 class="roboto-slab white f2 lh2 pv6"><%= @brand.name %></h1>
       </div>
     <% end %>
-  <%= else %>
+  <% else %>
     <div class="bg-blue-pink w-100 center tc mb5">
       <h1 class="roboto-slab white f2 lh2 pv6"><%= @brand.name %></h1>
     </div>
@@ -23,7 +23,7 @@
     <div class="w-60-ns center">
       <%= if @brand.description do %>
         <p class="pv3 lh5"><%= @brand.description %></p>
-      <%= else %>
+      <% else %>
         <div class="pb3">
           <a class="cs-mid-blue" href="<%= @brand.name %>/edit">Add brand description</a>
         </div>
@@ -34,7 +34,7 @@
           <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @brand.website %>">
             <%= @brand.website %>
           </a>
-        <%= else %>
+        <% else %>
           <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand website</a>
         <% end %>
       </div>
@@ -45,7 +45,7 @@
             <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @brand.facebook %>">
               <%= @brand.facebook %>
             </a>
-          <%= else %>
+          <% else %>
             <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand facebook</a>
           <% end %>
         </div>
@@ -55,7 +55,7 @@
             <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @brand.instagram %>">
               <%= @brand.instagram %>
             </a>
-          <%= else %>
+          <% else %>
             <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand instagram</a>
           <% end %>
         </div>
@@ -73,7 +73,7 @@
       <div class="w-50-ns pl4 lh6 f6">
         <%= if @brand.copy do %>
           <p><%= @brand.copy %></p>
-        <%= else %>
+        <% else %>
           <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand copy</a>
         <% end %>
       </div>

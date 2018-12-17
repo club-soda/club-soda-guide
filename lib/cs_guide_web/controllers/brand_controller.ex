@@ -16,7 +16,7 @@ defmodule CsGuideWeb.BrandController do
 
   def create(conn, %{"brand" => brand_params}) do
     case %Brand{} |> Brand.changeset(brand_params) |> Brand.insert() do
-      {:ok, brand} ->
+      {:ok, _brand} ->
         conn
         |> put_flash(:info, "Brand created successfully.")
         |> redirect(to: brand_path(conn, :index))
@@ -80,7 +80,7 @@ defmodule CsGuideWeb.BrandController do
         |> put_view(CsGuideWeb.ErrorView)
         |> render("404.html")
 
-      brand ->
+      _brand ->
         render(conn, "add_photo.html", name: name)
     end
   end
