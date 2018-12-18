@@ -492,3 +492,24 @@ select {
     display: block;
   }
 }
+
+/* Default styling for the static content html on static pages */
+.static-content h1 {
+  font-size: 2.25rem;
+  line-height: 3.375rem;
+  font-weight: bold;
+}
+.static-content h2 {
+  font-size: 1.25rem;
+  line-height: 2rem;
+}
+
+strong, b {
+  font-weight: bold;
+}
+
+i {
+  font-style: italic;
+}
+
+/* END of Default styling for the static content html on static pages */

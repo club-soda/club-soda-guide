@@ -49,7 +49,8 @@ defmodule CsGuide.Mixfile do
       {:plug_cowboy, "~> 1.0"},
       {:poison, "~> 1.2", override: true},
       {:httpoison, "~> 0.7"},
-      {:fields, git: "https://github.com/dwyl/fields.git", tag: "0.1.3"}
+      {:fields, git: "https://github.com/dwyl/fields.git", tag: "0.1.3"},
+      {:earmark, "~> 1.3.0"}
     ]
   end
 
