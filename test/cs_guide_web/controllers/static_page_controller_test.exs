@@ -11,14 +11,14 @@ defmodule CsGuideWeb.StaticPageControllerTest do
     browser_title: "some browser title",
     body: "some body",
     display_in_menu: true,
-    display_in_footer: false
+    display_in_footer: true
   }
   @update_attrs %{
     page_title: "some updated title",
-    title_in_menu: "some updated title in menu",
+    title_in_menu: "some title in menu",
     browser_title: "some updated browser title",
     body: "some updated body",
-    display_in_menu: true,
+    display_in_menu: false,
     display_in_footer: false
   }
   @invalid_attrs %{
@@ -74,7 +74,7 @@ defmodule CsGuideWeb.StaticPageControllerTest do
   describe "create static page" do
     setup [:admin_login]
 
-    test "redirects to show when data is valid", %{conn: conn} do
+    test "redirects to index when data is valid", %{conn: conn} do
       conn = post(conn, static_page_path(conn, :create), static_page: @create_attrs)
 
       assert redirected_to(conn) == static_page_path(conn, :index)
@@ -92,6 +92,15 @@ defmodule CsGuideWeb.StaticPageControllerTest do
     test "non logged in user cannot access form", %{conn: conn, static_page: static_page} do
       conn = get(conn, static_page_path(conn, :edit, static_page.page_title))
       assert html_response(conn, 302)
+    end
+  end
+
+  describe "static page appears in menu" do
+    setup [:create_static_page, :admin_login]
+
+    test "displays static page in menu", %{conn: conn} do
+      conn = get(conn, static_page_path(conn, :index))
+      assert html_response(conn, 200) =~ "some title in menu"
     end
   end
 
@@ -126,6 +135,11 @@ defmodule CsGuideWeb.StaticPageControllerTest do
         )
 
       assert html_response(conn, 200) =~ "Edit Static Page"
+    end
+
+    test "static page is no longer displayed in menu", %{conn: conn} do
+      conn = get(conn, static_page_path(conn, :index))
+      assert html_response(conn, 200) != "some title in menu"
     end
   end
 
