@@ -33,6 +33,10 @@ select {
   background-color: #00C6B3;
 }
 
+.b--cs-navy {
+  border-color: #2E304F;
+}
+
 .bg-cs-navy {
   background-color: #2E304F;
 }
@@ -134,6 +138,12 @@ select {
   line-height: 1.25rem; /* 20px */
 }
 
+@media (min-width: 48em ) {
+  .lh2-ns {
+    line-height: 3.375rem; /* 54px */
+  }
+}
+
 /* Font Size */
 
 .f4-5 {
@@ -227,6 +237,10 @@ select {
 
 .w-5rem {
   width: 5rem;
+}
+
+.w-15rem {
+  width: 15rem;
 }
 
 .w-200 {
@@ -378,7 +392,7 @@ select {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -80%);
 }
 
 .absolute-horizontal-center {

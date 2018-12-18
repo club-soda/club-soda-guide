@@ -19,20 +19,20 @@ defmodule CsGuideWeb.PageControllerTest do
   describe "renders landing page as expected" do
     setup [:create_venue]
 
-    test "GET /", %{conn: conn, venue: venue} do
+    test "GET /", %{conn: conn, venue: _venue} do
       conn = get(conn, "/")
 
       assert html_response(conn, 200) =~
                "The best low and no alcohol drinks and where to find them"
     end
 
-    test "Favourite venue shows", %{conn: conn, venue: venue} do
+    test "Favourite venue shows", %{conn: conn, venue: _venue} do
       conn = get(conn, "/")
 
       assert html_response(conn, 200) =~ "The Favourite Pub"
     end
 
-    test "Not favourite venue doesn't show", %{conn: conn, venue: venue} do
+    test "Not favourite venue doesn't show", %{conn: conn, venue: _venue} do
       conn = get(conn, "/")
 
       assert html_response(conn, 200) != "The Not Favourite Pub"

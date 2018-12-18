@@ -33,7 +33,7 @@ renderSearch text inputValue msg =
             [ type_ "text"
             , placeholder text
             , onInput msg
-            , class "f6 lh6 cs-black bg-white ba b--cs-light-gray br2 pv2 pl3 pr6"
+            , class "f6 lh6 cs-black bg-white ba b--cs-light-gray br2 pv2 pl3 w-15rem"
             , value inputValue
             ]
             []
