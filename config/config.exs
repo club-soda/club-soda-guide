@@ -7,7 +7,8 @@ use Mix.Config
 
 # General application configuration
 config :cs_guide,
-  ecto_repos: [CsGuide.Repo]
+  ecto_repos: [CsGuide.Repo],
+  google_maps_api_key: Map.fetch!(System.get_env(), "GOOGLE_MAPS_API_KEY")
 
 # Configures the endpoint
 config :cs_guide, CsGuideWeb.Endpoint,

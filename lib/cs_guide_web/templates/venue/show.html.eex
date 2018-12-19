@@ -87,4 +87,4 @@
   }
 </script>
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap"></script>
+<script async defer src=<%= "https://maps.googleapis.com/maps/api/js?key=#{Application.get_env(:cs_guide, :google_maps_api_key)}&callback=initMap" %>></script>
