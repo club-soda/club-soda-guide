@@ -7,7 +7,7 @@ defmodule CsGuide.StaticPage do
     field(:page_title, :string)
     field(:title_in_menu, :string)
     field(:browser_title, :string)
-    field(:body, :string)
+    field(:body, Fields.HtmlBody)
     field(:display_in_menu, :boolean, default: false)
     field(:display_in_footer, :boolean, default: false)
     field(:entry_id, :string)
