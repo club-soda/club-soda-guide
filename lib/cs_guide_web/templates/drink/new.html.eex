@@ -2,12 +2,8 @@
   <h2 class="f4 lh4">New Drink</h2>
 
   <%= custom_render_autoform(@conn, :create, [
-    {CsGuide.Resources.Drink, exclude: [:description, :drink_types, :drink_styles, :brand_id, :brand, :ingredients, :weighting, :abv]},
+    {CsGuide.Resources.Drink, exclude: [:description, :drink_types, :drink_styles, :brand_id, :brand, :ingredients, :weighting]},
     """
-    <div class="form-group">
-      <label class="control-label " for="drink_abv">ABV</label>
-      <input class="form-control" id="drink_abv" name="drink[abv]" type="number" step="any">
-    </div>
     <div class="form-group">
       <label class="control-label " for="drink_description">Description</label>
       <textarea class="form-control" id="drink_description" name="drink[description]" type="text"></textarea>

@@ -32,6 +32,7 @@ searchDrinkByTerm searchTerm drink =
         Just term ->
             String.contains (String.toLower term) (String.toLower drink.name)
                 || String.contains (String.toLower term) (String.toLower drink.description)
+                || String.contains (String.toLower term) (String.toLower drink.brand)
 
 
 searchVenueByTerm : Maybe String -> Venue -> Bool

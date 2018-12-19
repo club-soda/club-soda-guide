@@ -277,9 +277,11 @@ select {
   padding-top: 3rem;
 }
 
-.pv-6rem {
-  padding-top: 6rem;
-  padding-bottom: 6rem;
+@media (min-width: 30em) {
+  .pv-6rem-ns {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
 }
 
 @media (max-width: 30rem) {

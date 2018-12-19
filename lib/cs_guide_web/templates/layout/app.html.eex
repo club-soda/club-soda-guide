@@ -60,14 +60,14 @@
       <p class="pl3 mt5 lh4 b alert alert-info" role="alert"><%= get_flash(@conn, :info)%></p>
       <%= render @view_module, @view_template, assigns %>
     </main>
-    <footer class="mt6 pv-6rem bg-footer">
+    <footer class="mt6 pv5 pv-6rem-ns bg-footer">
       <div class="w-90 w-75-ns h-100 center">
-        <div class="dib w-10 h-100">
-          <img src="<%= static_path(@conn, "/images/circle-logo.svg") %>" alt="Club Soda Logo" class="w-100">
+        <div class="dib w-30 w-10-ns pr4 pr0-ns h-100 relative">
+          <img src="<%= static_path(@conn, "/images/circle-logo.svg") %>" alt="Club Soda Logo" class="w-100 absolute-vertical-center-ns">
         </div>
         <%= for page <- @static_page_links do %>
           <%= if page.display_in_footer do %>
-            <%= link page.title_in_menu, to: static_page_path(@conn, :show, page.page_title), class: "pr4 ph5-ns pv3 white" %>
+            <%= link page.title_in_menu, to: static_page_path(@conn, :show, page.page_title), class: "pr4 ph5-ns pv3 white v-top" %>
           <% end %>
         <% end %>
       </div>
