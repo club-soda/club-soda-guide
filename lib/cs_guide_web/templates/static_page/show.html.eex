@@ -1,0 +1,4 @@
+<section class="pv5 w-90 w-75-ns center">
+  <h1 class="f3 lh3"><%= @static_page.page_title %></h1>
+  <div class="pv3 pr3 static-content"><%= raw Earmark.as_html! @static_page.body %></div>
+</section>

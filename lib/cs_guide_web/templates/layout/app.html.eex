@@ -32,24 +32,46 @@
         <div class="menu dn tl pb4 bg-white cs-black w-100">
           <a href="/search/drinks?drink_type=" class="db f5 lh5 pl3 pv2 cs-black no-underline">Drinks</a>
           <a href="/search/venues" class="db f5 lh5 pl3 pt2 pb3 cs-black no-underline">Venues</a>
-          <a href="/users/new" class="f5 lh5 ml3 ph3 pv2 ba b--cs-pink cs-black no-underline br2">List a Venue</a>
+          <a href="/users/new" class="db f5 lh5 pl3 pt2 pb3 cs-black no-underline">List a Venue</a>
+          <%= for page <- @static_page_links do %>
+            <%= if page.display_in_menu do %>
+              <%= link page.title_in_menu, to: static_page_path(@conn, :show, page.page_title), class: "db f5 lh5 pl3 pt2 pb3 cs-black no-underline" %>
+            <% end %>
+          <% end %>
         </div>
 
         <!-- DESKTOP MENU -->
         <div class="w-80 mv2 dn dib-ns tr">
           <a href="/search/drinks?drink_type=" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Drinks</a>
           <a href="/search/venues" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Venues</a>
-          <a href="/users/new" class="f5 lh5 ph4 pv2 mr3 mr5-l ba b--cs-pink cs-black no-underline br2">List a Venue</a>
+          <a href="/users/new" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">List a Venue</a>
+          <%= for page <- @static_page_links do %>
+            <%= if page.display_in_menu do %>
+              <%= link page.title_in_menu, to: static_page_path(@conn, :show, page.page_title), class: "f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2" %>
+            <% end %>
+          <% end %>
         </div>
 
       </nav>
       <span class="logo"></span>
     </header>
 
-    <main role="main">
+    <main role="main" class="body-container">
       <p class="pl3 mt5 lh4 b alert alert-info" role="alert"><%= get_flash(@conn, :info)%></p>
       <%= render @view_module, @view_template, assigns %>
     </main>
+    <footer class="mt6 pv5 pv-6rem-ns bg-footer">
+      <div class="w-90 w-75-ns h-100 center">
+        <div class="dib w-30 w-10-ns pr4 pr0-ns h-100 relative">
+          <img src="<%= static_path(@conn, "/images/circle-logo.svg") %>" alt="Club Soda Logo" class="w-100 absolute-vertical-center-ns">
+        </div>
+        <%= for page <- @static_page_links do %>
+          <%= if page.display_in_footer do %>
+            <%= link page.title_in_menu, to: static_page_path(@conn, :show, page.page_title), class: "pr4 ph5-ns pv3 white v-top" %>
+          <% end %>
+        <% end %>
+      </div>
+    </footer>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

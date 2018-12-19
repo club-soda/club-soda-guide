@@ -10,6 +10,7 @@ defmodule CsGuideWeb.Router do
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
     plug(CsGuideWeb.Plugs.Auth)
+    plug(CsGuideWeb.Plugs.StaticPages)
   end
 
   pipeline :api do
@@ -57,6 +58,7 @@ defmodule CsGuideWeb.Router do
     pipe_through([:browser, :admin])
 
     resources("/", AdminController, only: [:index])
+    resources("/static_pages", StaticPageController, except: [:show], param: "page_title")
     resources("/users", UserController, except: [:new, :create])
     resources("/venues", VenueController, only: [:index, :new, :create, :delete])
     resources("/retailers", RetailerController, except: [:show])
@@ -81,6 +83,12 @@ defmodule CsGuideWeb.Router do
 
     post("/venues/:id/", VenueController, :upload_photo)
     resources("/venues", VenueController, only: [:edit, :update])
+  end
+
+  scope "/", CsGuideWeb do
+    pipe_through(:browser)
+
+    get("/:page_title", StaticPageController, :show)
   end
 
   # Other scopes may use custom stacks.

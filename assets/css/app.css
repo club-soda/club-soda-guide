@@ -13,6 +13,10 @@ select {
   appearance: none;
 }
 
+.body-container {
+  min-height: 60vh;
+}
+
 /* Fonts */
 
 .roboto-slab {
@@ -273,6 +277,13 @@ select {
   padding-top: 3rem;
 }
 
+@media (min-width: 30em) {
+  .pv-6rem-ns {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
 @media (max-width: 30rem) {
   .pb-3rem-s {
     padding-bottom: 3rem;
@@ -377,6 +388,17 @@ select {
   background-position: center;
   background-size: cover;
   height: 32rem;
+}
+
+.bg-footer {
+  background: -moz-linear-gradient(top, rgba(17,17,17,0.59) 0%, rgba(89,89,89,0.59) 11%, rgba(102,102,102,0.59) 53%, rgba(102,102,102,0.59) 71%, rgba(71,71,71,0.59) 88%, rgba(28,28,28,0.59) 99%, rgba(19,19,19,0.59) 100%), url("/images/footer-image.jpg"); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(17,17,17,0.59) 0%,rgba(89,89,89,0.59) 11%,rgba(102,102,102,0.59) 53%,rgba(102,102,102,0.59) 71%,rgba(71,71,71,0.59) 88%,rgba(28,28,28,0.59) 99%,rgba(19,19,19,0.59) 100%), url("/images/footer-image.jpg"); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(17,17,17,0.59) 0%,rgba(89,89,89,0.59) 11%,rgba(102,102,102,0.59) 53%,rgba(102,102,102,0.59) 71%,rgba(71,71,71,0.59) 88%,rgba(28,28,28,0.59) 99%,rgba(19,19,19,0.59) 100%), url("/images/footer-image.jpg"); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#96111111', endColorstr='#96131313',GradientType=0 ); /* IE6-9 */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 22rem;
 }
 
 .black-gradient {
@@ -492,3 +514,24 @@ select {
     display: block;
   }
 }
+
+/* Default styling for the static content html on static pages */
+.static-content h1 {
+  font-size: 2.25rem;
+  line-height: 3.375rem;
+  font-weight: bold;
+}
+.static-content h2 {
+  font-size: 1.25rem;
+  line-height: 2rem;
+}
+
+strong, b {
+  font-weight: bold;
+}
+
+i {
+  font-style: italic;
+}
+
+/* END of Default styling for the static content html on static pages */
