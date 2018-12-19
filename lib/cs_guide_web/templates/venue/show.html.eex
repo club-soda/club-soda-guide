@@ -151,3 +151,30 @@
     </div>
   </section>
 </section>
+
+<!-- Google Maps -->
+<script>
+  function initMap() {
+    var london = {lat: 51.509865, lng: -0.118092};
+    var address = <%= raw Poison.encode!(@venue.postcode) %>
+    var map = new google.maps.Map(document.getElementById('map'), {zoom: 16, center: london});
+    var geocoder = new google.maps.Geocoder();
+    codeAddress(address, geocoder, map);
+  }
+
+  function codeAddress(address, geocoder, map) {
+    geocoder.geocode({'address': address}, function(results, status) {
+      if (status === 'OK') {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location
+        });
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap"></script>
