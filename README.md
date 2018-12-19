@@ -85,6 +85,7 @@ corresponding urls:
 - Venues `/admin/venues`
   - Venue type `/admin/venue_types`
 - Retailers `/admin/retailers`
+- Static Pages `/admin/static_pages`
 
 All of these links are also available by visiting `/admin`.
 
@@ -98,6 +99,18 @@ to which it belongs. E.g. If you add a new venue type it will become a new optio
 under venue types in the new venue form. So you could add 'pub' as a new type and
 then when you create a new venue you would now have the ability to select 'pub'
 as the venue type when creating your new venue.
+
+When you create a static page, you have the ability to write HTML or markdown in
+the body field:
+
+![body with html example](https://user-images.githubusercontent.com/16775804/50228996-2d87c000-03a1-11e9-8322-d3b5401123fd.png)
+
+This is what you will see on the page:
+![rendered html from body example](https://user-images.githubusercontent.com/16775804/50229141-87888580-03a1-11e9-859f-8cb42737ac32.png)
+
+As you can see, some of these elements already have default styling for sizing.
+However if you wish to style an element in an alternative way to what you see here
+you can use [inline styling](https://www.w3schools.com/css/css_howto.asp).
 
 ## Brand pages
 
