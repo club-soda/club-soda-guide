@@ -213,4 +213,4 @@
   }
 </script>
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5G-wEcXvupY7OR5PaQKKMRlmTus2W0Us&callback=initMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap"></script>
