@@ -2,7 +2,8 @@
   <%= if @is_authenticated do %>
     <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.entry_id), class: "dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
   <% end %>
-  <section class="flex-ns flex-wrap">
+  <section class="">
+
     <%= if img = List.last(@venue.venue_images) do %>
       <div class="db bg-venue w-100"
         style="background-image: url('https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%= img.entry_id %>');">
@@ -14,120 +15,29 @@
         src="https://user-images.githubusercontent.com/194400/49571717-f392d480-f931-11e8-96f2-a8d10cfe375e.png">
       </div>
     <% end %>
-    <div class="w-90 w-60-ns pt4 ph5-ns center tr">
-      <%= if @is_authenticated do %>
-        <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.entry_id), class: "dib dn-ns btn-primary no-underline" %>
-      <% end %>
-      <div class="flex-ns items-center tl">
-        <h1 class="roboto-slab f2 lh2 dib-ns"><%= @venue.venue_name %></h1>
-        <%= for type <- @venue.venue_types do %>
-          <p class="dib ml4-ns ph3 pv1 white bg-cs-navy br2 f5 lh5 mb3 mb0-ns"><%= String.capitalize(type.name) %></p>
-        <% end %>
-      </div>
-      <div class="tl pt3">
-        <img class="w4 v-btm" src="<%= static_path(@conn, "/images/score-#{@venue.cs_score}.png") %>" alt="Club Soda Score of <%= @venue.cs_score %>">
-        <%= if @is_authenticated do %>
-          <%= if @venue.cs_score == 0 do %>
-          <% else %>
-            <%= link "Improve your score by adding more drinks to you stocklist.", to: venue_path(@conn, :add_drinks, @venue.entry_id), class: "cs-mid-blue dib mt2 mt0-ns pb1" %>
-          <% end %>
-        <% end %>
-      </div>
-      <%= if @venue.description do %>
-        <p class="min-h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl lh5">
-          <%= @venue.description %>
-        </p>
-      <% else %>
-        <p class="h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl">
-          <%= if @is_authenticated do %>
-            No venue description,
-            <%= link "add description", to: venue_path(@conn, :edit, @venue.entry_id, class: "f6 lh6 cs-mid-blue dib v-top") %>
-          <% end %>
-        </p>
-      <% end %>
 
-      <!-- See issue #30 for re-adding this
-      <div class="tl">
-        <p class="dib pr3">Is this your business?</p>
-        <a href="#" class="cs-mid-blue dib">Claim it</a>
-      </div> -->
-    </div>
-    <div class="w-90 w-40-ns pt4 pr5-ns center">
-      <img src="<%= static_path(@conn, "/images/sample-map.png") %>" alt="Map of venue" class="">
-      <div class="pv1">
-        <%= if @venue.address do %>
-        <p class="f5 lh5 pr2 dib"><%= @venue.address %></p>
-        <% end %>
-        <%= if @venue.city do %>
-        <p class="f5 lh5 pr2 dib"><%= @venue.city %></p>
-        <% end %>
-        <p class="f5 lh5 pr4 dib"><%= @venue.postcode %></p>
-        <p class="f6 lh6 cs-mid-blue underline dib">Get Directions</p>
-      </div>
-      <div class="db pv1">
-        <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/phone-icon.png") %>" alt="Phone icon">
-        <%= if @venue.phone_number do %>
-          <p class="f6 lh6 cs-mid-blue underline dib v-top">
-            <%= @venue.phone_number %>
-          </p>
-        <% else %>
-          <%= if @is_authenticated do %>
-            <%= link "Add venue phone number", to: venue_path(@conn, :edit, @venue.entry_id, class: "f6 lh6 cs-mid-blue dib v-top") %>
-          <% end %>
-        <% end %>
-      </div>
-      <div class="db pv1">
-        <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
-        <%= if @venue.website do %>
-          <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @venue.website %>">
-            <%= @venue.website %>
-          </a>
-        <% else %>
-          <%= if @is_authenticated do %>
-            <%= link "Add venue website", to: venue_path(@conn, :edit, @venue.entry_id, class: "f6 lh6 cs-mid-blue dib v-top") %>
-          <% end %>
-        <% end %>
-      </div>
-      <div class="db pv1">
-        <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/facebook-icon.png") %>" alt="Facebook icon">
-        <%= if @venue.facebook do %>
-        <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @venue.facebook %>">
-          <%= @venue.facebook %>
-        </a>
-        <% else %>
-          <%= if @is_authenticated do %>
-            <%= link "Add venue facebook", to: venue_path(@conn, :edit, @venue.entry_id, class: "f6 lh6 cs-mid-blue dib v-top") %>
-          <% end %>
-        <% end %>
-      </div>
-      <div class="db pv1">
-        <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/instagram-icon.png") %>" alt="Instagram icon">
-        <%= if @venue.instagram do %>
-        <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @venue.instagram %>">
-          <%= @venue.instagram %>
-        </a>
-        <% else %>
-          <%= if @is_authenticated do %>
-            <%= link "Add venue instagram", to: venue_path(@conn, :edit, @venue.entry_id, class: "f6 lh6 cs-mid-blue dib v-top") %>
-          <% end %>
-        <% end %>
-      </div>
-      <div class="db pv1">
-        <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/Twitter.svg") %>" alt="Twitter icon">
-        <%= if @venue.twitter do %>
-          <a href="<%= @venue.twitter %>" class="f6 lh6 cs-mid-blue underline dib v-top"><%= @venue.twitter %></a>
-        <% else %>
-          <%= if @is_authenticated do %>
-            <%= link "Add venue twitter", to: venue_path(@conn, :edit, @venue.entry_id, class: "f6 lh6 cs-mid-blue dib v-top") %>
-          <% end %>
-        <% end %>
-      </div>
-      <!-- To be added at a later date, see #119 -->
-      <!-- <h3 class="f4 lh4 pv3">Opening Hours</h3>
-      <a href="#" class="cs-mid-blue f5 lh5">Add venue opening hours</a> -->
+    <div class="flex-ns">
+      <%= render("info.html", conn: @conn, venue: @venue, is_authenticated: @is_authenticated) %>
 
-      <p class="pt3 f5 lh5">Was your visit to <%= @venue.venue_name %> not what you expected?</p>
-      <a href="#" class="cs-mid-blue f5 lh5">Let us know.</a>
+      <div class="w-90 w-40-ns pt4 pr5-ns center">
+        <%= link(to: create_google_search_url(@venue), class: "f6 lh6 cs-mid-blue", target: "_blank") do %>
+          <div class="w-100 h5-8" id="map"></div>
+        <% end %>
+
+        <%= render("address_under_map.html", venue: @venue) %>
+        <%= under_map_link(@conn, :phone_number, "/images/phone-icon.png") %>
+        <%= under_map_link(@conn, :website, "/images/website-icon.png") %>
+        <%= under_map_link(@conn, :facebook, "/images/facebook-icon.png") %>
+        <%= under_map_link(@conn, :instagram, "/images/instagram-icon.png") %>
+        <%= under_map_link(@conn, :twitter, "/images/Twitter.svg") %>
+
+        <!-- To be added at a later date, see #119 -->
+        <!-- <h3 class="f4 lh4 pv3">Opening Hours</h3>
+        <a href="#" class="cs-mid-blue f5 lh5">Add venue opening hours</a> -->
+
+        <p class="pt3 f5 lh5">Was your visit to <%= @venue.venue_name %> not what you expected?</p>
+        <a href="#" class="cs-mid-blue f5 lh5">Let us know.</a>
+      </div>
     </div>
   </section>
 
@@ -151,3 +61,30 @@
     </div>
   </section>
 </section>
+
+<!-- Google Maps -->
+<script>
+  function initMap() {
+    var london = {lat: 51.509865, lng: -0.118092};
+    var address = <%= raw Poison.encode!(@venue.postcode) %>
+    var map = new google.maps.Map(document.getElementById('map'), {zoom: 16, center: london});
+    var geocoder = new google.maps.Geocoder();
+    codeAddress(address, geocoder, map);
+  }
+
+  function codeAddress(address, geocoder, map) {
+    geocoder.geocode({'address': address}, function(results, status) {
+      if (status === 'OK') {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location
+        });
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap"></script>

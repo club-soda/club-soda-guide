@@ -1,0 +1,10 @@
+<div class="pv1">
+  <%= if @venue.address do %>
+  <p class="f5 lh5 pr2 dib"><%= @venue.address %></p>
+  <% end %>
+  <%= if @venue.city do %>
+  <p class="f5 lh5 pr2 dib"><%= @venue.city %></p>
+  <% end %>
+  <p class="f5 lh5 pr4 dib"><%= @venue.postcode %></p>
+  <%= link("Get Directions", to: create_google_search_url(@venue), class: "f6 lh6 cs-mid-blue", target: "_blank") %>
+</div>
