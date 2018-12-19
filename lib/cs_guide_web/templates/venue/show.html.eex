@@ -20,7 +20,9 @@
       <%= render("info.html", conn: @conn, venue: @venue, is_authenticated: @is_authenticated) %>
 
       <div class="w-90 w-40-ns pt4 pr5-ns center">
-        <div class="w-100 h6" id="map"></div>
+        <%= link(to: create_google_search_url(@venue), class: "f6 lh6 cs-mid-blue", target: "_blank") do %>
+          <div class="w-100 h5-8" id="map"></div>
+        <% end %>
 
         <%= render("address_under_map.html", venue: @venue) %>
         <%= under_map_link(@conn, :phone_number, "/images/phone-icon.png") %>
