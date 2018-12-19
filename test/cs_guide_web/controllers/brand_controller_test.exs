@@ -10,14 +10,14 @@ defmodule CsGuideWeb.BrandControllerTest do
     logo: "some logo",
     member: true,
     name: "some name",
-    website: "some website"
+    website: "https://www.some-website.com"
   }
   @update_attrs %{
     description: "some updated description",
     logo: "some updated logo",
     member: false,
     name: "some updated name",
-    website: "some updated website"
+    website: "https://www.some-updated-website.com"
   }
   @invalid_attrs %{description: nil, logo: nil, member: nil, name: nil, website: nil}
 
