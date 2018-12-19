@@ -88,6 +88,23 @@ defmodule CsGuideWeb.DrinkControllerTest do
     end
   end
 
+  describe "create drink - admin" do
+    setup [:admin_login]
+
+    test "redirects back to new if drink does not contain abv", %{conn: conn} do
+      conn = post(conn, drink_path(conn, :create), drink: %{name: "new drink"})
+      assert html_response(conn, 200) =~ "New Drink"
+    end
+
+    test "creates drink if details are correct", %{conn: conn} do
+      conn = post(conn, drink_path(conn, :create), drink: @create_attrs)
+      assert redirected_to(conn) == drink_path(conn, :index)
+
+      conn = get(conn, drink_path(conn, :index))
+      assert html_response(conn, 200) =~ "AF Beer 1"
+    end
+  end
+
   describe "edit drink" do
     setup [:drink_setup]
 
