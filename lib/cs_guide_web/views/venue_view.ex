@@ -19,4 +19,26 @@ defmodule CsGuideWeb.VenueView do
     venue = conn.assigns.venue
     render("link_under_map.html", conn: conn, venue: venue, link_key: key, img_str: str)
   end
+
+  def create_google_search_url(params) do
+    list = [
+      Map.get(params, :venue_name),
+      Map.get(params, :address),
+      Map.get(params, :city),
+      Map.get(params, :postcode)
+    ]
+
+    query_str =
+      list
+      |> Enum.reduce([], &(if &1 == nil, do: &2, else: [format_str(&1) | &2]))
+      |> Enum.join("%2C+")
+
+    "https://www.google.com/maps/search/?api=1&query=" <> query_str
+  end
+
+  defp format_str(str) do
+    str
+    |> String.split(" ")
+    |> Enum.join("+")
+  end
 end
