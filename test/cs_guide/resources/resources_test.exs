@@ -149,14 +149,14 @@ defmodule CsGuide.ResourcesTest do
       description: "some description",
       member: true,
       name: "some name",
-      website: "some website",
+      website: "https://www.some-website.com",
       logo: "some logo"
     }
     @update_attrs %{
       description: "some updated description",
       member: false,
       name: "some updated name",
-      website: "some updated website",
+      website: "https://www.some-updated-website.com",
       logo: "some updated logo"
     }
     @invalid_attrs %{description: nil, member: nil, name: nil, website: nil}
@@ -185,7 +185,7 @@ defmodule CsGuide.ResourcesTest do
       assert brand.description == "some description"
       assert brand.member == true
       assert brand.name == "some name"
-      assert brand.website == "some website"
+      assert brand.website == "https://www.some-website.com"
       assert brand.logo == "some logo"
     end
 
@@ -201,7 +201,7 @@ defmodule CsGuide.ResourcesTest do
       assert brand.description == "some updated description"
       assert brand.member == false
       assert brand.name == "some updated name"
-      assert brand.website == "some updated website"
+      assert brand.website == "https://www.some-updated-website.com"
       assert brand.logo == "some updated logo"
     end
 

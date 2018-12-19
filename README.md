@@ -93,6 +93,9 @@ view/edit an existing one or delete an old one. Like this:
 
 ![image](https://user-images.githubusercontent.com/16775804/47349854-67dc2600-d6ac-11e8-8cd8-ff634e743fd3.png)
 
+All websites for venues, retailers or brands must begin with `http://` or
+`https://` to be valid.
+
 When you add/edit a subcategory its fields will be updated in the main category
 to which it belongs. E.g. If you add a new venue type it will become a new option
 under venue types in the new venue form. So you could add 'pub' as a new type and
