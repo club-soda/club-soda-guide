@@ -156,6 +156,10 @@ select {
   height: 14rem;
 }
 
+.h6 {
+  height: 32rem;
+}
+
 /* AutoForm Classes */
 
 .control-label {

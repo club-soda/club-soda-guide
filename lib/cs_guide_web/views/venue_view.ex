@@ -14,4 +14,9 @@ defmodule CsGuideWeb.VenueView do
 
     from(m in subquery(sub), where: not m.deleted, select: m)
   end
+
+  def under_map_link(conn, key, str) do
+    venue = conn.assigns.venue
+    render("link_under_map.html", conn: conn, venue: venue, link_key: key, img_str: str)
+  end
 end
