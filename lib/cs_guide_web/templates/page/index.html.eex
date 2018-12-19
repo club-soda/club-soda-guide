@@ -8,7 +8,7 @@
         <%= form_for @conn, search_all_path(@conn, :index), [method: :get], fn f -> %>
           <div class="flex-ns">
             <%= text_input f, :term, placeholder: "Search drinks and venues", class: "db dib-ns w-100 w-80-ns pl3 pv2 br2 ba b--cs-light-gray br--left-ns"  %>
-            <%= submit "Search", class: "dn dib-ns bg-cs-navy white f5 lh5 ph3 pv2 w-20 br2 ba b--cs-navy br--right" %>
+            <%= submit "Search", class: "dn dib-ns bg-cs-pink white f5 lh5 ph3 pv2 w-20 br2 ba b--cs-pink br--right" %>
           </div>
         <% end %>
       </div>
@@ -62,7 +62,7 @@
       <p class="roboto-slab f4 lh4 pb3">Special Offers, Drink Reviews, Recipes, Events and More</p>
       <a href="http://eepurl.com/dvVXfX" class="f4 lh4 pb3 cs-black">Get the Newsletter</a>
       <p class="f4 lh4 pt3">Find out more at</p>
-      <a class="f4 lh4 cs-black" href="https://joinclubsoda.co.uk/">joinclubsoda.co.uk</a>
+      <a class="f4 lh4 cs-black" target="_blank" href="https://joinclubsoda.co.uk/">joinclubsoda.co.uk</a>
     </div>
   </div>
 </section>

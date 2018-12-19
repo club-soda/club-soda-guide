@@ -8,7 +8,7 @@ defmodule CsGuide.Resources.Brand do
     field(:description, Fields.DescriptionPlaintextUnlimited)
     field(:member, :boolean, default: false)
     field(:logo, :string)
-    field(:website, :string)
+    field(:website, Fields.Url)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
     field(:twitter, :string)

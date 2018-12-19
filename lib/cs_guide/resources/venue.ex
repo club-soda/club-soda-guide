@@ -13,7 +13,7 @@ defmodule CsGuide.Resources.Venue do
     field(:address, Fields.Address)
     field(:city, Fields.Address)
     field(:postcode, Fields.Postcode)
-    field(:website, :string)
+    field(:website, Fields.Url)
     field(:phone_number, Fields.PhoneNumber)
     field(:twitter, :string)
     field(:facebook, :string)
