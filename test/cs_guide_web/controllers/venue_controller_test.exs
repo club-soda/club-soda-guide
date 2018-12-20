@@ -317,7 +317,6 @@ defmodule CsGuideWeb.VenueControllerTest do
                 {afBeer1.entry_id, "on"},
                 {afBeer2.entry_id, "on"},
                 {afCider1.entry_id, "on"}
-                # {lowAlcBeer1.entry_id, "on"}
               ]),
             "num_cocktails" => 0
           }
