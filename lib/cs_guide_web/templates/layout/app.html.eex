@@ -15,7 +15,7 @@
 
   <body>
     <header>
-      <nav role="navigation" class="absolute top-0 left-0 z-1 flex flex-wrap items-center w-100">
+      <nav role="navigation" class="absolute top-0 left-0 z-2 flex flex-wrap items-center w-100">
         <div class="w-60 w-20-ns mv3">
           <a href="/">
             <img src="<%= static_path(@conn, "/images/logo.png") %>" alt="Club Soda Logo" class="ml3 ml5-l">
