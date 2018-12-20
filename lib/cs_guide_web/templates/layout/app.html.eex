@@ -63,7 +63,7 @@
     <footer class="mt6 pv5 pv-6rem-ns bg-footer">
       <div class="w-90 w-75-ns h-100 center">
         <div class="dib w-30 w-10-ns pr4 pr0-ns h-100 relative">
-          <img src="<%= static_path(@conn, "/images/circle-logo.svg") %>" alt="Club Soda Logo" class="w-100 absolute-vertical-center-ns">
+          <img src="<%= static_path(@conn, "/images/cs-logo.png") %>" alt="Club Soda Logo" class="w-100 absolute-vertical-center-ns">
         </div>
         <%= for page <- @static_page_links do %>
           <%= if page.display_in_footer do %>
