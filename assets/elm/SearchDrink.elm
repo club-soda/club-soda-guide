@@ -133,7 +133,7 @@ criteriaConfig =
 
 mainDivAttrs : List (Attribute Msg)
 mainDivAttrs =
-    [ class "relative bg-white dib z-max" ]
+    [ class "relative bg-white dib z-1" ]
 
 
 filtersDivAttrs : List (Attribute Msg)
