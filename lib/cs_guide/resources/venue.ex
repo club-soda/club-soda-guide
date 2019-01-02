@@ -23,6 +23,9 @@ defmodule CsGuide.Resources.Venue do
     field(:num_cocktails, :integer)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
+    field(:lat, :float)
+    field(:long, :float)
+    field(:distance, :float, virtual: true)
 
     many_to_many(
       :venue_types,
@@ -69,7 +72,9 @@ defmodule CsGuide.Resources.Venue do
       :twitter,
       :instagram,
       :facebook,
-      :favourite
+      :favourite,
+      :lat,
+      :long
     ])
     |> cast_assoc(:users)
     |> validate_required([:venue_name, :postcode, :venue_types])
@@ -145,7 +150,7 @@ defmodule CsGuide.Resources.Venue do
         end
     }
   end
-  
+
   def retailer_update(%__MODULE__{} = item, attrs) do
     item
     |> __MODULE__.preload(__MODULE__.__schema__(:associations))
