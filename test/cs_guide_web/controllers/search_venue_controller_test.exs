@@ -14,6 +14,12 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
       favourite: false,
       venue_types: %{"Pubs" => "on"},
       postcode: "SW1 4RV"
+    },
+    %{
+      venue_name: "The Retailer",
+      favourite: false,
+      venue_types: %{"Retailers" => "on"},
+      postcode: "SW1 4RV"
     }
   ]
 
@@ -31,11 +37,21 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
 
       assert html_response(conn, 200) =~ "The Not Favourite Pub"
     end
+
+    test "GET /search/venues doesn't contain retailer", %{conn: conn, venue: venue} do
+      conn = get(conn, "/search/venues")
+
+      refute html_response(conn, 200) =~ "The Retailer"
+    end
   end
 
   def fixture(:venue) do
     %Categories.VenueType{}
     |> Categories.VenueType.changeset(%{name: "Pubs"})
+    |> Categories.VenueType.insert()
+
+    %Categories.VenueType{}
+    |> Categories.VenueType.changeset(%{name: "Retailers"})
     |> Categories.VenueType.insert()
 
     @venues

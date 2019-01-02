@@ -10,12 +10,7 @@ defmodule CsGuideWeb.RetailerController do
       Venue.all()
       |> Venue.preload(:venue_types)
       |> Enum.filter(fn v ->
-        v.venue_types
-      end)
-      |> Enum.filter(fn v ->
-        if Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailers" end) do
-          v
-        end
+        Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailers" end)
       end)
       |> Enum.sort_by(& &1.venue_name)
 
