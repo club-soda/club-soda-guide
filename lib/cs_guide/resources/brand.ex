@@ -15,7 +15,15 @@ defmodule CsGuide.Resources.Brand do
     field(:instagram, :string)
     field(:facebook, :string)
     field(:copy, :string)
+    field(:sold_aldi, :boolean, default: false)
     field(:sold_amazon, :boolean, default: false)
+    field(:sold_asda, :boolean, default: false)
+    field(:sold_dd, :boolean, default: false)
+    field(:sold_morrisons, :boolean, default: false)
+    field(:sold_sainsburys, :boolean, default: false)
+    field(:sold_tesco, :boolean, default: false)
+    field(:sold_waitrose, :boolean, default: false)
+    field(:sold_wb, :boolean, default: false)
 
     has_many(:drinks, CsGuide.Resources.Drink)
     has_many(:brand_images, CsGuide.Images.BrandImage)
@@ -37,7 +45,15 @@ defmodule CsGuide.Resources.Brand do
       :instagram,
       :facebook,
       :copy,
-      :sold_amazon
+      :sold_aldi,
+      :sold_amazon,
+      :sold_asda,
+      :sold_dd,
+      :sold_morrisons,
+      :sold_sainsburys,
+      :sold_tesco,
+      :sold_waitrose,
+      :sold_wb
     ])
     |> validate_required([:name])
   end

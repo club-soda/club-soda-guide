@@ -119,26 +119,66 @@
   <%= if @brand.sold_amazon || @brand.member do %>
     <section class="w-90 center pv5">
       <h2 class="roboto-slab f2 lh2 db tc pb4">Where to Buy <%= @brand.name %></h2>
-      <div class="flex flex-wrap justify-center">
+      <div class="flex flex-wrap">
         <%= if @brand.member do %>
           <%= for venue <- get_venues(@brand) do %>
             <%= if venue.venue_types do %>
               <%= for type <- venue.venue_types do %>
                 <%= if String.downcase(type.name) == "retailers" do %>
-                  <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= venue.website %>">
+                  <a class="f6 lh6 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" href="<%= venue.website %>">
                     <%= venue.venue_name %>
                   </a>
                 <% end %>
               <% end %>
             <% end %>
           <% end %>
+          <%= if @brand.sold_aldi do %>
+            <a class="f6 lh6 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" href="https://www.aldi.co.uk/search?text=<%= @brand.name %>&category=ALL">
+              Aldi
+            </a>
+          <% end %>
+          <%= if @brand.sold_asda do %>
+            <a class="f6 lh6 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" href="https://groceries.asda.com/search/<%= @brand.name %>">
+              Asda
+            </a>
+          <% end %>
+          <%= if @brand.sold_dd do %>
+            <a class="f6 lh6 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" href="https://drydrinker.com/">
+              DryDrinker
+            </a>
+          <% end %>
+          <%= if @brand.sold_morrisons do %>
+            <a class="f6 lh6 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" href="https://groceries.morrisons.com/search?entry=<%= @brand.name %>">
+              Morrisons
+            </a>
+          <% end %>
+          <%= if @brand.sold_sainsburys do %>
+            <a class="f6 lh6 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" href="https://www.sainsburys.co.uk/webapp/wcs/stores/servlet/SearchDisplayView?catalogId=10123&langId=44&storeId=10151&krypto=%2F%2FSe%2BFyC9ydXJFwUHhYrJMgG%2BX4%2BcECj3jBuezEUXOvXqA0%2B%2FQ5J3nFLvxpQgt8AwhaU1iSNB1MH%2Fy4xzXAbMg0xx2zC2vWqBZHya7XaF4cdq8dL9lnShVHz5ds8SiLstQbMaCavY4JNTbwFNt6i8qyyXzHrPHOZPKLr6JXMDwwTSuWKvh%2FnQ4nPH6l4cqBv2HGG6tma4Sw6Sx7yukd2bpkVzZky1AdkXwifnPCnnVU%3D#langId=44&storeId=10151&catalogId=10123&categoryId=&parent_category_rn=&top_category=&pageSize=36&orderBy=&searchTerm=<%= @brand.name %>&beginIndex=0&hideFilters=true&categoryFacetId1=">
+              Sainsburys
+            </a>
+          <% end %>
+          <%= if @brand.sold_tesco do %>
+            <a class="f6 lh6 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" href="https://www.tesco.com/groceries/en-GB/search?query=<%= @brand.name %>">
+              Tesco
+            </a>
+          <% end %>
+          <%= if @brand.sold_waitrose do %>
+            <a class="f6 lh6 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" href="https://www.waitrose.com/ecom/shop/search?&searchTerm=<%= @brand.name %>">
+              Waitrose
+            </a>
+          <% end %>
+          <%= if @brand.sold_wb do %>
+            <a class="f6 lh6 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" href="https://wisebartender.co.uk/">
+              WiseBartender
+            </a>
+          <% end %>
+        <% end %>
+        <%= if @brand.sold_amazon do %>
+          <a class="f6 lh6 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" href="https://www.amazon.co.uk/s/ref=as_li_ss_tl?url=search-alias=aps&field-keywords=<%= @brand.name %>&linkCode=ll2&tag=clusod0c-21">
+            Amazon
+          </a>
         <% end %>
       </div>
-      <%= if @brand.sold_amazon do %>
-        <a class="f6 lh6 cs-mid-blue underline dib v-top" href="https://www.amazon.co.uk/s/ref=as_li_ss_tl?url=search-alias=aps&field-keywords=<%= @brand.name %>&linkCode=ll2&tag=clusod0c-21">
-          Amazon
-        </a>
-      <% end %>
     </section>
   <% end %>
 
