@@ -15,6 +15,7 @@ defmodule CsGuide.Resources.Brand do
     field(:instagram, :string)
     field(:facebook, :string)
     field(:copy, :string)
+    field(:sold_amazon, :boolean, default: false)
 
     has_many(:drinks, CsGuide.Resources.Drink)
     has_many(:brand_images, CsGuide.Images.BrandImage)
@@ -35,7 +36,8 @@ defmodule CsGuide.Resources.Brand do
       :twitter,
       :instagram,
       :facebook,
-      :copy
+      :copy,
+      :sold_amazon
     ])
     |> validate_required([:name])
   end

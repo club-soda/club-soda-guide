@@ -116,22 +116,29 @@
     </div>
   </section>
 
-  <%= if @brand.member do %>
+  <%= if @brand.sold_amazon || @brand.member do %>
     <section class="w-90 center pv5">
       <h2 class="roboto-slab f2 lh2 db tc pb4">Where to Buy <%= @brand.name %></h2>
       <div class="flex flex-wrap justify-center">
-        <%= for venue <- get_venues(@brand) do %>
-          <%= if venue.venue_types do %>
-            <%= for type <- venue.venue_types do %>
-              <%= if String.downcase(type.name) == "retailers" do %>
-                <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= venue.website %>">
-                  <%= venue.venue_name %>
-                </a>
+        <%= if @brand.member do %>
+          <%= for venue <- get_venues(@brand) do %>
+            <%= if venue.venue_types do %>
+              <%= for type <- venue.venue_types do %>
+                <%= if String.downcase(type.name) == "retailers" do %>
+                  <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= venue.website %>">
+                    <%= venue.venue_name %>
+                  </a>
+                <% end %>
               <% end %>
             <% end %>
           <% end %>
         <% end %>
       </div>
+      <%= if @brand.sold_amazon do %>
+        <a class="f6 lh6 cs-mid-blue underline dib v-top" href="https://www.amazon.co.uk/s/ref=as_li_ss_tl?url=search-alias=aps&field-keywords=<%= @brand.name %>&linkCode=ll2&tag=clusod0c-21">
+          Amazon
+        </a>
+      <% end %>
     </section>
   <% end %>
 
