@@ -10,6 +10,7 @@ defmodule CsGuideWeb.BrandControllerTest do
     logo: "some logo",
     member: true,
     name: "some name",
+    sold_amazon: false,
     website: "https://www.some-website.com"
   }
   @update_attrs %{
@@ -17,6 +18,7 @@ defmodule CsGuideWeb.BrandControllerTest do
     logo: "some updated logo",
     member: false,
     name: "some updated name",
+    sold_amazon: true,
     website: "https://www.some-updated-website.com"
   }
   @invalid_attrs %{description: nil, logo: nil, member: nil, name: nil, website: nil}
@@ -31,7 +33,7 @@ defmodule CsGuideWeb.BrandControllerTest do
   end
 
   describe "index" do
-    test "lcannot access page if not logged in", %{conn: conn} do
+    test "cannot access page if not logged in", %{conn: conn} do
       conn = get(conn, brand_path(conn, :index))
       assert html_response(conn, 302)
     end
@@ -103,6 +105,10 @@ defmodule CsGuideWeb.BrandControllerTest do
       assert redirected_to(conn) == brand_path(conn, :show, @update_attrs.name)
 
       conn = get(conn, brand_path(conn, :show, @update_attrs.name))
+
+      assert html_response(conn, 200) =~
+               "https://www.amazon.co.uk/s/ref=as_li_ss_tl?url=search-alias=aps&field-keywords=some updated name&linkCode=ll2&tag=clusod0c-21"
+
       assert html_response(conn, 200) =~ "some updated description"
     end
 
