@@ -11,7 +11,8 @@
   <div class="tl pt3">
     <img class="w4 v-btm" src="<%= static_path(@conn, "/images/score-#{@venue.cs_score}.png") %>" alt="Club Soda Score of <%= @venue.cs_score %>">
     <%= if @is_authenticated do %>
-      <%= if @venue.cs_score == 0 do %>
+      <%= if @venue.cs_score == 5 do %>
+        <%= link "Is your stocklist up to date? Click here to update it.", to: venue_path(@conn, :add_drinks, @venue.entry_id), class: "cs-mid-blue dib mt2 mt0-ns pb1" %>
       <% else %>
         <%= link "Improve your score by adding more drinks to you stocklist.", to: venue_path(@conn, :add_drinks, @venue.entry_id), class: "cs-mid-blue dib mt2 mt0-ns pb1" %>
       <% end %>

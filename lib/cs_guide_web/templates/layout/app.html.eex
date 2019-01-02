@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56935445-6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-56935445-6');
+    </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +24,7 @@
 
   <body>
     <header>
-      <nav role="navigation" class="absolute top-0 left-0 z-1 flex flex-wrap items-center w-100">
+      <nav role="navigation" class="absolute top-0 left-0 z-2 flex flex-wrap items-center w-100">
         <div class="w-60 w-20-ns mv3">
           <a href="/">
             <img src="<%= static_path(@conn, "/images/logo.png") %>" alt="Club Soda Logo" class="ml3 ml5-l">
@@ -63,7 +72,7 @@
     <footer class="mt6 pv5 pv-6rem-ns bg-footer">
       <div class="w-90 w-75-ns h-100 center">
         <div class="dib w-30 w-10-ns pr4 pr0-ns h-100 relative">
-          <img src="<%= static_path(@conn, "/images/circle-logo.svg") %>" alt="Club Soda Logo" class="w-100 absolute-vertical-center-ns">
+          <img src="<%= static_path(@conn, "/images/cs-logo.png") %>" alt="Club Soda Logo" class="w-100 absolute-vertical-center-ns">
         </div>
         <%= for page <- @static_page_links do %>
           <%= if page.display_in_footer do %>
