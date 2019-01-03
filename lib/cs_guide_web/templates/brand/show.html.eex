@@ -35,13 +35,14 @@
         <% end %>
       <% end %>
       <div class="db pv1">
-        <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
         <%= if @brand.website do %>
+          <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
           <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @brand.website %>">
             <%= @brand.website %>
           </a>
         <% else %>
           <%= if @is_authenticated do %>
+            <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
             <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand website</a>
           <% end %>
         <% end %>
