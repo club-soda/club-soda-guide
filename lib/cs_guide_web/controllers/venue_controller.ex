@@ -6,6 +6,18 @@ defmodule CsGuideWeb.VenueController do
 
   import Ecto.Query, only: [from: 2, subquery: 1]
 
+  def index(conn, %{"date_order" => date_order}) do
+    venues =
+      Venue.all()
+      |> Venue.preload(:venue_types)
+      |> Enum.filter(fn v ->
+        !Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailers" end)
+      end)
+      |> Enum.sort(fn v1, v2 -> compareDates(v1.inserted_at, v2.inserted_at) end)
+
+    render(conn, "index.html", venues: venues)
+  end
+
   def index(conn, _params) do
     venues =
       Venue.all()
@@ -156,6 +168,16 @@ defmodule CsGuideWeb.VenueController do
     |> case do
       {:ok, _} -> redirect(conn, to: venue_path(conn, :show, params["id"]))
       {:error, _} -> render(conn, "add_photo.html", id: params["id"], error: true)
+    end
+  end
+
+  defp compareDates(date1, date2) do
+    case NaiveDateTime.compare(date1, date2) do
+      :gt ->
+        true
+
+      _ ->
+        false
     end
   end
 end
