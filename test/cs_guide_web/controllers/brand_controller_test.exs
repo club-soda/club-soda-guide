@@ -11,14 +11,16 @@ defmodule CsGuideWeb.BrandControllerTest do
     member: true,
     name: "some name",
     sold_amazon: false,
+    sold_aldi: true,
     website: "https://www.some-website.com"
   }
   @update_attrs %{
     description: "some updated description",
     logo: "some updated logo",
-    member: false,
+    member: true,
     name: "some updated name",
     sold_amazon: true,
+    sold_aldi: true,
     website: "https://www.some-updated-website.com"
   }
   @invalid_attrs %{description: nil, logo: nil, member: nil, name: nil, website: nil}
@@ -108,6 +110,9 @@ defmodule CsGuideWeb.BrandControllerTest do
 
       assert html_response(conn, 200) =~
                "https://www.amazon.co.uk/s/ref=as_li_ss_tl?url=search-alias=aps&field-keywords=some updated name&linkCode=ll2&tag=clusod0c-21"
+
+      assert html_response(conn, 200) =~
+               "https://www.aldi.co.uk/search?text=some updated name&category=ALL"
 
       assert html_response(conn, 200) =~ "some updated description"
     end
