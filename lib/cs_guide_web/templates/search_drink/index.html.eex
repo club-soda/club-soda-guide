@@ -1,4 +1,6 @@
 <div id="search"></div>
 <script type="text/javascript">
   const drinks = <%= raw Poison.encode!(@drinks) %>
+  const searchTerm = <%= raw Poison.encode!(@term) %>
+  const dtype = <%= raw Poison.encode!(@drink_type) %>
 </script>
