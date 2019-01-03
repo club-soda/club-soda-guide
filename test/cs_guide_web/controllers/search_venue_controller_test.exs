@@ -7,41 +7,63 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
       venue_name: "The Favourite Pub",
       favourite: true,
       venue_types: %{"Pubs" => "on"},
-      postcode: "TW3 5FG"
+      postcode: "G1 1HF",
+      lat: "55.858737212319600",
+      long: "-4.243474091424120"
     },
     %{
       venue_name: "The Not Favourite Pub",
       favourite: false,
       venue_types: %{"Pubs" => "on"},
-      postcode: "SW1 4RV"
+      postcode: "E2 0SY",
+      lat: "51.529675468124100",
+      long: "-0.042065456864592"
     },
     %{
       venue_name: "The Retailer",
       favourite: false,
       venue_types: %{"Retailers" => "on"},
-      postcode: "SW1 4RV"
+      postcode: "SW1 4RV",
+      lat: "51.468175746794700",
+      long: "-0.363049000000000"
     }
   ]
 
   describe "renders landing page as expected" do
     setup [:create_venue]
 
-    test "GET /search/venues", %{conn: conn, venue: venue} do
+    test "GET /search/venues", %{conn: conn} do
       conn = get(conn, "/search/venues")
 
       assert html_response(conn, 200) =~ "The Favourite Pub"
     end
 
-    test "GET /search/venues contain not favourite venue", %{conn: conn, venue: venue} do
+    test "GET /search/venues contain not favourite venue", %{conn: conn} do
       conn = get(conn, "/search/venues")
 
       assert html_response(conn, 200) =~ "The Not Favourite Pub"
     end
 
-    test "GET /search/venues doesn't contain retailer", %{conn: conn, venue: venue} do
+    test "GET /search/venues doesn't contain retailer", %{conn: conn} do
       conn = get(conn, "/search/venues")
 
       refute html_response(conn, 200) =~ "The Retailer"
+    end
+  end
+
+  describe "renders search/venues with nearby venues" do
+    setup [:create_venue]
+
+    test "GET /search/venues?ll=(north london latlong) does not display venues that are too far", %{conn: conn} do
+      conn = get(conn, "/search/venues?ll=51.54359770000001,-0.08807799999999999")
+
+      refute html_response(conn, 200) =~ "The Favourite Pub"
+    end
+
+    test "GET /search/venues?ll=(north london latlong) displays nearby venues", %{conn: conn} do
+      conn = get(conn, "/search/venues?ll=51.54359770000001,-0.08807799999999999")
+
+      assert html_response(conn, 200) =~ "The Not Favourite Pub"
     end
   end
 
