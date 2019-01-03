@@ -1,5 +1,6 @@
 defmodule CsGuide.PostcodeLatLong do
   alias NimbleCSV.RFC4180, as: CSV
+  alias CsGuide.Resources.Venue
   import Ecto.Query
   use GenServer
 
@@ -28,6 +29,7 @@ defmodule CsGuide.PostcodeLatLong do
 
   defp venues_within_distance(distance, lat, long) do
     Venue
+    |> where([venue], venue.deleted == false)
     |> where(
       [venue],
       fragment(
@@ -52,7 +54,9 @@ defmodule CsGuide.PostcodeLatLong do
             )
           )
     })
-    |> order_by(fragment("distance"))
+    |> order_by(desc: :inserted_at)
+    |> distinct([v], fragment("distance"))
+    |> order_by(asc: fragment("distance"))
     |> CsGuide.Repo.all()
   end
 
