@@ -13,6 +13,7 @@ import SharedTypes exposing (Drink)
 import TypeAndStyle
     exposing
         ( Filter
+        , FilterId
         , FilterType
         , SubFilters(..)
         , drinksTypeAndStyle
@@ -74,6 +75,7 @@ type Msg
     = SelectABVLevel String
     | SearchDrink String
     | UpdateFilters Criteria.State
+    | UnselectFitler FilterId
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -96,8 +98,15 @@ update msg model =
         UpdateFilters state ->
             ( { model | drinkFilters = state }, Cmd.none )
 
+        UnselectFitler filterId ->
+            ( model, Cmd.none )
 
 
+
+-- let
+--   filterState = Criteria.UnselectFitler filterId model.drinkFilters
+-- in
+--   ( { model | drinkFilters = filterState }, Cmd.none )
 -- VIEW
 
 
@@ -148,7 +157,7 @@ filterDivAttrs _ _ =
 
 buttonAttrs : List (Attribute Msg)
 buttonAttrs =
-    [ class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6 cs-gray mr2" ]
+    [ class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6 cs-gray mr2 pointer" ]
 
 
 filterLabelAttrs : Filter -> Criteria.State -> List (Attribute Msg)
@@ -176,6 +185,7 @@ view model =
     div [ class "mt5 mt6-ns" ]
         [ div [ class "w-90 center" ]
             [ renderSearch "Search Drinks..." (Maybe.withDefault "" model.searchTerm) SearchDrink
+            , renderPills (Criteria.selectedIdFilters model.drinkFilters) drinksTypeAndStyle
             , Criteria.view criteriaConfig model.drinkFilters drinksTypeAndStyle
             , renderFilter "ABV" abv_levels SelectABVLevel model.abvFilter
             ]
@@ -183,6 +193,40 @@ view model =
             [ div [ class "flex-ns flex-wrap justify-center pt3 pb4-ns db dib-ns" ]
                 (filterDrinks model)
             ]
+        ]
+
+
+renderPills : Set.Set FilterId -> List Filter -> Html Msg
+renderPills selectedFilterIds filters =
+    let
+        pills =
+            List.map (\f -> getFilterById f filters) (Set.toList selectedFilterIds)
+    in
+    div [ classList [ ( "mb3", not (List.isEmpty pills) ) ] ] (List.map renderPillFilter pills)
+
+
+renderPillFilter : Maybe Filter -> Html Msg
+renderPillFilter filter =
+    let
+        filterName =
+            case filter of
+                Just f ->
+                    getFilterName f
+
+                Nothing ->
+                    ""
+
+        filterId =
+            case filter of
+                Just f ->
+                    getFilterId f
+
+                Nothing ->
+                    ""
+    in
+    div [ class "ma1 dib pa2 br4 bg-cs-pink white" ]
+        [ span [ class "pr1" ] [ text filterName ]
+        , span [ class "pointer pl3 b", onClick (UnselectFitler filterId) ] [ text "x" ]
         ]
 
 
