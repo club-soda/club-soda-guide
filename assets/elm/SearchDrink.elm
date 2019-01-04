@@ -75,7 +75,7 @@ type Msg
     = SelectABVLevel String
     | SearchDrink String
     | UpdateFilters Criteria.State
-    | UnselectFitler FilterId
+    | UnselectFilter FilterId
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
