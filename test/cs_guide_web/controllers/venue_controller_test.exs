@@ -10,6 +10,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   @create_brand Fixtures.create_brand()
   @create_types Fixtures.create_types()
   @create_drinks Fixtures.create_drinks()
+  @create_venues Fixtures.create_venues()
   @create_venue_types Fixtures.create_venue_types()
 
   @create_attrs %{
@@ -39,11 +40,17 @@ defmodule CsGuideWeb.VenueControllerTest do
         |> Categories.VenueType.insert()
     end)
 
-    {:ok, venue} =
-      @create_attrs
-      |> Resources.Venue.insert()
+    venues =
+      @create_venues
+      |> Enum.map(fn v ->
+        {:ok, venue} =
+          v
+          |> Resources.Venue.insert()
 
-    venue
+        venue
+      end)
+
+    venues
   end
 
   def fixture(:drink, brand) do
@@ -92,11 +99,21 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "index - admin" do
-    setup [:admin_login]
+    setup [:create_venues, :admin_login]
 
-    test "lists all venues", %{conn: conn} do
+    test "goes to all venues endpoint", %{conn: conn, venues: venues} do
       conn = get(conn, venue_path(conn, :index))
       assert html_response(conn, 200) =~ "All Venues"
+    end
+
+    test "goes to all venues by date endpoint", %{conn: conn, venues: venues} do
+      conn = get(conn, venue_path(conn, :index, date_order: "asc"))
+      assert html_response(conn, 200) =~ "All Venues"
+    end
+
+    test "sorts venues by date", %{venues: venues} do
+      sortedVenues = CsGuideWeb.VenueController.sort_venues_by_date(venues)
+      assert Enum.at(sortedVenues, 0).venue_name == "Venue B"
     end
   end
 
@@ -117,7 +134,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "create venue" do
-    setup [:create_venue, :admin_login]
+    setup [:create_venues, :admin_login]
 
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
@@ -136,7 +153,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "Calculates correct CS Score:" do
-    setup [:drink_setup, :create_venue, :admin_login]
+    setup [:drink_setup, :create_venues, :admin_login]
 
     test "When no drinks are added the score is 0", %{conn: conn, drinks: drinks} do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
@@ -382,35 +399,38 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "edit venue" do
-    setup [:create_venue]
+    setup [:create_venues]
 
-    test "does not render form when not logged in", %{conn: conn, venue: venue} do
+    test "does not render form when not logged in", %{conn: conn, venues: venues} do
+      venue = Enum.at(venues, 0)
       conn = get(conn, venue_path(conn, :edit, venue.entry_id))
       assert html_response(conn, 302)
     end
   end
 
   describe "edit venue - admin" do
-    setup [:create_venue, :admin_login]
+    setup [:create_venues, :admin_login]
 
-    test "renders form for editing chosen venue", %{conn: conn, venue: venue} do
+    test "renders form for editing chosen venue", %{conn: conn, venues: venues} do
+      venue = Enum.at(venues, 0)
       conn = get(conn, venue_path(conn, :edit, venue.entry_id))
       assert html_response(conn, 200) =~ "Edit Venue"
     end
   end
 
   describe "update venue" do
-    setup [:create_venue, :admin_login]
+    setup [:create_venues, :admin_login]
 
-    test "renders errors when data is invalid", %{conn: conn, venue: venue} do
+    test "renders errors when data is invalid", %{conn: conn, venues: venues} do
+      venue = Enum.at(venues, 0)
       conn = put(conn, venue_path(conn, :update, venue.entry_id), venue: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Venue"
     end
   end
 
-  defp create_venue(_) do
-    venue = fixture(:venue)
-    {:ok, venue: venue}
+  defp create_venues(_) do
+    venues = fixture(:venue)
+    {:ok, venues: venues}
   end
 
   defp drink_setup(_) do

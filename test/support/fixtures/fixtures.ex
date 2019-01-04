@@ -10,6 +10,31 @@ defmodule CsGuide.Fixtures do
   """
   @spirits_premixed "Spirits & Premixed"
 
+  def create_venues do
+    [
+      %{
+        venue_name: "Venue A",
+        address: "1 number and road",
+        city: "London",
+        phone_number: "01234567890",
+        postcode: "EC1 5AD",
+        drinks: %{"AF Beer 1" => "on"},
+        venue_types: %{"Bars" => "on"},
+        inserted_at: "2019-01-01 10:00:00.879083"
+      },
+      %{
+        venue_name: "Venue B",
+        address: "2 number and road",
+        city: "London",
+        phone_number: "01234567890",
+        postcode: "W6 8LY",
+        drinks: %{"AF Beer 1" => "on"},
+        venue_types: %{"Bars" => "on"},
+        inserted_at: "2019-01-04 10:00:00.879083"
+      }
+    ]
+  end
+
   def create_drinks do
     [
       %{
