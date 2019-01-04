@@ -13,7 +13,7 @@ defmodule CsGuideWeb.VenueController do
       |> Enum.filter(fn v ->
         !Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailers" end)
       end)
-      |> Enum.sort(fn v1, v2 -> compareDates(v1.inserted_at, v2.inserted_at) end)
+      |> sort_venues_by_date
 
     render(conn, "index.html", venues: venues)
   end
@@ -179,5 +179,9 @@ defmodule CsGuideWeb.VenueController do
       _ ->
         false
     end
+  end
+
+  def sort_venues_by_date(venues) do
+    Enum.sort(venues, &compareDates(&1.inserted_at, &2.inserted_at))
   end
 end
