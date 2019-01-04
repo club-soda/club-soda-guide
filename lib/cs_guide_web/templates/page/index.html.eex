@@ -91,6 +91,7 @@
       });
     } else {
       alert("Geolocation is not supported by this browser");
+        window.location.href = "/search/venues"
     }
   }
 </script>
