@@ -71,9 +71,7 @@ defmodule CsGuide.PostcodeLatLong do
             )
           )
     })
-    |> order_by(desc: :inserted_at)
-    |> distinct([v], fragment("distance"))
-    |> order_by(asc: fragment("distance"))
+    |> distinct([v], [asc: fragment("distance"), asc: :entry_id])
     |> CsGuide.Repo.all()
   end
 
