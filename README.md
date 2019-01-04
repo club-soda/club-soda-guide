@@ -122,14 +122,20 @@ the venues that stock or sell those drinks.
 
 To add a stockist, simply add a drink from this brand to the venue as you normally would.
 
-Member brands are also able to display 'where to buy' retailers. To add a 'where
-to buy' retailer go to `/admin/retailers/new`. There you can fill in the details
-of your new retailer. Ensure that for the website you include the `http://` or
-`https://` at the beginning of the website url, otherwise the link will not work
-properly when clicked on. Give the 'venue type' of 'Retailers'. Even if the brand
-is an online retailer you must provide a postcode as this is a required field.
-Then when you add the drink to this venue, it will display in the 'where to buy'
-section.
+Member brands are also able to display 'where to buy' retailers. These retailers
+can be added in two ways. Major supermarkets, amazon, DryDrinker and WiseBartender
+can be added as retailers of a brand when the brand is created by checking the
+checkboxes for those retailers on the 'New brand' form. Once you have ticked one
+of these boxes, a link with the name of the retailer will then appear under the
+'where to buy' title and clicking that link will take you to the appropriate site
+with a search made for the brand of that drink on that site. To add a retailer
+not included in the 'New brand' form list go to `/admin/retailers/new`. There
+you can fill in the details of your new retailer. Ensure that for the website
+you include the `http://` or `https://` at the beginning of the website url,
+otherwise the link will not work properly when clicked on. Give the 'venue type'
+of 'Retailers'. Even if the brand is an online retailer you must provide a
+postcode as this is a required field. Then when you add the drink to this venue,
+it will display in the 'where to buy' section.
 
 ## Uploading Images
 
