@@ -226,7 +226,7 @@ renderPillFilter filter =
     in
     div [ class "ma1 dib pa2 br4 bg-cs-pink white" ]
         [ span [ class "pr1" ] [ text filterName ]
-        , span [ class "pointer pl3 b", onClick (UnselectFitler filterId) ] [ text "x" ]
+        , span [ class "pointer pl3 b", onClick (UnselectFilter filterId) ] [ text "x" ]
         ]
 
 
