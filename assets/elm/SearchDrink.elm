@@ -98,7 +98,7 @@ update msg model =
         UpdateFilters state ->
             ( { model | drinkFilters = state }, Cmd.none )
 
-        UnselectFitler filterId ->
+        UnselectFilter filterId ->
             let
                 filterState =
                     Criteria.unselectFilter filterId model.drinkFilters
