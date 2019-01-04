@@ -48,7 +48,7 @@
     <% end %>
   </div>
   <div class="mv4 center tc tl-ns">
-    <%= primary_btn("Find One Near Me", "search/venues")%>
+    <a class="btn-primary no-underline pointer" id="near_me">Find One Near Me</a>
   </div>
 </section>
 
@@ -75,8 +75,11 @@
 <script>
   var useLocation = document.getElementById("use-location");
   var useLocationMobile = document.getElementById("use-location-mobile");
+  var nearMe = document.getElementById("near_me");
+
   useLocation.addEventListener("click", getLocation)
   useLocationMobile.addEventListener("click", getLocation)
+  nearMe.addEventListener("click", getLocation)
 
   function getLocation() {
     if (navigator.geolocation) {
