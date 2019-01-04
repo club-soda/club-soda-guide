@@ -3,12 +3,18 @@ module TypeAndStyle exposing
     , FilterId
     , FilterType(..)
     , SubFilters(..)
+    , TypesAndStyles
     , drinksTypeAndStyle
+    , getDrinkTypesAndStyles
     , getFilterById
     , getFilterId
     , getFilterName
     , getFilterType
     )
+
+
+type alias TypesAndStyles =
+    { typeName : String, styles : List { styleName : String } }
 
 
 type alias Filter =
@@ -26,6 +32,19 @@ type alias FilterId =
 type FilterType
     = Type
     | Style
+
+
+getDrinkTypesAndStyles : List TypesAndStyles -> List Filter
+getDrinkTypesAndStyles typesAndStyles =
+    List.map
+        (\{ typeName, styles } ->
+            ( Type
+            , typeName
+            , SubFilters
+                (List.map (\{ styleName } -> ( Style, styleName, SubFilters [] )) styles)
+            )
+        )
+        typesAndStyles
 
 
 drinksTypeAndStyle : List Filter

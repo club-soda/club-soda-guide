@@ -16,7 +16,9 @@ import TypeAndStyle
         , FilterId
         , FilterType
         , SubFilters(..)
+        , TypesAndStyles
         , drinksTypeAndStyle
+        , getDrinkTypesAndStyles
         , getFilterById
         , getFilterId
         , getFilterName
@@ -33,6 +35,7 @@ type alias Model =
     , drinkFilters : Criteria.State
     , abvFilter : String
     , searchTerm : Maybe String
+    , typesAndStyles : List Filter
     }
 
 
@@ -40,6 +43,7 @@ type alias Flags =
     { drinks : List Drink
     , dtype_filter : String
     , term : String
+    , types_styles : List TypesAndStyles
     }
 
 
@@ -62,6 +66,7 @@ init flags =
 
             else
                 Just flags.term
+      , typesAndStyles = getDrinkTypesAndStyles flags.types_styles
       }
     , Cmd.none
     )
@@ -185,8 +190,8 @@ view model =
     div [ class "mt5 mt6-ns" ]
         [ div [ class "w-90 center" ]
             [ renderSearch "Search Drinks..." (Maybe.withDefault "" model.searchTerm) SearchDrink
-            , renderPills (Criteria.selectedIdFilters model.drinkFilters) drinksTypeAndStyle
-            , Criteria.view criteriaConfig model.drinkFilters drinksTypeAndStyle
+            , renderPills (Criteria.selectedIdFilters model.drinkFilters) model.typesAndStyles
+            , Criteria.view criteriaConfig model.drinkFilters model.typesAndStyles
             , renderFilter "ABV" abv_levels SelectABVLevel model.abvFilter
             ]
         , div [ class "relative center w-90" ]
@@ -233,7 +238,7 @@ renderPillFilter filter =
 filterDrinks : Model -> List (Html Msg)
 filterDrinks model =
     model.drinks
-        |> List.filter (\d -> filterByTypeAndStyle (Set.toList <| Criteria.selectedIdFilters model.drinkFilters) d)
+        |> List.filter (\d -> filterByTypeAndStyle (Set.toList <| Criteria.selectedIdFilters model.drinkFilters) d model.typesAndStyles)
         |> List.filter (\d -> filterByABV model d)
         |> List.filter (\d -> SharedTypes.searchDrinkByTerm model.searchTerm d)
         |> renderDrinks
@@ -261,8 +266,8 @@ filterByABV model drink =
             True
 
 
-filterByTypeAndStyle : List String -> Drink -> Bool
-filterByTypeAndStyle filters drink =
+filterByTypeAndStyle : List String -> Drink -> List Filter -> Bool
+filterByTypeAndStyle filters drink typesAndStyles =
     case filters of
         [] ->
             True
@@ -271,7 +276,7 @@ filterByTypeAndStyle filters drink =
             filters
                 |> List.map
                     (\f ->
-                        case getFilterById f drinksTypeAndStyle of
+                        case getFilterById f typesAndStyles of
                             Nothing ->
                                 False
 
