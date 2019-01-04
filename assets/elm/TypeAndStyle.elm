@@ -134,8 +134,13 @@ getFilterName ( _, filter, _ ) =
 
 
 getFilterId : Filter -> FilterId
-getFilterId ( _, filter, _ ) =
-    filter
+getFilterId ( typeFilter, filter, _ ) =
+    case typeFilter of
+        Type ->
+            "type-" ++ filter
+
+        Style ->
+            "style-" ++ filter
 
 
 getFilterById : FilterId -> List Filter -> Maybe Filter
@@ -151,8 +156,12 @@ getFilterById filterId filters =
         Nothing ->
             Nothing
 
-        Just ( _, id, SubFilters subFilters ) ->
-            if id == filterId then
+        Just flt ->
+            let
+                ( typeFilter, id, SubFilters subFilters ) =
+                    flt
+            in
+            if getFilterId flt == filterId then
                 filter
 
             else

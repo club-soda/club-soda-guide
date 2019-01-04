@@ -275,11 +275,11 @@ filterByTypeAndStyle filters drink =
                             Nothing ->
                                 False
 
-                            Just ( TypeAndStyle.Type, _, _ ) ->
-                                List.member f drink.drink_types
+                            Just ( TypeAndStyle.Type, filterName, _ ) ->
+                                List.member filterName drink.drink_types
 
-                            Just ( TypeAndStyle.Style, _, _ ) ->
-                                List.member f drink.drink_styles
+                            Just ( TypeAndStyle.Style, filterName, _ ) ->
+                                List.member filterName drink.drink_styles
                     )
                 |> List.any ((==) True)
 
