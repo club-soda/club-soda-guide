@@ -15,7 +15,19 @@ defmodule CsGuide.PostcodeLatLong do
   end
 
   defp store_postcodes_in_ets(ets) do
-    Map.fetch!(System.get_env(), "UK_POSTCODES") |> get_postcodes_from_csv(ets)
+    file_path = Map.fetch!(System.get_env(), "UK_POSTCODES")
+
+    case File.read(file_path) do
+      {:ok, _} ->
+        get_postcodes_from_csv(file_path, ets)
+
+      {:error, _} ->
+        # Currently just logging to tell dev to run the script. We could
+        # automate this step by having the app check if the file exists
+        # locally first, if so store in ets, else pull file then store in ets.
+        # Leaving as is for now.
+        IO.inspect("MAKE SURE YOU RUN THE SCRIPT TO DOWNLOAD THE POSTCODE FILE")
+    end
   end
 
   def nearest_venues(lat, long, distance \\ 5_000)
