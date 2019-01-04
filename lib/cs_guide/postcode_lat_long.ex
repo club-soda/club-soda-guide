@@ -13,8 +13,20 @@ defmodule CsGuide.PostcodeLatLong do
   end
 
   def init(initial_state) do
-    postcode_cache = :ets.new(:postcode_cache, [:set, :protected, :named_table])
-    store_postcodes_in_ets(postcode_cache)
+    case Mix.env do
+      :test ->
+        IO.puts("Skipping postcode storage")
+        # This can be changed in the future. Just didn't want to have to clone
+        # csv file everytime that we run tests. File is currently being used
+        # to run priv/repo/add_lat_long_to_venue.exs. If we build in
+        # functionality in the future that checks to see if entered postcodes
+        # (venue creation for example) are correct, then we can check them
+        # against the cache. For testing at that point we can create a smaller
+        # csv file which we can use to test with.
+      _ ->
+        postcode_cache = :ets.new(:postcode_cache, [:set, :protected, :named_table])
+        store_postcodes_in_ets(postcode_cache)
+    end
     {:ok, initial_state}
   end
 
