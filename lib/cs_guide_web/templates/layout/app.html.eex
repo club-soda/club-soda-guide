@@ -66,7 +66,7 @@
     </header>
 
     <main role="main" class="body-container">
-      <p class="pl3 mt5 lh4 b alert alert-info" role="alert"><%= get_flash(@conn, :info)%></p>
+      <p class="pl3 lh4 b alert alert-info" role="alert"><%= get_flash(@conn, :info)%></p>
       <%= render @view_module, @view_template, assigns %>
     </main>
     <footer class="mt6 pv5 pv-6rem-ns bg-footer">
