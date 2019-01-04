@@ -20,7 +20,7 @@
   </div>
   <%= if @venue.description do %>
     <p class="min-h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl lh5">
-      <%= @venue.description %>
+      <%= raw @venue.description %>
     </p>
   <% else %>
     <p class="h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl">
