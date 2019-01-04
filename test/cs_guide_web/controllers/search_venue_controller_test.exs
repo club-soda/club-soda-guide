@@ -20,6 +20,14 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
       long: "-0.042065456864592"
     },
     %{
+      venue_name: "same location as not fav",
+      favourite: false,
+      venue_types: %{"Pubs" => "on"},
+      postcode: "E2 0SY",
+      lat: "51.529675468124100",
+      long: "-0.042065456864592"
+    },
+    %{
       venue_name: "The Retailer",
       favourite: false,
       venue_types: %{"Retailers" => "on"},
@@ -38,10 +46,11 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
       assert html_response(conn, 200) =~ "The Favourite Pub"
     end
 
-    test "GET /search/venues contain not favourite venue", %{conn: conn} do
+    test "GET /search/venues contains expected venues", %{conn: conn} do
       conn = get(conn, "/search/venues")
 
       assert html_response(conn, 200) =~ "The Not Favourite Pub"
+      assert html_response(conn, 200) =~ "same location as not fav"
     end
 
     test "GET /search/venues doesn't contain retailer", %{conn: conn} do
