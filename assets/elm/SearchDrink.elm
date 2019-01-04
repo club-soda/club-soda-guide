@@ -51,7 +51,7 @@ init flags =
                 []
 
             else
-                [ flags.dtype_filter ]
+                [ "type-" ++ flags.dtype_filter ]
     in
     ( { drinks = flags.drinks
       , drinkFilters = Criteria.init dtype_filter
