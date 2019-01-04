@@ -104,7 +104,7 @@ defmodule CsGuide.PostcodeLatLong do
   # Gets zip file from github and saves the response to body then writes the
   # zip file to allow it to be unzipped so the csv can be extracted
   def create_csv_file() do
-    zip_file_url = Map.fetch!(System.get_env(), "ZIP_FILE_URL")
+    zip_file_url = "https://raw.githubusercontent.com/dwyl/uk-postcodes-latitude-longitude-complete-csv/master/ukpostcodes.csv.zip"
     %HTTPoison.Response{body: body} = HTTPoison.get!(zip_file_url)
 
     case File.write(@zip_file_name, body) do
