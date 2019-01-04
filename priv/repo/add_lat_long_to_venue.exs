@@ -1,20 +1,26 @@
 alias CsGuide.Repo
 alias CsGuide.Resources.Venue
 
-Repo.all(Venue)
-|> Repo.preload(:venue_types)
-|> Enum.each(fn(venue) ->
-  if venue.lat == nil do
-    postcode =
-      venue.postcode
+update_postcode =
+  fn(postcode) ->
+    if postcode != nil do
+      postcode
       |> String.upcase()
       |> String.replace(" ", "")
+    end
+  end
+
+Venue.all()
+|> Repo.preload([:venue_types, :venue_images, :drinks, :users])
+|> Enum.each(fn(venue) ->
+  postcode = update_postcode.(venue.postcode)
+
+  if venue.lat == nil do
 
     case :ets.lookup(:postcode_cache, postcode) do
       [{_postcode, lat, long}] ->
         venue
-        |> Venue.changeset(%{lat: lat, long: long})
-        |> Repo.update!()
+        |> Venue.update(%{lat: lat, long: long})
 
       _ ->
         IO.inspect(~s(#{postcode} postcode not fount in ets))
