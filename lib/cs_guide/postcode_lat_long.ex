@@ -4,6 +4,10 @@ defmodule CsGuide.PostcodeLatLong do
   import Ecto.Query
   use GenServer
 
+  @zip_file_name "postcodes.zip"
+  @zip_file_name_charlist String.to_charlist(@zip_file_name)
+  @postcode_file_charlist 'ukpostcodes.csv'
+
   def start_link do
     GenServer.start_link(__MODULE__, %{}, name: PostcodeCache)
   end
@@ -15,18 +19,19 @@ defmodule CsGuide.PostcodeLatLong do
   end
 
   defp store_postcodes_in_ets(ets) do
-    file_path = Map.fetch!(System.get_env(), "UK_POSTCODES")
+    if File.exists?("ukpostcodes.csv") do
+      IO.inspect("Postcode file exists, storing with ets")
+      get_postcodes_from_csv("ukpostcodes.csv", ets)
+    else
+      IO.inspect("Postcode file does not exist. Creating file...")
+      case create_csv_file() do
+        :ok ->
+          IO.inspect("Removed zip file. Storing postcodes with ets")
+          get_postcodes_from_csv("ukpostcodes.csv", ets)
 
-    case File.read(file_path) do
-      {:ok, _} ->
-        get_postcodes_from_csv(file_path, ets)
-
-      {:error, _} ->
-        # Currently just logging to tell dev to run the script. We could
-        # automate this step by having the app check if the file exists
-        # locally first, if so store in ets, else pull file then store in ets.
-        # Leaving as is for now.
-        IO.inspect("MAKE SURE YOU RUN THE SCRIPT TO DOWNLOAD THE POSTCODE FILE")
+        error ->
+          error
+      end
     end
   end
 
@@ -94,5 +99,34 @@ defmodule CsGuide.PostcodeLatLong do
     postcode = String.replace(map.postcode, " ", "")
 
     :ets.insert_new(ets, {postcode, map.latitude, map.longitude})
+  end
+
+  # Gets zip file from github and saves the response to body then writes the
+  # zip file to allow it to be unzipped so the csv can be extracted
+  def create_csv_file() do
+    zip_file_url = Map.fetch!(System.get_env(), "ZIP_FILE_URL")
+    %HTTPoison.Response{body: body} = HTTPoison.get!(zip_file_url)
+
+    case File.write(@zip_file_name, body) do
+      :ok ->
+        IO.inspect("Created zip file")
+        unzip_file_name()
+
+      error ->
+        error
+    end
+  end
+
+  # Helper to unzip file and only take ukpostcodes.csv
+  # If file is succesfully unziped then it deletes the zip file
+  defp unzip_file_name do
+    case :zip.extract(@zip_file_name_charlist, [{:file_list, [@postcode_file_charlist]}]) do
+      {:ok, _fileList} ->
+        IO.inspect("Postcodes successfully unzipped")
+        File.rm(@zip_file_name)
+
+      error ->
+        error
+    end
   end
 end
