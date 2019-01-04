@@ -15,6 +15,13 @@ defmodule CsGuide.Categories.DrinkType do
       join_keys: [drink_type_id: :id, drink_id: :id]
     )
 
+    many_to_many(
+      :drink_styles,
+      CsGuide.Categories.DrinkStyle,
+      join_through: "drink_types_drink_styles",
+      join_keys: [drink_type_id: :id, drink_style_id: :id]
+    )
+
     timestamps()
   end
 
