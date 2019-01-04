@@ -182,6 +182,12 @@ Example of a search on drinks with "beer"
 
 The search is run **case insensitive** on the **name** and on the **description** of the drinks.
 
+When a drink type is selected, a pill is displayed above the "Drink Type" dropdown
+and allow the users to unselect the filter.
+
+![image](https://user-images.githubusercontent.com/6057298/50681993-49c46780-1005-11e9-8348-c82b02a53378.png)
+
+
 ## Dev Guide
 
 ### Importing Data
