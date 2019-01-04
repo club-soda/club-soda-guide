@@ -18,14 +18,15 @@ defmodule CsGuideWeb.SearchVenueController do
     render(conn, "index.html", venues: cards)
   end
 
-  def index(conn, _params) do
-    cards =
+  def index(conn, params) do
+    venues =
       Venue.all()
       |> Venue.preload([:venue_types, :venue_images])
       |> Enum.filter(fn v -> !Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailers" end) end)
       |> Enum.sort_by(&{5 - &1.cs_score, &1.venue_name})
-      |> Enum.map(&Venue.get_venue_card/1)
+    cards = Enum.map(venues, &Venue.get_venue_card/1)
+    term = params["term"] || ""
 
-    render(conn, "index.html", venues: cards)
+    render(conn, "index.html", venues: cards, term: term)
   end
 end
