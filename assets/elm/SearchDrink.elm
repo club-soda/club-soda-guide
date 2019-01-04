@@ -99,14 +99,14 @@ update msg model =
             ( { model | drinkFilters = state }, Cmd.none )
 
         UnselectFitler filterId ->
-            ( model, Cmd.none )
+            let
+                filterState =
+                    Criteria.unselectFilter filterId model.drinkFilters
+            in
+            ( { model | drinkFilters = filterState }, Cmd.none )
 
 
 
--- let
---   filterState = Criteria.UnselectFitler filterId model.drinkFilters
--- in
---   ( { model | drinkFilters = filterState }, Cmd.none )
 -- VIEW
 
 
