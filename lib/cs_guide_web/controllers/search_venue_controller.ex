@@ -15,7 +15,7 @@ defmodule CsGuideWeb.SearchVenueController do
       |> Enum.filter(fn v -> !Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailers" end) end)
       |> Enum.map(&Venue.get_venue_card/1)
 
-    render(conn, "index.html", venues: cards)
+    render(conn, "index.html", venues: cards, term: "")
   end
 
   def index(conn, params) do
