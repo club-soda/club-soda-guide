@@ -50,12 +50,20 @@ type alias Flags =
 init : Flags -> ( Model, Cmd Msg )
 init flags =
     let
+        filters =
+            getDrinkTypesAndStyles flags.types_styles
+
         dtype_filter =
             if flags.dtype_filter == "none" then
                 []
 
             else
-                [ "type-" ++ flags.dtype_filter ]
+                case getFilterById ("type-" ++ flags.dtype_filter) filters of
+                    Nothing ->
+                        []
+
+                    Just _ ->
+                        [ "type-" ++ flags.dtype_filter ]
     in
     ( { drinks = flags.drinks
       , drinkFilters = Criteria.init dtype_filter
@@ -66,7 +74,7 @@ init flags =
 
             else
                 Just flags.term
-      , typesAndStyles = getDrinkTypesAndStyles flags.types_styles
+      , typesAndStyles = filters
       }
     , Cmd.none
     )
