@@ -41,10 +41,13 @@ getDrinkTypesAndStyles typesAndStyles =
             ( Type
             , typeName
             , SubFilters
-                (List.map (\{ styleName } -> ( Style, styleName, SubFilters [] )) styles)
+                (List.map (\{ styleName } -> ( Style, styleName, SubFilters [] )) styles
+                    |> List.sortBy (\( _, name, _ ) -> name)
+                )
             )
         )
         typesAndStyles
+        |> List.sortBy (\( _, name, _ ) -> name)
 
 
 drinksTypeAndStyle : List Filter

@@ -2,7 +2,7 @@ defmodule CsGuideWeb.SearchDrinkController do
   use CsGuideWeb, :controller
 
   alias CsGuide.Resources.Drink
-  alias CsGuide.Categories.{DrinkType, DrinkStyle}
+  alias CsGuide.Categories.DrinkType
 
   def index(conn, params) do
     drinks = Drink.all()
