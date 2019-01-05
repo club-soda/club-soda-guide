@@ -209,3 +209,13 @@ iex> CsGuide.Accounts.User.insert(%{email: "", password: "", admin: true})
 ```
 
 Filling in the empty strings as necessary.
+
+### Adding latitude and longitude values to the database
+
+Latitude and longitude values are being used to calculate the distance from a
+user to a venue. To add these values to your venues in the database run the
+command...
+
+```
+mix run priv/repo/add_lat_long_to_venue.exs
+```
