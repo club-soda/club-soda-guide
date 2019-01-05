@@ -21,19 +21,13 @@ defmodule CsGuideWeb.VenueControllerTest do
     drinks: %{"AF Beer 1" => "on"},
     venue_types: %{"Bars" => "on"}
   }
-  @update_attrs %{
-    phone_number: "09876543210",
-    postcode: "EC2 7FY",
-    venue_name: "The Updated Example Pub",
-    drinks: %{"AF Beer 1" => "on"},
-    venue_types: %{"Bars" => "on"}
-  }
+
   @invalid_attrs %{phone_number: nil, postcode: nil, venue_name: nil}
 
   def fixture(:venue) do
     @create_venue_types
     |> Enum.map(fn vt ->
-      {:ok, venue_type} =
+      {:ok, _venue_type} =
         %Categories.VenueType{}
         |> Categories.VenueType.changeset(vt)
         |> Categories.VenueType.insert()
@@ -73,10 +67,7 @@ defmodule CsGuideWeb.VenueControllerTest do
     types =
       @create_types
       |> Enum.map(fn t ->
-        {:ok, type} =
-          %Categories.DrinkType{}
-          |> Categories.DrinkType.changeset(t)
-          |> Categories.DrinkType.insert()
+        {:ok, type} = Categories.DrinkType.insert(t)
 
         type
       end)
