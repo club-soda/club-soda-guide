@@ -17,7 +17,6 @@ import TypeAndStyle
         , FilterType
         , SubFilters(..)
         , TypesAndStyles
-        , drinksTypeAndStyle
         , getDrinkTypesAndStyles
         , getFilterById
         , getFilterId
