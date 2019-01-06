@@ -103,6 +103,15 @@ under venue types in the new venue form. So you could add 'pub' as a new type an
 then when you create a new venue you would now have the ability to select 'pub'
 as the venue type when creating your new venue.
 
+A drink style can be linked to multiple drink type:
+
+![image](https://user-images.githubusercontent.com/6057298/50739630-25ba7f00-11db-11e9-94ca-7f2cd995979d.png)
+
+The relations between types and styles will then be automatically displayed in the dropdown on the search drinks page:
+
+![image](https://user-images.githubusercontent.com/6057298/50739690-9366ab00-11db-11e9-879d-ee98f94128f6.png)
+
+
 When you create a static page, you have the ability to write HTML or markdown in
 the body field:
 
