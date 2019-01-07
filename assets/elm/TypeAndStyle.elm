@@ -1,5 +1,6 @@
 module TypeAndStyle exposing
     ( Filter
+    , FilterId
     , FilterType(..)
     , SubFilters(..)
     , drinksTypeAndStyle
