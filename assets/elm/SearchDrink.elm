@@ -120,10 +120,14 @@ update msg model =
 
         CloseDropdown close ->
             let
-                _ =
-                    Debug.log "closing " close
+                drinkFilters =
+                    if close then
+                        Criteria.closeFilters model.drinkFilters
+
+                    else
+                        model.drinkFilters
             in
-            ( model, Cmd.none )
+            ( { model | drinkFilters = drinkFilters }, Cmd.none )
 
 
 
