@@ -1,7 +1,6 @@
 defmodule CsGuideWeb.PageController do
   use CsGuideWeb, :controller
   alias CsGuide.Resources.Venue
-  alias CsGuide.StaticPage
 
   def index(conn, _params) do
     venues =
