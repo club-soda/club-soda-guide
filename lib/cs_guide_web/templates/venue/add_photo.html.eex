@@ -1,7 +1,7 @@
 <section class="center w-80 w-75-l mv6">
   <h2 class="f4 lh4">Upload a photo for your venue</h2>
 
-  <%= form_for @conn, venue_path(@conn, :upload_photo, @id), [multipart: true], fn f -> %>
+  <%= form_for @conn, venue_path(@conn, :upload_photo, @unique_name), [multipart: true], fn f -> %>
     <div class="form-group mb4">
       <label class="db pt4 pb3">Select venue photo</label>
       <%= file_input f, :photo, class: "form-control" %>

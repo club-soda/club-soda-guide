@@ -1,5 +1,6 @@
 module Search exposing (getScore, onChange, renderDropdownItems, renderFilter, renderSearch, renderVenues, venueCard)
 
+import Helpers exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -63,10 +64,18 @@ renderVenues venues =
         ]
 
 
+generateVenueUrl venue =
+    "/venues/"
+        ++ venue.name
+        ++ "-"
+        ++ venue.postcode
+        |> Helpers.changeSpacesToDashes
+
+
 venueCard : Venue -> Html msg
 venueCard venue =
     div [ class "w-100 w-25-ns pb4" ]
-        [ a [ href <| "/venues/" ++ venue.id, class "cs-black no-underline pointer" ]
+        [ a [ href <| generateVenueUrl venue, class "cs-black no-underline pointer" ]
             [ if String.isEmpty venue.image then
                 div [ class "bg-green w-100 w-90-m w5-l h4 br2 mb2 bg-venue-card" ] []
 

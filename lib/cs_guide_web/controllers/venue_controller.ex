@@ -28,39 +28,71 @@ defmodule CsGuideWeb.VenueController do
       {:ok, venue} ->
         conn
         |> put_flash(:info, "Venue created successfully.")
-        |> redirect(to: venue_path(conn, :show, venue.entry_id))
+        |> redirect(to: venue_path(conn, :show, CsGuideWeb.VenueView.generate_venue_url(venue)))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
   end
 
-  def show(conn, %{"id" => id}) do
+  def get_name(unique_name) do
+    String.replace(unique_name, "-", " ")
+    |> String.replace(~r/((\s){3})/, " - ")
+    |> String.split(" ")
+    |> Enum.split(-2)
+    |> Tuple.to_list()
+    |> Enum.at(0)
+    |> Enum.join(" ")
+  end
+
+  def get_postcode(unique_name) do
+    String.replace(unique_name, "-", " ")
+    |> String.split(" ")
+    |> Enum.split(-2)
+    |> Tuple.to_list()
+    |> Enum.at(1)
+    |> Enum.join(" ")
+  end
+
+  def show(conn, %{"unique_name" => unique_name}) do
+    name = get_name(unique_name)
+    postcode = get_postcode(unique_name)
+
     venue =
-      id
-      |> Venue.get()
+      Venue.get_by([venue_name: name, postcode: postcode], case_insensitive: true)
       |> Venue.preload(
         drinks: [:brand, :drink_types, :drink_styles, :drink_images],
         venue_types: [],
         venue_images: []
       )
 
-    venue_owner = conn.assigns[:venue_id] == id
+    venue_owner = conn.assigns[:venue_id] == venue.id
     render(conn, "show.html", venue: venue, is_authenticated: conn.assigns[:admin] || venue_owner)
   end
 
-  def edit(conn, %{"id" => id}) do
-    venue = Venue.get(id) |> Venue.preload(:venue_types)
+  def edit(conn, %{"unique_name" => unique_name}) do
+    name = get_name(unique_name)
+    postcode = get_postcode(unique_name)
+
+    venue =
+      Venue.get_by([venue_name: name, postcode: postcode], case_insensitive: true)
+      |> Venue.preload(:venue_types)
+
     changeset = Venue.changeset(venue)
     render(conn, "edit.html", venue: venue, changeset: changeset)
   end
 
   def update(conn, %{
-        "id" => id,
+        "unique_name" => unique_name,
         "venue" => venue = %{"drinks" => drinks, "num_cocktails" => num_cocktails}
       })
       when map_size(venue) <= 2 do
-    venue = Venue.get(id) |> Venue.preload([:venue_types, :venue_images, :drinks, :users])
+    name = get_name(unique_name)
+    postcode = get_postcode(unique_name)
+
+    venue =
+      Venue.get_by([venue_name: name, postcode: postcode], case_insensitive: true)
+      |> Venue.preload([:venue_types, :venue_images, :drinks, :users])
 
     venue_params =
       venue
@@ -72,14 +104,14 @@ defmodule CsGuideWeb.VenueController do
     do_update(conn, venue, venue_params)
   end
 
-  def update(conn, %{"id" => id, "venue" => venue_params}) do
+  def update(conn, %{"unique_name" => id, "venue" => venue_params}) do
     venue = Venue.get(id) |> Venue.preload([:venue_types, :venue_images, :drinks, :users])
 
     case Venue.update(venue, venue_params |> Map.put("drinks", venue.drinks)) do
       {:ok, venue} ->
         conn
         |> put_flash(:info, "Venue updated successfully.")
-        |> redirect(to: venue_path(conn, :show, venue.entry_id))
+        |> redirect(to: venue_path(conn, :show, CsGuideWeb.VenueView.generate_venue_url(venue)))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", venue: venue, changeset: changeset)
@@ -114,17 +146,19 @@ defmodule CsGuideWeb.VenueController do
            ) do
       conn
       |> put_flash(:info, "Venue updated successfully.")
-      |> redirect(to: venue_path(conn, :show, venue.entry_id))
+      |> redirect(to: venue_path(conn, :show, CsGuideWeb.VenueView.generate_venue_url(venue)))
     else
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", venue: venue, changeset: changeset)
     end
   end
 
-  def add_drinks(conn, %{"id" => id}) do
+  def add_drinks(conn, %{"unique_name" => unique_name}) do
+    name = get_name(unique_name)
+    postcode = get_postcode(unique_name)
+
     venue =
-      id
-      |> Venue.get()
+      Venue.get_by([venue_name: name, postcode: postcode], case_insensitive: true)
       |> Venue.preload(drinks: [:brand], venue_types: [])
 
     brands = Brand.all() |> Brand.preload(:drinks)
@@ -135,17 +169,21 @@ defmodule CsGuideWeb.VenueController do
       brands: brands,
       current_drinks: Enum.map(venue.drinks, fn d -> d.entry_id end),
       changeset: changeset,
-      action: venue_path(conn, :update, venue.entry_id)
+      action: venue_path(conn, :update, CsGuideWeb.VenueView.generate_venue_url(venue))
     )
   end
 
-  def add_photo(conn, %{"id" => id}) do
-    render(conn, "add_photo.html", id: id)
+  def add_photo(conn, %{"unique_name" => unique_name}) do
+    render(conn, "add_photo.html", unique_name: unique_name)
   end
 
   def upload_photo(conn, params) do
+    name = get_name(params["unique_name"])
+    postcode = get_postcode(params["unique_name"])
+    venue = Venue.get_by(venue_name: name, postcode: postcode)
+
     CsGuide.Repo.transaction(fn ->
-      with {:ok, venue_image} <- VenueImage.insert(%{venue: params["id"]}),
+      with {:ok, venue_image} <- VenueImage.insert(%{venue: venue.entry_id}),
            {:ok, _} <- CsGuide.Resources.upload_photo(params, venue_image.entry_id) do
         {:ok, venue_image}
       else
@@ -154,8 +192,11 @@ defmodule CsGuideWeb.VenueController do
       end
     end)
     |> case do
-      {:ok, _} -> redirect(conn, to: venue_path(conn, :show, params["id"]))
-      {:error, _} -> render(conn, "add_photo.html", id: params["id"], error: true)
+      {:ok, _} ->
+        redirect(conn, to: venue_path(conn, :show, CsGuideWeb.VenueView.generate_venue_url(venue)))
+
+      {:error, _} ->
+        render(conn, "add_photo.html", unique_name: params["unique_name"], error: true)
     end
   end
 end

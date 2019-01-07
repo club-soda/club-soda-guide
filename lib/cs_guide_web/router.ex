@@ -37,8 +37,8 @@ defmodule CsGuideWeb.Router do
     post("/signup", SignupController, :create)
 
     resources("/users", UserController, only: [:new, :create])
-    resources("/venues", VenueController, only: [:show])
     resources("/drinks", DrinkController, only: [:show])
+    get("/venues/:unique_name", VenueController, :show)
     get("/brands/:name", BrandController, :show)
 
     resources("/sessions", SessionController, only: [:new, :create])
@@ -58,12 +58,12 @@ defmodule CsGuideWeb.Router do
     pipe_through([:browser, :admin])
 
     resources("/", AdminController, only: [:index])
+    resources("/brands", BrandController, except: [:show], param: "name")
+    resources("/drinks", DrinkController, except: [:show])
+    resources("/retailers", RetailerController, except: [:show])
     resources("/static_pages", StaticPageController, except: [:show], param: "page_title")
     resources("/users", UserController, except: [:new, :create])
-    resources("/venues", VenueController, only: [:index, :new, :create, :delete])
-    resources("/retailers", RetailerController, except: [:show])
-    resources("/drinks", DrinkController, except: [:show])
-    resources("/brands", BrandController, except: [:show], param: "name")
+    resources("/venues", VenueController, except: [:show], param: "unique_name")
 
     resources("/venue_types", VenueTypeController)
     resources("/drink_types", DrinkTypeController)
@@ -78,10 +78,10 @@ defmodule CsGuideWeb.Router do
 
   scope "/admin", CsGuideWeb do
     pipe_through([:browser, :venue_owner])
-    get("/venues/:id/add_drinks", VenueController, :add_drinks)
-    get("/venues/:id/add_photo", VenueController, :add_photo)
+    get("/venues/:unique_name/add_drinks", VenueController, :add_drinks)
+    get("/venues/:unique_name/add_photo", VenueController, :add_photo)
 
-    post("/venues/:id/", VenueController, :upload_photo)
+    post("/venues/:unique_name/", VenueController, :upload_photo)
     resources("/venues", VenueController, only: [:edit, :update])
   end
 

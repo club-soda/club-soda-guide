@@ -30,7 +30,7 @@ defmodule CsGuideWeb.VenueView do
 
     query_str =
       list
-      |> Enum.reduce([], &(if &1 == nil, do: &2, else: [format_str(&1) | &2]))
+      |> Enum.reduce([], &if(&1 == nil, do: &2, else: [format_str(&1) | &2]))
       |> Enum.join("%2C+")
 
     "https://www.google.com/maps/search/?api=1&query=" <> query_str
@@ -40,5 +40,16 @@ defmodule CsGuideWeb.VenueView do
     str
     |> String.split(" ")
     |> Enum.join("+")
+  end
+
+  def generate_venue_url(venue) do
+    Enum.join([venue.venue_name, "-", venue.postcode])
+    |> change_spaces_to_dashes()
+  end
+
+  defp change_spaces_to_dashes(str) do
+    str
+    |> String.split(" ")
+    |> Enum.join("-")
   end
 end

@@ -1,5 +1,6 @@
 module DrinkCard exposing (drinkCard)
 
+import Helpers exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import SharedTypes exposing (Drink)
@@ -56,4 +57,6 @@ drinkCard index d =
 
 brandNameURL : Drink -> String
 brandNameURL drink =
-    "/brands/" ++ drink.brand |> String.split " " |> String.join "-"
+    "/brands/"
+        ++ drink.brand
+        |> Helpers.changeSpacesToDashes
