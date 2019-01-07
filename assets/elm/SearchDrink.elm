@@ -1,4 +1,4 @@
-module SearchDrink exposing (main)
+port module SearchDrink exposing (main)
 
 import Array
 import Browser
@@ -88,6 +88,7 @@ type Msg
     | SearchDrink String
     | UpdateFilters Criteria.State
     | UnselectFitler FilterId
+    | CloseDropdown Bool
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -116,6 +117,13 @@ update msg model =
                     Criteria.unselectFilter filterId model.drinkFilters
             in
             ( { model | drinkFilters = filterState }, Cmd.none )
+
+        CloseDropdown close ->
+            let
+                _ =
+                    Debug.log "closing " close
+            in
+            ( model, Cmd.none )
 
 
 
@@ -154,7 +162,7 @@ criteriaConfig =
 
 mainDivAttrs : List (Attribute Msg)
 mainDivAttrs =
-    [ class "relative bg-white dib z-1" ]
+    [ class "relative bg-white dib z-1", id "dropdown-types-styles" ]
 
 
 filtersDivAttrs : List (Attribute Msg)
@@ -236,7 +244,7 @@ renderPillFilter filter =
                 Nothing ->
                     ""
     in
-    div [ class "ma1 dib pa2 br4 bg-cs-pink white" ]
+    div [ class "ma1 dib pa2 br4 bg-cs-pink white", id "pill-type-style" ]
         [ span [ class "pr1" ] [ text filterName ]
         , span [ class "pointer pl3 b", onClick (UnselectFitler filterId) ] [ text "x" ]
         ]
@@ -311,6 +319,18 @@ renderDrinks drinks =
 
 
 
+-- Subscriptions
+
+
+port closeDropdownTypeStyle : (Bool -> msg) -> Sub msg
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    closeDropdownTypeStyle CloseDropdown
+
+
+
 -- MAIN
 
 
@@ -321,8 +341,3 @@ main =
         , update = update
         , view = view
         }
-
-
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
