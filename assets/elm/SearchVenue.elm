@@ -1,4 +1,4 @@
-module SearchVenue exposing (Flags, Model, Msg(..), cs_score, filterByName, filterByScore, filterByType, filterVenues, init, main, onChange, update, venue_types, view)
+module SearchVenue exposing (view)
 
 import Browser
 import Html exposing (..)
@@ -10,11 +10,16 @@ import SharedTypes exposing (Venue)
 
 
 type alias Model =
-    { venues : List Venue, filterType : Maybe String, filterScore : Maybe Float, filterName : Maybe String }
+    { venues : List Venue
+    , filterType : Maybe String
+    , filterScore : Maybe Float
+    , filterName : Maybe String
+    , venueTypes : List String
+    }
 
 
 type alias Flags =
-    { venues : List Venue, term : String }
+    { venues : List Venue, term : String, venueTypes : List String }
 
 
 type Msg
@@ -38,7 +43,7 @@ init flags =
             else
                 Just flags.term
     in
-    ( Model flags.venues Nothing Nothing searchTerm, Cmd.none )
+    ( Model flags.venues Nothing Nothing searchTerm flags.venueTypes, Cmd.none )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -72,11 +77,6 @@ update msg model =
             ( { model | filterName = filterName }, Cmd.none )
 
 
-venue_types : List String
-venue_types =
-    [ "Hotels", "Pubs", "Restaurants", "Bars", "Cafes" ]
-
-
 cs_score : List String
 cs_score =
     [ "0", "0.5", "1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5" ]
@@ -87,7 +87,7 @@ view model =
     div [ class "mt5 mt6-ns" ]
         [ div [ class "w-90 center" ]
             [ renderSearch "Search Venues..." (Maybe.withDefault "" model.filterName) FilterVenueName
-            , renderFilter "Venue Type" venue_types FilterVenueType (Maybe.withDefault "" model.filterType)
+            , renderFilter "Venue Type" model.venueTypes FilterVenueType (Maybe.withDefault "" model.filterType)
             , renderFilter "Club Soda Score"
                 cs_score
                 FilterVenueScore
