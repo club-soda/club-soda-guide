@@ -188,6 +188,12 @@ Example of a search on drinks with "beer"
 
 The search is run **case insensitive** on the **name** and on the **description** of the drinks.
 
+When a drink type is selected, a pill is displayed above the "Drink Type" dropdown
+and allow the users to unselect the filter.
+
+![image](https://user-images.githubusercontent.com/6057298/50681993-49c46780-1005-11e9-8348-c82b02a53378.png)
+
+
 ## Dev Guide
 
 ### Importing Data
@@ -209,3 +215,13 @@ iex> CsGuide.Accounts.User.insert(%{email: "", password: "", admin: true})
 ```
 
 Filling in the empty strings as necessary.
+
+### Adding latitude and longitude values to the database
+
+Latitude and longitude values are being used to calculate the distance from a
+user to a venue. To add these values to your venues in the database run the
+command...
+
+```
+mix run priv/repo/add_lat_long_to_venue.exs
+```
