@@ -2,4 +2,5 @@
 <script type="text/javascript">
   const venues = <%= raw Poison.encode!(@venues) %>
   const searchTerm = <%= raw Poison.encode!(@term) %>
+  const venueTypes = <%= raw Poison.encode!(@venue_types) %>
 </script>
