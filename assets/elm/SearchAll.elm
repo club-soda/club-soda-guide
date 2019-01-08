@@ -8,6 +8,7 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
 import Search exposing (..)
 import SharedTypes
+import Url
 
 
 main =
@@ -110,7 +111,7 @@ drinksPage totalDrinks drinksDisplayed searchTerm =
         a [ href <| "/search/drinks" ] [ text "View all drinks" ]
 
     else
-        a [ href <| "/search/drinks?term=" ++ searchTerm ] [ text <| "See all (" ++ String.fromInt totalDrinks ++ ")" ]
+        a [ href <| "/search/drinks?term=" ++ Url.percentEncode searchTerm ] [ text <| "See all (" ++ String.fromInt totalDrinks ++ ")" ]
 
 
 venuesPage : Int -> Int -> String -> Html Msg
@@ -119,7 +120,7 @@ venuesPage totalVenues venuesDisplayed searchTerm =
         a [ href <| "/search/venues" ] [ text "View all venues" ]
 
     else
-        a [ href <| "/search/venues?term=" ++ searchTerm ] [ text <| "See all (" ++ String.fromInt totalVenues ++ ")" ]
+        a [ href <| "/search/venues?term=" ++ Url.percentEncode searchTerm ] [ text <| "See all (" ++ String.fromInt totalVenues ++ ")" ]
 
 
 resultDescription : Int -> Int -> String
