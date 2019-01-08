@@ -41,10 +41,11 @@ defmodule CsGuideWeb.VenueView do
       "Bars" => "bg-cs-mint ",
       "Pubs" => "bg-cs-yellow",
       "Restaurants" => "bg-cs-light-pink",
-      "Cocktail Bars" => "bg-white"
+      "Cafes" => "bg-cs-navy white",
+      "Hotels" => "bg-cs-mid-blue white"
     }
 
-    values[type_name] || "bg-cs-navy white"
+    values[type_name] || "bg-cs-black white"
   end
 
   defp format_str(str) do
