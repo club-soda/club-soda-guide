@@ -26,6 +26,7 @@ defmodule CsGuide.Resources.Venue do
     field(:lat, :float)
     field(:long, :float)
     field(:distance, :float, virtual: true)
+    field(:slug, :string)
 
     many_to_many(
       :venue_types,
@@ -74,10 +75,11 @@ defmodule CsGuide.Resources.Venue do
       :facebook,
       :favourite,
       :lat,
-      :long
+      :long,
+      :slug
     ])
     |> cast_assoc(:users)
-    |> validate_required([:venue_name, :postcode, :venue_types])
+    |> validate_required([:venue_name, :postcode, :venue_types, :slug])
   end
 
   def retailer_changeset(venue, attrs \\ %{}) do
@@ -131,7 +133,6 @@ defmodule CsGuide.Resources.Venue do
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
     |> Repo.insert()
   end
-
 
   def get_venue_card(%__MODULE__{} = venue) do
     %{
