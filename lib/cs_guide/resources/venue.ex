@@ -161,6 +161,20 @@ defmodule CsGuide.Resources.Venue do
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
     |> Repo.insert()
+  end
 
+  def create_slug(name, postcode) do
+    Enum.join([name, "-", postcode])
+    |> change_spaces_to_dashes()
+    |> String.replace(~r/(,|')/, "")
+    |> String.replace(~r/(-{3})/, "-")
+    |> String.replace(~r/(&|\+)/, "and")
+    |> String.downcase()
+  end
+
+  defp change_spaces_to_dashes(str) do
+    str
+    |> String.split(" ")
+    |> Enum.join("-")
   end
 end
