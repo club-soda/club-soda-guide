@@ -88,6 +88,11 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def update(conn, %{"slug" => slug, "venue" => venue_params}) do
+    if venue_params["venue_name"] || venue_params["postcode"] do
+      new_slug = Venue.create_slug(venue_params["venue_name"], venue_params["postcode"])
+      Map.put(venue_params, "slug", slug)
+    end
+
     venue =
       Venue.get_by(slug: slug) |> Venue.preload([:venue_types, :venue_images, :drinks, :users])
 
