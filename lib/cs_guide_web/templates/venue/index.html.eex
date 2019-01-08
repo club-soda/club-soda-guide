@@ -5,10 +5,19 @@
   <table class="mt3 mb5 w-100">
     <thead>
       <tr class="tl">
-        <th class="pv3 pr3 f5 lh5 b">Venue name</th>
+        <th class="pv3 pr3 f5 lh5 b">
+          <%= link to: venue_path(@conn, :index), class: "near-black link" do %>
+            Venue name
+            <img class="w1 dib pr2 pointer rotate-180" src="<%= static_path(@conn, "/images/up-chevron.svg") %>" alt="sort by name">
+          <% end %>
+        </th>
         <th class="pa3 f5 lh5 b">Postcode</th>
-        <th class="pa3 f5 lh5 b dn dib-ns">Phone number</th>
-        <th></th>
+        <th class="pa3 f5 lh5 b dn dib-ns">
+          <%= link to: venue_path(@conn, :index, date_order: "asc"), class: "near-black link" do  %>
+            Last updated
+            <img class="w1 dib pr2 pointer rotate-180" src="<%= static_path(@conn, "/images/up-chevron.svg") %>" alt="sort by last updated">
+          <% end %>
+        </th>
       </tr>
     </thead>
     <tbody class="">
@@ -16,7 +25,7 @@
         <tr class="bt bb b--cs-light-gray">
           <td class="pv3 pr3"><%= venue.venue_name %></td>
           <td class="pa3"><%= venue.postcode %></td>
-          <td class="pa3 dn dib-ns"><%= venue.phone_number %></td>
+          <td class="pa3 dn dib-ns"><%= DateTime.from_naive!(venue.inserted_at, "Etc/UTC") |> DateTime.to_date() %></td>
 
           <td class="pv3 pa3-ns tr">
             <span><%= link "Show", to: venue_path(@conn, :show, venue.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>

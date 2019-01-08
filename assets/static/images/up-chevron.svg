@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="10px" height="6px" viewBox="0 0 10 6" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>6EBAD280-43C6-4776-9C08-D613B2F8FF79</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <polygon id="path-1" points="15.497789 15 17 13.6138152 12 9 7 13.6138152 8.50221105 15 12 11.7723697"></polygon>
+    </defs>
+    <g id="Styleguide-and-Home" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="08---Light" transform="translate(-243.000000, -461.000000)">
+            <g id="Icons" transform="translate(156.000000, 284.000000)">
+                <g id="Symbols" transform="translate(32.000000, 128.000000)">
+                    <g id="Icon" transform="translate(48.000000, 40.000000)">
+                        <rect id="Bounding-Box" x="0" y="0" width="24" height="24"></rect>
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <g id="Arrow" fill-rule="nonzero"></g>
+                        <g id="↳-🎨Color" mask="url(#mask-2)" fill="#333333">
+                            <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
