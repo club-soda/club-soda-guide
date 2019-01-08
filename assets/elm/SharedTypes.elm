@@ -20,6 +20,7 @@ type alias Venue =
     , postcode : String
     , cs_score : Float
     , image : String
+    , slug : String
     }
 
 

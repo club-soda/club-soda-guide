@@ -13,7 +13,7 @@
     <% end %>
   <% else %>
     <%= if Map.has_key?(@conn.assigns, :is_authenticated) do %>
-      <%= link "Add venue " <> Atom.to_string(@link_key), to: venue_path(@conn, :edit, @venue.entry_id, class: "f6 lh6 cs-mid-blue dib v-top") %>
+      <%= link "Add venue " <> Atom.to_string(@link_key), to: venue_path(@conn, :edit, @venue.slug), class: "f6 lh6 cs-mid-blue dib v-top" %>
     <% end %>
   <% end %>
 </div>
