@@ -3,12 +3,17 @@ module TypeAndStyle exposing
     , FilterId
     , FilterType(..)
     , SubFilters(..)
-    , drinksTypeAndStyle
+    , TypesAndStyles
+    , getDrinkTypesAndStyles
     , getFilterById
     , getFilterId
     , getFilterName
     , getFilterType
     )
+
+
+type alias TypesAndStyles =
+    { typeName : String, styles : List { styleName : String } }
 
 
 type alias Filter =
@@ -28,104 +33,20 @@ type FilterType
     | Style
 
 
-drinksTypeAndStyle : List Filter
-drinksTypeAndStyle =
-    [ beer, cider, softDrink, spiritsAndPremixed, tonicAndMixers, wine ]
-
-
-beer : Filter
-beer =
-    ( Type
-    , "Beer"
-    , SubFilters
-        [ ( Style, "Amber ale", SubFilters [] )
-        , ( Style, "Buchabeer", SubFilters [] )
-        , ( Style, "Flemish Primitive", SubFilters [] )
-        , ( Style, "IPA", SubFilters [] )
-        , ( Style, "Fruit Beer", SubFilters [] )
-        , ( Style, "Lager", SubFilters [] )
-        , ( Style, "Malt drink", SubFilters [] )
-        , ( Style, "Mild", SubFilters [] )
-        , ( Style, "Pale Ale", SubFilters [] )
-        , ( Style, "Pilsner", SubFilters [] )
-        , ( Style, "Radler", SubFilters [] )
-        , ( Style, "Shandy", SubFilters [] )
-        , ( Style, "Sour", SubFilters [] )
-        , ( Style, "Spiced Ale", SubFilters [] )
-        , ( Style, "Stouts & Porters", SubFilters [] )
-        , ( Style, "Wheat Beer", SubFilters [] )
-        ]
-    )
-
-
-cider : Filter
-cider =
-    ( Type, "Cider", SubFilters [ ( Style, "Cider", SubFilters [] ), ( Style, "Fruit Cider", SubFilters [] ), ( Style, "Perry", SubFilters [] ) ] )
-
-
-softDrink : Filter
-softDrink =
-    ( Type
-    , "Soft Drink"
-    , SubFilters
-        [ ( Style, "Cola", SubFilters [] )
-        , ( Style, "Cordial", SubFilters [] )
-        , ( Style, "Seasonal", SubFilters [] )
-        , ( Style, "Fruit Drinks", SubFilters [] )
-        , ( Style, "Ginger Ale", SubFilters [] )
-        , ( Style, "Ginger Beer", SubFilters [] )
-        , ( Style, "Kombucha", SubFilters [] )
-        , ( Style, "Lemonade", SubFilters [] )
-        , ( Style, "Mocktails", SubFilters [] )
-        , ( Style, "Pre Mixed Drink", SubFilters [] )
-        , ( Style, "Rocktails", SubFilters [] )
-        , ( Style, "Shandy", SubFilters [] )
-        , ( Style, "Shrub", SubFilters [] )
-        , ( Style, "Soda", SubFilters [] )
-        , ( Style, "Sparkling Pressé", SubFilters [] )
-        , ( Style, "Tonic Water", SubFilters [] )
-        ]
-    )
-
-
-spiritsAndPremixed : Filter
-spiritsAndPremixed =
-    ( Type
-    , "Spirits & Premixed"
-    , SubFilters
-        [ ( Style, "Botanical", SubFilters [] )
-        , ( Style, "Cordial", SubFilters [] )
-        , ( Style, "Mixer", SubFilters [] )
-        , ( Style, "Mocktails", SubFilters [] )
-        , ( Style, "Pre Mixed Drink", SubFilters [] )
-        , ( Style, "Spirit", SubFilters [] )
-        ]
-    )
-
-
-tonicAndMixers : Filter
-tonicAndMixers =
-    ( Type
-    , "Tonics & Mixers"
-    , SubFilters
-        [ ( Style, "Mixer", SubFilters [] )
-        , ( Style, "Soda", SubFilters [] )
-        , ( Style, "Tonic Water", SubFilters [] )
-        ]
-    )
-
-
-wine : Filter
-wine =
-    ( Type
-    , "Wine"
-    , SubFilters
-        [ ( Style, "Red Wine", SubFilters [] )
-        , ( Style, "Rose Wine", SubFilters [] )
-        , ( Style, "Sparkling Wine", SubFilters [] )
-        , ( Style, "White Wine", SubFilters [] )
-        ]
-    )
+getDrinkTypesAndStyles : List TypesAndStyles -> List Filter
+getDrinkTypesAndStyles typesAndStyles =
+    List.map
+        (\{ typeName, styles } ->
+            ( Type
+            , typeName
+            , SubFilters
+                (List.map (\{ styleName } -> ( Style, styleName, SubFilters [] )) styles
+                    |> List.sortBy (\( _, name, _ ) -> name)
+                )
+            )
+        )
+        typesAndStyles
+        |> List.sortBy (\( _, name, _ ) -> name)
 
 
 getFilterName : Filter -> String

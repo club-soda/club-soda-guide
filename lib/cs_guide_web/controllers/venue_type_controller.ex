@@ -51,11 +51,12 @@ defmodule CsGuideWeb.VenueTypeController do
   end
 
   def delete(conn, %{"id" => id}) do
-    # venue_type = Categories.get_venue_type!(id)
-    # {:ok, _venue_type} = Categories.delete_venue_type(venue_type)
+    venue_type = VenueType.get(id)
+    {:ok, _venue_type} = VenueType.delete(venue_type)
 
-    # conn
-    # |> put_flash(:info, "Venue types deleted successfully.")
-    # |> redirect(to: venue_type_path(conn, :index))
+    conn
+    |> put_flash(:info, "Venue types deleted successfully.")
+    |> redirect(to: venue_type_path(conn, :index))
   end
+
 end

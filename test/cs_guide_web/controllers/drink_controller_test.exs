@@ -27,10 +27,7 @@ defmodule CsGuideWeb.DrinkControllerTest do
     types =
       @create_types
       |> Enum.map(fn t ->
-        {:ok, type} =
-          %Categories.DrinkType{}
-          |> Categories.DrinkType.changeset(t)
-          |> Categories.DrinkType.insert()
+        {:ok, type} = Categories.DrinkType.insert(t)
 
         type
       end)

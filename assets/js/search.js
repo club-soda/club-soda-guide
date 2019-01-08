@@ -7,7 +7,7 @@ if (search) {
 
   var drink_type = types[dtype] || dtype;
   Elm.SearchDrink.init({
-    node: search, flags: Object.assign({}, { dtype_filter: drink_type, drinks: drinks, term: searchTerm  })
+    node: search, flags: Object.assign({}, { dtype_filter: drink_type, drinks: drinks, term: searchTerm, types_styles: typesAndStyles  })
   })
 }
 
