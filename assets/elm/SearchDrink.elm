@@ -87,7 +87,7 @@ type Msg
     = SelectABVLevel String
     | SearchDrink String
     | UpdateFilters Criteria.State
-    | UnselectFitler FilterId
+    | UnselectFilter FilterId
     | CloseDropdown Bool
 
 
