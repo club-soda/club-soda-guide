@@ -88,10 +88,13 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def update(conn, %{"slug" => slug, "venue" => venue_params}) do
-    if venue_params["venue_name"] || venue_params["postcode"] do
-      new_slug = Venue.create_slug(venue_params["venue_name"], venue_params["postcode"])
-      Map.put(venue_params, "slug", slug)
-    end
+    venue_params =
+      if venue_params["venue_name"] || venue_params["postcode"] do
+        new_slug = Venue.create_slug(venue_params["venue_name"], venue_params["postcode"])
+        Map.put(venue_params, "slug", new_slug)
+      else
+        venue_params
+      end
 
     venue =
       Venue.get_by(slug: slug) |> Venue.preload([:venue_types, :venue_images, :drinks, :users])
@@ -100,7 +103,7 @@ defmodule CsGuideWeb.VenueController do
       {:ok, venue} ->
         conn
         |> put_flash(:info, "Venue updated successfully.")
-        |> redirect(to: venue_path(conn, :show, slug))
+        |> redirect(to: venue_path(conn, :show, Map.get(venue_params, "slug", slug)))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", venue: venue, changeset: changeset)
