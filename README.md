@@ -103,6 +103,15 @@ under venue types in the new venue form. So you could add 'pub' as a new type an
 then when you create a new venue you would now have the ability to select 'pub'
 as the venue type when creating your new venue.
 
+A drink style can be linked to multiple drink type:
+
+![image](https://user-images.githubusercontent.com/6057298/50739630-25ba7f00-11db-11e9-94ca-7f2cd995979d.png)
+
+The relations between types and styles will then be automatically displayed in the dropdown on the search drinks page:
+
+![image](https://user-images.githubusercontent.com/6057298/50739690-9366ab00-11db-11e9-879d-ee98f94128f6.png)
+
+
 When you create a static page, you have the ability to write HTML or markdown in
 the body field:
 
@@ -122,14 +131,20 @@ the venues that stock or sell those drinks.
 
 To add a stockist, simply add a drink from this brand to the venue as you normally would.
 
-Member brands are also able to display 'where to buy' retailers. To add a 'where
-to buy' retailer go to `/admin/retailers/new`. There you can fill in the details
-of your new retailer. Ensure that for the website you include the `http://` or
-`https://` at the beginning of the website url, otherwise the link will not work
-properly when clicked on. Give the 'venue type' of 'Retailers'. Even if the brand
-is an online retailer you must provide a postcode as this is a required field.
-Then when you add the drink to this venue, it will display in the 'where to buy'
-section.
+Member brands are also able to display 'where to buy' retailers. These retailers
+can be added in two ways. Major supermarkets, amazon, DryDrinker and WiseBartender
+can be added as retailers of a brand when the brand is created by checking the
+checkboxes for those retailers on the 'New brand' form. Once you have ticked one
+of these boxes, a link with the name of the retailer will then appear under the
+'where to buy' title and clicking that link will take you to the appropriate site
+with a search made for the brand of that drink on that site. To add a retailer
+not included in the 'New brand' form list go to `/admin/retailers/new`. There
+you can fill in the details of your new retailer. Ensure that for the website
+you include the `http://` or `https://` at the beginning of the website url,
+otherwise the link will not work properly when clicked on. Give the 'venue type'
+of 'Retailers'. Even if the brand is an online retailer you must provide a
+postcode as this is a required field. Then when you add the drink to this venue,
+it will display in the 'where to buy' section.
 
 ## Uploading Images
 
@@ -182,6 +197,12 @@ Example of a search on drinks with "beer"
 
 The search is run **case insensitive** on the **name** and on the **description** of the drinks.
 
+When a drink type is selected, a pill is displayed above the "Drink Type" dropdown
+and allow the users to unselect the filter.
+
+![image](https://user-images.githubusercontent.com/6057298/50681993-49c46780-1005-11e9-8348-c82b02a53378.png)
+
+
 ## Dev Guide
 
 ### Importing Data
@@ -203,3 +224,13 @@ iex> CsGuide.Accounts.User.insert(%{email: "", password: "", admin: true})
 ```
 
 Filling in the empty strings as necessary.
+
+### Adding latitude and longitude values to the database
+
+Latitude and longitude values are being used to calculate the distance from a
+user to a venue. To add these values to your venues in the database run the
+command...
+
+```
+mix run priv/repo/add_lat_long_to_venue.exs
+```

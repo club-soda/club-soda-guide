@@ -5,23 +5,18 @@ if (search) {
     "Spirits and Premixed": "Spirits & Premixed"
   };
 
-  var params = window.location.search;
-  var qs = getQueryParams(params)
-  var drink_type = (qs.drink_type && qs.drink_type.replace(/_/g, " ")) || "none";
-  drink_type = types[drink_type] || drink_type;
-  var term = qs.term || "";
-  Elm.SearchDrink.init({
-    node: search, flags: Object.assign({}, { dtype_filter: drink_type, drinks: drinks, term: term  })
+  var drink_type = types[dtype] || dtype;
+  var elmApp = Elm.SearchDrink.init({
+    node: search, flags: Object.assign({}, { dtype_filter: drink_type, drinks: drinks, term: searchTerm, types_styles: typesAndStyles  })
   })
+
+  closeDropdown(elmApp)
 }
 
 var searchVenue = document.getElementById('search-venue');
 if (searchVenue) {
-  var params = window.location.search;
-  var qs = getQueryParams(params)
-  var term = qs.term || "";
   Elm.SearchVenue.init({
-    node: searchVenue, flags: { venues: venues, term: term }
+    node: searchVenue, flags: { venues: venues, term: searchTerm }
   })
 }
 
@@ -32,24 +27,25 @@ if (searchAll) {
   })
 }
 
-function getQueryParams(query) {
-  var res = {}
-  query = query.slice(1).split('&');
-  query.map(function (part) {
-    var key;
-    var value;
-    part = part.split('=');
-    key = part[0];
-    value = part[1];
-    if (!res[key]) {
-      res[key] = value;
-    } else {
-      if (!Array.isArray(res[key])) {
-        res[key] = [res[key]];
-      }
+function closeDropdown(elmApp) {
+  //ids defined in SearchDrink.elm
+  var excludeIds = ["pill-type-style", "dropdown-types-styles"];
 
-      res[key].push(value);
-    }
-  });
-  return res;
+  document.addEventListener('click', function(e) {
+    var ids = getParentsId(e.target);
+    var close = excludeIds.filter(function(id) {
+      return ids.indexOf(id) >= 0;
+    }).length == 0;
+
+    elmApp.ports.closeDropdownTypeStyle.send(close)
+  })
+}
+
+function getParentsId(elt) {
+  var res = [];
+  while (elt) {
+      res.push(elt.id);
+      elt = elt.parentNode;
+  }
+  return res.filter(Boolean);
 }

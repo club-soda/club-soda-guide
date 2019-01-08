@@ -14,11 +14,11 @@ defmodule CsGuideWeb.DrinkTypeController do
   end
 
   def create(conn, %{"drink_type" => drink_type_params}) do
-    case %DrinkType{} |> DrinkType.changeset(drink_type_params) |> DrinkType.insert() do
-      {:ok, drink_type} ->
+    case DrinkType.insert(drink_type_params) do
+      {:ok, _drink_type} ->
         conn
-        |> put_flash(:info, "Drink types created successfully.")
-        |> redirect(to: drink_type_path(conn, :show, drink_type.entry_id))
+        |> put_flash(:info, "Drink type created successfully.")
+        |> redirect(to: drink_type_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -39,7 +39,7 @@ defmodule CsGuideWeb.DrinkTypeController do
   def update(conn, %{"id" => id, "drink_type" => drink_type_params}) do
     drink_type = DrinkType.get(id)
 
-    case DrinkType.changeset(drink_type, drink_type_params) |> DrinkType.update() do
+    case DrinkType.update(drink_type, drink_type_params) do
       {:ok, drink_type} ->
         conn
         |> put_flash(:info, "Drink types updated successfully.")
@@ -51,11 +51,11 @@ defmodule CsGuideWeb.DrinkTypeController do
   end
 
   def delete(conn, %{"id" => id}) do
-    # drink_type = Categories.get_drink_type!(id)
-    # {:ok, _drink_type} = Categories.delete_drink_type(drink_type)
+    drink_type = DrinkType.get(id)
+    {:ok, _drink_type} = DrinkType.delete(drink_type)
 
-    # conn
-    # |> put_flash(:info, "Drink types deleted successfully.")
-    # |> redirect(to: drink_type_path(conn, :index))
+    conn
+    |> put_flash(:info, "Drink type deleted successfully.")
+    |> redirect(to: drink_type_path(conn, :index))
   end
 end

@@ -1,18 +1,10 @@
-defmodule CsGuideWeb.SearchAllControllerTest do
+defmodule CsGuideWeb.SearchDrinkControllerTest do
   use CsGuideWeb.ConnCase
+  import CsGuide.SetupHelpers
   alias CsGuide.{Resources, Categories, Fixtures}
-  # import CsGuide.SetupHelpers
+
   @create_types Fixtures.create_types()
   @create_brand Fixtures.create_brand()
-
-  @venues [
-    %{
-      venue_name: "The Favourite Pub",
-      favourite: true,
-      venue_types: %{"Pubs" => "on"},
-      postcode: "TW3 5FG"
-    }
-  ]
 
   @create_attrs %{
     name: "AF Beer 1",
@@ -21,6 +13,15 @@ defmodule CsGuideWeb.SearchAllControllerTest do
     weighting: 1,
     drink_types: %{"Beer" => "on"}
   }
+
+  describe "Search drink" do
+    setup [:drink_setup]
+
+    test "GET /search/drinks with term", %{conn: conn} do
+      conn = get(conn, "/search/drinks?term=beer")
+      assert html_response(conn, 200) =~ "AF Beer 1"
+    end
+  end
 
   def fixture(:type) do
     types =
@@ -50,35 +51,6 @@ defmodule CsGuideWeb.SearchAllControllerTest do
       |> Resources.Drink.insert()
 
     drink
-  end
-
-
-  describe "search on venues and drinks" do
-    setup [:create_venue, :drink_setup]
-
-    test "GET /search/all display venue and drink", %{conn: conn, venue: venue} do
-      conn = get(conn, "/search/all")
-
-      assert html_response(conn, 200) =~ "The Favourite Pub"
-      assert html_response(conn, 200) =~ "AF Beer 1"
-    end
-  end
-
-  def fixture(:venue) do
-    %Categories.VenueType{}
-    |> Categories.VenueType.changeset(%{name: "Pubs"})
-    |> Categories.VenueType.insert()
-
-    @venues
-    |> Enum.map(fn v ->
-      {:ok, venue} = Resources.Venue.insert(v)
-      venue
-    end)
-  end
-
-  def create_venue(_) do
-    venue = fixture(:venue)
-    {:ok, venue: venue}
   end
 
   defp drink_setup(_) do

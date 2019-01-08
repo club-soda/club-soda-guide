@@ -66,60 +66,51 @@ defmodule CsGuide.CategoriesTest do
   end
 
   describe "drink_styles" do
-    @valid_attrs %{deleted: false, name: "some name"}
-    @update_attrs %{deleted: false, name: "some updated name"}
-    @invalid_attrs %{deleted: nil, name: nil}
+    @valid_attrs %{name: "some name"}
+    @update_attrs %{name: "some updated name"}
+    @invalid_attrs %{name: nil}
 
     def drink_style_fixture(attrs \\ %{}) do
-      {:ok, drink_style} =
-        %DrinkStyle{}
-        |> DrinkStyle.changeset(Enum.into(attrs, @valid_attrs))
-        |> DrinkStyle.insert()
+      {:ok, drink_style} = DrinkStyle.insert(@valid_attrs)
 
       drink_style
     end
 
     test "all/0 returns all drink_styles" do
       drink_style = drink_style_fixture()
-      assert DrinkStyle.all() == [drink_style]
+      assert DrinkStyle.all()|> DrinkStyle.preload([:drink_types]) == [drink_style]
     end
 
     test "get/1 returns the drink_style with given id" do
       drink_style = drink_style_fixture()
-      assert DrinkStyle.get(drink_style.entry_id) == drink_style
+      assert DrinkStyle.get(drink_style.entry_id) |> DrinkStyle.preload([:drink_types]) == drink_style
     end
 
     test "insert/1 with valid data creates a drink_style" do
-      assert {:ok, %DrinkStyle{} = drink_style} =
-               %DrinkStyle{} |> DrinkStyle.changeset(@valid_attrs) |> DrinkStyle.insert()
+      assert {:ok, %DrinkStyle{} = drink_style} = DrinkStyle.insert(@valid_attrs)
 
-      assert drink_style.deleted == false
       assert drink_style.name == "some name"
     end
 
     test "insert/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} =
-               %DrinkStyle{} |> DrinkStyle.changeset(@invalid_attrs) |> DrinkStyle.insert()
+      assert {:error, %Ecto.Changeset{}} = DrinkStyle.insert(@invalid_attrs)
     end
 
     test "update/2 with valid data updates the drink_style" do
       drink_style = drink_style_fixture()
 
-      assert {:ok, drink_style} =
-               drink_style |> DrinkStyle.changeset(@update_attrs) |> DrinkStyle.update()
+      assert {:ok, drink_style} = DrinkStyle.update(drink_style, @update_attrs)
 
       assert %DrinkStyle{} = drink_style
-      assert drink_style.deleted == false
       assert drink_style.name == "some updated name"
     end
 
     test "update/2 with invalid data returns error changeset" do
       drink_style = drink_style_fixture()
 
-      assert {:error, %Ecto.Changeset{}} =
-               drink_style |> DrinkStyle.changeset(@invalid_attrs) |> DrinkStyle.update()
+      assert {:error, %Ecto.Changeset{}} = DrinkStyle.update(drink_style, @invalid_attrs)
 
-      assert drink_style == DrinkStyle.get(drink_style.entry_id)
+      assert drink_style == DrinkStyle.get(drink_style.entry_id) |> DrinkStyle.preload([:drink_types])
     end
 
     test "changeset/1 returns a drink_style changeset" do

@@ -1,4 +1,4 @@
-module SearchDrink exposing (main)
+port module SearchDrink exposing (main)
 
 import Array
 import Browser
@@ -13,9 +13,11 @@ import SharedTypes exposing (Drink)
 import TypeAndStyle
     exposing
         ( Filter
+        , FilterId
         , FilterType
         , SubFilters(..)
-        , drinksTypeAndStyle
+        , TypesAndStyles
+        , getDrinkTypesAndStyles
         , getFilterById
         , getFilterId
         , getFilterName
@@ -32,6 +34,7 @@ type alias Model =
     , drinkFilters : Criteria.State
     , abvFilter : String
     , searchTerm : Maybe String
+    , typesAndStyles : List Filter
     }
 
 
@@ -39,18 +42,27 @@ type alias Flags =
     { drinks : List Drink
     , dtype_filter : String
     , term : String
+    , types_styles : List TypesAndStyles
     }
 
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
     let
+        filters =
+            getDrinkTypesAndStyles flags.types_styles
+
         dtype_filter =
             if flags.dtype_filter == "none" then
                 []
 
             else
-                [ flags.dtype_filter ]
+                case getFilterById ("type-" ++ flags.dtype_filter) filters of
+                    Nothing ->
+                        []
+
+                    Just _ ->
+                        [ "type-" ++ flags.dtype_filter ]
     in
     ( { drinks = flags.drinks
       , drinkFilters = Criteria.init dtype_filter
@@ -61,6 +73,7 @@ init flags =
 
             else
                 Just flags.term
+      , typesAndStyles = filters
       }
     , Cmd.none
     )
@@ -74,6 +87,8 @@ type Msg
     = SelectABVLevel String
     | SearchDrink String
     | UpdateFilters Criteria.State
+    | UnselectFitler FilterId
+    | CloseDropdown Bool
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -95,6 +110,24 @@ update msg model =
 
         UpdateFilters state ->
             ( { model | drinkFilters = state }, Cmd.none )
+
+        UnselectFilter filterId ->
+            let
+                filterState =
+                    Criteria.unselectFilter filterId model.drinkFilters
+            in
+            ( { model | drinkFilters = filterState }, Cmd.none )
+
+        CloseDropdown close ->
+            let
+                drinkFilters =
+                    if close then
+                        Criteria.closeFilters model.drinkFilters
+
+                    else
+                        model.drinkFilters
+            in
+            ( { model | drinkFilters = drinkFilters }, Cmd.none )
 
 
 
@@ -133,7 +166,7 @@ criteriaConfig =
 
 mainDivAttrs : List (Attribute Msg)
 mainDivAttrs =
-    [ class "relative bg-white dib z-1" ]
+    [ class "relative bg-white dib z-1", id "dropdown-types-styles" ]
 
 
 filtersDivAttrs : List (Attribute Msg)
@@ -148,7 +181,7 @@ filterDivAttrs _ _ =
 
 buttonAttrs : List (Attribute Msg)
 buttonAttrs =
-    [ class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6 cs-gray mr2" ]
+    [ class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6 cs-gray mr2 pointer" ]
 
 
 filterLabelAttrs : Filter -> Criteria.State -> List (Attribute Msg)
@@ -176,7 +209,8 @@ view model =
     div [ class "mt5 mt6-ns" ]
         [ div [ class "w-90 center" ]
             [ renderSearch "Search Drinks..." (Maybe.withDefault "" model.searchTerm) SearchDrink
-            , Criteria.view criteriaConfig model.drinkFilters drinksTypeAndStyle
+            , renderPills (Criteria.selectedIdFilters model.drinkFilters) model.typesAndStyles
+            , Criteria.view criteriaConfig model.drinkFilters model.typesAndStyles
             , renderFilter "ABV" abv_levels SelectABVLevel model.abvFilter
             ]
         , div [ class "relative center w-90" ]
@@ -186,10 +220,44 @@ view model =
         ]
 
 
+renderPills : Set.Set FilterId -> List Filter -> Html Msg
+renderPills selectedFilterIds filters =
+    let
+        pills =
+            List.map (\f -> getFilterById f filters) (Set.toList selectedFilterIds)
+    in
+    div [ classList [ ( "mb3", not (List.isEmpty pills) ) ] ] (List.map renderPillFilter pills)
+
+
+renderPillFilter : Maybe Filter -> Html Msg
+renderPillFilter filter =
+    let
+        filterName =
+            case filter of
+                Just f ->
+                    getFilterName f
+
+                Nothing ->
+                    ""
+
+        filterId =
+            case filter of
+                Just f ->
+                    getFilterId f
+
+                Nothing ->
+                    ""
+    in
+    div [ class "ma1 dib pa2 br4 bg-cs-pink white", id "pill-type-style" ]
+        [ span [ class "pr1" ] [ text filterName ]
+        , span [ class "pointer pl3 b", onClick (UnselectFilter filterId) ] [ text "x" ]
+        ]
+
+
 filterDrinks : Model -> List (Html Msg)
 filterDrinks model =
     model.drinks
-        |> List.filter (\d -> filterByTypeAndStyle (Set.toList <| Criteria.selectedIdFilters model.drinkFilters) d)
+        |> List.filter (\d -> filterByTypeAndStyle (Set.toList <| Criteria.selectedIdFilters model.drinkFilters) d model.typesAndStyles)
         |> List.filter (\d -> filterByABV model d)
         |> List.filter (\d -> SharedTypes.searchDrinkByTerm model.searchTerm d)
         |> renderDrinks
@@ -217,8 +285,8 @@ filterByABV model drink =
             True
 
 
-filterByTypeAndStyle : List String -> Drink -> Bool
-filterByTypeAndStyle filters drink =
+filterByTypeAndStyle : List String -> Drink -> List Filter -> Bool
+filterByTypeAndStyle filters drink typesAndStyles =
     case filters of
         [] ->
             True
@@ -227,15 +295,15 @@ filterByTypeAndStyle filters drink =
             filters
                 |> List.map
                     (\f ->
-                        case getFilterById f drinksTypeAndStyle of
+                        case getFilterById f typesAndStyles of
                             Nothing ->
                                 False
 
-                            Just ( TypeAndStyle.Type, _, _ ) ->
-                                List.member f drink.drink_types
+                            Just ( TypeAndStyle.Type, filterName, _ ) ->
+                                List.member filterName drink.drink_types
 
-                            Just ( TypeAndStyle.Style, _, _ ) ->
-                                List.member f drink.drink_styles
+                            Just ( TypeAndStyle.Style, filterName, _ ) ->
+                                List.member filterName drink.drink_styles
                     )
                 |> List.any ((==) True)
 
@@ -255,6 +323,18 @@ renderDrinks drinks =
 
 
 
+-- Subscriptions
+
+
+port closeDropdownTypeStyle : (Bool -> msg) -> Sub msg
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    closeDropdownTypeStyle CloseDropdown
+
+
+
 -- MAIN
 
 
@@ -265,8 +345,3 @@ main =
         , update = update
         , view = view
         }
-
-
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none

@@ -2,7 +2,7 @@
   <%= if @is_authenticated do %>
     <%= link "Upload Photo", to: venue_path(@conn, :add_photo, generate_venue_url(@venue)), class: "dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
   <% end %>
-  <section class="">
+  <section class="mt5">
 
     <%= if img = List.last(@venue.venue_images) do %>
       <div class="db bg-venue w-100"
