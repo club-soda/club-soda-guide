@@ -1,31 +1,36 @@
-module SearchVenue exposing (Flags, Model, Msg(..), cs_score, filterByName, filterByScore, filterByType, filterVenues, init, main, onChange, update, venue_types, view)
+module SearchVenue exposing (view)
 
 import Browser
+import Browser.Dom as Dom
+import Browser.Events as Events
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Json.Decode as Json exposing (..)
+import Json.Decode as Decode
 import Search exposing (..)
 import SharedTypes exposing (Venue)
+import Task
 
 
 type alias Model =
-    { venues : List Venue, filterType : Maybe String, filterScore : Maybe Float, filterName : Maybe String }
+    { venues : List Venue
+    , filterType : Maybe String
+    , filterScore : Maybe Float
+    , filterName : Maybe String
+    , venueTypes : List String
+    }
 
 
 type alias Flags =
-    { venues : List Venue, term : String }
+    { venues : List Venue, term : String, venueTypes : List String }
 
 
 type Msg
     = FilterVenueType String
     | FilterVenueScore String
     | FilterVenueName String
-
-
-onChange : (String -> msg) -> Attribute msg
-onChange msgConstructor =
-    Html.Events.on "change" <| Json.map msgConstructor <| Json.at [ "target", "value" ] Json.string
+    | KeyDowns String
+    | NoOp
 
 
 init : Flags -> ( Model, Cmd Msg )
@@ -38,7 +43,7 @@ init flags =
             else
                 Just flags.term
     in
-    ( Model flags.venues Nothing Nothing searchTerm, Cmd.none )
+    ( Model flags.venues Nothing Nothing searchTerm flags.venueTypes, Cmd.none )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -71,15 +76,20 @@ update msg model =
             in
             ( { model | filterName = filterName }, Cmd.none )
 
+        KeyDowns k ->
+            if k == "Enter" then
+                ( model, Task.attempt (\_ -> NoOp) (Dom.blur "search-input") )
 
-venue_types : List String
-venue_types =
-    [ "Hotels", "Pubs", "Restaurants", "Bars", "Cafes" ]
+            else
+                ( model, Cmd.none )
+
+        NoOp ->
+            ( model, Cmd.none )
 
 
 cs_score : List String
 cs_score =
-    [ "0", "0.5", "1", "1.5", "2", "2.5", "3", "3.5", "4", "4.5", "5" ]
+    [ "0", "1", "2", "3", "4", "5" ]
 
 
 view : Model -> Html Msg
@@ -87,7 +97,7 @@ view model =
     div [ class "mt5 mt6-ns" ]
         [ div [ class "w-90 center" ]
             [ renderSearch "Search Venues..." (Maybe.withDefault "" model.filterName) FilterVenueName
-            , renderFilter "Venue Type" venue_types FilterVenueType (Maybe.withDefault "" model.filterType)
+            , renderFilter "Venue Type" model.venueTypes FilterVenueType (Maybe.withDefault "" model.filterType)
             , renderFilter "Club Soda Score"
                 cs_score
                 FilterVenueScore
@@ -136,10 +146,15 @@ filterByScore score venues =
             List.filter (\v -> v.cs_score == s) venues
 
 
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Events.onKeyDown (Decode.map KeyDowns Search.keyDecoder)
+
+
 main =
     Browser.element
         { init = init
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = subscriptions
         , update = update
         , view = view
         }

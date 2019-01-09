@@ -1,9 +1,9 @@
-module Search exposing (getScore, onChange, renderDropdownItems, renderFilter, renderSearch, renderVenues, venueCard)
+module Search exposing (getScore, keyDecoder, onChange, renderDropdownItems, renderFilter, renderSearch, renderVenues, venueCard)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Json.Decode as Json exposing (at, map, string)
+import Json.Decode as Json exposing (at, field, map, string)
 import SharedTypes exposing (..)
 
 
@@ -12,7 +12,7 @@ renderFilter defaultTitle dropdownItems msgConstructor selected =
     div [ class "dib pr2" ]
         [ select
             [ onChange msgConstructor
-            , class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6"
+            , class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6 pointer"
             , classList [ ( "cs-gray", selected == "" ) ]
             ]
             ([ option [ Html.Attributes.value "" ] [ text defaultTitle ] ]
@@ -30,11 +30,12 @@ renderSearch : String -> String -> (String -> msg) -> Html msg
 renderSearch text inputValue msg =
     div [ class "db mb3 w-50" ]
         [ input
-            [ type_ "text"
+            [ type_ "search"
             , placeholder text
             , onInput msg
             , class "f6 lh6 cs-black bg-white ba b--cs-light-gray br2 pv2 pl3 w-15rem"
             , value inputValue
+            , id "search-input"
             ]
             []
         ]
@@ -66,7 +67,7 @@ renderVenues venues =
 venueCard : Venue -> Html msg
 venueCard venue =
     div [ class "w-100 w-25-ns pb4" ]
-        [ a [ href <| "/venues/" ++ venue.id, class "cs-black no-underline pointer" ]
+        [ a [ href <| "/venues/" ++ venue.slug, class "cs-black no-underline pointer" ]
             [ if String.isEmpty venue.image then
                 div [ class "bg-green w-100 w-90-m w5-l h4 br2 mb2 bg-venue-card" ] []
 
@@ -96,3 +97,8 @@ getScore score =
 
     else
         s
+
+
+keyDecoder : Json.Decoder String
+keyDecoder =
+    Json.field "key" Json.string

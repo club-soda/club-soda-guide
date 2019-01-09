@@ -26,6 +26,7 @@ defmodule CsGuide.Resources.Venue do
     field(:lat, :float)
     field(:long, :float)
     field(:distance, :float, virtual: true)
+    field(:slug, :string)
 
     many_to_many(
       :venue_types,
@@ -74,10 +75,11 @@ defmodule CsGuide.Resources.Venue do
       :facebook,
       :favourite,
       :lat,
-      :long
+      :long,
+      :slug
     ])
     |> cast_assoc(:users)
-    |> validate_required([:venue_name, :postcode, :venue_types])
+    |> validate_required([:venue_name, :postcode, :venue_types, :slug])
   end
 
   def retailer_changeset(venue, attrs \\ %{}) do
@@ -132,7 +134,6 @@ defmodule CsGuide.Resources.Venue do
     |> Repo.insert()
   end
 
-
   def get_venue_card(%__MODULE__{} = venue) do
     %{
       id: venue.entry_id,
@@ -161,6 +162,20 @@ defmodule CsGuide.Resources.Venue do
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
     |> Repo.insert()
+  end
 
+  def create_slug(name, postcode) do
+    Enum.join([name, "-", postcode])
+    |> change_spaces_to_dashes()
+    |> String.replace(~r/(,|')/, "")
+    |> String.replace(~r/(-{3})/, "-")
+    |> String.replace(~r/(&|\+)/, "and")
+    |> String.downcase()
+  end
+
+  defp change_spaces_to_dashes(str) do
+    str
+    |> String.split(" ")
+    |> Enum.join("-")
   end
 end

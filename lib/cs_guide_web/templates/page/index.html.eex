@@ -9,7 +9,7 @@
           <div class="flex-ns">
 
             <div class="flex w-100 items-center br2 ba b--cs-light-gray br--left-ns bg-white">
-              <%= text_input f, :term, placeholder: "Search drinks and venues", class: "h-100 w-100 bn pl3 pv2 outline-0" %>
+              <%= search_input f, :term, placeholder: "Search drinks and venues", class: "h-100 w-100 bn pl3 pv2 outline-0" %>
 
               <div id="use-location" class="f6 lh6 cs-black pointer dn db-ns center w4-5">Use my location</div>
               <div id="use-location-mobile" class="f6 lh6 cs-black pointer dn-ns w1 h1 mh3">

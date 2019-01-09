@@ -1,6 +1,6 @@
 <section class="relative">
   <%= if @is_authenticated do %>
-    <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.entry_id), class: "dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
+    <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.slug), class: "dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
   <% end %>
   <section class="mt5">
 
@@ -55,7 +55,7 @@
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyT_ehuzfLvJKLPOAVjobqWtZjFO1--mgpQb_NJmq0wIfpEc5SyXkuPxpG" alt="Photo of drink" class="w-5rem db center pt4">
             <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib">% ABV</p>
           </div>
-          <%= link "Add Drinks", to: venue_path(@conn, :add_drinks, @venue.entry_id), class: "cs-mid-blue f5 lh5 tr pr4" %>
+          <%= link "Add Drinks", to: venue_path(@conn, :add_drinks, @venue.slug), class: "cs-mid-blue f5 lh5 tr pr4" %>
         </div>
       <% end %>
     </div>

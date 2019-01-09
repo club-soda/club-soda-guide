@@ -1,20 +1,22 @@
 <div class="w-90 w-60-ns pt4 ph5-ns center tr">
   <%= if @is_authenticated do %>
-    <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.entry_id), class: "dib dn-ns btn-primary no-underline" %>
+    <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.slug), class: "dib dn-ns btn-primary no-underline" %>
   <% end %>
-  <div class="flex-ns items-center tl">
-    <h1 class="roboto-slab f2 lh2 dib-ns"><%= @venue.venue_name %></h1>
+  <div class="flex-ns items-center tl flex-wrap">
+    <h1 class="roboto-slab f2 lh2 dib-ns mr4-ns"><%= @venue.venue_name %></h1>
     <%= for type <- @venue.venue_types do %>
-      <p class="dib ml4-ns ph3 pv1 white bg-cs-navy br2 f5 lh5 mb3 mb0-ns"><%= String.capitalize(type.name) %></p>
+      <p class="dib mr4-ns ph3 pv1 br2 f5 lh5 mb3 mb0-ns <%= background_colour_type(String.capitalize(type.name)) %>">
+        <%= String.capitalize(type.name) %>
+      </p>
     <% end %>
   </div>
   <div class="tl pt3">
     <img class="w4 v-btm" src="<%= static_path(@conn, "/images/score-#{@venue.cs_score}.png") %>" alt="Club Soda Score of <%= @venue.cs_score %>">
     <%= if @is_authenticated do %>
       <%= if @venue.cs_score == 5 do %>
-        <%= link "Is your stocklist up to date? Click here to update it.", to: venue_path(@conn, :add_drinks, @venue.entry_id), class: "cs-mid-blue dib mt2 mt0-ns pb1" %>
+        <%= link "Is your stocklist up to date? Click here to update it.", to: venue_path(@conn, :add_drinks, @venue.slug), class: "cs-mid-blue dib mt2 mt0-ns pb1" %>
       <% else %>
-        <%= link "Improve your score by adding more drinks to you stocklist.", to: venue_path(@conn, :add_drinks, @venue.entry_id), class: "cs-mid-blue dib mt2 mt0-ns pb1" %>
+        <%= link "Improve your score by adding more drinks to you stocklist.", to: venue_path(@conn, :add_drinks, @venue.slug), class: "cs-mid-blue dib mt2 mt0-ns pb1" %>
       <% end %>
     <% end %>
   </div>
@@ -26,7 +28,7 @@
     <p class="h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl">
       <%= if @is_authenticated do %>
         No venue description,
-        <%= link "add description", to: venue_path(@conn, :edit, @venue.entry_id, class: "f6 lh6 cs-mid-blue dib v-top") %>
+        <%= link "add description", to: venue_path(@conn, :edit, @venue.slug, class: "f6 lh6 cs-mid-blue dib v-top") %>
       <% end %>
     </p>
   <% end %>

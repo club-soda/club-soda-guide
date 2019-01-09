@@ -10,7 +10,8 @@ defmodule CsGuideWeb.SearchAllControllerTest do
       venue_name: "The Favourite Pub",
       favourite: true,
       venue_types: %{"Pubs" => "on"},
-      postcode: "TW3 5FG"
+      postcode: "TW3 5FG",
+      slug: "the-favourite-pub-tw3-5fg"
     }
   ]
 
@@ -26,10 +27,7 @@ defmodule CsGuideWeb.SearchAllControllerTest do
     types =
       @create_types
       |> Enum.map(fn t ->
-        {:ok, type} =
-          %Categories.DrinkType{}
-          |> Categories.DrinkType.changeset(t)
-          |> Categories.DrinkType.insert()
+        {:ok, type} = Categories.DrinkType.insert(t)
 
         type
       end)
@@ -54,7 +52,6 @@ defmodule CsGuideWeb.SearchAllControllerTest do
 
     drink
   end
-
 
   describe "search on venues and drinks" do
     setup [:create_venue, :drink_setup]

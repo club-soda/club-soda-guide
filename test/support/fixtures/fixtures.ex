@@ -20,7 +20,7 @@ defmodule CsGuide.Fixtures do
         postcode: "EC1 5AD",
         drinks: %{"AF Beer 1" => "on"},
         venue_types: %{"Bars" => "on"},
-        inserted_at: "2019-01-01 10:00:00.879083"
+        slug: "Venue-A-EC1-5AD"
       },
       %{
         venue_name: "Venue B",
@@ -30,7 +30,7 @@ defmodule CsGuide.Fixtures do
         postcode: "W6 8LY",
         drinks: %{"AF Beer 1" => "on"},
         venue_types: %{"Bars" => "on"},
-        inserted_at: "2019-01-04 10:00:00.879083"
+        slug: "Venue-B-W6-8LY"
       }
     ]
   end

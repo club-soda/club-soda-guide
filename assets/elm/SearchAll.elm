@@ -2,21 +2,31 @@ module SearchAll exposing (main)
 
 import Array exposing (..)
 import Browser
+import Browser.Dom as Dom
+import Browser.Events as Events
 import DrinkCard exposing (drinkCard)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
+import Json.Decode as Decode
 import Search exposing (..)
 import SharedTypes
+import Task
+import Url
 
 
 main =
     Browser.element
         { init = init
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = subscriptions
         , update = update
         , view = view
         }
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Events.onKeyDown (Decode.map KeyDowns Search.keyDecoder)
 
 
 
@@ -56,6 +66,8 @@ init flags =
 
 type Msg
     = UpdateSearchTerm String
+    | KeyDowns String
+    | NoOp
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -68,6 +80,16 @@ update msg model =
 
                 _ ->
                     ( { model | term = Just term }, Cmd.none )
+
+        KeyDowns k ->
+            if k == "Enter" then
+                ( model, Task.attempt (\_ -> NoOp) (Dom.blur "search-input") )
+
+            else
+                ( model, Cmd.none )
+
+        NoOp ->
+            ( model, Cmd.none )
 
 
 view : Model -> Html Msg
@@ -90,7 +112,15 @@ view model =
     in
     div [ class "mt5 mt6-ns" ]
         [ div [ class "relative w-90 center" ]
-            [ input [ class "f6 lh6 cs-black bg-white ba b--cs-light-gray br2 pv2 pl3 w-15rem", onInput UpdateSearchTerm, value searchTerm, placeholder "Search drinks and venues" ] []
+            [ input
+                [ class "f6 lh6 cs-black bg-white ba b--cs-light-gray br2 pv2 pl3 w-15rem"
+                , id "search-input"
+                , onInput UpdateSearchTerm
+                , value searchTerm
+                , placeholder "Search drinks and venues"
+                , type_ "search"
+                ]
+                []
             , p [ class "pv3 f6 lh6" ] [ text <| resultDescription totalDrinks totalVenues ]
             ]
         , div [ class "relative w-90 center pb5" ]
@@ -110,7 +140,7 @@ drinksPage totalDrinks drinksDisplayed searchTerm =
         a [ href <| "/search/drinks" ] [ text "View all drinks" ]
 
     else
-        a [ href <| "/search/drinks?term=" ++ searchTerm ] [ text <| "See all (" ++ String.fromInt totalDrinks ++ ")" ]
+        a [ href <| "/search/drinks?term=" ++ Url.percentEncode searchTerm ] [ text <| "See all (" ++ String.fromInt totalDrinks ++ ")" ]
 
 
 venuesPage : Int -> Int -> String -> Html Msg
@@ -119,7 +149,7 @@ venuesPage totalVenues venuesDisplayed searchTerm =
         a [ href <| "/search/venues" ] [ text "View all venues" ]
 
     else
-        a [ href <| "/search/venues?term=" ++ searchTerm ] [ text <| "See all (" ++ String.fromInt totalVenues ++ ")" ]
+        a [ href <| "/search/venues?term=" ++ Url.percentEncode searchTerm ] [ text <| "See all (" ++ String.fromInt totalVenues ++ ")" ]
 
 
 resultDescription : Int -> Int -> String
