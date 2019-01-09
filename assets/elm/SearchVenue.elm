@@ -1,12 +1,15 @@
 module SearchVenue exposing (view)
 
 import Browser
+import Browser.Dom as Dom
+import Browser.Events as Events
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Json.Decode as Json exposing (..)
+import Json.Decode as Decode
 import Search exposing (..)
 import SharedTypes exposing (Venue)
+import Task
 
 
 type alias Model =
@@ -26,11 +29,8 @@ type Msg
     = FilterVenueType String
     | FilterVenueScore String
     | FilterVenueName String
-
-
-onChange : (String -> msg) -> Attribute msg
-onChange msgConstructor =
-    Html.Events.on "change" <| Json.map msgConstructor <| Json.at [ "target", "value" ] Json.string
+    | KeyDowns String
+    | NoOp
 
 
 init : Flags -> ( Model, Cmd Msg )
@@ -75,6 +75,16 @@ update msg model =
                             Just name
             in
             ( { model | filterName = filterName }, Cmd.none )
+
+        KeyDowns k ->
+            if k == "Enter" then
+                ( model, Task.attempt (\_ -> NoOp) (Dom.blur "search-input") )
+
+            else
+                ( model, Cmd.none )
+
+        NoOp ->
+            ( model, Cmd.none )
 
 
 cs_score : List String
@@ -136,10 +146,15 @@ filterByScore score venues =
             List.filter (\v -> v.cs_score == s) venues
 
 
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Events.onKeyDown (Decode.map KeyDowns Search.keyDecoder)
+
+
 main =
     Browser.element
         { init = init
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = subscriptions
         , update = update
         , view = view
         }

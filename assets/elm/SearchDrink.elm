@@ -2,14 +2,18 @@ port module SearchDrink exposing (main)
 
 import Array
 import Browser
+import Browser.Dom as Dom
+import Browser.Events as Events
 import Criteria
 import DrinkCard exposing (drinkCard)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Search exposing (renderFilter, renderSearch)
+import Json.Decode as Decode
+import Search exposing (keyDecoder, renderFilter, renderSearch)
 import Set
 import SharedTypes exposing (Drink)
+import Task
 import TypeAndStyle
     exposing
         ( Filter
@@ -89,6 +93,8 @@ type Msg
     | UpdateFilters Criteria.State
     | UnselectFilter FilterId
     | CloseDropdown Bool
+    | KeyDowns String
+    | NoOp
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -128,6 +134,16 @@ update msg model =
                         model.drinkFilters
             in
             ( { model | drinkFilters = drinkFilters }, Cmd.none )
+
+        KeyDowns k ->
+            if k == "Enter" then
+                ( model, Task.attempt (\_ -> NoOp) (Dom.blur "search-input") )
+
+            else
+                ( model, Cmd.none )
+
+        NoOp ->
+            ( model, Cmd.none )
 
 
 
@@ -331,7 +347,10 @@ port closeDropdownTypeStyle : (Bool -> msg) -> Sub msg
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    closeDropdownTypeStyle CloseDropdown
+    Sub.batch
+        [ closeDropdownTypeStyle CloseDropdown
+        , Events.onKeyDown (Decode.map KeyDowns Search.keyDecoder)
+        ]
 
 
 
