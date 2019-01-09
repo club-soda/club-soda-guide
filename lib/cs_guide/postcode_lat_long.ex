@@ -1,5 +1,4 @@
 defmodule CsGuide.PostcodeLatLong do
-  alias NimbleCSV.RFC4180, as: CSV
   alias CsGuide.Resources.Venue
   import Ecto.Query
   use GenServer
@@ -24,26 +23,79 @@ defmodule CsGuide.PostcodeLatLong do
         # against the cache. For testing at that point we can create a smaller
         # csv file which we can use to test with.
       _ ->
-        postcode_cache = :ets.new(:postcode_cache, [:set, :protected, :named_table])
-        store_postcodes_in_ets(postcode_cache)
+        :ets.new(:postcode_cache, [:set, :protected, :named_table])
+        store_postcodes_in_ets()
     end
     {:ok, initial_state}
   end
 
-  defp store_postcodes_in_ets(ets) do
+  defp store_postcodes_in_ets do
     if File.exists?("ukpostcodes.csv") do
       IO.inspect("Postcode file exists, storing with ets")
-      get_postcodes_from_csv("ukpostcodes.csv", ets)
+      postcodes_from_csv_to_ets("ukpostcodes.csv")
     else
       IO.inspect("Postcode file does not exist. Creating file...")
       case create_csv_file() do
         :ok ->
           IO.inspect("Removed zip file. Storing postcodes with ets")
-          get_postcodes_from_csv("ukpostcodes.csv", ets)
+          postcodes_from_csv_to_ets("ukpostcodes.csv")
 
         error ->
           error
       end
+    end
+  end
+
+  defp postcodes_from_csv_to_ets(csv) do
+    db_prefix_list =
+      Venue.all()
+      |> Enum.map(&(&1.postcode))
+      |> Enum.filter(&(&1 != nil))
+      |> Enum.map(&String.split(&1, " ") |> Enum.at(0))
+      |> Enum.uniq()
+
+    csv
+    |> File.stream!()
+    |> Enum.each(fn(str) ->
+      [_, postcode, lat, long] = String.split(str, ",")
+        if postcode != "postcode" do # does not store title line in cache
+          [prefix, _] = String.split(postcode, " ")
+          if Enum.member?(db_prefix_list, prefix) do # only stores postcodes that have the same prefix as a venue from the db.
+            postcode = String.replace(postcode, " ", "")
+            long = String.trim(long)
+
+            :ets.insert_new(:postcode_cache, {postcode, lat, long})
+          end
+        end
+    end)
+  end
+
+  # Gets zip file from github and saves the response to body then writes the
+  # zip file to allow it to be unzipped so the csv can be extracted
+  def create_csv_file() do
+    zip_file_url = "https://raw.githubusercontent.com/dwyl/uk-postcodes-latitude-longitude-complete-csv/master/ukpostcodes.csv.zip"
+    %HTTPoison.Response{body: body} = HTTPoison.get!(zip_file_url)
+
+    case File.write(@zip_file_name, body) do
+      :ok ->
+        IO.inspect("Created zip file")
+        unzip_file_name()
+
+      error ->
+        error
+    end
+  end
+
+  # Helper to unzip file and only take ukpostcodes.csv
+  # If file is succesfully unziped then it deletes the zip file
+  defp unzip_file_name do
+    case :zip.extract(@zip_file_name_charlist, [{:file_list, [@postcode_file_charlist]}]) do
+      {:ok, _fileList} ->
+        IO.inspect("Postcodes successfully unzipped")
+        File.rm(@zip_file_name)
+
+      error ->
+        error
     end
   end
 
@@ -93,59 +145,5 @@ defmodule CsGuide.PostcodeLatLong do
     # combination of distance and entry_id. The reason for the combination is to
     # account for cases where distances could be the same to different venues.
     |> CsGuide.Repo.all()
-
-  end
-
-  defp get_postcodes_from_csv(csv, ets) do
-    csv
-    |> File.read!()
-    |> csv_to_ets(~w(nil postcode latitude longitude)a, ets)
-  end
-
-  defp csv_to_ets(csv, columns, ets) do
-    csv
-    |> CSV.parse_string()
-    |> Enum.map(fn data ->
-        columns
-        |> Enum.zip(data)
-        |> Enum.filter(fn {k, _v} -> not is_nil(k) end)
-        |> Enum.into(%{})
-        |> add_postcode_latlong_to_ets(ets)
-    end)
-  end
-
-  defp add_postcode_latlong_to_ets(map, ets) do
-    postcode = String.replace(map.postcode, " ", "")
-
-    :ets.insert_new(ets, {postcode, map.latitude, map.longitude})
-  end
-
-  # Gets zip file from github and saves the response to body then writes the
-  # zip file to allow it to be unzipped so the csv can be extracted
-  def create_csv_file() do
-    zip_file_url = "https://raw.githubusercontent.com/dwyl/uk-postcodes-latitude-longitude-complete-csv/master/ukpostcodes.csv.zip"
-    %HTTPoison.Response{body: body} = HTTPoison.get!(zip_file_url)
-
-    case File.write(@zip_file_name, body) do
-      :ok ->
-        IO.inspect("Created zip file")
-        unzip_file_name()
-
-      error ->
-        error
-    end
-  end
-
-  # Helper to unzip file and only take ukpostcodes.csv
-  # If file is succesfully unziped then it deletes the zip file
-  defp unzip_file_name do
-    case :zip.extract(@zip_file_name_charlist, [{:file_list, [@postcode_file_charlist]}]) do
-      {:ok, _fileList} ->
-        IO.inspect("Postcodes successfully unzipped")
-        File.rm(@zip_file_name)
-
-      error ->
-        error
-    end
   end
 end
