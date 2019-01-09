@@ -10,7 +10,8 @@ defmodule CsGuideWeb.SearchAllControllerTest do
       venue_name: "The Favourite Pub",
       favourite: true,
       venue_types: %{"Pubs" => "on"},
-      postcode: "TW3 5FG"
+      postcode: "TW3 5FG",
+      slug: "the-favourite-pub-tw3-5fg"
     }
   ]
 
@@ -51,7 +52,6 @@ defmodule CsGuideWeb.SearchAllControllerTest do
 
     drink
   end
-
 
   describe "search on venues and drinks" do
     setup [:create_venue, :drink_setup]
