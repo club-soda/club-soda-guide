@@ -220,7 +220,7 @@ To create an admin user, open iex with `iex -S mix`.
 From here do:
 
 ```
-iex> CsGuide.Accounts.User.insert(%{email: "", password: "", admin: true})
+iex> %CsGuide.Accounts.User{} |> CsGuide.Accounts.User.changeset(%{email: "", password: "", admin: true}) |> CsGuide.Accounts.User.insert()
 ```
 
 Filling in the empty strings as necessary.
