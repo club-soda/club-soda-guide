@@ -8,13 +8,13 @@
         <%= form_for @conn, search_all_path(@conn, :index), [method: :get], fn f -> %>
           <div class="flex-ns">
             <div class="db dib-ns w-100 w-80-ns br2 ba b--cs-light-gray br--left-ns relative">
-              <%= text_input f, :term, placeholder: "Search drinks and venues", class: "h-100 w-100 bn pl3 pv2" %>
+              <%= search_input f, :term, placeholder: "Search drinks and venues", class: "h-100 w-100 bn pl3 pv2" %>
               <div id="use-location" class="f6 lh6 cs-black absolute-vertical-center right-1 pointer dn db-ns">Use my location</div>
               <div id="use-location-mobile" class="f6 lh6 cs-black absolute-vertical-center right-1 pointer dn-ns relative w1 h1">
                 <img src="/images/location.png" alt="location image" class="absolute-vertical-center right-1">
               </div>
             </div>
-            <%= submit "Search", class: "dn dib-ns bg-cs-pink white f5 lh5 ph3 pv2 w-20 br2 ba b--cs-pink br--right" %>
+            <%= submit "Search", class: "dn dib-ns bg-cs-pink white f5 lh5 ph3 pv2 w-20 br2 ba b--cs-pink br--right pointer" %>
           </div>
         <% end %>
       </div>

@@ -1,9 +1,9 @@
-module Search exposing (getScore, onChange, renderDropdownItems, renderFilter, renderSearch, renderVenues, venueCard)
+module Search exposing (getScore, keyDecoder, onChange, renderDropdownItems, renderFilter, renderSearch, renderVenues, venueCard)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Json.Decode as Json exposing (at, map, string)
+import Json.Decode as Json exposing (at, field, map, string)
 import SharedTypes exposing (..)
 
 
@@ -30,11 +30,12 @@ renderSearch : String -> String -> (String -> msg) -> Html msg
 renderSearch text inputValue msg =
     div [ class "db mb3 w-50" ]
         [ input
-            [ type_ "text"
+            [ type_ "search"
             , placeholder text
             , onInput msg
             , class "f6 lh6 cs-black bg-white ba b--cs-light-gray br2 pv2 pl3 w-15rem"
             , value inputValue
+            , id "search-input"
             ]
             []
         ]
@@ -96,3 +97,8 @@ getScore score =
 
     else
         s
+
+
+keyDecoder : Json.Decoder String
+keyDecoder =
+    Json.field "key" Json.string
