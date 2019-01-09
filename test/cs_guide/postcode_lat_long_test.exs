@@ -11,7 +11,8 @@ defmodule CsGuide.PostcodeLatLongTest do
       venue_types: %{"Pubs" => "on"},
       postcode: "E2 0SY",
       lat: "51.529675468124100",
-      long: "-0.042065456864592"
+      long: "-0.042065456864592",
+      slug: "the-favourite-pub-e2-0sy"
     },
     %{
       venue_name: "diff name, same location",
@@ -19,7 +20,8 @@ defmodule CsGuide.PostcodeLatLongTest do
       venue_types: %{"Pubs" => "on"},
       postcode: "E2 0SY",
       lat: "51.529675468124100",
-      long: "-0.042065456864592"
+      long: "-0.042065456864592",
+      slug: "the-favourite-pub-e2-0sy"
     }
   ]
 
@@ -33,11 +35,11 @@ defmodule CsGuide.PostcodeLatLongTest do
       Venue.get_by(venue_name: "The Not Favourite Pub")
       |> Venue.update(%{city: "London"})
 
-      query = from v in Venue, where: v.venue_name == "The Not Favourite Pub"
+      query = from(v in Venue, where: v.venue_name == "The Not Favourite Pub")
+
       all_not_fav_count =
         CsGuide.Repo.all(query)
         |> count_no_times_venue_occurs("The Not Favourite Pub")
-
 
       all_not_fav_count_from_nearest =
         PostcodeLatLong.nearest_venues(lat, long)

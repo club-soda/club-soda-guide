@@ -12,7 +12,7 @@ renderFilter defaultTitle dropdownItems msgConstructor selected =
     div [ class "dib pr2" ]
         [ select
             [ onChange msgConstructor
-            , class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6"
+            , class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6 pointer"
             , classList [ ( "cs-gray", selected == "" ) ]
             ]
             ([ option [ Html.Attributes.value "" ] [ text defaultTitle ] ]
@@ -66,7 +66,7 @@ renderVenues venues =
 venueCard : Venue -> Html msg
 venueCard venue =
     div [ class "w-100 w-25-ns pb4" ]
-        [ a [ href <| "/venues/" ++ venue.id, class "cs-black no-underline pointer" ]
+        [ a [ href <| "/venues/" ++ venue.slug, class "cs-black no-underline pointer" ]
             [ if String.isEmpty venue.image then
                 div [ class "bg-green w-100 w-90-m w5-l h4 br2 mb2 bg-venue-card" ] []
 

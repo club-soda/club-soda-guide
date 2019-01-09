@@ -16,19 +16,22 @@ defmodule CsGuide.ResourcesTest do
       phone_number: "01234567890",
       postcode: "EC1 5AD",
       venue_name: "some venue_name",
-      venue_types: %{@venue_type_name => "on"}
+      venue_types: %{@venue_type_name => "on"},
+      slug: "some-venue_name-ec1-5ad"
     }
     @update_attrs %{
       phone_number: "09876543210",
       postcode: "EC2 6FV",
       venue_name: "some updated venue_name",
-      venue_types: %{@venue_type_name => "on"}
+      venue_types: %{@venue_type_name => "on"},
+      slug: "some-venue_name-ec1-5ad"
     }
     @invalid_attrs %{
       phone_number: nil,
       postcode: nil,
       venue_name: nil,
-      venue_types: %{@venue_type_name => "on"}
+      venue_types: %{@venue_type_name => "on"},
+      slug: nil
     }
 
     def venue_fixture(attrs \\ %{}) do

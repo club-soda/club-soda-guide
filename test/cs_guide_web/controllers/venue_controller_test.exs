@@ -2,6 +2,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   use CsGuideWeb.ConnCase
   alias CsGuide.Fixtures
   alias CsGuide.{Resources, Categories}
+  alias CsGuide.Resources.Venue
 
   import CsGuide.SetupHelpers
 
@@ -20,7 +21,8 @@ defmodule CsGuideWeb.VenueControllerTest do
     postcode: "EC1 5AD",
     venue_name: "The Example Pub",
     drinks: %{"AF Beer 1" => "on"},
-    venue_types: %{"Bars" => "on"}
+    venue_types: %{"Bars" => "on"},
+    slug: "The-Example-Pub-EC1-5AD"
   }
 
   @invalid_attrs %{phone_number: nil, postcode: nil, venue_name: nil}
@@ -129,11 +131,10 @@ defmodule CsGuideWeb.VenueControllerTest do
 
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
+      assert %{slug: slug} = redirected_params(conn)
+      assert redirected_to(conn) == venue_path(conn, :show, slug)
 
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == venue_path(conn, :show, id)
-
-      conn = get(conn, venue_path(conn, :show, id))
+      conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "The Example Pub"
     end
 
@@ -148,19 +149,19 @@ defmodule CsGuideWeb.VenueControllerTest do
 
     test "When no drinks are added the score is 0", %{conn: conn, drinks: drinks} do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
-      assert %{id: id} = redirected_params(conn)
+      assert %{slug: slug} = redirected_params(conn)
 
       conn =
-        put(conn, venue_path(conn, :update, id), %{
-          "id" => id,
+        put(conn, venue_path(conn, :update, slug), %{
+          "slug" => slug,
           "venue" => %{
             "drinks" => Map.new([])
           }
         })
 
-      assert redirected_to(conn) == venue_path(conn, :show, id)
+      assert redirected_to(conn) == venue_path(conn, :show, slug)
 
-      conn = get(conn, venue_path(conn, :show, id))
+      conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "Club Soda Score of 0.0"
     end
 
@@ -171,11 +172,15 @@ defmodule CsGuideWeb.VenueControllerTest do
       afWine2 = Enum.find(drinks, fn d -> d.name == "AF Wine 2" end)
 
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
-      assert %{id: id} = redirected_params(conn)
+      assert %{slug: slug} = redirected_params(conn)
+
+      venue =
+        Venue.get_by(slug: slug)
+        |> Venue.preload(:venue_types)
 
       conn =
-        put(conn, venue_path(conn, :update, id), %{
-          "id" => id,
+        put(conn, venue_path(conn, :update, slug), %{
+          "slug" => slug,
           "venue" => %{
             "drinks" =>
               Map.new([
@@ -188,9 +193,9 @@ defmodule CsGuideWeb.VenueControllerTest do
           }
         })
 
-      assert redirected_to(conn) == venue_path(conn, :show, id)
+      assert redirected_to(conn) == venue_path(conn, :show, slug)
 
-      conn = get(conn, venue_path(conn, :show, id))
+      conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "Club Soda Score of 4.0"
     end
 
@@ -199,11 +204,11 @@ defmodule CsGuideWeb.VenueControllerTest do
       beer2 = Enum.find(drinks, fn d -> d.name == "Low Alc Beer 2" end)
 
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
-      assert %{id: id} = redirected_params(conn)
+      assert %{slug: slug} = redirected_params(conn)
 
       conn =
-        put(conn, venue_path(conn, :update, id), %{
-          "id" => id,
+        put(conn, venue_path(conn, :update, slug), %{
+          "slug" => slug,
           "venue" => %{
             "drinks" =>
               Map.new([
@@ -214,9 +219,9 @@ defmodule CsGuideWeb.VenueControllerTest do
           }
         })
 
-      assert redirected_to(conn) == venue_path(conn, :show, id)
+      assert redirected_to(conn) == venue_path(conn, :show, slug)
 
-      conn = get(conn, venue_path(conn, :show, id))
+      conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "Club Soda Score of 1.0"
     end
 
@@ -225,11 +230,11 @@ defmodule CsGuideWeb.VenueControllerTest do
       wine2 = Enum.find(drinks, fn d -> d.name == "Low Alc Wine 2" end)
 
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
-      assert %{id: id} = redirected_params(conn)
+      assert %{slug: slug} = redirected_params(conn)
 
       conn =
-        put(conn, venue_path(conn, :update, id), %{
-          "id" => id,
+        put(conn, venue_path(conn, :update, slug), %{
+          "slug" => slug,
           "venue" => %{
             "drinks" =>
               Map.new([
@@ -240,9 +245,9 @@ defmodule CsGuideWeb.VenueControllerTest do
           }
         })
 
-      assert redirected_to(conn) == venue_path(conn, :show, id)
+      assert redirected_to(conn) == venue_path(conn, :show, slug)
 
-      conn = get(conn, venue_path(conn, :show, id))
+      conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "Club Soda Score of 1.0"
     end
 
@@ -252,11 +257,15 @@ defmodule CsGuideWeb.VenueControllerTest do
       softDrink3 = Enum.find(drinks, fn d -> d.name == "Soft Drink 3" end)
 
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
-      assert %{id: id} = redirected_params(conn)
+      assert %{slug: slug} = redirected_params(conn)
+
+      venue =
+        Venue.get_by(slug: slug)
+        |> Venue.preload(:venue_types)
 
       conn =
-        put(conn, venue_path(conn, :update, id), %{
-          "id" => id,
+        put(conn, venue_path(conn, :update, slug), %{
+          "slug" => slug,
           "venue" => %{
             "drinks" =>
               Map.new([
@@ -268,9 +277,9 @@ defmodule CsGuideWeb.VenueControllerTest do
           }
         })
 
-      assert redirected_to(conn) == venue_path(conn, :show, id)
+      assert redirected_to(conn) == venue_path(conn, :show, slug)
 
-      conn = get(conn, venue_path(conn, :show, id))
+      conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "Club Soda Score of 1.0"
     end
 
@@ -280,11 +289,15 @@ defmodule CsGuideWeb.VenueControllerTest do
       mixer2 = Enum.find(drinks, fn d -> d.name == "Mixer 2" end)
 
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
-      assert %{id: id} = redirected_params(conn)
+      assert %{slug: slug} = redirected_params(conn)
+
+      venue =
+        Venue.get_by(slug: slug)
+        |> Venue.preload(:venue_types)
 
       conn =
-        put(conn, venue_path(conn, :update, id), %{
-          "id" => id,
+        put(conn, venue_path(conn, :update, slug), %{
+          "slug" => slug,
           "venue" => %{
             "drinks" =>
               Map.new([
@@ -296,9 +309,9 @@ defmodule CsGuideWeb.VenueControllerTest do
           }
         })
 
-      assert redirected_to(conn) == venue_path(conn, :show, id)
+      assert redirected_to(conn) == venue_path(conn, :show, slug)
 
-      conn = get(conn, venue_path(conn, :show, id))
+      conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "Club Soda Score of 1.0"
     end
 
@@ -311,11 +324,15 @@ defmodule CsGuideWeb.VenueControllerTest do
       afCider1 = Enum.find(drinks, fn d -> d.name == "AF Cider 1" end)
 
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
-      assert %{id: id} = redirected_params(conn)
+      assert %{slug: slug} = redirected_params(conn)
+
+      venue =
+        Venue.get_by(slug: slug)
+        |> Venue.preload(:venue_types)
 
       conn =
-        put(conn, venue_path(conn, :update, id), %{
-          "id" => id,
+        put(conn, venue_path(conn, :update, slug), %{
+          "slug" => slug,
           "venue" => %{
             "drinks" =>
               Map.new([
@@ -330,9 +347,9 @@ defmodule CsGuideWeb.VenueControllerTest do
           }
         })
 
-      assert redirected_to(conn) == venue_path(conn, :show, id)
+      assert redirected_to(conn) == venue_path(conn, :show, slug)
 
-      conn = get(conn, venue_path(conn, :show, id))
+      conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "Club Soda Score of 5.0"
     end
 
@@ -341,11 +358,15 @@ defmodule CsGuideWeb.VenueControllerTest do
       premixed1 = Enum.find(drinks, fn d -> d.name == "Premixed 1" end)
 
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
-      assert %{id: id} = redirected_params(conn)
+      assert %{slug: slug} = redirected_params(conn)
+
+      venue =
+        Venue.get_by(slug: slug)
+        |> Venue.preload(:venue_types)
 
       conn =
-        put(conn, venue_path(conn, :update, id), %{
-          "id" => id,
+        put(conn, venue_path(conn, :update, slug), %{
+          "slug" => slug,
           "venue" => %{
             "drinks" =>
               Map.new([
@@ -356,9 +377,9 @@ defmodule CsGuideWeb.VenueControllerTest do
           }
         })
 
-      assert redirected_to(conn) == venue_path(conn, :show, id)
+      assert redirected_to(conn) == venue_path(conn, :show, slug)
 
-      conn = get(conn, venue_path(conn, :show, id))
+      conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "Club Soda Score of 2.0"
     end
 
@@ -367,11 +388,15 @@ defmodule CsGuideWeb.VenueControllerTest do
       afCider2 = Enum.find(drinks, fn d -> d.name == "AF Cider 2" end)
 
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
-      assert %{id: id} = redirected_params(conn)
+      assert %{slug: slug} = redirected_params(conn)
+
+      venue =
+        Venue.get_by(slug: slug)
+        |> Venue.preload(:venue_types)
 
       conn =
-        put(conn, venue_path(conn, :update, id), %{
-          "id" => id,
+        put(conn, venue_path(conn, :update, slug), %{
+          "slug" => slug,
           "venue" => %{
             "drinks" =>
               Map.new([
@@ -382,9 +407,9 @@ defmodule CsGuideWeb.VenueControllerTest do
           }
         })
 
-      assert redirected_to(conn) == venue_path(conn, :show, id)
+      assert redirected_to(conn) == venue_path(conn, :show, slug)
 
-      conn = get(conn, venue_path(conn, :show, id))
+      conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "Club Soda Score of 2.0"
     end
   end
@@ -394,7 +419,7 @@ defmodule CsGuideWeb.VenueControllerTest do
 
     test "does not render form when not logged in", %{conn: conn, venues: venues} do
       venue = Enum.at(venues, 0)
-      conn = get(conn, venue_path(conn, :edit, venue.entry_id))
+      conn = get(conn, venue_path(conn, :edit, venue.slug))
       assert html_response(conn, 302)
     end
   end
@@ -404,7 +429,7 @@ defmodule CsGuideWeb.VenueControllerTest do
 
     test "renders form for editing chosen venue", %{conn: conn, venues: venues} do
       venue = Enum.at(venues, 0)
-      conn = get(conn, venue_path(conn, :edit, venue.entry_id))
+      conn = get(conn, venue_path(conn, :edit, venue.slug))
       assert html_response(conn, 200) =~ "Edit Venue"
     end
   end
@@ -414,7 +439,7 @@ defmodule CsGuideWeb.VenueControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn, venues: venues} do
       venue = Enum.at(venues, 0)
-      conn = put(conn, venue_path(conn, :update, venue.entry_id), venue: @invalid_attrs)
+      conn = put(conn, venue_path(conn, :update, venue.slug), venue: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Venue"
     end
   end

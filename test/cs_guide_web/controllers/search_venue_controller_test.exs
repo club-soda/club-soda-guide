@@ -9,7 +9,8 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
       venue_types: %{"Pubs" => "on"},
       postcode: "G1 1HF",
       lat: "55.858737212319600",
-      long: "-4.243474091424120"
+      long: "-4.243474091424120",
+      slug: "the-favourite-pub-g1-1hf"
     },
     %{
       venue_name: "The Not Favourite Pub",
@@ -17,7 +18,8 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
       venue_types: %{"Pubs" => "on"},
       postcode: "E2 0SY",
       lat: "51.529675468124100",
-      long: "-0.042065456864592"
+      long: "-0.042065456864592",
+      slug: "the-not-favourite-pub-e2-0sy"
     },
     %{
       venue_name: "same location as not fav",
@@ -25,7 +27,8 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
       venue_types: %{"Pubs" => "on"},
       postcode: "E2 0SY",
       lat: "51.529675468124100",
-      long: "-0.042065456864592"
+      long: "-0.042065456864592",
+      slug: "same-location-as-not-fav-e2-0sy"
     },
     %{
       venue_name: "The Retailer",
@@ -33,7 +36,8 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
       venue_types: %{"Retailers" => "on"},
       postcode: "SW1 4RV",
       lat: "51.468175746794700",
-      long: "-0.363049000000000"
+      long: "-0.363049000000000",
+      slug: "retailer"
     }
   ]
 
@@ -63,7 +67,8 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
   describe "renders search/venues with nearby venues" do
     setup [:create_venue]
 
-    test "GET /search/venues?ll=(north london latlong) does not display venues that are too far", %{conn: conn} do
+    test "GET /search/venues?ll=(north london latlong) does not display venues that are too far",
+         %{conn: conn} do
       conn = get(conn, "/search/venues?ll=51.54359770000001,-0.08807799999999999")
 
       refute html_response(conn, 200) =~ "The Favourite Pub"

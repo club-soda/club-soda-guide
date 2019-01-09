@@ -28,10 +28,10 @@
           <td class="pa3 dn dib-ns"><%= DateTime.from_naive!(venue.inserted_at, "Etc/UTC") |> DateTime.to_date() %></td>
 
           <td class="pv3 pa3-ns tr">
-            <span><%= link "Show", to: venue_path(@conn, :show, venue.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
-            <span><%= link "Edit", to: venue_path(@conn, :edit, venue.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
+            <span><%= link "Show", to: venue_path(@conn, :show, venue.slug), class: "ph3 pv3-ns cs-mid-blue" %></span>
+            <span><%= link "Edit", to: venue_path(@conn, :edit, venue.slug), class: "ph3 pv3-ns cs-mid-blue" %></span>
             <span>
-              <%= link "Delete", to: venue_path(@conn, :delete, venue.entry_id),
+              <%= link "Delete", to: venue_path(@conn, :delete, venue.slug),
               method: :delete, data: [confirm: "Are you sure you'd like to delete this venue?"],
               class: "cs-mid-blue ph3 pv3-ns" %>
             </span>
