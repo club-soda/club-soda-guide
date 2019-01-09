@@ -36,6 +36,18 @@ defmodule CsGuideWeb.VenueView do
     "https://www.google.com/maps/search/?api=1&query=" <> query_str
   end
 
+  def background_colour_type(type_name) do
+    values = %{
+      "Bars" => "bg-cs-mint ",
+      "Pubs" => "bg-cs-yellow",
+      "Restaurants" => "bg-cs-light-pink",
+      "Cafes" => "bg-cs-navy white",
+      "Hotels" => "bg-cs-mid-blue white"
+    }
+
+    values[type_name] || "bg-cs-black white"
+  end
+
   defp format_str(str) do
     str
     |> String.split(" ")

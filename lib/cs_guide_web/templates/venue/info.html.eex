@@ -2,10 +2,12 @@
   <%= if @is_authenticated do %>
     <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.slug), class: "dib dn-ns btn-primary no-underline" %>
   <% end %>
-  <div class="flex-ns items-center tl">
-    <h1 class="roboto-slab f2 lh2 dib-ns"><%= @venue.venue_name %></h1>
+  <div class="flex-ns items-center tl flex-wrap">
+    <h1 class="roboto-slab f2 lh2 dib-ns mr4-ns"><%= @venue.venue_name %></h1>
     <%= for type <- @venue.venue_types do %>
-      <p class="dib ml4-ns ph3 pv1 white bg-cs-navy br2 f5 lh5 mb3 mb0-ns"><%= String.capitalize(type.name) %></p>
+      <p class="dib mr4-ns ph3 pv1 br2 f5 lh5 mb3 mb0-ns <%= background_colour_type(String.capitalize(type.name)) %>">
+        <%= String.capitalize(type.name) %>
+      </p>
     <% end %>
   </div>
   <div class="tl pt3">

@@ -12,7 +12,7 @@ renderFilter defaultTitle dropdownItems msgConstructor selected =
     div [ class "dib pr2" ]
         [ select
             [ onChange msgConstructor
-            , class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6"
+            , class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6 pointer"
             , classList [ ( "cs-gray", selected == "" ) ]
             ]
             ([ option [ Html.Attributes.value "" ] [ text defaultTitle ] ]

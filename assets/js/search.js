@@ -16,7 +16,7 @@ if (search) {
 var searchVenue = document.getElementById('search-venue');
 if (searchVenue) {
   Elm.SearchVenue.init({
-    node: searchVenue, flags: { venues: venues, term: searchTerm }
+    node: searchVenue, flags: { venues: venues, term: searchTerm, venueTypes: venueTypes }
   })
 }
 
