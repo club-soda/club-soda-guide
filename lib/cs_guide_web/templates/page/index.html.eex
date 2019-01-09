@@ -17,7 +17,7 @@
               </div>
             </div>
 
-            <%= submit "Search", class: "dn dib-ns bg-cs-pink white f5 lh5 ph3 ph2-m pv2 w-20 br2 ba b--cs-pink br--right" %>
+            <%= submit "Search", class: "dn dib-ns bg-cs-pink white f5 lh5 ph3 ph2-m pv2 w-20 br2 ba b--cs-pink br--right pointer" %>
           </div>
         <% end %>
       </div>
