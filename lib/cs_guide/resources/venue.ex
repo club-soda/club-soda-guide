@@ -137,6 +137,7 @@ defmodule CsGuide.Resources.Venue do
   def get_venue_card(%__MODULE__{} = venue) do
     %{
       id: venue.entry_id,
+      slug: venue.slug,
       name: venue.venue_name,
       types: Enum.map(venue.venue_types, fn v -> v.name end),
       postcode: venue.postcode,
