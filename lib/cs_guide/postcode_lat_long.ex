@@ -106,44 +106,4 @@ defmodule CsGuide.PostcodeLatLong do
       venues -> venues
     end
   end
-  def nearest_venues(_, _, _), do: []
-
-  defp venues_within_distance(distance, lat, long) do
-    Venue
-    |> where([venue], venue.deleted == false)
-    # filters deleted venues
-    |> where(
-      [venue],
-      fragment(
-        "? @> ?",
-        fragment(
-          "earth_box(?, ?)",
-          fragment("ll_to_earth(?, ?)", ^lat, ^long),
-          ^distance
-        ),
-        fragment("ll_to_earth(?,?)", venue.lat, venue.long)
-      )
-    )
-    # filters veunes that are within the given distance
-    |> select([venue], %{
-      venue
-      | distance:
-          fragment(
-            "? as distance",
-            fragment(
-              "? <@> ?",
-              fragment("point(?, ?)", ^long, ^lat),
-              fragment("point(?, ?)", venue.long, venue.lat)
-            )
-          )
-    })
-    # selects all venues 'where' tells it to and adds the :distance key to
-    # each (:distance is a virtual field that needs to be added to each venue
-    # as the lat, long and distance variables passed in can all change)
-    |> distinct([v], [asc: fragment("distance"), asc: :entry_id])
-    # filters the results to make sure it returns only venues with a unique
-    # combination of distance and entry_id. The reason for the combination is to
-    # account for cases where distances could be the same to different venues.
-    |> CsGuide.Repo.all()
-  end
 end
