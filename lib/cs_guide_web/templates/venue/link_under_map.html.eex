@@ -1,7 +1,6 @@
 <div class="db pv1">
-  <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, @img_str) %>" alt="<%= Atom.to_string(@link_key) %> icon">
-
   <%= if Map.get(@venue, @link_key) do %>
+    <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, @img_str) %>" alt="<%= Atom.to_string(@link_key) %> icon">
     <%= if @link_key == :phone_number do %>
       <p class="f6 lh6 cs-mid-blue underline dib v-top">
         <%= @venue.phone_number %>
@@ -13,6 +12,7 @@
     <% end %>
   <% else %>
     <%= if Map.has_key?(@conn.assigns, :is_authenticated) do %>
+      <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, @img_str) %>" alt="<%= Atom.to_string(@link_key) %> icon">
       <%= link "Add venue " <> Atom.to_string(@link_key), to: venue_path(@conn, :edit, @venue.slug), class: "f6 lh6 cs-mid-blue dib v-top" %>
     <% end %>
   <% end %>
