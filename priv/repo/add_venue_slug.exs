@@ -7,6 +7,7 @@ Venue.all()
     slug = Venue.create_slug(v.venue_name, v.postcode)
 
     attrs = v |> Map.from_struct() |> Map.merge(%{slug: slug})
+    attrs = if attrs.users, do: Map.delete(attrs, :users)
 
     Venue.update(v, attrs)
   end

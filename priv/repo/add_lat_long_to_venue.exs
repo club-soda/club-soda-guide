@@ -18,9 +18,9 @@ Venue.all()
     case :ets.lookup(:postcode_cache, postcode) do
       [{_postcode, lat, long}] ->
         attrs = venue |> Map.from_struct() |> Map.merge(%{lat: lat, long: long})
+        attrs = if attrs.users, do: Map.delete(attrs, :users)
 
-        venue
-        |> Venue.update(attrs)
+        Venue.update(venue, attrs)
 
       _ ->
         IO.inspect(~s(#{postcode} postcode not fount in ets))
