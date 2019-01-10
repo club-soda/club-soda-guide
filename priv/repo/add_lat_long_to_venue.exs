@@ -11,7 +11,7 @@ update_postcode =
   end
 
 Venue.all()
-|> Repo.preload([:venue_types, :venue_images, :drinks, :users])
+|> Venue.preload([:venue_types, :venue_images, :drinks, :users])
 |> Enum.each(fn(venue) ->
   postcode = update_postcode.(venue.postcode)
 
