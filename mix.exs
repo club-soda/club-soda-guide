@@ -50,7 +50,8 @@ defmodule CsGuide.Mixfile do
       {:poison, "~> 1.2", override: true},
       {:httpoison, "~> 0.7"},
       {:fields, git: "https://github.com/dwyl/fields.git", tag: "0.1.4"},
-      {:earmark, "~> 1.3.0"}
+      {:earmark, "~> 1.3.0"},
+      {:csv, "~> 2.1"}
     ]
   end
 

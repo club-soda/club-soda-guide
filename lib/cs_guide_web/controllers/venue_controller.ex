@@ -58,7 +58,9 @@ defmodule CsGuideWeb.VenueController do
         venue_types: [],
         venue_images: []
       )
-
+    IO.inspect "*************************************"
+    IO.inspect venue
+    IO.inspect "*************************************"
     venue_owner = conn.assigns[:venue_id] == venue.id
     render(conn, "show.html", venue: venue, is_authenticated: conn.assigns[:admin] || venue_owner)
   end
