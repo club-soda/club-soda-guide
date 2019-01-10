@@ -6,7 +6,7 @@ defmodule CsGuideWeb.VenueController do
 
   import Ecto.Query, only: [from: 2, subquery: 1]
 
-  def index(conn, %{"date_order" => date_order}) do
+  def index(conn, %{"date_order" => _date_order}) do
     venues =
       Venue.all()
       |> Venue.preload(:venue_types)

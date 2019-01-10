@@ -4,7 +4,7 @@
      :create,
      [CsGuide.Resources.Venue],
      assigns: [changeset: @changeset],
-     exclude: [:deleted, :entry_id, :drinks, :num_cocktails, :cs_score, :venue_images, :users, :slug],
+     exclude: [:deleted, :entry_id, :drinks, :num_cocktails, :cs_score, :venue_images, :users, :slug, :lat, :long],
      assoc_query: &query/1
      ) %>
 </section>
