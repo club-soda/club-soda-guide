@@ -20,7 +20,12 @@ Venue.all()
         attrs = venue |> Map.from_struct() |> Map.merge(%{lat: lat, long: long})
         attrs = if attrs.users, do: Map.delete(attrs, :users)
 
-        Venue.update(venue, attrs)
+        venue
+        |> Venue.update(attrs)
+        |> case do
+          {:ok, _} -> nil
+          err -> IO.inspect(err)
+        end
 
       _ ->
         IO.inspect(~s(#{postcode} postcode not fount in ets))

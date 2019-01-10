@@ -10,5 +10,9 @@ Venue.all()
     attrs = if attrs.users, do: Map.delete(attrs, :users)
 
     Venue.update(v, attrs)
+    |> case do
+      {:ok, _} -> nil
+      err -> IO.inspect(err)
+    end
   end
 end)
