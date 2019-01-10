@@ -5,6 +5,9 @@ Venue.all()
 |> Enum.map(fn v ->
   if v.slug == nil do
     slug = Venue.create_slug(v.venue_name, v.postcode)
-    Venue.update(v, %{slug: slug})
+
+    attrs = v |> Map.from_struct() |> Map.merge(%{slug: slug})
+
+    Venue.update(v, attrs)
   end
 end)
