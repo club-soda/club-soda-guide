@@ -36,7 +36,9 @@
         <a href="#" class="cs-mid-blue f5 lh5">Add venue opening hours</a> -->
 
         <p class="pt3 f5 lh5">Was your visit to <%= @venue.venue_name %> not what you expected?</p>
-        <a href="#" class="cs-mid-blue f5 lh5">Let us know.</a>
+        <a href="mailto:jussi@joinclubsoda.co.uk?Subject=<%= @venue.venue_name %>" target="_top" class="cs-mid-blue f5 lh5">
+          Let us know.
+        </a>
       </div>
     </div>
   </section>
