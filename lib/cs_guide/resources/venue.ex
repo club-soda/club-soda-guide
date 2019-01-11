@@ -189,7 +189,7 @@ defmodule CsGuide.Resources.Venue do
   def nearest_venues(_, _, _), do: []
 
   defp venues_within_distance(distance, lat, long) do
-    Venue
+    __MODULE__
     |> where([venue], venue.deleted == false)
     # filters deleted venues
     |> where(

@@ -38,6 +38,7 @@ defmodule CsGuideWeb.VenueController do
 
   def create(conn, %{"venue" => venue_params}) do
     slug = Venue.create_slug(venue_params["venue_name"], venue_params["postcode"])
+    venue_params = Map.put(venue_params, "slug", slug)
     changeset = Venue.changeset(%Venue{}, venue_params)
 
     # first check to see if the changeset is valid without inserting the venue
@@ -53,12 +54,7 @@ defmodule CsGuideWeb.VenueController do
       if postcode_valid? do
         # if postcode is valid get lat long values and update params
         {:ok, {lat, long}} = latlong
-        venue_params =
-          venue_params
-          |> Map.put("slug", slug)
-          |> Map.put("lat", lat)
-          |> Map.put("long", long)
-
+        venue_params = venue_params |> Map.put("lat", lat) |> Map.put("long", long)
         # now insert venue
         case Venue.insert(venue_params) do
           {:ok, venue} ->
