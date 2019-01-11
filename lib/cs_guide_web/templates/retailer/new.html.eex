@@ -18,9 +18,8 @@
     :users,
     :postcode,
     :venue_types,
-    :slug,
     :lat,
     :long,
-    :discount_codes])
+    :slug])
     %>
 </section>
