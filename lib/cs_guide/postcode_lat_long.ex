@@ -140,6 +140,7 @@ defmodule CsGuide.PostcodeLatLong do
     # selects all venues 'where' tells it to and adds the :distance key to
     # each (:distance is a virtual field that needs to be added to each venue
     # as the lat, long and distance variables passed in can all change)
+    |> order_by([v], desc: v.inserted_at)
     |> distinct([v], [asc: fragment("distance"), asc: :entry_id])
     # filters the results to make sure it returns only venues with a unique
     # combination of distance and entry_id. The reason for the combination is to
