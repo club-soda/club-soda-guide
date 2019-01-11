@@ -9,8 +9,11 @@
         style="background-image: url('https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%= img.entry_id %>');">
       </div>
     <% else %>
-      <div class="db bg-venue w-100"
+      <div class="dn db-l bg-venue w-100"
         style="background-image: url('/images/default-venue-img.jpg');">
+      </div>
+      <div class="db dn-l bg-venue w-100"
+        style="background-image: url('/images/default-venue-img-2-1.jpg');">
       </div>
     <% end %>
 
