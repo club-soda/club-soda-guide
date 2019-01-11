@@ -21,7 +21,7 @@
     <% end %>
   </div>
   <%= if @venue.description do %>
-    <p class="min-h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl lh5">
+    <p class="min-h5 pa3 mv4 mr5-ns br2 tl f5 lh5">
       <%= raw @venue.description %>
     </p>
   <% else %>
