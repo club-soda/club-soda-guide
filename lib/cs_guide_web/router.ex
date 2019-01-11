@@ -89,6 +89,7 @@ defmodule CsGuideWeb.Router do
     pipe_through(:browser)
 
     get("/:page_title", StaticPageController, :show)
+    get("/*page_not_found", StaticPageController, :show)
   end
 
   # Other scopes may use custom stacks.

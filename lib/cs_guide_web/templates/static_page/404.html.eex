@@ -1,0 +1,12 @@
+<section class="bg-hero relative pb5">
+  <div class="w-100 h-100 mb4 mb0-ns">
+    <div class="w-90 w-60-m w-40-ns absolute-center">
+    <h1 class="tc center f3  lh3 f2-ns lh2-ns roboto-slab">
+      Oops! That page could not be found.
+    </h1>
+    <div class="tc center pt4">
+      <a class="cs-black b" href="/">Return to homepage</a>
+    </div>
+    </div>
+  </div>
+</section>
