@@ -1,0 +1,15 @@
+<section class="center w-80 w-75-l mv6-ns mv5">
+  <h2 class="f4 lh4">Edit Discount Code</h2>
+
+  <%= render_autoform(
+    @conn,
+    :update,
+    CsGuide.DiscountCode,
+    exclude: [:entry_id, :deleted],
+    path: discount_code_path(@conn, :update, @discount_code.entry_id),
+    assigns: [changeset: @changeset, discount_code: @discount_code],
+    update_field: :entry_id,
+    assoc_query: &query/1)
+    %>
+  <span><%= link "Back", to: discount_code_path(@conn, :index) %></span>
+</section>

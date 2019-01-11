@@ -53,6 +53,8 @@ defmodule CsGuide.Resources.Venue do
     )
 
     has_many(:venue_images, CsGuide.Images.VenueImage)
+    # Not sure that they should have many? >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    has_many(:discount_codes, CsGuide.DiscountCode)
 
     timestamps()
   end

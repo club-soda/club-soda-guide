@@ -3,6 +3,7 @@
 
   <%= link "Venues", to: venue_path(@conn, :index), class: "db mv3" %>
   <%= link "Retailers", to: retailer_path(@conn, :index), class: "db mv3" %>
+  <%= link "Discount Codes", to: discount_code_path(@conn, :index), class: "db mv3" %>
   <%= link "Drinks", to: drink_path(@conn, :index), class: "db mv3" %>
   <%= link "Brands", to: brand_path(@conn, :index), class: "db mv3" %>
   <%= link "Static Pages", to: static_page_path(@conn, :index), class: "db mv3" %>

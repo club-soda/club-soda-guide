@@ -3,6 +3,7 @@ defmodule CsGuideWeb.VenueController do
 
   alias CsGuide.Resources.{Venue, Drink, Brand}
   alias CsGuide.Images.VenueImage
+  alias CsGuide.DiscountCode
 
   import Ecto.Query, only: [from: 2, subquery: 1]
 
@@ -56,7 +57,8 @@ defmodule CsGuideWeb.VenueController do
       |> Venue.preload(
         drinks: [:brand, :drink_types, :drink_styles, :drink_images],
         venue_types: [],
-        venue_images: []
+        venue_images: [],
+        discount_codes: []
       )
 
     venue_owner = conn.assigns[:venue_id] == venue.id
@@ -75,7 +77,8 @@ defmodule CsGuideWeb.VenueController do
       })
       when map_size(venue) <= 2 do
     venue =
-      Venue.get_by(slug: slug) |> Venue.preload([:venue_types, :venue_images, :drinks, :users])
+      Venue.get_by(slug: slug)
+      |> Venue.preload([:venue_types, :venue_images, :discount_codes, :drinks, :users])
 
     venue_params =
       venue
@@ -97,7 +100,8 @@ defmodule CsGuideWeb.VenueController do
       end
 
     venue =
-      Venue.get_by(slug: slug) |> Venue.preload([:venue_types, :venue_images, :drinks, :users])
+      Venue.get_by(slug: slug)
+      |> Venue.preload([:venue_types, :venue_images, :discount_codes, :drinks, :users])
 
     case Venue.update(venue, venue_params |> Map.put("drinks", venue.drinks)) do
       {:ok, venue} ->
