@@ -99,11 +99,27 @@ defmodule CsGuide.PostcodeLatLong do
     end
   end
 
-  def nearest_venues(lat, long, distance \\ 5_000)
-  def nearest_venues(lat, long, distance) when distance < 30_000 do
-    case venues_within_distance(distance, lat, long) do
-      [] -> nearest_venues(lat, long, distance + 5_000)
-      venues -> venues
+  def check_or_cache(postcode) do
+    postcode = postcode |> String.upcase() |> String.replace(" ", "")
+
+    case :ets.lookup(:postcode_cache, postcode) do
+      [] ->
+        res = HTTPoison.get!(~s(api.postcodes.io/postcodes/#{postcode}))
+        body = Poison.Parser.parse!(res.body)
+
+        case body["status"] do
+          200 ->
+            lat = body["result"]["latitude"]
+            long = body["result"]["longitude"]
+
+            :ets.insert_new(:postcode_cache, {postcode, lat, long})
+            {:ok, {lat, long}}
+          _ ->
+            {:error, body["error"]}
+        end
+
+      [{_, lat, long}] ->
+        {:ok, {lat, long}}
     end
   end
 end
