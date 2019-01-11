@@ -51,7 +51,9 @@
     <% end %>
   </div>
   <div class="mv4 center tc tl-ns">
-    <a class="btn-primary no-underline pointer" id="near_me">Find One Near Me</a>
+    <div class="btn-primary center w-183 ph0">
+      <a class="no-underline pointer" id="near_me">Find One Near Me</a>
+    </div>
   </div>
 </section>
 
@@ -84,9 +86,14 @@
   useLocationMobile.addEventListener("click", getLocation)
   nearMe.addEventListener("click", getLocation)
 
-  function getLocation() {
+  function getLocation(e) {
+    e.target.removeEventListener("click", getLocation)
+    if (e.target.innerHTML) {
+      e.target.innerHTML = "Searching..."
+    }
+
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
+      navigator.geolocation.getCurrentPosition(position => {
         var coords = position.coords
         var lat = coords.latitude
         var long = coords.longitude
