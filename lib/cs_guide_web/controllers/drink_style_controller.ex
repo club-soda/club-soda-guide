@@ -1,7 +1,5 @@
 defmodule CsGuideWeb.DrinkStyleController do
   use CsGuideWeb, :controller
-
-  alias CsGuide.Categories
   alias CsGuide.Categories.DrinkStyle
 
   def index(conn, _params) do

@@ -1,9 +1,9 @@
 defmodule CsGuideWeb.SignupController do
   use CsGuideWeb, :controller
 
-  alias CsGuide.{Accounts.User, Resources.Venue, Auth}
+  alias CsGuide.{Resources.Venue, Auth}
 
-  def create(conn, %{"venue" => %{"users" => users} = venue} = params) do
+  def create(conn, %{"venue" => %{"users" => _users} = venue}) do
     case Venue.insert(venue) do
       {:ok, venue} ->
         conn

@@ -1,9 +1,6 @@
 defmodule CsGuideWeb.StaticPageController do
   use CsGuideWeb, :controller
-
   alias CsGuide.StaticPage
-
-  import Ecto.Query, only: [from: 2, subquery: 1]
 
   def index(conn, _params) do
     static_pages = StaticPage.all()
@@ -18,7 +15,7 @@ defmodule CsGuideWeb.StaticPageController do
 
   def create(conn, %{"static_page" => static_page_params}) do
     case %StaticPage{} |> StaticPage.changeset(static_page_params) |> StaticPage.insert() do
-      {:ok, static_page} ->
+      {:ok, _static_page} ->
         conn
         |> put_flash(:info, "Static Page created successfully.")
         |> redirect(to: static_page_path(conn, :index))
