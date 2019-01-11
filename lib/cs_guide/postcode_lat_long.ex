@@ -1,6 +1,5 @@
 defmodule CsGuide.PostcodeLatLong do
   alias CsGuide.Resources.Venue
-  import Ecto.Query
   use GenServer
 
   @zip_file_name "postcodes.zip"
@@ -12,33 +11,27 @@ defmodule CsGuide.PostcodeLatLong do
   end
 
   def init(initial_state) do
+    :ets.new(:postcode_cache, [:set, :public, :named_table])
+
     case Mix.env do
       :test ->
-        IO.puts("Skipping postcode storage")
-        # This can be changed in the future. Just didn't want to have to clone
-        # csv file everytime that we run tests. File is currently being used
-        # to run priv/repo/add_lat_long_to_venue.exs. If we build in
-        # functionality in the future that checks to see if entered postcodes
-        # (venue creation for example) are correct, then we can check them
-        # against the cache. For testing at that point we can create a smaller
-        # csv file which we can use to test with.
+        store_postcodes_in_ets("ukpostcodes_mini_for_test.csv")
       _ ->
-        :ets.new(:postcode_cache, [:set, :protected, :named_table])
-        store_postcodes_in_ets()
+        store_postcodes_in_ets("ukpostcodes.csv")
     end
     {:ok, initial_state}
   end
 
-  defp store_postcodes_in_ets do
-    if File.exists?("ukpostcodes.csv") do
+  defp store_postcodes_in_ets(file_name) do
+    if File.exists?(file_name) do
       IO.inspect("Postcode file exists, storing with ets")
-      postcodes_from_csv_to_ets("ukpostcodes.csv")
+      postcodes_from_csv_to_ets(file_name)
     else
       IO.inspect("Postcode file does not exist. Creating file...")
       case create_csv_file() do
         :ok ->
           IO.inspect("Removed zip file. Storing postcodes with ets")
-          postcodes_from_csv_to_ets("ukpostcodes.csv")
+          postcodes_from_csv_to_ets(file_name)
 
         error ->
           error
