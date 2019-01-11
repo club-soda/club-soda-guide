@@ -444,6 +444,17 @@ defmodule CsGuideWeb.VenueControllerTest do
     end
   end
 
+  describe "delete venue" do
+    setup [:create_venues, :admin_login]
+
+    test "redirect to index after delete", %{conn: conn, venues: venues} do
+      venue = Enum.at(venues, 0)
+      conn = delete(conn, venue_path(conn, :delete, venue.entry_id))
+      assert redirected_to(conn) == venue_path(conn, :index)
+    end
+  end
+
+
   defp create_venues(_) do
     venues = fixture(:venue)
     {:ok, venues: venues}

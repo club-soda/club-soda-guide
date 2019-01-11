@@ -195,4 +195,13 @@ defmodule CsGuideWeb.VenueController do
   def sort_venues_by_date(venues) do
     Enum.sort(venues, &compareDates(&1.inserted_at, &2.inserted_at))
   end
+
+  def delete(conn, %{"id" => id}) do
+    venue = Venue.get(id)
+    {:ok, _v} = Venue.delete(venue)
+
+    conn
+    |> put_flash(:info, "Venue deleted successfully.")
+    |> redirect(to: venue_path(conn, :index))
+  end
 end
