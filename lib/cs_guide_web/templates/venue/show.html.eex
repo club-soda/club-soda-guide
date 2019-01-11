@@ -9,10 +9,8 @@
         style="background-image: url('https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%= img.entry_id %>');">
       </div>
     <% else %>
-      <div class="db w-100 center bg-light-gray tc">
-        <img class="center pv-10rem"/
-        alt="Placeholder Image"
-        src="https://user-images.githubusercontent.com/194400/49571717-f392d480-f931-11e8-96f2-a8d10cfe375e.png">
+      <div class="db bg-venue w-100"
+        style="background-image: url('/images/default-venue-img.jpg');">
       </div>
     <% end %>
 
