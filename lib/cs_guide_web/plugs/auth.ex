@@ -2,6 +2,7 @@ defmodule CsGuideWeb.Plugs.Auth do
   import Plug.Conn
 
   alias CsGuide.Accounts.User
+  alias CsGuide.Resources.Venue
 
   def init(default), do: default
 
@@ -49,7 +50,15 @@ defmodule CsGuideWeb.Plugs.Auth do
   end
 
   def authenticate_venue_owner(conn, opts \\ %{}) do
-    venue_owner = conn.assigns[:venue_id] == conn.params["id"]
+    venue = if conn.params["id"] do
+      Venue.get(conn.params["id"])
+    else
+      if conn.params["slug"] do
+        Venue.get_by(slug: conn.params["slug"])
+      end
+    end
+
+    venue_owner = conn.assigns[:venue_id] == venue.entry_id
 
     cond do
       conn.assigns[:admin] || venue_owner ->
