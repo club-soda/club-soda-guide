@@ -41,3 +41,5 @@ elm-stuff/
 seeds
 
 ukpostcodes.csv
+
+priv/repo/admin.exs

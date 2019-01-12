@@ -82,7 +82,7 @@ defmodule CsGuideWeb.Router do
     get("/venues/:slug/add_drinks", VenueController, :add_drinks)
     get("/venues/:slug/add_photo", VenueController, :add_photo)
 
-    post("/venues/:slug/", VenueController, :upload_photo)
+    post("/venues/:id/", VenueController, :upload_photo)
     resources("/venues", VenueController, only: [:edit, :update])
   end
 
