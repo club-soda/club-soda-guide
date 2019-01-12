@@ -60,7 +60,8 @@ defmodule CsGuideWeb.VenueController do
       )
     images = Enum.sort_by(venue.venue_images, fn(i) -> i.id end)
     venue = Map.put(venue, :venue_images, images)
-    venue_owner = conn.assigns[:venue_id] == venue.id
+    venue_owner = conn.assigns[:venue_id] == venue.entry_id
+
     render(conn, "show.html", venue: venue, is_authenticated: conn.assigns[:admin] || venue_owner)
   end
 
