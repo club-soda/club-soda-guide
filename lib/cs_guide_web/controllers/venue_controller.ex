@@ -58,7 +58,8 @@ defmodule CsGuideWeb.VenueController do
         venue_types: [],
         venue_images: []
       )
-
+    images = Enum.sort_by(venue.venue_images, fn(i) -> i.id end)
+    venue = Map.put(venue, :venue_images, images)
     venue_owner = conn.assigns[:venue_id] == venue.id
     render(conn, "show.html", venue: venue, is_authenticated: conn.assigns[:admin] || venue_owner)
   end
@@ -163,12 +164,14 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def add_photo(conn, %{"slug" => slug}) do
-    render(conn, "add_photo.html", slug: slug)
+    venue = Venue.get_by(slug: slug)
+    render(conn, "add_photo.html", id: venue.entry_id)
   end
 
   def upload_photo(conn, params) do
+    venue = Venue.get(params["id"])
     CsGuide.Repo.transaction(fn ->
-      with {:ok, venue_image} <- VenueImage.insert(%{venue: params["slug"]}),
+      with {:ok, venue_image} <- VenueImage.insert(%{venue: params["id"]}),
            {:ok, _} <- CsGuide.Resources.upload_photo(params, venue_image.entry_id) do
         {:ok, venue_image}
       else
@@ -177,8 +180,8 @@ defmodule CsGuideWeb.VenueController do
       end
     end)
     |> case do
-      {:ok, _} -> redirect(conn, to: venue_path(conn, :show, params["slug"]))
-      {:error, _} -> render(conn, "add_photo.html", id: params["slug"], error: true)
+      {:ok, _} -> redirect(conn, to: venue_path(conn, :show, venue.slug))
+      {:error, _} -> render(conn, "add_photo.html", id: venue.entry_id, error: true)
     end
   end
 
