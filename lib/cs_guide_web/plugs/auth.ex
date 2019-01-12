@@ -58,7 +58,11 @@ defmodule CsGuideWeb.Plugs.Auth do
       end
     end
 
-    venue_owner = conn.assigns[:venue_id] == venue.entry_id
+    venue_owner = if venue do
+      conn.assigns[:venue_id] == venue.entry_id
+    else
+      false
+    end
 
     cond do
       conn.assigns[:admin] || venue_owner ->
