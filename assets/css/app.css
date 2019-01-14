@@ -487,10 +487,22 @@ select {
 }
 
 .bg-venue {
-  height: 60vh;
+  height: 30vh;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+}
+
+@media (min-width: 48em) {
+  .bg-venue {
+    height: 35vh;
+  }
+}
+
+@media (min-width: 70em) {
+  .bg-venue {
+    height: 60vh;
+  }
 }
 
 .bg-venue-card {

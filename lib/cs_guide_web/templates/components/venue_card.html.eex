@@ -1,10 +1,10 @@
 <div class="w-100 w-25-ns pb4">
   <a class="cs-black no-underline pointer" href="<%= venue_path(@conn, :show, @venue.slug) %>">
-    <div class="bg-green w-100 w-90-m w5-l h4 br2 mb2 bg-venue-card"
+    <div class="bg-light-gray w-100 w-90-m w5-l h4 br2 mb2 bg-venue-card"
     <%= if img = List.last(@venue.venue_images) do %>
       style="background-image: url('https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%=img.entry_id%>');">
     <% else %>
-      >
+      style="background-image: url('/images/default-venue-img-2-1.jpg');">
     <% end %>
     </div>
 
