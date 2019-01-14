@@ -83,7 +83,15 @@ defmodule CsGuideWeb.VenueController do
     venue = Map.put(venue, :venue_images, images)
     venue_owner = conn.assigns[:venue_id] == venue.entry_id
 
-    render(conn, "show.html", venue: venue, is_authenticated: conn.assigns[:admin] || venue_owner)
+    if venue != nil do
+      venue_owner = conn.assigns[:venue_id] == venue.id
+
+      render(conn, "show.html", venue: venue, is_authenticated: conn.assigns[:admin] || venue_owner)
+    else
+      conn
+      |> put_view(CsGuideWeb.StaticPageView)
+      |> render("404.html")
+    end
   end
 
   def edit(conn, %{"slug" => slug}) do

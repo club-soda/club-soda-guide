@@ -41,7 +41,13 @@ defmodule CsGuideWeb.BrandController do
         brand_images: []
       )
 
-    render(conn, "show.html", brand: brand, is_authenticated: conn.assigns[:admin])
+    if brand != nil do
+      render(conn, "show.html", brand: brand, is_authenticated: conn.assigns[:admin])
+    else
+      conn
+      |> put_view(CsGuideWeb.StaticPageView)
+      |> render("404.html")
+    end
   end
 
   def edit(conn, %{"name" => name}) do
