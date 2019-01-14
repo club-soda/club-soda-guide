@@ -30,10 +30,17 @@ defmodule CsGuideWeb.StaticPageController do
 
   def show(conn, %{"page_title" => page_title}) do
     p_title = String.replace(page_title, "-", " ")
-
     static_page = StaticPage.get_by([page_title: p_title], case_insensitive: true)
 
-    render(conn, "show.html", static_page: static_page)
+    if static_page != nil do
+      render(conn, "show.html", static_page: static_page)
+    else
+      render(conn, "404.html")
+    end
+  end
+
+  def show(conn, %{"page_not_found" => url}) do
+    render(conn, "404.html")
   end
 
   def edit(conn, %{"page_title" => page_title}) do
