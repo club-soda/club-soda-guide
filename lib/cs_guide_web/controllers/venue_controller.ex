@@ -58,14 +58,14 @@ defmodule CsGuideWeb.VenueController do
         venue_types: [],
         venue_images: []
       )
+    images = Enum.sort_by(venue.venue_images, fn(i) -> i.id end)
+    venue = Map.put(venue, :venue_images, images)
+    venue_owner = conn.assigns[:venue_id] == venue.entry_id
 
     if venue != nil do
       venue_owner = conn.assigns[:venue_id] == venue.id
 
-      render(conn, "show.html",
-        venue: venue,
-        is_authenticated: conn.assigns[:admin] || venue_owner
-      )
+      render(conn, "show.html", venue: venue, is_authenticated: conn.assigns[:admin] || venue_owner)
     else
       conn
       |> put_view(CsGuideWeb.StaticPageView)
@@ -173,12 +173,14 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def add_photo(conn, %{"slug" => slug}) do
-    render(conn, "add_photo.html", slug: slug)
+    venue = Venue.get_by(slug: slug)
+    render(conn, "add_photo.html", id: venue.entry_id)
   end
 
   def upload_photo(conn, params) do
+    venue = Venue.get(params["id"])
     CsGuide.Repo.transaction(fn ->
-      with {:ok, venue_image} <- VenueImage.insert(%{venue: params["slug"]}),
+      with {:ok, venue_image} <- VenueImage.insert(%{venue: params["id"]}),
            {:ok, _} <- CsGuide.Resources.upload_photo(params, venue_image.entry_id) do
         {:ok, venue_image}
       else
@@ -187,8 +189,8 @@ defmodule CsGuideWeb.VenueController do
       end
     end)
     |> case do
-      {:ok, _} -> redirect(conn, to: venue_path(conn, :show, params["slug"]))
-      {:error, _} -> render(conn, "add_photo.html", id: params["slug"], error: true)
+      {:ok, _} -> redirect(conn, to: venue_path(conn, :show, venue.slug))
+      {:error, _} -> render(conn, "add_photo.html", id: venue.entry_id, error: true)
     end
   end
 
@@ -204,5 +206,14 @@ defmodule CsGuideWeb.VenueController do
 
   def sort_venues_by_date(venues) do
     Enum.sort(venues, &compareDates(&1.inserted_at, &2.inserted_at))
+  end
+
+  def delete(conn, %{"id" => id}) do
+    venue = Venue.get(id)
+    {:ok, _v} = Venue.delete(venue)
+
+    conn
+    |> put_flash(:info, "Venue deleted successfully.")
+    |> redirect(to: venue_path(conn, :index))
   end
 end

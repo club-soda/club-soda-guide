@@ -560,4 +560,10 @@ i {
 .w4-5 {
   width: 12rem;
 }
+
+.w-183 {
+  width: 183px;
+  padding-left: 0;
+  padding-right: 0;
+}
 /* END of Default styling for the static content html on static pages */
