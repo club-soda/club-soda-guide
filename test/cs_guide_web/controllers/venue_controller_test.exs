@@ -129,13 +129,16 @@ defmodule CsGuideWeb.VenueControllerTest do
   describe "create venue" do
     setup [:create_venues, :admin_login]
 
-    test "redirects to show when data is valid", %{conn: conn} do
+    test "redirects to show when data is valid, doesn't allow venue duplication", %{conn: conn} do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
       assert %{slug: slug} = redirected_params(conn)
       assert redirected_to(conn) == venue_path(conn, :show, slug)
 
       conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "The Example Pub"
+
+      conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
+      assert html_response(conn, 200) =~ "Venue already exists"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -453,7 +456,6 @@ defmodule CsGuideWeb.VenueControllerTest do
       assert redirected_to(conn) == venue_path(conn, :index)
     end
   end
-
 
   defp create_venues(_) do
     venues = fixture(:venue)
