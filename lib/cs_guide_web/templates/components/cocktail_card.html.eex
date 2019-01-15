@@ -1,0 +1,8 @@
+<div class="w-third-m w-20-l shadow-4 br2 tr pb-2-5rem mh3 mv3 relative">
+  <div class="card-front-contents">
+    <div class="bb b--cs-light-pink bw3 mb3 tl h-27rem">
+      <h4 class="f4 lh4 pa3 shadow-4 br2 mt4 mb1 tc bg-sheer-white absolute-horizontal-center top-1 w-80">Alcohol free cocktails: <%= @venue.num_cocktails %></h4>
+        <img src="<%= static_path(@conn, "/images/cocktail.svg") %>" alt="image of a cocktail" class="min-w-15rem db center pt6">
+    </div>
+  </div>
+</div>
