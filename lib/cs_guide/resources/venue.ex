@@ -102,9 +102,8 @@ defmodule CsGuide.Resources.Venue do
     |> validate_required([:venue_name, :website, :venue_types])
   end
 
-  def insert(attrs) do
-    %__MODULE__{}
-    |> __MODULE__.changeset(attrs)
+  def insert(changeset, attrs) do
+    changeset
     |> insert_entry_id()
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
@@ -112,14 +111,16 @@ defmodule CsGuide.Resources.Venue do
     |> Repo.insert()
   end
 
+  def insert(attrs) do
+    %__MODULE__{}
+    |> __MODULE__.changeset(attrs)
+    |> insert(attrs)
+  end
+
   def retailer_insert(attrs) do
     %__MODULE__{}
     |> __MODULE__.retailer_changeset(attrs)
-    |> insert_entry_id()
-    |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
-    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
-    |> Resources.require_assocs([:venue_types])
-    |> Repo.insert()
+    |> insert(attrs)
   end
 
   def update(%__MODULE__{} = item, attrs) do
