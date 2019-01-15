@@ -208,6 +208,12 @@ and allow the users to unselect the filter.
 
 ![image](https://user-images.githubusercontent.com/6057298/50681993-49c46780-1005-11e9-8348-c82b02a53378.png)
 
+## Exporting to CSV
+
+On the admin page the "download" links allow the admin to download the current data
+to a csv file:
+
+![image](https://user-images.githubusercontent.com/6057298/51193623-2b058100-18e1-11e9-91bd-1c3c722eb7db.png)
 
 ## Dev Guide
 
