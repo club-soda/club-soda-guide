@@ -135,6 +135,19 @@ defmodule CsGuide.Resources.Venue do
     |> Repo.insert()
   end
 
+  def update(%__MODULE__{} = item, attrs, postcode) do
+    item
+    |> __MODULE__.preload(__MODULE__.__schema__(:associations))
+    |> Map.put(:id, nil)
+    |> Map.put(:inserted_at, nil)
+    |> Map.put(:updated_at, nil)
+    |> __MODULE__.changeset(attrs)
+    |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
+    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
+    |> validate_postcode(postcode)
+    |> Repo.insert()
+  end
+
   def get_venue_card(%__MODULE__{} = venue) do
     %{
       id: venue.entry_id,

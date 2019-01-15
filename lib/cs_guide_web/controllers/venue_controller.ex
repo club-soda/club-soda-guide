@@ -105,18 +105,20 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def update(conn, %{"slug" => slug, "venue" => venue_params}) do
-    venue_params =
-      if venue_params["venue_name"] || venue_params["postcode"] do
-        new_slug = Venue.create_slug(venue_params["venue_name"], venue_params["postcode"])
-        Map.put(venue_params, "slug", new_slug)
-      else
-        venue_params
-      end
+    v_name = venue_params["venue_name"]
+    v_postcode = venue_params["postcode"]
+    new_slug = Venue.create_slug(v_name, v_postcode)
 
     venue =
-      Venue.get_by(slug: slug) |> Venue.preload([:venue_types, :venue_images, :drinks, :users])
+      Venue.get_by(slug: slug)
+      |> Venue.preload([:venue_types, :venue_images, :drinks, :users])
 
-    case Venue.update(venue, venue_params |> Map.put("drinks", venue.drinks)) do
+    venue_params =
+      venue_params
+      |> Map.put("slug", new_slug)
+      |> Map.put("drinks", venue.drinks)
+
+    case Venue.update(venue, venue_params, v_postcode) do
       {:ok, _venue} ->
         conn
         |> put_flash(:info, "Venue updated successfully.")

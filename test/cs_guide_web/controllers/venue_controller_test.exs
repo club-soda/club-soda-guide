@@ -155,7 +155,9 @@ defmodule CsGuideWeb.VenueControllerTest do
         put(conn, venue_path(conn, :update, slug), %{
           "slug" => slug,
           "venue" => %{
-            "drinks" => Map.new([])
+            "drinks" => Map.new([]),
+            "venue_name" => "The Example Pub",
+            "postcode" => "EC1M 5AD"
           }
         })
 
