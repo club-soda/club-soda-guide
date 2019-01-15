@@ -41,6 +41,14 @@ defmodule CsGuideWeb.PageControllerTest do
     end
   end
 
+  describe "Displays 404 page for nonexistent endpoint" do
+    test "404 page displays", %{conn: conn} do
+      conn = get(conn, "/nonexistent_endpoint")
+
+      assert html_response(conn, 200) =~ "Oops! That page could not be found."
+    end
+  end
+
   def fixture(:venue) do
     %Categories.VenueType{}
     |> Categories.VenueType.changeset(%{name: "Pubs"})

@@ -14,7 +14,7 @@ defmodule CsGuide.Resources.Brand do
     field(:twitter, :string)
     field(:instagram, :string)
     field(:facebook, :string)
-    field(:copy, :string)
+    field(:copy, Fields.DescriptionPlaintextUnlimited)
     field(:sold_aldi, :boolean, default: false)
     field(:sold_amazon, :boolean, default: false)
     field(:sold_asda, :boolean, default: false)
