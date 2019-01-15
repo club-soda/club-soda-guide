@@ -40,41 +40,20 @@ defmodule CsGuideWeb.VenueController do
     venue_params = Map.put(venue_params, "slug", slug)
     postcode = venue_params["postcode"]
 
-    existing_venue_slug =
-      case Venue.get_by(slug: slug) do
-        nil -> ""
-        venue -> venue.slug
-      end
-
     changeset =
       %Venue{}
       |> Venue.changeset(venue_params)
+      |> Venue.check_existing_slug(slug)
       |> Venue.validate_postcode(postcode)
 
-    if slug == existing_venue_slug do
-      {_, changeset_with_error} =
-        Ecto.Changeset.add_error(changeset, :venue_name, "Venue already exists",
-          type: :string,
-          validation: :cast
-        )
-        |> Ecto.Changeset.apply_action(:insert)
+    case Venue.insert(changeset, venue_params) do
+      {:ok, venue} ->
+        conn
+        |> put_flash(:info, "Venue created successfully.")
+        |> redirect(to: venue_path(conn, :show, venue.slug))
 
-      render(conn, "new.html", changeset: changeset_with_error)
-    else
-      if changeset.valid? do
-        case Venue.insert(changeset, venue_params) do
-          {:ok, venue} ->
-            conn
-            |> put_flash(:info, "Venue created successfully.")
-            |> redirect(to: venue_path(conn, :show, venue.slug))
-
-          {:error, %Ecto.Changeset{} = changeset} ->
-            render(conn, "new.html", changeset: changeset)
-        end
-      else
-        {_, changeset} = Ecto.Changeset.apply_action(changeset, :insert)
+      {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
-      end
     end
   end
 
