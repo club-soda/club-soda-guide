@@ -4,14 +4,18 @@ defmodule CsGuideWeb.SignupController do
   alias CsGuide.{Resources.Venue, Auth}
 
   def create(conn, %{"venue" => %{"users" => _users} = venue}) do
-    case Venue.insert(venue) do
+    slug = Venue.create_slug(venue["venue_name"], venue["postcode"])
+    venue_params = Map.put(venue, "slug", slug)
+
+    case Venue.insert(venue_params) do
       {:ok, venue} ->
         conn
         |> put_flash(:info, "Venue created successfully.")
         |> Auth.venue_owner(venue)
-        |> redirect(to: venue_path(conn, :show, venue.entry_id))
+        |> redirect(to: venue_path(conn, :show, venue.slug))
 
       {:error, %Ecto.Changeset{} = changeset} ->
+
         conn
         |> put_view(CsGuideWeb.UserView)
         |> render(:new,

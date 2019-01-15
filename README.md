@@ -53,9 +53,15 @@ To sign up, visit `/users/new`, or click on the 'List a Venue' button on the top
 
 <img src="https://user-images.githubusercontent.com/8939909/46817864-c681d580-cd77-11e8-8a50-ff87fa446391.png" alt="'List a Venue' Button" width="200"/>
 
-From there, you will see a sign up form, enabling users to sign up with an email address and add their venue and its details. After you sign up, you'll be taken to the venue's listing page.
+From there, you will see a sign up form, enabling users to sign up with an email address and add their venue and its details. After you sign up, you'll be taken to the venue's listing page where you can add more details to your venue.
 
 <img width="500" alt="Sample Venue Page" src="https://user-images.githubusercontent.com/8939909/46818567-7efc4900-cd79-11e8-8287-75bafadf2155.png">
+
+Clicking add description will take you to the edit view of the venue where you
+can add new details or edit existing ones. If you wish to add paragraph breaks to the description of a venue use `<br>` to create line breaks. One `<br>` starts a new line, two `<br>` creates one line gap:
+
+![description text area](https://user-images.githubusercontent.com/16775804/51027842-ca491200-1589-11e9-8044-50764c6b0afb.png)
+![a venue description with line breaks](https://user-images.githubusercontent.com/16775804/51027818-be5d5000-1589-11e9-8e42-0b001163d16e.png)
 
 To see all venues that currently exist, you can visit `/admin/venues`, where you'll see a list of all venues. From here you can click 'show' to visit the venue page, 'edit' to edit its details, or 'delete' to delete the venue listing.
 
@@ -220,7 +226,7 @@ To create an admin user, open iex with `iex -S mix`.
 From here do:
 
 ```
-iex> CsGuide.Accounts.User.insert(%{email: "", password: "", admin: true})
+iex> %CsGuide.Accounts.User{} |> CsGuide.Accounts.User.changeset(%{email: "", password: "", admin: true}) |> CsGuide.Accounts.User.insert()
 ```
 
 Filling in the empty strings as necessary.

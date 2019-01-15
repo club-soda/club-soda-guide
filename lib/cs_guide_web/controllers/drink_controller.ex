@@ -80,7 +80,13 @@ defmodule CsGuideWeb.DrinkController do
       Drink.get(id)
       |> Drink.preload([:brand, :venues, :drink_images])
 
-    render(conn, "show.html", drink: drink)
+    if drink != nil do
+      render(conn, "show.html", drink: drink)
+    else
+      conn
+      |> put_view(CsGuideWeb.StaticPageView)
+      |> render("404.html")
+    end
   end
 
   def edit(conn, %{"id" => id}) do

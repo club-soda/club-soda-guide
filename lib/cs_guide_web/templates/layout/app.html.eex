@@ -44,7 +44,7 @@
           <a href="/users/new" class="db f5 lh5 pl3 pt2 pb3 cs-black no-underline">List a Venue</a>
           <%= for page <- @static_page_links do %>
             <%= if page.display_in_menu do %>
-              <%= link page.title_in_menu, to: static_page_path(@conn, :show, page.page_title), class: "db f5 lh5 pl3 pt2 pb3 cs-black no-underline" %>
+              <%= link page.title_in_menu, to: static_page_path(@conn, :show, change_spaces_to_dashes(page.page_title)), class: "db f5 lh5 pl3 pt2 pb3 cs-black no-underline" %>
             <% end %>
           <% end %>
         </div>
@@ -56,7 +56,7 @@
           <a href="/users/new" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">List a Venue</a>
           <%= for page <- @static_page_links do %>
             <%= if page.display_in_menu do %>
-              <%= link page.title_in_menu, to: static_page_path(@conn, :show, page.page_title), class: "f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2" %>
+              <%= link page.title_in_menu, to: static_page_path(@conn, :show, change_spaces_to_dashes(page.page_title)), class: "f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2" %>
             <% end %>
           <% end %>
         </div>
@@ -65,8 +65,8 @@
       <span class="logo"></span>
     </header>
 
-    <main role="main" class="body-container">
-      <p class="pl3 lh4 b alert alert-info" role="alert"><%= get_flash(@conn, :info)%></p>
+    <main role="main" class="body-container relative">
+      <p class="pl3 lh4 b alert alert-info absolute top-0 left-0 right-0 z-1" role="alert"><%= get_flash(@conn, :info)%></p>
       <%= render @view_module, @view_template, assigns %>
     </main>
     <footer class="mt6 pv5 pv-6rem-ns bg-footer">
@@ -76,7 +76,7 @@
         </div>
         <%= for page <- @static_page_links do %>
           <%= if page.display_in_footer do %>
-            <%= link page.title_in_menu, to: static_page_path(@conn, :show, page.page_title), class: "pr4 ph5-ns pv3 white v-top" %>
+            <%= link page.title_in_menu, to: static_page_path(@conn, :show, change_spaces_to_dashes(page.page_title)), class: "pr4 ph5-ns pv3 white v-top" %>
           <% end %>
         <% end %>
       </div>

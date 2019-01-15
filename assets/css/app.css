@@ -487,10 +487,22 @@ select {
 }
 
 .bg-venue {
-  height: 60vh;
+  height: 30vh;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+}
+
+@media (min-width: 48em) {
+  .bg-venue {
+    height: 35vh;
+  }
+}
+
+@media (min-width: 70em) {
+  .bg-venue {
+    height: 60vh;
+  }
 }
 
 .bg-venue-card {
@@ -535,6 +547,18 @@ select {
 .static-content h2 {
   font-size: 1.25rem;
   line-height: 2rem;
+  font-weight: bold;
+}
+.static-content h3 {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: bold;
+}
+
+.static-content p {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 1rem 0;
 }
 
 strong, b {
@@ -545,4 +569,13 @@ i {
   font-style: italic;
 }
 
+.w4-5 {
+  width: 12rem;
+}
+
+.w-183 {
+  width: 183px;
+  padding-left: 0;
+  padding-right: 0;
+}
 /* END of Default styling for the static content html on static pages */

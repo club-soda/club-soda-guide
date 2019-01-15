@@ -19,6 +19,7 @@
    :postcode,
    :venue_types,
    :lat,
-   :long])
+   :long,
+   :slug])
    %>
 </section>
