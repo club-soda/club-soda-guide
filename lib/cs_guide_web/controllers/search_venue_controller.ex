@@ -3,7 +3,6 @@ defmodule CsGuideWeb.SearchVenueController do
 
   alias CsGuide.Resources.Venue
   alias CsGuide.Categories.VenueType
-  alias CsGuide.PostcodeLatLong
 
   def index(conn, %{"ll" => latlong}) do
     [lat_str, long_str] = String.split(latlong, ",")
@@ -11,7 +10,7 @@ defmodule CsGuideWeb.SearchVenueController do
     {long, _} = Float.parse(long_str)
 
     cards =
-      PostcodeLatLong.nearest_venues(lat, long)
+      Venue.nearest_venues(lat, long)
       |> Venue.preload([:venue_types, :venue_images])
       |> Enum.filter(fn v -> !Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailers" end) end)
       |> Enum.map(&Venue.get_venue_card/1)

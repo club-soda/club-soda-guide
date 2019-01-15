@@ -84,7 +84,7 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
   end
 
   describe "renders nearby venues - latest venue version" do
-      setup [:create_venue, :update_venue]
+    setup [:create_venue, :update_venue]
     test "GET /search/venues?ll=(north london latlong) displays nearby venues with the latest venue version", %{conn: conn} do
       conn = get(conn, "/search/venues?ll=51.54359770000001,-0.08807799999999999")
 
