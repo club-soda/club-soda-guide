@@ -5,7 +5,7 @@ defmodule CsGuide.Resources.Venue do
   import Ecto.Query
 
   alias CsGuide.Repo
-  alias CsGuide.Resources
+  alias CsGuide.{Resources, PostcodeLatLong}
 
   schema "venues" do
     field(:venue_name, :string)
@@ -227,4 +227,23 @@ defmodule CsGuide.Resources.Venue do
     # account for cases where distances could be the same to different venues.
     |> CsGuide.Repo.all()
   end
+
+  def validate_postcode(%{valid?: true} = changeset, postcode) do
+    case PostcodeLatLong.check_or_cache(postcode) do
+      {:error, _} ->
+        {_, changeset} =
+          changeset
+          |> add_error(:postcode, "invalid postcode")
+          |> apply_action(:insert)
+
+        changeset
+      {:ok, {lat, long}} ->
+        {lat, _} = Float.parse(lat)
+        {long, _} = Float.parse(long)
+
+        change(changeset, %{lat: lat, long: long})
+    end
+  end
+
+  def validate_postcode(changeset, _postcode), do: changeset
 end

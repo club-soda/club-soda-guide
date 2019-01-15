@@ -3,7 +3,6 @@ defmodule CsGuideWeb.VenueController do
 
   alias CsGuide.Resources.{Venue, Drink, Brand}
   alias CsGuide.Images.VenueImage
-  alias CsGuide.PostcodeLatLong
 
   import Ecto.Query, only: [from: 2, subquery: 1]
 
@@ -39,39 +38,25 @@ defmodule CsGuideWeb.VenueController do
   def create(conn, %{"venue" => venue_params}) do
     slug = Venue.create_slug(venue_params["venue_name"], venue_params["postcode"])
     venue_params = Map.put(venue_params, "slug", slug)
-    changeset = Venue.changeset(%Venue{}, venue_params)
+    postcode = venue_params["postcode"]
 
-    # first check to see if the changeset is valid without inserting the venue
-    # this lets us take advantage of the Fields.Postcode type to check if a
-    # postcode is at least in the right format.
+    changeset =
+      %Venue{}
+      |> Venue.changeset(venue_params)
+      |> Venue.validate_postcode(postcode)
+
     if changeset.valid? do
-      # if postcode is in right format, check if it is in cache or make API
-      # request to check it with postcodes.io. If it is correct stores the new
-      # postcode in the cache
-      latlong = PostcodeLatLong.check_or_cache(venue_params["postcode"])
-      postcode_valid? = case latlong, do: ({:error, _} -> false; _ -> true)
+      case Venue.insert(changeset, venue_params) do
+        {:ok, venue} ->
+          conn
+          |> put_flash(:info, "Venue created successfully.")
+          |> redirect(to: venue_path(conn, :show, venue.slug))
 
-      if postcode_valid? do
-        # if postcode is valid get lat long values and update params
-        {:ok, {lat, long}} = latlong
-        venue_params = venue_params |> Map.put("lat", lat) |> Map.put("long", long)
-        # now insert venue
-        case Venue.insert(venue_params) do
-          {:ok, venue} ->
-            conn
-            |> put_flash(:info, "Venue created successfully.")
-            |> redirect(to: venue_path(conn, :show, venue.slug))
-
-          {:error, %Ecto.Changeset{} = changeset} ->
-            render(conn, "new.html", changeset: changeset)
-        end
-      else
-        # if postcode was not real render form again with error
-        Ecto.Changeset.add_error(changeset, :postcode, "invalid postcode")
-        render(conn, "new.html", changeset: changeset)
+        {:error, %Ecto.Changeset{} = changeset} ->
+          render(conn, "new.html", changeset: changeset)
       end
     else
-      # if changeset is not valid render form again with changeset
+      {_, changeset} = Ecto.Changeset.apply_action(changeset, :insert)
       render(conn, "new.html", changeset: changeset)
     end
   end
