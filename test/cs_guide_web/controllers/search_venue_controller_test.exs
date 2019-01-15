@@ -41,6 +41,7 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
     }
   ]
 
+
   describe "renders landing page as expected" do
     setup [:create_venue]
 
@@ -79,6 +80,17 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
 
       assert html_response(conn, 200) =~ "The Not Favourite Pub"
     end
+
+  end
+
+  describe "renders nearby venues - latest venue version" do
+      setup [:create_venue, :update_venue]
+    test "GET /search/venues?ll=(north london latlong) displays nearby venues with the latest venue version", %{conn: conn} do
+      conn = get(conn, "/search/venues?ll=51.54359770000001,-0.08807799999999999")
+
+      refute html_response(conn, 200) =~ "The Not Favourite Pub"
+      assert html_response(conn, 200) =~ "new version venue"
+    end
   end
 
   def fixture(:venue) do
@@ -100,5 +112,20 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
   def create_venue(_) do
     venue = fixture(:venue)
     {:ok, venue: venue}
+  end
+
+  def update_venue(_) do
+    not_fav_pub = Resources.Venue.get_by(slug: "the-not-favourite-pub-e2-0sy")
+          |> Resources.Venue.preload(
+            drinks: [:brand, :drink_types, :drink_styles, :drink_images],
+            venue_types: [],
+            venue_images: [],
+            users: []
+          )
+    attrs = not_fav_pub |> Map.from_struct() |> Map.merge(%{venue_name: "new version venue"})
+    attrs = if attrs.users, do: Map.delete(attrs, :users)
+
+    {:ok, _v} = Resources.Venue.update(not_fav_pub, attrs)
+    :ok
   end
 end

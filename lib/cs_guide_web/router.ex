@@ -63,7 +63,7 @@ defmodule CsGuideWeb.Router do
     resources("/retailers", RetailerController, except: [:show])
     resources("/static_pages", StaticPageController, except: [:show], param: "page_title")
     resources("/users", UserController, except: [:new, :create])
-    resources("/venues", VenueController, except: [:show], param: "slug")
+    resources("/venues", VenueController, only: [ :delete, :index])
 
     resources("/venue_types", VenueTypeController)
     resources("/drink_types", DrinkTypeController)
@@ -78,11 +78,11 @@ defmodule CsGuideWeb.Router do
 
   scope "/admin", CsGuideWeb do
     pipe_through([:browser, :venue_owner])
-    get("/venues/:slug/add_drinks", VenueController, :add_drinks)
+    get("/venues/:slug/add_drinks", VenueController, :add_drinks, param: "slug")
     get("/venues/:slug/add_photo", VenueController, :add_photo)
 
-    post("/venues/:slug/", VenueController, :upload_photo)
-    resources("/venues", VenueController, only: [:edit, :update])
+    post("/venues/:id/", VenueController, :upload_photo)
+    resources("/venues", VenueController, except: [:delete, :index], param: "slug")
   end
 
   scope "/csv", CsGuideWeb do
@@ -94,6 +94,7 @@ defmodule CsGuideWeb.Router do
     pipe_through(:browser)
 
     get("/:page_title", StaticPageController, :show)
+    get("/*page_not_found", StaticPageController, :show)
   end
 
 

@@ -28,14 +28,16 @@ defmodule CsGuide.Resources.Drink do
       :drink_types,
       CsGuide.Categories.DrinkType,
       join_through: "drinks_drink_types",
-      join_keys: [drink_id: :id, drink_type_id: :id]
+      join_keys: [drink_id: :id, drink_type_id: :id],
+      on_replace: :delete
     )
 
     many_to_many(
       :drink_styles,
       CsGuide.Categories.DrinkStyle,
       join_through: "drinks_drink_styles",
-      join_keys: [drink_id: :id, drink_style_id: :id]
+      join_keys: [drink_id: :id, drink_style_id: :id],
+      on_replace: :delete
     )
 
     has_many(:drink_images, CsGuide.Images.DrinkImage)

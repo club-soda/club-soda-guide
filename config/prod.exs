@@ -17,7 +17,8 @@ config :cs_guide, CsGuideWeb.Endpoint,
   load_from_system_env: true,
   http: [port: {:system, "PORT"}],
   url: [host: System.get_env("URL"), port: 443],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
 # Do not print debug messages in production
 config :logger, level: :info

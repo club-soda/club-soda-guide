@@ -69,10 +69,10 @@ venueCard venue =
     div [ class "w-100 w-25-ns pb4" ]
         [ a [ href <| "/venues/" ++ venue.slug, class "cs-black no-underline pointer" ]
             [ if String.isEmpty venue.image then
-                div [ class "bg-green w-100 w-90-m w5-l h4 br2 mb2 bg-venue-card" ] []
+                div [ class "bg-light-gray w-100 w-90-m w5-l h4 br2 mb2 bg-venue-card", style "background-image" "url('/images/default-venue-img-2-1.jpg')" ] []
 
               else
-                div [ class "bg-green w-100 w-90-m w5-l h4 br2 mb2 bg-venue-card", style "background-image" ("url(" ++ venue.image ++ ")") ] []
+                div [ class "bg-light-gray w-100 w-90-m w5-l h4 br2 mb2 bg-venue-card", style "background-image" ("url(" ++ venue.image ++ ")") ] []
             , span [ class "f4 lh5 cs-black no-underline" ] [ text venue.name ]
             , p [ class "f5 lh5" ] [ text venue.postcode ]
             , p [] [ text <| String.join ", " venue.types ]

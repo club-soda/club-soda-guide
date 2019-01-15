@@ -39,14 +39,34 @@ defmodule CsGuideWeb.VenueController do
     slug = Venue.create_slug(venue_params["venue_name"], venue_params["postcode"])
     venue_params = Map.put(venue_params, "slug", slug)
 
-    case Venue.insert(venue_params) do
-      {:ok, venue} ->
-        conn
-        |> put_flash(:info, "Venue created successfully.")
-        |> redirect(to: venue_path(conn, :show, venue.slug))
+    existing_venue_slug =
+      if Venue.get_by(slug: slug) do
+        Venue.get_by(slug: slug).slug
+      else
+        ""
+      end
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+    if slug == existing_venue_slug do
+      changeset = Venue.changeset(%Venue{}, venue_params)
+
+      {_, changeset_with_error} =
+        Ecto.Changeset.add_error(changeset, :venue_name, "Venue already exists",
+          type: :string,
+          validation: :cast
+        )
+        |> Ecto.Changeset.apply_action(:insert)
+
+      render(conn, "new.html", changeset: changeset_with_error)
+    else
+      case Venue.insert(venue_params) do
+        {:ok, venue} ->
+          conn
+          |> put_flash(:info, "Venue created successfully.")
+          |> redirect(to: venue_path(conn, :show, venue.slug))
+
+        {:error, %Ecto.Changeset{} = changeset} ->
+          render(conn, "new.html", changeset: changeset)
+      end
     end
   end
 
@@ -58,11 +78,20 @@ defmodule CsGuideWeb.VenueController do
         venue_types: [],
         venue_images: []
       )
-    IO.inspect "*************************************"
-    IO.inspect venue
-    IO.inspect "*************************************"
-    venue_owner = conn.assigns[:venue_id] == venue.id
-    render(conn, "show.html", venue: venue, is_authenticated: conn.assigns[:admin] || venue_owner)
+
+    images = Enum.sort_by(venue.venue_images, fn i -> i.id end)
+    venue = Map.put(venue, :venue_images, images)
+    venue_owner = conn.assigns[:venue_id] == venue.entry_id
+
+    if venue != nil do
+      venue_owner = conn.assigns[:venue_id] == venue.id
+
+      render(conn, "show.html", venue: venue, is_authenticated: conn.assigns[:admin] || venue_owner)
+    else
+      conn
+      |> put_view(CsGuideWeb.StaticPageView)
+      |> render("404.html")
+    end
   end
 
   def edit(conn, %{"slug" => slug}) do
@@ -165,12 +194,15 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def add_photo(conn, %{"slug" => slug}) do
-    render(conn, "add_photo.html", slug: slug)
+    venue = Venue.get_by(slug: slug)
+    render(conn, "add_photo.html", id: venue.entry_id)
   end
 
   def upload_photo(conn, params) do
+    venue = Venue.get(params["id"])
+
     CsGuide.Repo.transaction(fn ->
-      with {:ok, venue_image} <- VenueImage.insert(%{venue: params["slug"]}),
+      with {:ok, venue_image} <- VenueImage.insert(%{venue: params["id"]}),
            {:ok, _} <- CsGuide.Resources.upload_photo(params, venue_image.entry_id) do
         {:ok, venue_image}
       else
@@ -179,8 +211,8 @@ defmodule CsGuideWeb.VenueController do
       end
     end)
     |> case do
-      {:ok, _} -> redirect(conn, to: venue_path(conn, :show, params["slug"]))
-      {:error, _} -> render(conn, "add_photo.html", id: params["slug"], error: true)
+      {:ok, _} -> redirect(conn, to: venue_path(conn, :show, venue.slug))
+      {:error, _} -> render(conn, "add_photo.html", id: venue.entry_id, error: true)
     end
   end
 
@@ -196,5 +228,14 @@ defmodule CsGuideWeb.VenueController do
 
   def sort_venues_by_date(venues) do
     Enum.sort(venues, &compareDates(&1.inserted_at, &2.inserted_at))
+  end
+
+  def delete(conn, %{"id" => id}) do
+    venue = Venue.get(id)
+    {:ok, _v} = Venue.delete(venue)
+
+    conn
+    |> put_flash(:info, "Venue deleted successfully.")
+    |> redirect(to: venue_path(conn, :index))
   end
 end
