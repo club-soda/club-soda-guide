@@ -22,6 +22,7 @@ defmodule CsGuideWeb.VenueControllerTest do
     venue_name: "The Example Pub",
     drinks: %{"AF Beer 1" => "on"},
     venue_types: %{"Bars" => "on"},
+    num_cocktails: 2,
     slug: "The-Example-Pub-EC1-5AD"
   }
 
@@ -136,6 +137,7 @@ defmodule CsGuideWeb.VenueControllerTest do
 
       conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "The Example Pub"
+      assert html_response(conn, 200) =~ "Alcohol Free Cocktails: 2"
 
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
       assert html_response(conn, 200) =~ "Venue already exists"
@@ -244,7 +246,7 @@ defmodule CsGuideWeb.VenueControllerTest do
                 {wine1.entry_id, "on"},
                 {wine2.entry_id, "on"}
               ]),
-            "num_cocktails" => 0
+            "num_cocktails" => nil
           }
         })
 
@@ -252,6 +254,7 @@ defmodule CsGuideWeb.VenueControllerTest do
 
       conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "Club Soda Score of 1.0"
+      refute html_response(conn, 200) =~ "Alcohol Free Cocktails:"
     end
 
     test "3 soft drinks are worth 1pt", %{conn: conn, drinks: drinks} do
