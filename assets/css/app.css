@@ -264,6 +264,10 @@ select {
   min-width: 5rem;
 }
 
+.min-w-15rem {
+  min-width: 15rem;
+}
+
 .max-h-16rem {
   max-height: 16rem;
 }
@@ -280,6 +284,10 @@ select {
 
 .h-27rem {
   height: 27rem;
+}
+
+.pb-2-5rem {
+  padding-bottom: 2.5rem;
 }
 
 .pt-3rem {
