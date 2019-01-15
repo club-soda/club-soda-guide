@@ -102,8 +102,8 @@ defmodule CsGuide.PostcodeLatLong do
 
         case body["status"] do
           200 ->
-            lat = body["result"]["latitude"]
-            long = body["result"]["longitude"]
+            lat = body["result"]["latitude"] |> Float.to_string()
+            long = body["result"]["longitude"] |> Float.to_string()
 
             :ets.insert_new(:postcode_cache, {postcode, lat, long})
             {:ok, {lat, long}}
