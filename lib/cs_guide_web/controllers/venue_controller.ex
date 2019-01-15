@@ -39,6 +39,7 @@ defmodule CsGuideWeb.VenueController do
     slug = Venue.create_slug(venue_params["venue_name"], venue_params["postcode"])
     venue_params = Map.put(venue_params, "slug", slug)
     postcode = venue_params["postcode"]
+
     existing_venue_slug =
       case Venue.get_by(slug: slug) do
         nil -> ""
@@ -88,7 +89,6 @@ defmodule CsGuideWeb.VenueController do
 
     images = Enum.sort_by(venue.venue_images, fn i -> i.id end)
     venue = Map.put(venue, :venue_images, images)
-    venue_owner = conn.assigns[:venue_id] == venue.entry_id
 
     if venue != nil do
       venue_owner = conn.assigns[:venue_id] == venue.id
