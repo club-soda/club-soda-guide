@@ -39,12 +39,8 @@ defmodule CsGuideWeb.VenueController do
     slug = Venue.create_slug(venue_params["venue_name"], venue_params["postcode"])
     venue_params = Map.put(venue_params, "slug", slug)
 
-    existing_venue_slug =
-      if Venue.get_by(slug: slug) do
-        Venue.get_by(slug: slug).slug
-      else
-        ""
-      end
+    existing_venue = Venue.get_by(slug: slug)
+    existing_venue_slug = existing_venue && existing_venue.slug
 
     if slug == existing_venue_slug do
       changeset = Venue.changeset(%Venue{}, venue_params)
