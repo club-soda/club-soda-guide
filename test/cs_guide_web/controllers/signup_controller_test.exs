@@ -1,14 +1,13 @@
 defmodule CsGuideWeb.SignupControllerTest do
   use CsGuideWeb.ConnCase
 
-  import CsGuide.SetupHelpers
   alias CsGuide.Categories.VenueType
 
   @create_attrs %{
     address: "number and road",
     city: "London",
     phone_number: "01234567890",
-    postcode: "EC1 5AD",
+    postcode: "EC1M 5AD",
     venue_name: "The Example Pub",
     venue_types: %{"Bar" => "on"},
     users:  %{"0" => %{"email" => "bob@dwyl.com"}}
