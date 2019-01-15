@@ -48,7 +48,7 @@
     <h1 class="roboto-slab f2 lh2 dib">Drinks at <%= @venue.venue_name %></h1>
     <div class="flex-ns flex-wrap justify-center pv4-ns">
       <!-- Cocktail card -->
-      <%= if @venue.num_cocktails do %>
+      <%= if @venue.num_cocktails && @venue.num_cocktails != 0 do %>
         <%= component("cocktail_card", venue: @venue, conn: @conn) %>
       <% end %>
       <!-- Drink cards -->
