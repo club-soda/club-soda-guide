@@ -2,11 +2,8 @@ defmodule CsGuideWeb.VenueControllerTest do
   use CsGuideWeb.ConnCase
   alias CsGuide.Fixtures
   alias CsGuide.{Resources, Categories}
-  alias CsGuide.Resources.Venue
 
   import CsGuide.SetupHelpers
-
-  @spirits_premixed "Spirits and Premixed"
 
   @create_brand Fixtures.create_brand()
   @create_types Fixtures.create_types()
@@ -177,10 +174,6 @@ defmodule CsGuideWeb.VenueControllerTest do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
       assert %{slug: slug} = redirected_params(conn)
 
-      venue =
-        Venue.get_by(slug: slug)
-        |> Venue.preload(:venue_types)
-
       conn =
         put(conn, venue_path(conn, :update, slug), %{
           "slug" => slug,
@@ -262,10 +255,6 @@ defmodule CsGuideWeb.VenueControllerTest do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
       assert %{slug: slug} = redirected_params(conn)
 
-      venue =
-        Venue.get_by(slug: slug)
-        |> Venue.preload(:venue_types)
-
       conn =
         put(conn, venue_path(conn, :update, slug), %{
           "slug" => slug,
@@ -293,10 +282,6 @@ defmodule CsGuideWeb.VenueControllerTest do
 
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
       assert %{slug: slug} = redirected_params(conn)
-
-      venue =
-        Venue.get_by(slug: slug)
-        |> Venue.preload(:venue_types)
 
       conn =
         put(conn, venue_path(conn, :update, slug), %{
@@ -329,10 +314,6 @@ defmodule CsGuideWeb.VenueControllerTest do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
       assert %{slug: slug} = redirected_params(conn)
 
-      venue =
-        Venue.get_by(slug: slug)
-        |> Venue.preload(:venue_types)
-
       conn =
         put(conn, venue_path(conn, :update, slug), %{
           "slug" => slug,
@@ -363,10 +344,6 @@ defmodule CsGuideWeb.VenueControllerTest do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
       assert %{slug: slug} = redirected_params(conn)
 
-      venue =
-        Venue.get_by(slug: slug)
-        |> Venue.preload(:venue_types)
-
       conn =
         put(conn, venue_path(conn, :update, slug), %{
           "slug" => slug,
@@ -392,10 +369,6 @@ defmodule CsGuideWeb.VenueControllerTest do
 
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
       assert %{slug: slug} = redirected_params(conn)
-
-      venue =
-        Venue.get_by(slug: slug)
-        |> Venue.preload(:venue_types)
 
       conn =
         put(conn, venue_path(conn, :update, slug), %{

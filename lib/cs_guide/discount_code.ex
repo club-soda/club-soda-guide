@@ -17,7 +17,6 @@ defmodule CsGuide.DiscountCode do
   def changeset(discount_code, attrs \\ %{}) do
     discount_code
     |> cast(attrs, [:code, :venue_id])
-    # Should this be required? Or not if we can't delete right now?>>>>>>>>>>>>>
     |> validate_required([:code])
   end
 
