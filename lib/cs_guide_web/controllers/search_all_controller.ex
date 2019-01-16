@@ -2,8 +2,20 @@ defmodule CsGuideWeb.SearchAllController do
   use CsGuideWeb, :controller
 
   alias CsGuide.Resources.{Drink, Venue}
+  alias CsGuide.{Resources, PostcodeLatLong}
 
   def index(conn, params) do
+    possible_postcode = params["term"]
+    case PostcodeLatLong.check_or_cache(possible_postcode) do
+      {:ok, {lat, long}} ->
+        conn
+        |> redirect(to: search_venue_path(conn, :index, ll: "#{lat},#{long}"))
+      {:error, _ } ->
+        search_by_text(conn, params)
+    end
+  end
+
+  defp search_by_text(conn, params) do
     venues =
       Venue.all()
       |> Venue.preload([:venue_types, :venue_images])
