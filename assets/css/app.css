@@ -587,3 +587,13 @@ i {
   padding-right: 0;
 }
 /* END of Default styling for the static content html on static pages */
+
+.rotate-90 {
+  -webkit-transform: rotate( 90deg );
+  transform: rotate( 90deg );
+}
+
+.rotate-270 {
+  -webkit-transform: rotate( 270deg );
+  transform: rotate( 270deg );
+}
