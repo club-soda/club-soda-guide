@@ -20,6 +20,7 @@
     :venue_types,
     :lat,
     :long,
-    :slug])
+    :slug,
+    :discount_codes])
     %>
 </section>

@@ -88,13 +88,14 @@ These are password protected and can be accessed by admins only. Please speak to
 These are the elements of the site that can be amended in this way and their
 corresponding urls:
 - Users `/admin/users`
+- Brands `/admin/brands`
 - Drinks `/admin/drinks`
   - Drink types `/admin/drink_types`
   - Drink style `/admin/drink_styles`
-- Brands `/admin/brands`
 - Venues `/admin/venues`
   - Venue type `/admin/venue_types`
 - Retailers `/admin/retailers`
+  - Discount Codes `/admin/discount_codes`
 - Static Pages `/admin/static_pages`
 
 All of these links are also available by visiting `/admin`.
@@ -142,19 +143,24 @@ the venues that stock or sell those drinks.
 To add a stockist, simply add a drink from this brand to the venue as you normally would.
 
 Member brands are also able to display 'where to buy' retailers. These retailers
-can be added in two ways. Major supermarkets, amazon, DryDrinker and WiseBartender
-can be added as retailers of a brand when the brand is created by checking the
-checkboxes for those retailers on the 'New brand' form. Once you have ticked one
-of these boxes, a link with the name of the retailer will then appear under the
-'where to buy' title and clicking that link will take you to the appropriate site
-with a search made for the brand of that drink on that site. To add a retailer
-not included in the 'New brand' form list go to `/admin/retailers/new`. There
-you can fill in the details of your new retailer. Ensure that for the website
-you include the `http://` or `https://` at the beginning of the website url,
-otherwise the link will not work properly when clicked on. Give the 'venue type'
-of 'Retailers'. Even if the brand is an online retailer you must provide a
-postcode as this is a required field. Then when you add the drink to this venue,
-it will display in the 'where to buy' section.
+can be added in two ways.
+
+Major supermarkets, amazon, DryDrinker and WiseBartender can be added as
+retailers of a brand when the brand is created by checking the checkboxes for
+those retailers on the 'New brand' form. Once you have ticked one of these boxes,
+a link with the name of the retailer will then appear under the 'where to buy'
+title and clicking that link will take you to the appropriate site with a search
+made for the brand of that drink on that site. Admins have the ability to add a
+discount code that displays underneath links for DryDrinker and WiseBartender
+using the options available at `/admin/discount_codes`.
+
+To add a retailer not included in the 'New brand' form list go to
+`/admin/retailers/new`. There you can fill in the details of your new retailer.
+Ensure that for the website you include the `http://` or `https://` at the
+beginning of the website url, otherwise the link will not work properly when
+clicked on. Give the 'venue type' of 'Retailers'. Even if the brand is an online
+retailer you must provide a postcode as this is a required field. Then when you
+add the drink to this venue, it will display in the 'where to buy' section.
 
 ## Uploading Images
 

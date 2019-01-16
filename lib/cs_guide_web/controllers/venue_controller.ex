@@ -3,6 +3,7 @@ defmodule CsGuideWeb.VenueController do
 
   alias CsGuide.Resources.{Venue, Drink, Brand}
   alias CsGuide.Images.VenueImage
+  alias CsGuide.DiscountCode
 
   import Ecto.Query, only: [from: 2, subquery: 1]
 
@@ -63,7 +64,8 @@ defmodule CsGuideWeb.VenueController do
       |> Venue.preload(
         drinks: [:brand, :drink_types, :drink_styles, :drink_images],
         venue_types: [],
-        venue_images: []
+        venue_images: [],
+        discount_codes: []
       )
 
     images = Enum.sort_by(venue.venue_images, fn i -> i.id end)
@@ -72,7 +74,10 @@ defmodule CsGuideWeb.VenueController do
     if venue != nil do
       venue_owner = conn.assigns[:venue_id] == venue.id
 
-      render(conn, "show.html", venue: venue, is_authenticated: conn.assigns[:admin] || venue_owner)
+      render(conn, "show.html",
+        venue: venue,
+        is_authenticated: conn.assigns[:admin] || venue_owner
+      )
     else
       conn
       |> put_view(CsGuideWeb.StaticPageView)
@@ -92,7 +97,8 @@ defmodule CsGuideWeb.VenueController do
       })
       when map_size(venue) <= 2 do
     venue =
-      Venue.get_by(slug: slug) |> Venue.preload([:venue_types, :venue_images, :drinks, :users])
+      Venue.get_by(slug: slug)
+      |> Venue.preload([:venue_types, :venue_images, :discount_codes, :drinks, :users])
 
     venue_params =
       venue
@@ -111,7 +117,7 @@ defmodule CsGuideWeb.VenueController do
 
     venue =
       Venue.get_by(slug: slug)
-      |> Venue.preload([:venue_types, :venue_images, :drinks, :users])
+      |> Venue.preload([:venue_types, :venue_images, :discount_codes, :drinks, :users])
 
     venue_params =
       venue_params
