@@ -30,7 +30,7 @@
       <% else %>
         <%= if @is_authenticated do %>
           <div class="pb3">
-            <a class="cs-mid-blue" href="<%= @brand.name %>/edit">Add brand description</a>
+            <a class="cs-mid-blue" href="admin/<%= @brand.name %>/edit">Add brand description</a>
           </div>
         <% end %>
       <% end %>
@@ -43,7 +43,7 @@
         <% else %>
           <%= if @is_authenticated do %>
             <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
-            <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand website</a>
+            <a href="admin/<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand website</a>
           <% end %>
         <% end %>
       </div>
@@ -56,7 +56,7 @@
             </a>
           <% else %>
             <%= if @is_authenticated do %>
-              <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand facebook</a>
+              <a href="admin/<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand facebook</a>
             <% end %>
           <% end %>
         </div>
@@ -68,7 +68,7 @@
             </a>
           <% else %>
             <%= if @is_authenticated do %>
-              <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand instagram</a>
+              <a href="admin/<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand instagram</a>
             <% end %>
           <% end %>
         </div>
@@ -88,7 +88,7 @@
           <p><%= @brand.copy %></p>
         <% else %>
           <%= if @is_authenticated do %>
-            <a href="<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand copy</a>
+            <a href="admin/<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand copy</a>
           <% end %>
         <% end %>
       </div>
