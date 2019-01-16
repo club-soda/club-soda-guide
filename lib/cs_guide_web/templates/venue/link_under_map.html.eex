@@ -6,7 +6,7 @@
         <%= @venue.phone_number %>
       </p>
     <% else %>
-      <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= Map.get(@venue, @link_key) %>">
+      <a class="f6 lh6 cs-mid-blue underline dib v-top truncate w-60" href="<%= Map.get(@venue, @link_key) %>" target="_blank">
         <%= Map.get(@venue, @link_key) %>
       </a>
     <% end %>
