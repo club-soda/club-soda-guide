@@ -86,12 +86,19 @@ defmodule CsGuideWeb.Router do
     resources("/venues", VenueController, except: [:delete, :index], param: "slug")
   end
 
+  scope "/csv", CsGuideWeb do
+    pipe_through([:browser, :admin])
+    get("/", CsvController, :export)
+  end
+
   scope "/", CsGuideWeb do
     pipe_through(:browser)
 
     get("/:page_title", StaticPageController, :show)
     get("/*page_not_found", StaticPageController, :show)
   end
+
+
 
   # Other scopes may use custom stacks.
   # scope "/api", CsGuideWeb do

@@ -1,9 +1,6 @@
 defmodule CsGuideWeb.RetailerController do
   use CsGuideWeb, :controller
-
-  alias CsGuide.Resources.{Venue, Drink, Brand}
-
-  import Ecto.Query, only: [from: 2, subquery: 1]
+  alias CsGuide.Resources.Venue
 
   def index(conn, _params) do
     venues =
@@ -26,7 +23,7 @@ defmodule CsGuideWeb.RetailerController do
     venue_params = Map.put(venue_params, "venue_types", %{"Retailers" => "on"})
 
     case Venue.retailer_insert(venue_params) do
-      {:ok, venue} ->
+      {:ok, _venue} ->
         conn
         |> put_flash(:info, "Retailer created successfully.")
         |> redirect(to: retailer_path(conn, :index))
@@ -53,46 +50,11 @@ defmodule CsGuideWeb.RetailerController do
       |> Map.put("venue_types", %{"Retailers" => "on"})
 
     case Venue.retailer_update(venue, venue_params) do
-      {:ok, venue} ->
+      {:ok, _venue} ->
         conn
         |> put_flash(:info, "Retailer updated successfully.")
         |> redirect(to: retailer_path(conn, :index))
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", venue: venue, changeset: changeset)
-    end
-  end
-
-  defp do_update(conn, venue, venue_params) do
-    query = fn s, m ->
-      sub =
-        from(mod in Map.get(m.__schema__(:association, s), :queryable),
-          distinct: mod.entry_id,
-          order_by: [desc: :inserted_at],
-          select: mod
-        )
-
-      from(m in subquery(sub), where: not m.deleted, select: m)
-    end
-
-    with {:ok, venue} <- Venue.update(venue, venue_params),
-         {:ok, venue} <-
-           Venue.update(
-             venue,
-             Map.put(
-               venue_params,
-               :cs_score,
-               CsGuide.Resources.CsScore.calculateScore(
-                 venue.drinks
-                 |> CsGuide.Repo.preload(drink_types: query.(:drink_types, Drink)),
-                 venue.num_cocktails
-               )
-             )
-           ) do
-      conn
-      |> put_flash(:info, "Retailer updated successfully.")
-      |> redirect(to: retailer_path(conn, :index))
-    else
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", venue: venue, changeset: changeset)
     end

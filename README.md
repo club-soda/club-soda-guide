@@ -63,6 +63,10 @@ can add new details or edit existing ones. If you wish to add paragraph breaks t
 ![description text area](https://user-images.githubusercontent.com/16775804/51027842-ca491200-1589-11e9-8044-50764c6b0afb.png)
 ![a venue description with line breaks](https://user-images.githubusercontent.com/16775804/51027818-be5d5000-1589-11e9-8e42-0b001163d16e.png)
 
+The other way to edit a venue's details is by adding/editing drinks it stocks.
+You can do this by selecting the drinks listed under each brand. Or by adding an
+integer to the number of cocktails field.
+
 To see all venues that currently exist, you can visit `/admin/venues`, where you'll see a list of all venues. From here you can click 'show' to visit the venue page, 'edit' to edit its details, or 'delete' to delete the venue listing.
 
 <img width="500" alt="Venue listings" src="https://user-images.githubusercontent.com/8939909/46818459-32b10900-cd79-11e8-8268-a01b735c0ed2.png">
@@ -208,6 +212,12 @@ and allow the users to unselect the filter.
 
 ![image](https://user-images.githubusercontent.com/6057298/50681993-49c46780-1005-11e9-8348-c82b02a53378.png)
 
+## Exporting to CSV
+
+On the admin page the "download" links allow the admin to download the current data
+to a csv file:
+
+![image](https://user-images.githubusercontent.com/6057298/51193623-2b058100-18e1-11e9-91bd-1c3c722eb7db.png)
 
 ## Dev Guide
 

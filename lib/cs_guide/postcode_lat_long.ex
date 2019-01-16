@@ -1,6 +1,5 @@
 defmodule CsGuide.PostcodeLatLong do
   alias CsGuide.Resources.Venue
-  import Ecto.Query
   use GenServer
 
   @zip_file_name "postcodes.zip"
@@ -12,33 +11,27 @@ defmodule CsGuide.PostcodeLatLong do
   end
 
   def init(initial_state) do
+    :ets.new(:postcode_cache, [:set, :public, :named_table])
+
     case Mix.env do
       :test ->
-        IO.puts("Skipping postcode storage")
-        # This can be changed in the future. Just didn't want to have to clone
-        # csv file everytime that we run tests. File is currently being used
-        # to run priv/repo/add_lat_long_to_venue.exs. If we build in
-        # functionality in the future that checks to see if entered postcodes
-        # (venue creation for example) are correct, then we can check them
-        # against the cache. For testing at that point we can create a smaller
-        # csv file which we can use to test with.
+        store_postcodes_in_ets("ukpostcodes_mini_for_test.csv")
       _ ->
-        :ets.new(:postcode_cache, [:set, :protected, :named_table])
-        store_postcodes_in_ets()
+        store_postcodes_in_ets("ukpostcodes.csv")
     end
     {:ok, initial_state}
   end
 
-  defp store_postcodes_in_ets do
-    if File.exists?("ukpostcodes.csv") do
+  defp store_postcodes_in_ets(file_name) do
+    if File.exists?(file_name) do
       IO.inspect("Postcode file exists, storing with ets")
-      postcodes_from_csv_to_ets("ukpostcodes.csv")
+      postcodes_from_csv_to_ets(file_name)
     else
       IO.inspect("Postcode file does not exist. Creating file...")
       case create_csv_file() do
         :ok ->
           IO.inspect("Removed zip file. Storing postcodes with ets")
-          postcodes_from_csv_to_ets("ukpostcodes.csv")
+          postcodes_from_csv_to_ets(file_name)
 
         error ->
           error
@@ -99,52 +92,27 @@ defmodule CsGuide.PostcodeLatLong do
     end
   end
 
-  def nearest_venues(lat, long, distance \\ 5_000)
-  def nearest_venues(lat, long, distance) when distance < 30_000 do
-    case venues_within_distance(distance, lat, long) do
-      [] -> nearest_venues(lat, long, distance + 5_000)
-      venues -> venues
-    end
-  end
-  def nearest_venues(_, _, _), do: []
+  def check_or_cache(postcode) do
+    postcode = postcode |> String.upcase() |> String.replace(" ", "")
 
-  defp venues_within_distance(distance, lat, long) do
-    Venue
-    |> where([venue], venue.deleted == false)
-    # filters deleted venues
-    |> where(
-      [venue],
-      fragment(
-        "? @> ?",
-        fragment(
-          "earth_box(?, ?)",
-          fragment("ll_to_earth(?, ?)", ^lat, ^long),
-          ^distance
-        ),
-        fragment("ll_to_earth(?,?)", venue.lat, venue.long)
-      )
-    )
-    # filters veunes that are within the given distance
-    |> select([venue], %{
-      venue
-      | distance:
-          fragment(
-            "? as distance",
-            fragment(
-              "? <@> ?",
-              fragment("point(?, ?)", ^long, ^lat),
-              fragment("point(?, ?)", venue.long, venue.lat)
-            )
-          )
-    })
-    # selects all venues 'where' tells it to and adds the :distance key to
-    # each (:distance is a virtual field that needs to be added to each venue
-    # as the lat, long and distance variables passed in can all change)
-    |> order_by([v], desc: v.inserted_at)
-    |> distinct([v], [asc: fragment("distance"), asc: :entry_id])
-    # filters the results to make sure it returns only venues with a unique
-    # combination of distance and entry_id. The reason for the combination is to
-    # account for cases where distances could be the same to different venues.
-    |> CsGuide.Repo.all()
+    case :ets.lookup(:postcode_cache, postcode) do
+      [] ->
+        res = HTTPoison.get!(~s(api.postcodes.io/postcodes/#{postcode}))
+        body = Poison.Parser.parse!(res.body)
+
+        case body["status"] do
+          200 ->
+            lat = body["result"]["latitude"] |> Float.to_string()
+            long = body["result"]["longitude"] |> Float.to_string()
+
+            :ets.insert_new(:postcode_cache, {postcode, lat, long})
+            {:ok, {lat, long}}
+          _ ->
+            {:error, body["error"]}
+        end
+
+      [{_, lat, long}] ->
+        {:ok, {lat, long}}
+    end
   end
 end

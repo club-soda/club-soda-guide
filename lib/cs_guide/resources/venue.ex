@@ -2,10 +2,10 @@ defmodule CsGuide.Resources.Venue do
   use Ecto.Schema
   use Alog
   import Ecto.Changeset
-  import Ecto.Query, only: [from: 2]
+  import Ecto.Query
 
   alias CsGuide.Repo
-  alias CsGuide.Resources
+  alias CsGuide.{Resources, PostcodeLatLong}
 
   schema "venues" do
     field(:venue_name, :string)
@@ -104,9 +104,8 @@ defmodule CsGuide.Resources.Venue do
     |> validate_required([:venue_name, :website, :venue_types])
   end
 
-  def insert(attrs) do
-    %__MODULE__{}
-    |> __MODULE__.changeset(attrs)
+  def insert(changeset, attrs) do
+    changeset
     |> insert_entry_id()
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
@@ -114,14 +113,16 @@ defmodule CsGuide.Resources.Venue do
     |> Repo.insert()
   end
 
+  def insert(attrs) do
+    %__MODULE__{}
+    |> __MODULE__.changeset(attrs)
+    |> insert(attrs)
+  end
+
   def retailer_insert(attrs) do
     %__MODULE__{}
     |> __MODULE__.retailer_changeset(attrs)
-    |> insert_entry_id()
-    |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
-    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
-    |> Resources.require_assocs([:venue_types])
-    |> Repo.insert()
+    |> insert(attrs)
   end
 
   def update(%__MODULE__{} = item, attrs) do
@@ -133,6 +134,19 @@ defmodule CsGuide.Resources.Venue do
     |> __MODULE__.changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
+    |> Repo.insert()
+  end
+
+  def update(%__MODULE__{} = item, attrs, postcode) do
+    item
+    |> __MODULE__.preload(__MODULE__.__schema__(:associations))
+    |> Map.put(:id, nil)
+    |> Map.put(:inserted_at, nil)
+    |> Map.put(:updated_at, nil)
+    |> __MODULE__.changeset(attrs)
+    |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
+    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
+    |> validate_postcode(postcode)
     |> Repo.insert()
   end
 
@@ -181,4 +195,93 @@ defmodule CsGuide.Resources.Venue do
     |> String.split(" ")
     |> Enum.join("-")
   end
+
+  def nearest_venues(lat, long, distance \\ 5_000)
+  def nearest_venues(lat, long, distance) when distance < 30_000 do
+    case venues_within_distance(distance, lat, long) do
+      [] -> nearest_venues(lat, long, distance + 5_000)
+      venues -> venues
+    end
+  end
+  def nearest_venues(_, _, _), do: []
+
+  defp venues_within_distance(distance, lat, long) do
+    __MODULE__
+    |> where([venue], venue.deleted == false)
+    # filters deleted venues
+    |> where(
+      [venue],
+      fragment(
+        "? @> ?",
+        fragment(
+          "earth_box(?, ?)",
+          fragment("ll_to_earth(?, ?)", ^lat, ^long),
+          ^distance
+        ),
+        fragment("ll_to_earth(?,?)", venue.lat, venue.long)
+      )
+    )
+    # filters veunes that are within the given distance
+    |> select([venue], %{
+      venue
+      | distance:
+          fragment(
+            "? as distance",
+            fragment(
+              "? <@> ?",
+              fragment("point(?, ?)", ^long, ^lat),
+              fragment("point(?, ?)", venue.long, venue.lat)
+            )
+          )
+    })
+    # selects all venues 'where' tells it to and adds the :distance key to
+    # each (:distance is a virtual field that needs to be added to each venue
+    # as the lat, long and distance variables passed in can all change)
+    |> order_by([v], desc: v.inserted_at)
+    |> distinct([v], [asc: fragment("distance"), asc: :entry_id])
+    # filters the results to make sure it returns only venues with a unique
+    # combination of distance and entry_id. The reason for the combination is to
+    # account for cases where distances could be the same to different venues.
+    |> CsGuide.Repo.all()
+  end
+
+  def check_existing_slug(changeset, slug) do
+    existing_venue_slug =
+      case __MODULE__.get_by(slug: slug) do
+        nil -> ""
+        venue -> venue.slug
+      end
+
+    if slug == existing_venue_slug do
+      {_, changeset_with_error} =
+        Ecto.Changeset.add_error(changeset, :venue_name, "Venue already exists",
+          type: :string,
+          validation: :cast
+        )
+        |> Ecto.Changeset.apply_action(:insert)
+
+      changeset_with_error
+    else
+      changeset
+    end
+  end
+
+  def validate_postcode(%{valid?: true} = changeset, postcode) do
+    case PostcodeLatLong.check_or_cache(postcode) do
+      {:error, _} ->
+        {_, changeset} =
+          changeset
+          |> add_error(:postcode, "invalid postcode")
+          |> apply_action(:insert)
+
+        changeset
+      {:ok, {lat, long}} ->
+        {lat, _} = Float.parse(lat)
+        {long, _} = Float.parse(long)
+
+        change(changeset, %{lat: lat, long: long})
+    end
+  end
+
+  def validate_postcode(changeset, _postcode), do: changeset
 end

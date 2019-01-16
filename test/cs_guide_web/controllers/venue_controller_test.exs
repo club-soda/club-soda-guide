@@ -15,14 +15,29 @@ defmodule CsGuideWeb.VenueControllerTest do
     address: "number and road",
     city: "London",
     phone_number: "01234567890",
-    postcode: "EC1 5AD",
+    postcode: "EC1M 5AD",
     venue_name: "The Example Pub",
     drinks: %{"AF Beer 1" => "on"},
     venue_types: %{"Bars" => "on"},
+    num_cocktails: 2,
     slug: "The-Example-Pub-EC1-5AD"
   }
 
-  @invalid_attrs %{phone_number: nil, postcode: nil, venue_name: nil}
+  @invalid_attrs %{phone_number: "", postcode: "", venue_name: ""}
+
+  def fixture(:drink, brand) do
+    drinks =
+      @create_drinks
+      |> Enum.map(fn d ->
+        {:ok, drink} =
+          Map.put(d, :brand, brand)
+          |> Resources.Drink.insert()
+
+        drink
+      end)
+
+    drinks
+  end
 
   def fixture(:venue) do
     @create_venue_types
@@ -44,20 +59,6 @@ defmodule CsGuideWeb.VenueControllerTest do
       end)
 
     venues
-  end
-
-  def fixture(:drink, brand) do
-    drinks =
-      @create_drinks
-      |> Enum.map(fn d ->
-        {:ok, drink} =
-          Map.put(d, :brand, brand)
-          |> Resources.Drink.insert()
-
-        drink
-      end)
-
-    drinks
   end
 
   def fixture(:brand) do
@@ -91,12 +92,12 @@ defmodule CsGuideWeb.VenueControllerTest do
   describe "index - admin" do
     setup [:create_venues, :admin_login]
 
-    test "goes to all venues endpoint", %{conn: conn, venues: venues} do
+    test "goes to all venues endpoint", %{conn: conn} do
       conn = get(conn, venue_path(conn, :index))
       assert html_response(conn, 200) =~ "All Venues"
     end
 
-    test "goes to all venues by date endpoint", %{conn: conn, venues: venues} do
+    test "goes to all venues by date endpoint", %{conn: conn} do
       conn = get(conn, venue_path(conn, :index, date_order: "asc"))
       assert html_response(conn, 200) =~ "All Venues"
     end
@@ -133,6 +134,7 @@ defmodule CsGuideWeb.VenueControllerTest do
 
       conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "The Example Pub"
+      assert html_response(conn, 200) =~ "Alcohol Free Cocktails: 2"
 
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
       assert html_response(conn, 200) =~ "Venue already exists"
@@ -147,7 +149,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   describe "Calculates correct CS Score:" do
     setup [:drink_setup, :create_venues, :admin_login]
 
-    test "When no drinks are added the score is 0", %{conn: conn, drinks: drinks} do
+    test "When no drinks are added the score is 0", %{conn: conn} do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
       assert %{slug: slug} = redirected_params(conn)
 
@@ -155,7 +157,9 @@ defmodule CsGuideWeb.VenueControllerTest do
         put(conn, venue_path(conn, :update, slug), %{
           "slug" => slug,
           "venue" => %{
-            "drinks" => Map.new([])
+            "drinks" => Map.new([]),
+            "venue_name" => "The Example Pub",
+            "postcode" => "EC1M 5AD"
           }
         })
 
@@ -237,7 +241,7 @@ defmodule CsGuideWeb.VenueControllerTest do
                 {wine1.entry_id, "on"},
                 {wine2.entry_id, "on"}
               ]),
-            "num_cocktails" => 0
+            "num_cocktails" => nil
           }
         })
 
@@ -245,6 +249,7 @@ defmodule CsGuideWeb.VenueControllerTest do
 
       conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "Club Soda Score of 1.0"
+      refute html_response(conn, 200) =~ "Alcohol Free Cocktails:"
     end
 
     test "3 soft drinks are worth 1pt", %{conn: conn, drinks: drinks} do

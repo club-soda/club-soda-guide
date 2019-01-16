@@ -7,7 +7,7 @@ defmodule CsGuideWeb.VenueController do
 
   import Ecto.Query, only: [from: 2, subquery: 1]
 
-  def index(conn, %{"date_order" => date_order}) do
+  def index(conn, %{"date_order" => _date_order}) do
     venues =
       Venue.all()
       |> Venue.preload(:venue_types)
@@ -39,31 +39,22 @@ defmodule CsGuideWeb.VenueController do
   def create(conn, %{"venue" => venue_params}) do
     slug = Venue.create_slug(venue_params["venue_name"], venue_params["postcode"])
     venue_params = Map.put(venue_params, "slug", slug)
+    postcode = venue_params["postcode"]
 
-    existing_venue = Venue.get_by(slug: slug)
-    existing_venue_slug = existing_venue && existing_venue.slug
+    changeset =
+      %Venue{}
+      |> Venue.changeset(venue_params)
+      |> Venue.check_existing_slug(slug)
+      |> Venue.validate_postcode(postcode)
 
-    if slug == existing_venue_slug do
-      changeset = Venue.changeset(%Venue{}, venue_params)
+    case Venue.insert(changeset, venue_params) do
+      {:ok, venue} ->
+        conn
+        |> put_flash(:info, "Venue created successfully.")
+        |> redirect(to: venue_path(conn, :show, venue.slug))
 
-      {_, changeset_with_error} =
-        Ecto.Changeset.add_error(changeset, :venue_name, "Venue already exists",
-          type: :string,
-          validation: :cast
-        )
-        |> Ecto.Changeset.apply_action(:insert)
-
-      render(conn, "new.html", changeset: changeset_with_error)
-    else
-      case Venue.insert(venue_params) do
-        {:ok, venue} ->
-          conn
-          |> put_flash(:info, "Venue created successfully.")
-          |> redirect(to: venue_path(conn, :show, venue.slug))
-
-        {:error, %Ecto.Changeset{} = changeset} ->
-          render(conn, "new.html", changeset: changeset)
-      end
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, "new.html", changeset: changeset)
     end
   end
 
@@ -79,12 +70,14 @@ defmodule CsGuideWeb.VenueController do
 
     images = Enum.sort_by(venue.venue_images, fn i -> i.id end)
     venue = Map.put(venue, :venue_images, images)
-    venue_owner = conn.assigns[:venue_id] == venue.entry_id
 
     if venue != nil do
       venue_owner = conn.assigns[:venue_id] == venue.id
 
-      render(conn, "show.html", venue: venue, is_authenticated: conn.assigns[:admin] || venue_owner)
+      render(conn, "show.html",
+        venue: venue,
+        is_authenticated: conn.assigns[:admin] || venue_owner
+      )
     else
       conn
       |> put_view(CsGuideWeb.StaticPageView)
@@ -118,20 +111,21 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def update(conn, %{"slug" => slug, "venue" => venue_params}) do
-    venue_params =
-      if venue_params["venue_name"] || venue_params["postcode"] do
-        new_slug = Venue.create_slug(venue_params["venue_name"], venue_params["postcode"])
-        Map.put(venue_params, "slug", new_slug)
-      else
-        venue_params
-      end
+    v_name = venue_params["venue_name"]
+    v_postcode = venue_params["postcode"]
+    new_slug = Venue.create_slug(v_name, v_postcode)
 
     venue =
       Venue.get_by(slug: slug)
       |> Venue.preload([:venue_types, :venue_images, :discount_codes, :drinks, :users])
 
-    case Venue.update(venue, venue_params |> Map.put("drinks", venue.drinks)) do
-      {:ok, venue} ->
+    venue_params =
+      venue_params
+      |> Map.put("slug", new_slug)
+      |> Map.put("drinks", venue.drinks)
+
+    case Venue.update(venue, venue_params, v_postcode) do
+      {:ok, _venue} ->
         conn
         |> put_flash(:info, "Venue updated successfully.")
         |> redirect(to: venue_path(conn, :show, Map.get(venue_params, "slug", slug)))

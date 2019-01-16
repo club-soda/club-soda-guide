@@ -99,7 +99,7 @@ defmodule CsGuideWeb.DrinkController do
     drink = Drink.get(id)
 
     case Drink.update(drink, drink_params) do
-      {:ok, drink} ->
+      {:ok, _drink} ->
         conn
         |> put_flash(:info, "Drink updated successfully.")
         |> redirect(to: drink_path(conn, :index))

@@ -1,6 +1,6 @@
 defmodule CsGuide.PostcodeLatLongTest do
   use CsGuideWeb.ConnCase
-  alias CsGuide.{Categories, PostcodeLatLong, Resources}
+  alias CsGuide.{Categories, Resources}
   alias CsGuide.Resources.Venue
   import Ecto.Query, only: [from: 2]
 
@@ -42,7 +42,7 @@ defmodule CsGuide.PostcodeLatLongTest do
         |> count_no_times_venue_occurs("The Not Favourite Pub")
 
       all_not_fav_count_from_nearest =
-        PostcodeLatLong.nearest_venues(lat, long)
+        Venue.nearest_venues(lat, long)
         |> count_no_times_venue_occurs("The Not Favourite Pub")
 
       assert all_not_fav_count == 2
@@ -53,7 +53,7 @@ defmodule CsGuide.PostcodeLatLongTest do
       lat = 51.54359770000001
       long = -0.08807799999999999
 
-      venues = PostcodeLatLong.nearest_venues(lat, long)
+      venues = Venue.nearest_venues(lat, long)
       assert length(venues) == 2
     end
   end
