@@ -1,8 +1,10 @@
 defmodule CsGuideWeb.BrandController do
   use CsGuideWeb, :controller
 
-  alias CsGuide.Resources.Brand
+  alias CsGuide.Resources.{Brand, Venue}
   alias CsGuide.Images.BrandImage
+  alias CsGuide.DiscountCode
+  import Ecto.Query
 
   def index(conn, _params) do
     brands = Brand.all()
@@ -26,8 +28,34 @@ defmodule CsGuideWeb.BrandController do
     end
   end
 
+  defp make_query(retailer_id) do
+    from(dc in DiscountCode,
+      limit: 1,
+      select: dc,
+      where: dc.venue_id == ^retailer_id,
+      order_by: [desc: dc.inserted_at]
+    )
+  end
+
+  defp get_code(retailer_name) do
+    case Venue.get_by(venue_name: retailer_name) do
+      nil ->
+        ""
+
+      retailer ->
+        retailer.id
+        |> make_query()
+        |> CsGuide.Repo.one()
+        |> Map.get(:code)
+    end
+  end
+
   def show(conn, %{"name" => name}) do
+    dd_code = get_code("DryDrinker")
+    wb_code = get_code("WiseBartender")
+
     name = check_brand_name(name)
+
     brand =
       Brand.get_by([name: name], case_insensitive: true)
       |> Brand.preload(
@@ -42,7 +70,12 @@ defmodule CsGuideWeb.BrandController do
       )
 
     if brand != nil do
-      render(conn, "show.html", brand: brand, is_authenticated: conn.assigns[:admin])
+      render(conn, "show.html",
+        brand: brand,
+        is_authenticated: conn.assigns[:admin],
+        dd_discount_code: dd_code,
+        wb_discount_code: wb_code
+      )
     else
       conn
       |> put_view(CsGuideWeb.StaticPageView)
