@@ -95,24 +95,29 @@ defmodule CsGuide.PostcodeLatLong do
   def check_or_cache(postcode) do
     postcode = postcode |> String.upcase() |> String.replace(" ", "")
 
-    case :ets.lookup(:postcode_cache, postcode) do
-      [] ->
-        res = HTTPoison.get!(~s(api.postcodes.io/postcodes/#{postcode}))
-        body = Poison.Parser.parse!(res.body)
+    if String.length(postcode) == 0 do
+      {:error, "postcode invalid"}
+    else
+      case :ets.lookup(:postcode_cache, postcode) do
+        [] ->
+          res = HTTPoison.get!(~s(api.postcodes.io/postcodes/#{postcode}))
+          body = Poison.Parser.parse!(res.body)
 
-        case body["status"] do
-          200 ->
-            lat = body["result"]["latitude"] |> Float.to_string()
-            long = body["result"]["longitude"] |> Float.to_string()
+          case body["status"] do
+            200 ->
+              lat = body["result"]["latitude"] |> Float.to_string()
+              long = body["result"]["longitude"] |> Float.to_string()
 
-            :ets.insert_new(:postcode_cache, {postcode, lat, long})
-            {:ok, {lat, long}}
-          _ ->
-            {:error, body["error"]}
-        end
+              :ets.insert_new(:postcode_cache, {postcode, lat, long})
+              {:ok, {lat, long}}
+            _ ->
+              {:error, body["error"]}
+          end
 
-      [{_, lat, long}] ->
-        {:ok, {lat, long}}
+        [{_, lat, long}] ->
+          {:ok, {lat, long}}
+      end
     end
   end
+
 end

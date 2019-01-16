@@ -5,7 +5,7 @@ defmodule CsGuideWeb.SearchAllController do
   alias CsGuide.{Resources, PostcodeLatLong}
 
   def index(conn, params) do
-    possible_postcode = params["term"]
+    possible_postcode = params["term"] || ""
     case PostcodeLatLong.check_or_cache(possible_postcode) do
       {:ok, {lat, long}} ->
         conn
