@@ -53,7 +53,6 @@ defmodule CsGuide.Resources.Venue do
     )
 
     has_many(:venue_images, CsGuide.Images.VenueImage)
-    # Not sure that they should have many? >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     has_many(:discount_codes, CsGuide.DiscountCode)
 
     timestamps()
@@ -238,7 +237,7 @@ defmodule CsGuide.Resources.Venue do
     # each (:distance is a virtual field that needs to be added to each venue
     # as the lat, long and distance variables passed in can all change)
     |> order_by([v], desc: v.inserted_at)
-    |> distinct([v], [asc: fragment("distance"), asc: :entry_id])
+    |> distinct([v], asc: fragment("distance"), asc: :entry_id)
     # filters the results to make sure it returns only venues with a unique
     # combination of distance and entry_id. The reason for the combination is to
     # account for cases where distances could be the same to different venues.
