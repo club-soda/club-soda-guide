@@ -9,7 +9,7 @@ defmodule CsGuideWeb.SearchAllController do
     case PostcodeLatLong.check_or_cache(possible_postcode) do
       {:ok, {lat, long}} ->
         conn
-        |> redirect(to: search_venue_path(conn, :index, ll: "#{lat},#{long}"))
+        |> redirect(to: search_venue_path(conn, :index, ll: "#{lat},#{long}", postcode: possible_postcode))
       {:error, _ } ->
         search_by_text(conn, params)
     end
