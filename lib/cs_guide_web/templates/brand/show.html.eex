@@ -148,10 +148,12 @@
               <a class="f4 lh4 cs-mid-blue underline db v-top w-50 w-20-ns tc pt1 pb3" href="https://drydrinker.com/">
                 DryDrinker
               </a>
-              <div class="bg-cs-light-pink br2 pa2">
-                <p class="f6 lh6">Use discount code</p>
-                <p class="f5 lh5"><%= @dd_discount_code %></p>
-              </div>
+              <%= if @dd_discount_code do %>
+                <div class="bg-cs-light-pink br2 pa2">
+                  <p class="f6 lh6">Use discount code</p>
+                  <p class="f5 lh5"><%= @dd_discount_code %></p>
+                </div>
+              <% end %>
             </div>
           <% end %>
           <%= if @brand.sold_morrisons do %>
@@ -179,10 +181,12 @@
               <a class="f4 lh4 cs-mid-blue underline db v-top w-50 w-20-ns tc pt1 pb3" href="https://wisebartender.co.uk/">
                 WiseBartender
               </a>
-              <div class="bg-cs-light-pink br2 pa2">
-                <p class="f6 lh6">Use discount code</p>
-                <p class="f5 lh5"><%= @wb_discount_code %></p>
-              </div>
+              <%= if @wb_discount_code do %>
+                <div class="bg-cs-light-pink br2 pa2">
+                  <p class="f6 lh6">Use discount code</p>
+                  <p class="f5 lh5"><%= @wb_discount_code %></p>
+                </div>
+              <% end %>
             </div>
           <% end %>
         <% end %>
