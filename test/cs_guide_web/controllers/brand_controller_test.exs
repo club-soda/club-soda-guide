@@ -73,6 +73,14 @@ defmodule CsGuideWeb.BrandControllerTest do
       conn = post(conn, brand_path(conn, :create), brand: @create_attrs)
 
       assert redirected_to(conn) == brand_path(conn, :index)
+
+      conn = get(conn, brand_path(conn, :show, @create_attrs.name))
+      assert html_response(conn, 200) =~ "some name"
+      refute html_response(conn, 200) =~ "Use discount code"
+      assert html_response(conn, 200) =~ "Aldi"
+      refute html_response(conn, 200) =~ "Amazon"
+      assert html_response(conn, 200) =~ "bg-spirit"
+      refute html_response(conn, 200) =~ "bg-beer"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do

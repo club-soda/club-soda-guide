@@ -117,8 +117,28 @@ select {
   background: rgba(255, 255, 255, 0.5);
 }
 
-.bg-blue-pink {
-  background: linear-gradient(270deg, #E30B5D 0%, #00C6B3 100%);
+.bg-beer {
+  background: linear-gradient(270deg, #F8B700 0%, #2E304F 100%); /* Beer */
+}
+
+.bg-cider {
+  background: linear-gradient(180deg, #FBE2DB 0%, #2E304F 100%); /* Cider */
+}
+
+.bg-flavoured-mixer {
+  background: linear-gradient(270deg, #00C6B3 0%, #F8B700 100%); /* Flavoured Mixer */
+}
+
+.bg-soft-drink {
+  background: linear-gradient(270deg, #FBE2DB 0%, #E30B5D 100%); /* Soft drink */
+}
+
+.bg-spirit {
+  background: linear-gradient(270deg, #E30B5D 0%, #00C6B3 100%); /* Spirit */
+}
+
+.bg-wine {
+  background: linear-gradient(270deg, #E30B5D 0%, #2E304F 100%); /* Wine */
 }
 
 /* Line heights to correspond with tachyons font classes */
