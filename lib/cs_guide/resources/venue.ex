@@ -15,9 +15,9 @@ defmodule CsGuide.Resources.Venue do
     field(:postcode, Fields.Postcode)
     field(:website, Fields.Url)
     field(:phone_number, Fields.PhoneNumber)
-    field(:twitter, :string)
-    field(:facebook, :string)
-    field(:instagram, :string)
+    field(:twitter, Fields.Url)
+    field(:facebook, Fields.Url)
+    field(:instagram, Fields.Url)
     field(:cs_score, :float, default: 0.0)
     field(:favourite, :boolean, default: false)
     field(:num_cocktails, :integer)
@@ -197,12 +197,14 @@ defmodule CsGuide.Resources.Venue do
   end
 
   def nearest_venues(lat, long, distance \\ 5_000)
+
   def nearest_venues(lat, long, distance) when distance < 30_000 do
     case venues_within_distance(distance, lat, long) do
       [] -> nearest_venues(lat, long, distance + 5_000)
       venues -> venues
     end
   end
+
   def nearest_venues(_, _, _), do: []
 
   defp venues_within_distance(distance, lat, long) do
@@ -238,7 +240,7 @@ defmodule CsGuide.Resources.Venue do
     # each (:distance is a virtual field that needs to be added to each venue
     # as the lat, long and distance variables passed in can all change)
     |> order_by([v], desc: v.inserted_at)
-    |> distinct([v], [asc: fragment("distance"), asc: :entry_id])
+    |> distinct([v], asc: fragment("distance"), asc: :entry_id)
     # filters the results to make sure it returns only venues with a unique
     # combination of distance and entry_id. The reason for the combination is to
     # account for cases where distances could be the same to different venues.
@@ -275,6 +277,7 @@ defmodule CsGuide.Resources.Venue do
           |> apply_action(:insert)
 
         changeset
+
       {:ok, {lat, long}} ->
         {lat, _} = Float.parse(lat)
         {long, _} = Float.parse(long)

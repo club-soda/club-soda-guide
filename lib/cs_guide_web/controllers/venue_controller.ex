@@ -54,6 +54,9 @@ defmodule CsGuideWeb.VenueController do
         |> redirect(to: venue_path(conn, :show, venue.slug))
 
       {:error, %Ecto.Changeset{} = changeset} ->
+        changeset =
+          CsGuide.ChangesetHelpers.update_error_msg(changeset, Fields.Url, "should be a url")
+
         render(conn, "new.html", changeset: changeset)
     end
   end
