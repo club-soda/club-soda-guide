@@ -17,6 +17,7 @@ type alias Venue =
     { id : String
     , name : String
     , types : List String
+    , city : String
     , postcode : String
     , cs_score : Float
     , image : String
@@ -44,3 +45,5 @@ searchVenueByTerm searchTerm venue =
 
         Just term ->
             String.contains (String.toLower term) (String.toLower venue.name)
+                || String.contains (String.toLower term) (String.toLower venue.postcode)
+                || String.contains (String.toLower term) (String.toLower venue.city)
