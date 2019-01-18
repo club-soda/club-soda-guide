@@ -8,14 +8,10 @@
         style="background-image: url('https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%= img.name %>');">
       </div>
     <% else %>
-      <div class="bg-blue-pink w-100 center tc mb5">
-        <h1 class="roboto-slab white f2 lh2 pv6"><%= @brand.name %></h1>
-      </div>
+      <%= render("top_gradient_banner.html", drink_type: @drink_type, brand_name: @brand.name) %>
     <% end %>
   <% else %>
-    <div class="bg-blue-pink w-100 center tc mb5">
-      <h1 class="roboto-slab white f2 lh2 pv6"><%= @brand.name %></h1>
-    </div>
+    <%= render("top_gradient_banner.html", drink_type: @drink_type, brand_name: @brand.name) %>
   <% end %>
 
   <section class="center w-50 flex-ns mb5">

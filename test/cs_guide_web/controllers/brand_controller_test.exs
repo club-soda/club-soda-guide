@@ -79,6 +79,8 @@ defmodule CsGuideWeb.BrandControllerTest do
       refute html_response(conn, 200) =~ "Use discount code"
       assert html_response(conn, 200) =~ "Aldi"
       refute html_response(conn, 200) =~ "Amazon"
+      assert html_response(conn, 200) =~ "bg-spirit"
+      refute html_response(conn, 200) =~ "bg-beer"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do

@@ -75,12 +75,36 @@ defmodule CsGuideWeb.BrandController do
         brand_images: []
       )
 
+    {drink_type, count} =
+      Enum.map(brand.drinks, fn d ->
+        Enum.map(d.drink_types, fn t -> t.name end)
+      end)
+      |> List.flatten()
+      |> Enum.reduce(%{}, fn drink_type, acc ->
+        Map.update(acc, drink_type, 1, fn value -> value + 1 end)
+      end)
+      # Will assign brands with no drink_type background colour of spirits banner
+      |> Enum.reduce({"Spirits", 0}, fn {drink_type, count}, acc ->
+        case acc do
+          {} ->
+            {drink_type, count}
+
+          {acc_dtype, acc_count} ->
+            if count > acc_count do
+              {drink_type, count}
+            else
+              {acc_dtype, acc_count}
+            end
+        end
+      end)
+
     if brand != nil do
       render(conn, "show.html",
         brand: brand,
         is_authenticated: conn.assigns[:admin],
         dd_discount_code: dd_code,
-        wb_discount_code: wb_code
+        wb_discount_code: wb_code,
+        drink_type: drink_type
       )
     else
       conn
@@ -153,6 +177,7 @@ defmodule CsGuideWeb.BrandController do
 
   defp check_brand_name(name) do
     brands_with_hyphens = ~w(Fritz-Kola)
+
     if Enum.any?(brands_with_hyphens, &(&1 == name)) do
       name
     else
