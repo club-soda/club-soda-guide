@@ -71,13 +71,36 @@ defmodule CsGuideWeb.BrandController do
         ],
         brand_images: []
       )
+    {drink_type, count} =
+      Enum.map(brand.drinks, fn d ->
+        Enum.map(d.drink_types, fn t -> t.name end)
+      end)
+      |> List.flatten()
+      |> Enum.reduce(%{}, fn drink_type, acc ->
+        Map.update(acc, drink_type, 1, fn value -> value + 1 end)
+      end)
+      # Will assign brands with no drink_type background colour of spirits banner
+      |> Enum.reduce({"Spirits", 0}, fn {drink_type, count}, acc ->
+        case acc do
+          {} ->
+            {drink_type, count}
+
+          {acc_dtype, acc_count} ->
+            if count > acc_count do
+              {drink_type, count}
+            else
+              {acc_dtype, acc_count}
+            end
+        end
+      end)
 
     if brand != nil do
       render(conn, "show.html",
         brand: brand,
         is_authenticated: conn.assigns[:admin],
         dd_discount_code: dd_code,
-        wb_discount_code: wb_code
+        wb_discount_code: wb_code,
+        drink_type: drink_type
       )
     else
       conn
@@ -129,10 +152,11 @@ defmodule CsGuideWeb.BrandController do
   end
 
   def upload_photo(conn, params) do
+    brand = Brand.get_by([name: params["name"]], case_insensitive: true)
     CsGuide.Repo.transaction(fn ->
       with {:ok, brand_image} <-
              BrandImage.insert(%{
-               brand: params["id"],
+               brand: brand.entry_id,
                cover: String.to_existing_atom(params["cover"])
              }),
            {:ok, _} <- CsGuide.Resources.upload_photo(params, brand_image.entry_id) do
@@ -143,7 +167,7 @@ defmodule CsGuideWeb.BrandController do
       end
     end)
     |> case do
-      {:ok, _} -> redirect(conn, to: brand_path(conn, :show, params["id"]))
+      {:ok, _} -> redirect(conn, to: brand_path(conn, :show, params["name"]))
       {:error, _} -> render(conn, "add_photo.html", id: params["id"], error: true)
     end
   end

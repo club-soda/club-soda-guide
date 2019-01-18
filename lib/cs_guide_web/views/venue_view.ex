@@ -15,9 +15,9 @@ defmodule CsGuideWeb.VenueView do
     from(m in subquery(sub), where: not m.deleted, select: m)
   end
 
-  def under_map_link(conn, key, str) do
+  def under_map_link(conn, key, str, is_authenticated) do
     venue = conn.assigns.venue
-    render("link_under_map.html", conn: conn, venue: venue, link_key: key, img_str: str)
+    render("link_under_map.html", conn: conn, venue: venue, link_key: key, img_str: str, is_authenticated: is_authenticated)
   end
 
   def create_google_search_url(params) do

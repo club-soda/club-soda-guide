@@ -156,6 +156,7 @@ defmodule CsGuide.Resources.Venue do
       slug: venue.slug,
       name: venue.venue_name,
       types: Enum.map(venue.venue_types, fn v -> v.name end),
+      city: (venue.city || ""),
       postcode: venue.postcode,
       cs_score: venue.cs_score,
       image:

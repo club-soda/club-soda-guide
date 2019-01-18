@@ -1,0 +1,16 @@
+<%= case @drink_type do %>
+  <%= "Beer" -> %>
+    <div class="bg-beer w-100 center tc mb5">
+  <%= "Cider" -> %>
+    <div class="bg-cider w-100 center tc mb5">
+  <%= "Tonics & Mixers" -> %>
+    <div class="bg-flavoured-mixer w-100 center tc mb5">
+  <%= "Soft Drink" -> %>
+    <div class="bg-soft-drink w-100 center tc mb5">
+  <%= "Wine" -> %>
+    <div class="bg-wine w-100 center tc mb5">
+  <%= _ -> %>
+    <div class="bg-spirit w-100 center tc mb5">
+  <% end %>
+    <h1 class="roboto-slab white f2 lh2 pv6"><%= @brand_name %></h1>
+  </div>
