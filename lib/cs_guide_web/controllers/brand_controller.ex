@@ -74,7 +74,6 @@ defmodule CsGuideWeb.BrandController do
         ],
         brand_images: []
       )
-
     {drink_type, count} =
       Enum.map(brand.drinks, fn d ->
         Enum.map(d.drink_types, fn t -> t.name end)
@@ -156,10 +155,11 @@ defmodule CsGuideWeb.BrandController do
   end
 
   def upload_photo(conn, params) do
+    brand = Brand.get_by([name: params["name"]], case_insensitive: true)
     CsGuide.Repo.transaction(fn ->
       with {:ok, brand_image} <-
              BrandImage.insert(%{
-               brand: params["id"],
+               brand: brand.entry_id,
                cover: String.to_existing_atom(params["cover"])
              }),
            {:ok, _} <- CsGuide.Resources.upload_photo(params, brand_image.entry_id) do
@@ -170,7 +170,7 @@ defmodule CsGuideWeb.BrandController do
       end
     end)
     |> case do
-      {:ok, _} -> redirect(conn, to: brand_path(conn, :show, params["id"]))
+      {:ok, _} -> redirect(conn, to: brand_path(conn, :show, params["name"]))
       {:error, _} -> render(conn, "add_photo.html", id: params["id"], error: true)
     end
   end
