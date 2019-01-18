@@ -20,7 +20,7 @@ defmodule CsGuide.Mixfile do
   def application do
     [
       mod: {CsGuide.Application, []},
-      extra_applications: [:logger, :runtime_tools, :ex_aws, :httpoison]
+      extra_applications: [:logger, :runtime_tools, :ex_aws, :httpoison, :auth]
     ]
   end
 
@@ -33,25 +33,30 @@ defmodule CsGuide.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.3.0"},
+      {:phoenix, "~> 1.4.0", override: true},
       {:phoenix_pubsub, "~> 1.0"},
-      {:phoenix_ecto, "~> 3.2"},
+      {:phoenix_ecto, "~> 4.0", override: true},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.10"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
-      {:cowboy, "~> 1.0"},
+      {:cowboy, "~> 2.5", override: true},
+      {:plug_cowboy, "~> 2.0", override: true},
+      {:ecto_sql, "~> 3.0"},
+      {:ecto, "~> 3.0", override: true},
+      {:jason, "~> 1.0"},
       {:nimble_csv, "~> 0.3"},
-      {:autoform, git: "https://github.com/dwyl/autoform.git", tag: "0.6.4"},
-      {:alog, git: "https://github.com/dwyl/alog.git", tag: "0.4.1"},
+      {:autoform, git: "https://github.com/dwyl/autoform.git", tag: "0.6.4", override: true},
+      {:alog, git: "https://github.com/dwyl/alog.git", tag: "0.4.2"},
       {:ex_aws, "~> 2.0"},
       {:ex_aws_s3, "~> 2.0"},
-      {:plug_cowboy, "~> 1.0"},
       {:poison, "~> 1.2", override: true},
       {:httpoison, "~> 0.7"},
       {:fields, git: "https://github.com/dwyl/fields.git", tag: "0.1.4"},
       {:earmark, "~> 1.3.0"},
-      {:csv, "~> 2.1"}
+      {:csv, "~> 2.1"},
+      {:ueberauth, "~> 0.4"},
+      {:auth, git: "https://github.com/dwyl/auth.git", tag: "0.1"}
     ]
   end
 

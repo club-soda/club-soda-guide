@@ -29,6 +29,10 @@ defmodule CsGuideWeb.Router do
     plug(:authenticate_venue_owner)
   end
 
+  scope "/" do
+    forward("/auth", AuthWeb.Router)
+  end
+
   scope "/", CsGuideWeb do
     # Use the default browser stack
     pipe_through([:browser, :venue_id])

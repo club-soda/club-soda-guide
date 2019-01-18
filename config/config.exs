@@ -17,6 +17,12 @@ config :cs_guide, CsGuideWeb.Endpoint,
   render_errors: [view: CsGuideWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: CsGuide.PubSub, adapter: Phoenix.PubSub.PG2]
 
+config :auth, AuthWeb.Endpoint,
+  url: [host: "localhost"],
+  secret_key_base: "jUgd/S8tmMjbhzawyKI8ns2C3RbS04n0ClDVrLa7KjHLgDfcFJ6FS60BhvWBw/cg",
+  render_errors: [view: AuthWeb.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: Auth.PubSub, adapter: Phoenix.PubSub.PG2]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
@@ -37,6 +43,15 @@ config :fields, Fields.AES,
     |> String.split(",")
     # decode the key.
     |> Enum.map(fn key -> :base64.decode(key) end)
+
+Application.put_env(:auth, Auth,
+  identity: [
+    callback_methods: ["POST"],
+    uid_field: :email,
+    nickname_field: :email
+  ],
+  repo: CsGuide.Repo
+)
 
 config :fields, Fields,
   secret_key_base: "4hf8JJmuXBYA1qDB1RpA6wePqW9EHkF6DxqXMshLZcSdTu3yLmoy2OR0Dhq2CYmE"

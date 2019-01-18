@@ -54,22 +54,37 @@ config :logger, :console, level: :debug, format: "[$level] $message\n"
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
 
-
 # Configure your database
 if System.get_env("DATABASE_HOST") do
   config :cs_guide, CsGuide.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "",
-  database: "cs_guide_dev",
-  hostname: System.get_env("DATABASE_HOST"),
-  pool_size: 10
+    adapter: Ecto.Adapters.Postgres,
+    username: "postgres",
+    password: "",
+    database: "cs_guide_dev",
+    hostname: System.get_env("DATABASE_HOST"),
+    pool_size: 10
+
+  config :auth, Auth.Repo,
+    adapter: Ecto.Adapters.Postgres,
+    username: "postgres",
+    password: "",
+    database: "auth_dev",
+    hostname: System.get_env("DATABASE_HOST"),
+    pool_size: 10
 else
   config :cs_guide, CsGuide.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "cs_guide_dev",
-  hostname: "localhost",
-  pool_size: 10
+    adapter: Ecto.Adapters.Postgres,
+    username: "postgres",
+    password: "postgres",
+    database: "cs_guide_dev",
+    hostname: "localhost",
+    pool_size: 10
+
+  config :auth, Auth.Repo,
+    adapter: Ecto.Adapters.Postgres,
+    username: "postgres",
+    password: "postgres",
+    database: "auth_dev",
+    hostname: "localhost",
+    pool_size: 10
 end
