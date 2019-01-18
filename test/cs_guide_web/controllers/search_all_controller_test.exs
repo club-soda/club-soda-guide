@@ -10,6 +10,7 @@ defmodule CsGuideWeb.SearchAllControllerTest do
       venue_name: "The Favourite Pub",
       favourite: true,
       venue_types: %{"Pubs" => "on"},
+      city: "London",
       postcode: "MK40 1AY",
       slug: "the-favourite-pub-tw3-5fg"
     }
@@ -67,9 +68,19 @@ defmodule CsGuideWeb.SearchAllControllerTest do
       conn = get(conn, "/search/all?term=MK40 1AY")
 
       assert html_response(conn, 302)
-      # assert html_response(conn, 200) =~ "AF Beer 1"
     end
 
+    test "GET search by postcode text", %{conn: conn, venue: venue} do
+      conn = get(conn, "/search/all?term=MK40")
+
+      assert html_response(conn, 200) =~ "The Favourite Pub"
+    end
+
+    test "GET search by city text", %{conn: conn, venue: venue} do
+      conn = get(conn, "/search/all?term=Lond")
+
+      assert html_response(conn, 200) =~ "The Favourite Pub"
+    end
   end
 
   def fixture(:venue) do
