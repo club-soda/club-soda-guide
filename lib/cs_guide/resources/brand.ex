@@ -3,6 +3,9 @@ defmodule CsGuide.Resources.Brand do
   use Alog
   import Ecto.Changeset
 
+  alias CsGuide.Repo
+  alias CsGuide.Resources
+
   schema "brands" do
     field(:name, :string)
     field(:description, Fields.DescriptionPlaintextUnlimited)
@@ -56,5 +59,16 @@ defmodule CsGuide.Resources.Brand do
       :sold_wb
     ])
     |> validate_required([:name])
+  end
+
+  def update(%__MODULE__{} = item, attrs) do
+    item
+    |> __MODULE__.preload(__MODULE__.__schema__(:associations))
+    |> Map.put(:id, nil)
+    |> Map.put(:inserted_at, nil)
+    |> Map.put(:updated_at, nil)
+    |> __MODULE__.changeset(attrs)
+    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
+    |> Repo.insert()
   end
 end
