@@ -40,13 +40,19 @@ defmodule CsGuideWeb.BrandController do
   defp get_code(retailer_name) do
     case Venue.get_by(venue_name: retailer_name) do
       nil ->
-        ""
+        nil
 
       retailer ->
         retailer.id
         |> make_query()
         |> CsGuide.Repo.one()
-        |> Map.get(:code)
+        |> case do
+          nil ->
+            nil
+
+          discount_code ->
+            discount_code.code
+        end
     end
   end
 

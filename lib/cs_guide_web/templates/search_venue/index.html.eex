@@ -3,4 +3,6 @@
   const venues = <%= raw Poison.encode!(@venues) %>
   const searchTerm = <%= raw Poison.encode!(@term) %>
   const venueTypes = <%= raw Poison.encode!(@venue_types) %>
+  const postcode = <%= raw Poison.encode!(@postcode) %>
+  const locationSearch = <%= raw Poison.encode!(@locationSearch) %>
 </script>

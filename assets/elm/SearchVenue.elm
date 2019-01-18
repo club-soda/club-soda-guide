@@ -18,11 +18,18 @@ type alias Model =
     , filterScore : Maybe Float
     , filterName : Maybe String
     , venueTypes : List String
+    , postcode : String
+    , locationSearch : Bool
     }
 
 
 type alias Flags =
-    { venues : List Venue, term : String, venueTypes : List String }
+    { venues : List Venue
+    , term : String
+    , venueTypes : List String
+    , postcode : String
+    , locationSearch : Bool
+    }
 
 
 type Msg
@@ -43,7 +50,7 @@ init flags =
             else
                 Just flags.term
     in
-    ( Model flags.venues Nothing Nothing searchTerm flags.venueTypes, Cmd.none )
+    ( Model flags.venues Nothing Nothing searchTerm flags.venueTypes flags.postcode flags.locationSearch, Cmd.none )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -95,7 +102,8 @@ cs_score =
 view : Model -> Html Msg
 view model =
     div [ class "mt5 mt6-ns" ]
-        [ div [ class "w-90 center" ]
+        [ renderLocationSearchTitle ( model.locationSearch, model.postcode )
+        , div [ class "w-90 center" ]
             [ renderSearch "Search Venues..." (Maybe.withDefault "" model.filterName) FilterVenueName
             , renderFilter "Venue Type" model.venueTypes FilterVenueType (Maybe.withDefault "" model.filterType)
             , renderFilter "Club Soda Score"
@@ -111,6 +119,19 @@ view model =
                 (Search.renderVenues <| filterVenues model)
             ]
         ]
+
+
+renderLocationSearchTitle : ( Bool, String ) -> Html Msg
+renderLocationSearchTitle searchType =
+    case searchType of
+        ( True, "" ) ->
+            h2 [ class "w-90 center tc" ] [ text "Venues near me" ]
+
+        ( True, postcode ) ->
+            h2 [ class "w-90 center tc" ] [ text ("Venues near " ++ postcode) ]
+
+        _ ->
+            text ""
 
 
 filterVenues : Model -> List Venue

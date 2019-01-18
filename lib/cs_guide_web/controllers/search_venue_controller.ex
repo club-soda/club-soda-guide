@@ -4,35 +4,49 @@ defmodule CsGuideWeb.SearchVenueController do
   alias CsGuide.Resources.Venue
   alias CsGuide.Categories.VenueType
 
-  def index(conn, %{"ll" => latlong}) do
-    [lat_str, long_str] = String.split(latlong, ",")
-    {lat, _} = Float.parse(lat_str)
-    {long, _} = Float.parse(long_str)
+  def index(conn, params) do
+    latlong = params["ll"]
+    locationSearch = params["ll"] != nil
+    postcode = (params["ll"] && params["postcode"]) || ""
+    term = params["term"] || ""
+    venue_types = getVenueTypes()
 
-    cards =
-      Venue.nearest_venues(lat, long)
-      |> Venue.preload([:venue_types, :venue_images])
-      |> Enum.filter(fn v -> !Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailers" end) end)
-      |> Enum.map(&Venue.get_venue_card/1)
-      venue_types = getVenueTypes()
+    cards = if latlong do
+      [lat_str, long_str] = String.split(latlong, ",")
+      {lat, _} = Float.parse(lat_str)
+      {long, _} = Float.parse(long_str)
 
-    render(conn, "index.html", venues: cards, term: "", venue_types: venue_types)
+      getVenueCardsByLatLong(lat,long)
+    else
+      getAllVenueCards()
+    end
+
+    render(conn,
+           "index.html",
+           venues: cards,
+           term: term,
+           venue_types: venue_types,
+           postcode: postcode,
+           locationSearch: locationSearch)
   end
 
-  def index(conn, params) do
+  defp getVenueTypes do
+    VenueType.all() |> Enum.map(&(&1.name)) |> Enum.sort()
+  end
+
+  defp getAllVenueCards do
     venues =
       Venue.all()
       |> Venue.preload([:venue_types, :venue_images])
       |> Enum.filter(fn v -> !Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailers" end) end)
       |> Enum.sort_by(&{5 - &1.cs_score, &1.venue_name})
-    cards = Enum.map(venues, &Venue.get_venue_card/1)
-    term = params["term"] || ""
-    venue_types = getVenueTypes()
-
-    render(conn, "index.html", venues: cards, term: term, venue_types: venue_types)
+      |> Enum.map(&Venue.get_venue_card/1)
   end
 
-  defp getVenueTypes do
-    VenueType.all() |> Enum.map(&(&1.name)) |> Enum.sort()
+  defp getVenueCardsByLatLong(lat,long) do
+      Venue.nearest_venues(lat, long)
+      |> Venue.preload([:venue_types, :venue_images])
+      |> Enum.filter(fn v -> !Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailers" end) end)
+      |> Enum.map(&Venue.get_venue_card/1)
   end
 end
