@@ -24,6 +24,9 @@ defmodule CsGuideWeb.BrandController do
         |> redirect(to: brand_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
+        changeset =
+          CsGuide.ChangesetHelpers.update_error_msg(changeset, Fields.Url, "should be a url")
+
         render(conn, "new.html", changeset: changeset)
     end
   end
@@ -74,6 +77,7 @@ defmodule CsGuideWeb.BrandController do
         ],
         brand_images: []
       )
+
     {drink_type, count} =
       Enum.map(brand.drinks, fn d ->
         Enum.map(d.drink_types, fn t -> t.name end)
@@ -156,6 +160,7 @@ defmodule CsGuideWeb.BrandController do
 
   def upload_photo(conn, params) do
     brand = Brand.get_by([name: params["name"]], case_insensitive: true)
+
     CsGuide.Repo.transaction(fn ->
       with {:ok, brand_image} <-
              BrandImage.insert(%{
