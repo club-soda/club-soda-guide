@@ -121,7 +121,7 @@ view model =
                 , type_ "search"
                 ]
                 []
-            , p [ class "pv3 f6 lh6" ] [ text <| resultDescription totalDrinks totalVenues ]
+            , p [ class "pv3 f5 lh5 dib pl4-ns" ] [ text <| resultDescription totalDrinks totalVenues ]
             ]
         , div [ class "relative w-90 center pb5" ]
             [ h1 [ class "center b pt3 f2 lh2 pl2-ns" ] [ text "Drinks" ]
@@ -137,19 +137,19 @@ view model =
 drinksPage : Int -> Int -> String -> Html Msg
 drinksPage totalDrinks drinksDisplayed searchTerm =
     if (totalDrinks - drinksDisplayed) <= 0 then
-        a [ href <| "/search/drinks" ] [ text "View all drinks" ]
+        a [ href <| "/search/drinks", class "bg-cs-black br2 ph4 pv2 white no-underline" ] [ text "View all drinks" ]
 
     else
-        a [ href <| "/search/drinks?term=" ++ Url.percentEncode searchTerm ] [ text <| "See all (" ++ String.fromInt totalDrinks ++ ")" ]
+        a [ href <| "/search/drinks?term=" ++ Url.percentEncode searchTerm, class "bg-cs-black br2 ph4 ml2-ns pv2 white no-underline" ] [ text <| "See all (" ++ String.fromInt totalDrinks ++ ")" ]
 
 
 venuesPage : Int -> Int -> String -> Html Msg
 venuesPage totalVenues venuesDisplayed searchTerm =
     if (totalVenues - venuesDisplayed) <= 0 then
-        a [ href <| "/search/venues" ] [ text "View all venues" ]
+        a [ href <| "/search/venues", class "bg-cs-black br2 ph4 pv2 white no-underline" ] [ text "View all venues" ]
 
     else
-        a [ href <| "/search/venues?term=" ++ Url.percentEncode searchTerm ] [ text <| "See all (" ++ String.fromInt totalVenues ++ ")" ]
+        a [ href <| "/search/venues?term=" ++ Url.percentEncode searchTerm, class "bg-cs-black br2 ph4 ml2-ns pv2 white no-underline" ] [ text <| "See all (" ++ String.fromInt totalVenues ++ ")" ]
 
 
 resultDescription : Int -> Int -> String
@@ -187,7 +187,7 @@ renderDrinks : List SharedTypes.Drink -> Html Msg
 renderDrinks drinks =
     case drinks of
         [] ->
-            p [] [ text "No drinks match the search term" ]
+            p [ class "pt3 h3" ] [ text "No drinks match the search term." ]
 
         _ ->
             div [ class "flex-ns flex-wrap pt3 pb4 db dib-ns" ]
@@ -201,7 +201,7 @@ renderVenues : List SharedTypes.Venue -> Html Msg
 renderVenues venues =
     case venues of
         [] ->
-            p [] [ text "no venues match the search term" ]
+            p [ class "pt3 h3" ] [ text "No venues match the search term." ]
 
         _ ->
             div [] (Search.renderVenues venues)

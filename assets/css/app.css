@@ -101,6 +101,10 @@ select {
   color:#999999;
 }
 
+.b--cs-gray {
+  border-color:#999999;
+}
+
 .bg-cs-light-gray {
   background-color:#EBEBEB;
 }
