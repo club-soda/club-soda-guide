@@ -45,7 +45,7 @@
 
 <section class="w-90 center">
   <h2 class="b pt3 f2 lh2 mb4 tc tl-ns">Great Places for Mindful Drinkers</h2>
-  <div class="flex flex-wrap justify-center">
+  <div class="flex flex-wrap">
     <%= for venue <- @venues do %>
       <%= component("venue_card", venue: venue, conn: @conn) %>
     <% end %>

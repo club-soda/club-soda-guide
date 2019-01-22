@@ -53,26 +53,26 @@ onChange msgConstructor =
 renderVenues : List Venue -> List (Html msg)
 renderVenues venues =
     if List.isEmpty venues then
-        [ div [ class "flex-ns flex-wrap justify-center pt3 pb4-ns db dib-ns" ]
+        [ div [ class "flex-ns flex-wrap pt3 pb4-ns db dib-ns" ]
             [ p [ class "tc" ] [ text "Your search didn't return any venues, change your filters and try again." ]
             ]
         ]
 
     else
-        [ div [ class "flex flex-wrap justify-center pt3" ]
+        [ div [ class "flex flex-wrap pt3" ]
             (List.map venueCard venues)
         ]
 
 
 venueCard : Venue -> Html msg
 venueCard venue =
-    div [ class "w-100 w-25-ns pb4" ]
+    div [ class "w-100 w-25-ns pb4 ph2-ns" ]
         [ a [ href <| "/venues/" ++ venue.slug, class "cs-black no-underline pointer" ]
             [ if String.isEmpty venue.image then
-                div [ class "bg-light-gray w-100 w-90-m w5-l h4 br2 mb2 bg-venue-card", style "background-image" "url('/images/default-venue-img-2-1.jpg')" ] []
+                div [ class "bg-light-gray w-100 w-90-m h4 br2 mb2 bg-venue-card", style "background-image" "url('/images/default-venue-img-2-1.jpg')" ] []
 
               else
-                div [ class "bg-light-gray w-100 w-90-m w5-l h4 br2 mb2 bg-venue-card", style "background-image" ("url(" ++ venue.image ++ ")") ] []
+                div [ class "bg-light-gray w-100 w-90-m h4 br2 mb2 bg-venue-card", style "background-image" ("url(" ++ venue.image ++ ")") ] []
             , span [ class "f4 lh5 cs-black no-underline" ] [ text venue.name ]
             , p [ class "f5 lh5" ] [ text venue.city ]
             , p [ class "f5 lh5" ] [ text venue.postcode ]

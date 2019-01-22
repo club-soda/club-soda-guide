@@ -306,6 +306,10 @@ select {
   height: 27rem;
 }
 
+.pl-2-5rem {
+  padding-left: 2.5rem;
+}
+
 .pb-2-5rem {
   padding-bottom: 2.5rem;
 }

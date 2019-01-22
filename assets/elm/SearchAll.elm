@@ -111,7 +111,7 @@ view model =
             List.length venues
     in
     div [ class "mt5 mt6-ns" ]
-        [ div [ class "relative w-90 center" ]
+        [ div [ class "relative w-90 center pl2-ns" ]
             [ input
                 [ class "f6 lh6 cs-black bg-search ba b--cs-light-gray br2 pv2 pr2 pl-2-5rem w-15rem"
                 , id "search-input"
@@ -124,10 +124,10 @@ view model =
             , p [ class "pv3 f6 lh6" ] [ text <| resultDescription totalDrinks totalVenues ]
             ]
         , div [ class "relative w-90 center pb5" ]
-            [ h1 [ class "center b pt3 f2 lh2" ] [ text "Drinks" ]
+            [ h1 [ class "center b pt3 f2 lh2 pl2-ns" ] [ text "Drinks" ]
             , renderDrinks <| List.take 4 drinks
             , drinksPage totalDrinks 4 searchTerm
-            , h1 [ class "center b pt5 f2 lh2" ] [ text "Venues" ]
+            , h1 [ class "center b pt5 f2 lh2 pl2-ns" ] [ text "Venues" ]
             , renderVenues <| List.take 4 venues
             , venuesPage totalVenues 4 searchTerm
             ]
@@ -190,7 +190,7 @@ renderDrinks drinks =
             p [] [ text "No drinks match the search term" ]
 
         _ ->
-            div [ class "flex-ns flex-wrap justify-center pt3 pb4 db dib-ns" ]
+            div [ class "flex-ns flex-wrap pt3 pb4 db dib-ns" ]
                 (Array.fromList drinks
                     |> Array.indexedMap drinkCard
                     |> toList

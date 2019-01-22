@@ -102,17 +102,19 @@ cs_score =
 view : Model -> Html Msg
 view model =
     div [ class "mt5 mt6-ns" ]
-        [ renderLocationSearchTitle ( model.locationSearch, model.postcode )
-        , div [ class "w-90 center" ]
+        [ div [ class "w-90 center pl2-ns" ]
             [ renderSearch "Search Venues..." (Maybe.withDefault "" model.filterName) FilterVenueName
-            , renderFilter "Venue Type" model.venueTypes FilterVenueType (Maybe.withDefault "" model.filterType)
-            , renderFilter "Club Soda Score"
-                cs_score
-                FilterVenueScore
-                (model.filterScore
-                    |> Maybe.map String.fromFloat
-                    |> Maybe.withDefault ""
-                )
+            , renderLocationSearchTitle ( model.locationSearch, model.postcode )
+            , div [ class "db" ]
+                [ renderFilter "Venue Type" model.venueTypes FilterVenueType (Maybe.withDefault "" model.filterType)
+                , renderFilter "Club Soda Score"
+                    cs_score
+                    FilterVenueScore
+                    (model.filterScore
+                        |> Maybe.map String.fromFloat
+                        |> Maybe.withDefault ""
+                    )
+                ]
             ]
         , div [ class "w-90 center" ]
             [ div []
@@ -125,10 +127,10 @@ renderLocationSearchTitle : ( Bool, String ) -> Html Msg
 renderLocationSearchTitle searchType =
     case searchType of
         ( True, "" ) ->
-            h2 [ class "w-90 center tc" ] [ text "Venues near me" ]
+            h2 [ class "dib pl4 pv3 f5 lh5" ] [ text "Displaying venues near me" ]
 
         ( True, postcode ) ->
-            h2 [ class "w-90 center tc" ] [ text ("Venues near " ++ postcode) ]
+            h2 [ class "dib pl4 pv3 f5 lh5" ] [ text ("Displaying venues near " ++ postcode) ]
 
         _ ->
             text ""
