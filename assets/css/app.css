@@ -101,6 +101,10 @@ select {
   color:#999999;
 }
 
+.b--cs-gray {
+  border-color:#999999;
+}
+
 .bg-cs-light-gray {
   background-color:#EBEBEB;
 }
@@ -306,6 +310,10 @@ select {
   height: 27rem;
 }
 
+.pl-2-5rem {
+  padding-left: 2.5rem;
+}
+
 .pb-2-5rem {
   padding-bottom: 2.5rem;
 }
@@ -407,6 +415,13 @@ select {
   background-position: 0 30%;
   background-size: cover;
   height: 30rem;
+}
+
+.bg-search {
+  background-image: url("/images/magnifying-glass.svg");
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: 0.3rem 50%;
 }
 
 @media (min-width: 30em) {
@@ -616,4 +631,8 @@ i {
 .rotate-270 {
   -webkit-transform: rotate( 270deg );
   transform: rotate( 270deg );
+}
+
+.mw-1500px {
+  max-width: 1500px;
 }

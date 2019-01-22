@@ -222,15 +222,15 @@ abv_levels =
 
 view : Model -> Html Msg
 view model =
-    div [ class "mt5 mt6-ns" ]
-        [ div [ class "w-90 center" ]
+    div [ class "mt5 mt6-ns center mw-1500px" ]
+        [ div [ class "w-90 center pl2-ns" ]
             [ renderSearch "Search Drinks..." (Maybe.withDefault "" model.searchTerm) SearchDrink
             , renderPills (Criteria.selectedIdFilters model.drinkFilters) model.typesAndStyles
             , Criteria.view criteriaConfig model.drinkFilters model.typesAndStyles
             , renderFilter "ABV" abv_levels SelectABVLevel model.abvFilter
             ]
         , div [ class "relative center w-90" ]
-            [ div [ class "flex-ns flex-wrap justify-center pt3 pb4-ns db dib-ns" ]
+            [ div [ class "flex-ns flex-wrap pt3 pb4-ns db dib-ns" ]
                 (filterDrinks model)
             ]
         ]
