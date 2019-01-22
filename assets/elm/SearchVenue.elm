@@ -101,7 +101,7 @@ cs_score =
 
 view : Model -> Html Msg
 view model =
-    div [ class "mt5 mt6-ns" ]
+    div [ class "mt5 mt6-ns center mw-1500px" ]
         [ div [ class "w-90 center pl2-ns" ]
             [ renderSearch "Search Venues..." (Maybe.withDefault "" model.filterName) FilterVenueName
             , renderLocationSearchTitle ( model.locationSearch, model.postcode )

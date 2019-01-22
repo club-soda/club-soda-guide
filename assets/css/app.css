@@ -632,3 +632,7 @@ i {
   -webkit-transform: rotate( 270deg );
   transform: rotate( 270deg );
 }
+
+.mw-1500px {
+  max-width: 1500px;
+}

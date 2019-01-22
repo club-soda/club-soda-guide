@@ -110,7 +110,7 @@ view model =
         totalVenues =
             List.length venues
     in
-    div [ class "mt5 mt6-ns" ]
+    div [ class "mt5 mt6-ns center mw-1500px" ]
         [ div [ class "relative w-90 center pl2-ns" ]
             [ input
                 [ class "f6 lh6 cs-black bg-search ba b--cs-light-gray br2 pv2 pr2 pl-2-5rem w-15rem"
