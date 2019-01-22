@@ -1,7 +1,7 @@
 defmodule CsGuideWeb.BrandController do
   use CsGuideWeb, :controller
 
-  alias CsGuide.Resources.{Brand, Venue}
+  alias CsGuide.Resources.{Brand, Venue, Drink}
   alias CsGuide.Images.BrandImage
   alias CsGuide.DiscountCode
   import Ecto.Query
@@ -101,9 +101,27 @@ defmodule CsGuideWeb.BrandController do
         end
       end)
 
+    related_drinks =
+      Drink.all()
+      |> Drink.preload([
+        :drink_images,
+        :brand,
+        :drink_types,
+        :drink_styles,
+        venues: [:venue_types, :venue_images]
+      ])
+      |> Enum.filter(fn d ->
+        Enum.any?(d.drink_types, fn t ->
+          t.name == drink_type
+        end)
+      end)
+      |> Enum.reject(fn d -> d.brand.name == brand.name end)
+      |> Enum.take(4)
+
     if brand != nil do
       render(conn, "show.html",
         brand: brand,
+        related_drinks: related_drinks,
         is_authenticated: conn.assigns[:admin],
         dd_discount_code: dd_code,
         wb_discount_code: wb_code,

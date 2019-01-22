@@ -96,7 +96,8 @@
     <div class="flex-ns flex-wrap justify-center pv4-ns">
       <!-- Drink cards -->
       <%= for {drink, index} <- Enum.with_index(@brand.drinks) do %>
-        <%= component("drink_card", drink: drink, index: index, conn: @conn) %>
+      <!-- index + 4 so that the checkbox indexes aren't duplicates of the 4 related drinks indexes -->
+        <%= component("drink_card", drink: drink, index: index + 4, conn: @conn) %>
       <% end %>
     </div>
   </section>
@@ -194,5 +195,18 @@
       </div>
     </section>
   <% end %>
+
+  <%= if @related_drinks != [] do %>
+    <section class="w-90 center pv5">
+      <h2 class="roboto-slab f2 lh2 db tc pb4">Related Products</h2>
+      <div class="flex-ns flex-wrap justify-center pv4-ns">
+        <!-- Drink cards -->
+        <%= for {drink, index} <- Enum.with_index(@related_drinks) do %>
+          <%= component("drink_card", drink: drink, index: index, conn: @conn) %>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
 
 </section>
