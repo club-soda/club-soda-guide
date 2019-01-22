@@ -1,6 +1,8 @@
 defmodule CsGuide.Resources.Brand do
   use Ecto.Schema
   use Alog
+  alias CsGuide.Repo
+  alias CsGuide.Resources
   import Ecto.Changeset
 
   schema "brands" do
@@ -11,9 +13,9 @@ defmodule CsGuide.Resources.Brand do
     field(:website, Fields.Url)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
-    field(:twitter, :string)
-    field(:instagram, :string)
-    field(:facebook, :string)
+    field(:twitter, Fields.Url)
+    field(:instagram, Fields.Url)
+    field(:facebook, Fields.Url)
     field(:copy, Fields.DescriptionPlaintextUnlimited)
     field(:sold_aldi, :boolean, default: false)
     field(:sold_amazon, :boolean, default: false)
@@ -56,5 +58,16 @@ defmodule CsGuide.Resources.Brand do
       :sold_wb
     ])
     |> validate_required([:name])
+  end
+
+  def update(%__MODULE__{} = item, attrs) do
+    item
+    |> __MODULE__.preload(__MODULE__.__schema__(:associations))
+    |> Map.put(:id, nil)
+    |> Map.put(:inserted_at, nil)
+    |> Map.put(:updated_at, nil)
+    |> __MODULE__.changeset(attrs)
+    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
+    |> Repo.insert()
   end
 end

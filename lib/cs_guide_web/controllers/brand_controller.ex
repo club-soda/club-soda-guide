@@ -24,6 +24,9 @@ defmodule CsGuideWeb.BrandController do
         |> redirect(to: brand_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
+        changeset =
+          CsGuide.ChangesetHelpers.update_error_msg(changeset, Fields.Url, "should be a url")
+
         render(conn, "new.html", changeset: changeset)
     end
   end

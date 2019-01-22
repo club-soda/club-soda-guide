@@ -24,6 +24,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   }
 
   @invalid_attrs %{phone_number: "", postcode: "", venue_name: ""}
+  @invalid_facebook %{facebook: "@example_pub", postcode: "EC1 5AD", venue_name: "Example Venue"}
 
   def fixture(:drink, brand) do
     drinks =
@@ -143,6 +144,11 @@ defmodule CsGuideWeb.VenueControllerTest do
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, venue_path(conn, :create), venue: @invalid_attrs)
       assert html_response(conn, 200) =~ "New Venue"
+    end
+
+    test "renders errors when social media data is invalid", %{conn: conn} do
+      conn = post(conn, venue_path(conn, :create), venue: @invalid_facebook)
+      assert html_response(conn, 200) =~ "should be a url"
     end
   end
 

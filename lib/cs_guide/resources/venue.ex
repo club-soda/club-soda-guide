@@ -15,9 +15,9 @@ defmodule CsGuide.Resources.Venue do
     field(:postcode, Fields.Postcode)
     field(:website, Fields.Url)
     field(:phone_number, Fields.PhoneNumber)
-    field(:twitter, :string)
-    field(:facebook, :string)
-    field(:instagram, :string)
+    field(:twitter, Fields.Url)
+    field(:facebook, Fields.Url)
+    field(:instagram, Fields.Url)
     field(:cs_score, :float, default: 0.0)
     field(:favourite, :boolean, default: false)
     field(:num_cocktails, :integer)
@@ -155,7 +155,7 @@ defmodule CsGuide.Resources.Venue do
       slug: venue.slug,
       name: venue.venue_name,
       types: Enum.map(venue.venue_types, fn v -> v.name end),
-      city: (venue.city || ""),
+      city: venue.city || "",
       postcode: venue.postcode,
       cs_score: venue.cs_score,
       image:
@@ -197,12 +197,14 @@ defmodule CsGuide.Resources.Venue do
   end
 
   def nearest_venues(lat, long, distance \\ 5_000)
+
   def nearest_venues(lat, long, distance) when distance < 30_000 do
     case venues_within_distance(distance, lat, long) do
       [] -> nearest_venues(lat, long, distance + 5_000)
       venues -> venues
     end
   end
+
   def nearest_venues(_, _, _), do: []
 
   defp venues_within_distance(distance, lat, long) do
@@ -275,6 +277,7 @@ defmodule CsGuide.Resources.Venue do
           |> apply_action(:insert)
 
         changeset
+
       {:ok, {lat, long}} ->
         {lat, _} = Float.parse(lat)
         {long, _} = Float.parse(long)

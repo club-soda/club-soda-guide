@@ -110,7 +110,7 @@
         <% end %>
     </div>
     <div class="mv4 center tc">
-      <%= secondary_btn("Find One Near Me", "search/venues") %>
+      <%= link "Find One Near Me", to: search_venue_path(@conn, :index), class: "bg-cs-black br2 ph4 pv2 white no-underline" %>
     </div>
   </section>
 
@@ -196,7 +196,7 @@
     </section>
   <% end %>
 
-  <%= if @related_drinks do %>
+  <%= if @related_drinks != [] do %>
     <section class="w-90 center pv5">
       <h2 class="roboto-slab f2 lh2 db tc pb4">Related Products</h2>
       <div class="flex-ns flex-wrap justify-center pv4-ns">
