@@ -409,6 +409,13 @@ select {
   height: 30rem;
 }
 
+.bg-search {
+  background-image: url("/images/magnifying-glass.svg");
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: 0.3rem 50%;
+}
+
 @media (min-width: 30em) {
   .bg-nominate-venue {
     height: 13rem;

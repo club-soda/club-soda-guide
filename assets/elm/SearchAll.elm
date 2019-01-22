@@ -113,7 +113,7 @@ view model =
     div [ class "mt5 mt6-ns" ]
         [ div [ class "relative w-90 center" ]
             [ input
-                [ class "f6 lh6 cs-black bg-white ba b--cs-light-gray br2 pv2 pl3 w-15rem"
+                [ class "f6 lh6 cs-black bg-search ba b--cs-light-gray br2 pv2 pr2 pl-2-5rem w-15rem"
                 , id "search-input"
                 , onInput UpdateSearchTerm
                 , value searchTerm

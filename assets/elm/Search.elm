@@ -28,12 +28,12 @@ renderDropdownItems dropdownItem =
 
 renderSearch : String -> String -> (String -> msg) -> Html msg
 renderSearch text inputValue msg =
-    div [ class "db mb3 w-50" ]
+    div [ class "dib mb3" ]
         [ input
             [ type_ "search"
             , placeholder text
             , onInput msg
-            , class "f6 lh6 cs-black bg-white ba b--cs-light-gray br2 pv2 pl3 w-15rem"
+            , class "f6 lh6 cs-black bg-search ba b--cs-light-gray br2 pv2 pr2 pl-2-5rem w-15rem"
             , value inputValue
             , id "search-input"
             ]
