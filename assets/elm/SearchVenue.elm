@@ -166,7 +166,8 @@ filterByScore score venues =
             venues
 
         Just s ->
-            List.filter (\v -> v.cs_score == s) venues
+            -- Half scores are rounded down so scores of 1 and 1.5 show when score of 1 is selected
+            List.filter (\v -> v.cs_score == s || v.cs_score == (s + 0.5)) venues
 
 
 subscriptions : Model -> Sub Msg
