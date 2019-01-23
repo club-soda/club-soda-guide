@@ -61,6 +61,7 @@ defmodule CsGuideWeb.Router do
     resources("/brands", BrandController, except: [:show], param: "name")
     resources("/drinks", DrinkController, except: [:show])
     resources("/retailers", RetailerController, except: [:show])
+    resources("/wholesalers", WholesalerController, except: [:show])
     resources("/static_pages", StaticPageController, except: [:show], param: "page_title")
     resources("/users", UserController, except: [:new, :create])
     resources("/venues", VenueController, only: [ :delete, :index])
