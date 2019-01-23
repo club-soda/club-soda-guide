@@ -67,8 +67,8 @@
       <a class="absolute-horizontal-center-s absolute-vertical-center-ns bottom-4-s right-2-ns bg-white br2 ph4 pv2 mr5-ns cs-black no-underline lh4 f4 w5" href="https://clubsoda.typeform.com/to/Z5sMPA">Nominate a Venue</a>
     </div>
   </div>
-  <div class="tr bg-newsletter pv6 mb6 mb0-ns pr6-ns">
-    <div class="w-90 w-third-ns center fr-ns tl">
+  <div class="tr bg-newsletter pv6 mb6 mb0-ns pr6-ns flex items-center">
+    <div class="w-90 w-100-ns center fr-ns tl tr-ns">
       <p class="roboto-slab f4 lh4 pb3">Special Offers, Drink Reviews, Recipes, Events and More</p>
       <a href="http://eepurl.com/dvVXfX" class="f4 lh4 pb3 cs-black">Get the Newsletter</a>
       <p class="f4 lh4 pt3">Find out more at</p>
