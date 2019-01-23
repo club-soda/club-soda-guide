@@ -444,6 +444,30 @@ select {
   height: 32rem;
 }
 
+@media (min-width: 80em) {
+  .bg-newsletter {
+    height: 36rem;
+  }
+}
+
+@media (min-width: 90em) {
+  .bg-newsletter {
+    height: 39rem;
+  }
+}
+
+@media (min-width: 100em) {
+  .bg-newsletter {
+    height: 45rem;
+  }
+}
+
+@media (min-width: 120em) {
+  .bg-newsletter {
+    height: 48rem;
+  }
+}
+
 .bg-footer {
   background: -moz-linear-gradient(top, rgba(17,17,17,0.59) 0%, rgba(89,89,89,0.59) 11%, rgba(102,102,102,0.59) 53%, rgba(102,102,102,0.59) 71%, rgba(71,71,71,0.59) 88%, rgba(28,28,28,0.59) 99%, rgba(19,19,19,0.59) 100%), url("/images/footer-image.jpg"); /* FF3.6-15 */
   background: -webkit-linear-gradient(top, rgba(17,17,17,0.59) 0%,rgba(89,89,89,0.59) 11%,rgba(102,102,102,0.59) 53%,rgba(102,102,102,0.59) 71%,rgba(71,71,71,0.59) 88%,rgba(28,28,28,0.59) 99%,rgba(19,19,19,0.59) 100%), url("/images/footer-image.jpg"); /* Chrome10-25,Safari5.1-6 */
