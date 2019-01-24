@@ -96,6 +96,7 @@ corresponding urls:
   - Venue type `/admin/venue_types`
 - Retailers `/admin/retailers`
   - Discount Codes `/admin/discount_codes`
+- Wholesalers `/admin/wholesalers`
 - Static Pages `/admin/static_pages`
 
 All of these links are also available by visiting `/admin`.
@@ -142,7 +143,7 @@ the venues that stock or sell those drinks.
 
 To add a stockist, simply add a drink from this brand to the venue as you normally would.
 
-Member brands are also able to display 'where to buy' retailers. These retailers
+Brands are also able to display 'where to buy' retailers and wholesalers. Retailers
 can be added in two ways.
 
 Major supermarkets, amazon, DryDrinker and WiseBartender can be added as
@@ -158,9 +159,13 @@ To add a retailer not included in the 'New brand' form list go to
 `/admin/retailers/new`. There you can fill in the details of your new retailer.
 Ensure that for the website you include the `http://` or `https://` at the
 beginning of the website url, otherwise the link will not work properly when
-clicked on. Give the 'venue type' of 'Retailers'. Even if the brand is an online
-retailer you must provide a postcode as this is a required field. Then when you
-add the drink to this venue, it will display in the 'where to buy' section.
+clicked on. Then from `/admin/retailers` you can click the link to add drinks to
+a retailer. Once you have selected the appropriate drinks, the retailer will be
+listed in the 'where to buy' section.
+
+To add a wholesaler fill in the details at `/admin/wholesalers/new`. Then follow
+the same procedure as for retailers to add drinks that the wholesaler stocks using
+the links at `admin/wholesalers`.
 
 ## Uploading Images
 

@@ -1,0 +1,49 @@
+<section class="center w-80 w-50-l mt6">
+<h3 class="f4-5 mb4">Add drinks sold by the wholesaler</h2>
+<%= form_for @changeset, @action, fn f -> %>
+  <h4 class="f5 mv3">Select a Brand</h4>
+  <div class="pa2 shadow-2">
+    <input id="brand-search" class="db mb2 w-100 ba b--cs-light-gray pa2" type="text" placeholder="Search..."/>
+    <div class="w-100 overflow-scroll h4-5">
+      <%= for {b, i} <- Enum.with_index(@brands) do %>
+        <div id="brand-<%= i %>" class="bg-cs-light-gray-hover ph1 pb2">
+          <div class="db brand-name pointer"><span class="f5 pt2 dib"><%= b.name %></span><span class="f3 dib fr">&#8964;</span></div>
+          <div id="drink-list-<%= i %>" class="dn pt1">
+            <%= for d <- b.drinks do %>
+              <div class="mv1 pl3">
+                <%= checkbox(f, String.to_atom(d.name), name: "venue[drinks][#{String.to_atom(d.entry_id)}]", value: d.entry_id in @current_drinks, class: "") %>
+                <%= label f, String.to_atom(d.name) %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="form-group tc">
+    <%= submit "Submit", class: "btn btn-primary mt3" %>
+  </div>
+
+<% end %>
+</section>
+
+<script>
+  var brands = "<%= for b <- @brands do %> <%= b.name %> <% end %>".split("  ").map(e => e.trim());
+
+  Array.prototype.slice.call(document.getElementsByClassName("brand-name")).forEach(function(b, i) {
+    b.addEventListener("click", function(e) {
+      document.getElementById("drink-list-" + i).classList.toggle("dn");
+    });
+  });
+
+  document.getElementById("brand-search").addEventListener("input", function(e){
+    brands.forEach(function(b, i) {
+      if (b.toLowerCase().indexOf(e.target.value.toLowerCase()) === -1) {
+        document.getElementById("brand-" + i).classList.add("dn");
+      } else {
+        document.getElementById("brand-" + i).classList.remove("dn");
+      }
+    });
+  });
+</script>

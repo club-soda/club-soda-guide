@@ -105,7 +105,7 @@
   <section class="w-90 center pv5">
     <h2 class="roboto-slab f2 lh2 db tc pb4">Places that Serve <%= @brand.name %></h2>
     <div class="flex flex-wrap justify-center">
-        <%= for venue <- get_venues(@brand) |> Enum.filter(fn v -> !Enum.any?(v.venue_types, fn t -> String.downcase(t.name) == "retailers" end) end) do %>
+        <%= for venue <- get_venues(@brand) |> Enum.filter(fn v -> !Enum.any?(v.venue_types, fn t -> String.downcase(t.name) == "retailers" || String.downcase(t.name) == "wholesalers" end) end) do %>
           <%= component("venue_card", venue: venue, conn: @conn) %>
         <% end %>
     </div>
@@ -114,85 +114,100 @@
     </div>
   </section>
 
-  <%= if @brand.sold_amazon || @brand.sold_aldi ||  @brand.sold_asda ||  @brand.sold_dd ||  @brand.sold_morrisons ||  @brand.sold_sainsburys ||  @brand.sold_tesco ||  @brand.sold_waitrose ||  @brand.sold_wb do %>
-    <section class="w-90 center pv5">
-      <h2 class="roboto-slab f2 lh2 db tc pb4">Where to Buy <%= @brand.name %></h2>
-      <div class="flex flex-wrap">
-        <%= for venue <- get_venues(@brand) do %>
-          <%= if venue.venue_types do %>
-            <%= for type <- venue.venue_types do %>
-              <%= if String.downcase(type.name) == "retailers" do %>
-                <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" href="<%= venue.website %>">
-                  <%= venue.venue_name %>
-                </a>
-              <% end %>
+  <section class="w-90 center pv5">
+    <h2 class="roboto-slab f2 lh2 db tc pb4">Where to Buy <%= @brand.name %></h2>
+    <div class="flex flex-wrap">
+      <%= for venue <- get_venues(@brand) do %>
+        <%= if venue.venue_types do %>
+          <%= for type <- venue.venue_types do %>
+            <%= if String.downcase(type.name) == "retailers" do %>
+              <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" href="<%= venue.website %>">
+                <%= venue.venue_name %>
+              </a>
             <% end %>
           <% end %>
         <% end %>
-        <%= if @brand.sold_aldi do %>
-          <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" target="_blank" href="https://www.aldi.co.uk/search?text=<%= @brand.name %>&category=ALL">
-            Aldi
+      <% end %>
+      <%= if @brand.sold_aldi do %>
+        <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" target="_blank" href="https://www.aldi.co.uk/search?text=<%= @brand.name %>&category=ALL">
+          Aldi
+        </a>
+      <% end %>
+      <%= if @brand.sold_asda do %>
+        <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" target="_blank" href="https://groceries.asda.com/search/<%= @brand.name %>">
+          Asda
+        </a>
+      <% end %>
+      <%= if @brand.sold_dd do %>
+        <div class="dib ph4">
+          <a class="f4 lh4 cs-mid-blue underline db v-top w-50 w-20-ns tc pt1 pb3" target="_blank" href="https://drydrinker.com/">
+            DryDrinker
           </a>
-        <% end %>
-        <%= if @brand.sold_asda do %>
-          <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" target="_blank" href="https://groceries.asda.com/search/<%= @brand.name %>">
-            Asda
+          <%= if @dd_discount_code do %>
+            <div class="bg-cs-light-pink br2 pa2">
+              <p class="f6 lh6">Use discount code</p>
+              <p class="f5 lh5"><%= @dd_discount_code %></p>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      <%= if @brand.sold_morrisons do %>
+        <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" target="_blank" href="https://groceries.morrisons.com/search?entry=<%= @brand.name %>">
+          Morrisons
+        </a>
+      <% end %>
+      <%= if @brand.sold_sainsburys do %>
+        <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" target="_blank" href="https://www.sainsburys.co.uk/webapp/wcs/stores/servlet/SearchDisplayView?catalogId=10123&langId=44&storeId=10151&krypto=%2F%2FSe%2BFyC9ydXJFwUHhYrJMgG%2BX4%2BcECj3jBuezEUXOvXqA0%2B%2FQ5J3nFLvxpQgt8AwhaU1iSNB1MH%2Fy4xzXAbMg0xx2zC2vWqBZHya7XaF4cdq8dL9lnShVHz5ds8SiLstQbMaCavY4JNTbwFNt6i8qyyXzHrPHOZPKLr6JXMDwwTSuWKvh%2FnQ4nPH6l4cqBv2HGG6tma4Sw6Sx7yukd2bpkVzZky1AdkXwifnPCnnVU%3D#langId=44&storeId=10151&catalogId=10123&categoryId=&parent_category_rn=&top_category=&pageSize=36&orderBy=&searchTerm=<%= @brand.name %>&beginIndex=0&hideFilters=true&categoryFacetId1=">
+          Sainsburys
+        </a>
+      <% end %>
+      <%= if @brand.sold_tesco do %>
+        <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" target="_blank" href="https://www.tesco.com/groceries/en-GB/search?query=<%= @brand.name %>">
+          Tesco
+        </a>
+      <% end %>
+      <%= if @brand.sold_waitrose do %>
+        <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" target="_blank" href="https://www.waitrose.com/ecom/shop/search?&searchTerm=<%= @brand.name %>">
+          Waitrose
+        </a>
+      <% end %>
+      <%= if @brand.sold_wb do %>
+        <div class="dib ph4">
+          <a class="f4 lh4 cs-mid-blue underline db v-top w-50 w-20-ns tc pt1 pb3" target="_blank" href="https://wisebartender.co.uk/">
+            WiseBartender
           </a>
-        <% end %>
-        <%= if @brand.sold_dd do %>
-          <div class="dib ph4">
-            <a class="f4 lh4 cs-mid-blue underline db v-top w-50 w-20-ns tc pt1 pb3" target="_blank" href="https://drydrinker.com/">
-              DryDrinker
-            </a>
-            <%= if @dd_discount_code do %>
-              <div class="bg-cs-light-pink br2 pa2">
-                <p class="f6 lh6">Use discount code</p>
-                <p class="f5 lh5"><%= @dd_discount_code %></p>
-              </div>
+          <%= if @wb_discount_code do %>
+            <div class="bg-cs-light-pink br2 pa2">
+              <p class="f6 lh6">Use discount code</p>
+              <p class="f5 lh5"><%= @wb_discount_code %></p>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      <%= if @brand.sold_amazon do %>
+        <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" target="_blank" href="https://www.amazon.co.uk/s/ref=as_li_ss_tl?url=search-alias=aps&field-keywords=<%= @brand.name %>&linkCode=ll2&tag=clusod0c-21">
+          Amazon
+        </a>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="w-90 center pv5">
+    <h2 class="roboto-slab f2 lh2 db tc pb4">Wholesalers</h2>
+    <div class="flex flex-wrap">
+      <%= for venue <- get_venues(@brand) do %>
+        <%= if venue.venue_types do %>
+          <%= for type <- venue.venue_types do %>
+            <%= if String.downcase(type.name) == "wholesalers" do %>
+              <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" href="<%= venue.website %>">
+                <%= venue.venue_name %>
+              </a>
             <% end %>
-          </div>
+          <% end %>
         <% end %>
-        <%= if @brand.sold_morrisons do %>
-          <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" target="_blank" href="https://groceries.morrisons.com/search?entry=<%= @brand.name %>">
-            Morrisons
-          </a>
-        <% end %>
-        <%= if @brand.sold_sainsburys do %>
-          <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" target="_blank" href="https://www.sainsburys.co.uk/webapp/wcs/stores/servlet/SearchDisplayView?catalogId=10123&langId=44&storeId=10151&krypto=%2F%2FSe%2BFyC9ydXJFwUHhYrJMgG%2BX4%2BcECj3jBuezEUXOvXqA0%2B%2FQ5J3nFLvxpQgt8AwhaU1iSNB1MH%2Fy4xzXAbMg0xx2zC2vWqBZHya7XaF4cdq8dL9lnShVHz5ds8SiLstQbMaCavY4JNTbwFNt6i8qyyXzHrPHOZPKLr6JXMDwwTSuWKvh%2FnQ4nPH6l4cqBv2HGG6tma4Sw6Sx7yukd2bpkVzZky1AdkXwifnPCnnVU%3D#langId=44&storeId=10151&catalogId=10123&categoryId=&parent_category_rn=&top_category=&pageSize=36&orderBy=&searchTerm=<%= @brand.name %>&beginIndex=0&hideFilters=true&categoryFacetId1=">
-            Sainsburys
-          </a>
-        <% end %>
-        <%= if @brand.sold_tesco do %>
-          <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" target="_blank" href="https://www.tesco.com/groceries/en-GB/search?query=<%= @brand.name %>">
-            Tesco
-          </a>
-        <% end %>
-        <%= if @brand.sold_waitrose do %>
-          <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" target="_blank" href="https://www.waitrose.com/ecom/shop/search?&searchTerm=<%= @brand.name %>">
-            Waitrose
-          </a>
-        <% end %>
-        <%= if @brand.sold_wb do %>
-          <div class="dib ph4">
-            <a class="f4 lh4 cs-mid-blue underline db v-top w-50 w-20-ns tc pt1 pb3" target="_blank" href="https://wisebartender.co.uk/">
-              WiseBartender
-            </a>
-            <%= if @wb_discount_code do %>
-              <div class="bg-cs-light-pink br2 pa2">
-                <p class="f6 lh6">Use discount code</p>
-                <p class="f5 lh5"><%= @wb_discount_code %></p>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
-        <%= if @brand.sold_amazon do %>
-          <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" target="_blank" href="https://www.amazon.co.uk/s/ref=as_li_ss_tl?url=search-alias=aps&field-keywords=<%= @brand.name %>&linkCode=ll2&tag=clusod0c-21">
-            Amazon
-          </a>
-        <% end %>
-      </div>
-    </section>
-  <% end %>
+      <% end %>
+    </div>
+  </section>
 
   <%= if @related_drinks != [] do %>
     <section class="w-90 center pv5">
