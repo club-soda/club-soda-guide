@@ -150,6 +150,15 @@ defmodule CsGuideWeb.RetailerControllerTest do
     end
   end
 
+  describe "add drinks to retailer - admin" do
+    setup [:create_retailer, :admin_login]
+
+    test "renders form for adding drinks to chosen retailer", %{conn: conn, retailer: retailer} do
+      conn = get(conn, retailer_path(conn, :add_drinks, retailer.entry_id))
+      assert html_response(conn, 200) =~ "Add drinks sold by the retailer"
+    end
+  end
+
   defp create_retailer(_) do
     retailer = fixture(:retailer)
     {:ok, retailer: retailer}
