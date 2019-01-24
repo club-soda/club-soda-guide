@@ -60,8 +60,8 @@ defmodule CsGuideWeb.Router do
     resources("/", AdminController, only: [:index])
     resources("/brands", BrandController, except: [:show], param: "name")
     resources("/drinks", DrinkController, except: [:show])
-    resources("/retailers", RetailerController, except: [:show])
     resources("/wholesalers", WholesalerController, except: [:show])
+    resources("/retailers", RetailerController, except: [:show])
     resources("/static_pages", StaticPageController, except: [:show], param: "page_title")
     resources("/users", UserController, except: [:new, :create])
     resources("/venues", VenueController, only: [ :delete, :index])
@@ -80,6 +80,7 @@ defmodule CsGuideWeb.Router do
 
   scope "/admin", CsGuideWeb do
     pipe_through([:browser, :venue_owner])
+    get("/retailers/:id/add_drinks", RetailerController, :add_drinks)
     get("/venues/:slug/add_drinks", VenueController, :add_drinks, param: "slug")
     get("/venues/:slug/add_photo", VenueController, :add_photo)
 
@@ -98,8 +99,6 @@ defmodule CsGuideWeb.Router do
     get("/:page_title", StaticPageController, :show)
     get("/*page_not_found", StaticPageController, :show)
   end
-
-
 
   # Other scopes may use custom stacks.
   # scope "/api", CsGuideWeb do
