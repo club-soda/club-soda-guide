@@ -64,7 +64,8 @@ defmodule CsGuideWeb.Router do
     resources("/wholesalers", WholesalerController, except: [:show])
     resources("/static_pages", StaticPageController, except: [:show], param: "page_title")
     resources("/users", UserController, except: [:new, :create])
-    resources("/venues", VenueController, only: [ :delete, :index])
+    resources("/venues", VenueController, only: [:delete, :index])
+    resources("/wholesalers", WholesalerController, except: [:show])
 
     resources("/venue_types", VenueTypeController)
     resources("/drink_types", DrinkTypeController)
@@ -82,6 +83,7 @@ defmodule CsGuideWeb.Router do
     pipe_through([:browser, :venue_owner])
     get("/venues/:slug/add_drinks", VenueController, :add_drinks, param: "slug")
     get("/venues/:slug/add_photo", VenueController, :add_photo)
+    get("/wholesalers/:id/add_drinks", WholesalerController, :add_drinks)
 
     post("/venues/:id/", VenueController, :upload_photo)
     resources("/venues", VenueController, except: [:delete, :index], param: "slug")

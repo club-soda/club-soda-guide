@@ -1,6 +1,7 @@
 defmodule CsGuideWeb.WholesalerController do
   use CsGuideWeb, :controller
-  alias CsGuide.Resources.Venue
+  alias CsGuide.Resources.{Venue, Brand}
+  import Ecto.Query, only: [from: 2, subquery: 1]
 
   def index(conn, _params) do
     venues =
@@ -39,6 +40,24 @@ defmodule CsGuideWeb.WholesalerController do
     render(conn, "edit.html", venue: venue, changeset: changeset)
   end
 
+  def update(conn, %{
+        "id" => id,
+        "venue" => venue = %{"drinks" => drinks}
+      })
+      when map_size(venue) <= 2 do
+    venue =
+      Venue.get(id)
+      |> Venue.preload([:venue_types, :venue_images, :drinks, :users])
+
+    venue_params =
+      venue
+      |> Map.from_struct()
+      |> Map.drop([:users])
+      |> Map.put(:drinks, drinks)
+
+    do_update(conn, venue, venue_params)
+  end
+
   def update(conn, %{"id" => id, "venue" => venue_params}) do
     venue =
       Venue.get(id)
@@ -55,6 +74,50 @@ defmodule CsGuideWeb.WholesalerController do
         |> put_flash(:info, "Wholesaler updated successfully.")
         |> redirect(to: wholesaler_path(conn, :index))
 
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, "edit.html", venue: venue, changeset: changeset)
+    end
+  end
+
+  def add_drinks(conn, %{"id" => id}) do
+    venue =
+      Venue.get(id)
+      |> Venue.preload(drinks: [:brand], venue_types: [])
+
+    brands = Brand.all() |> Brand.preload(:drinks)
+
+    changeset = Venue.retailer_changeset(venue)
+
+    render(conn, "add_drinks.html",
+      brands: brands,
+      current_drinks: Enum.map(venue.drinks, fn d -> d.entry_id end),
+      changeset: changeset,
+      action: retailer_path(conn, :update, id)
+    )
+  end
+
+  defp do_update(conn, venue, venue_params) do
+    query = fn s, m ->
+      sub =
+        from(mod in Map.get(m.__schema__(:association, s), :queryable),
+          distinct: mod.entry_id,
+          order_by: [desc: :inserted_at],
+          select: mod
+        )
+
+      from(m in subquery(sub), where: not m.deleted, select: m)
+    end
+
+    with {:ok, venue} <- Venue.retailer_update(venue, venue_params),
+         {:ok, venue} <-
+           Venue.retailer_update(
+             venue,
+             venue_params
+           ) do
+      conn
+      |> put_flash(:info, "Wholesaler updated successfully.")
+      |> redirect(to: retailer_path(conn, :index))
+    else
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", venue: venue, changeset: changeset)
     end
