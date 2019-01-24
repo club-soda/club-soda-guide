@@ -6,11 +6,15 @@ defmodule CsGuideWeb.SearchAllController do
 
   def index(conn, params) do
     possible_postcode = params["term"] || ""
+
     case PostcodeLatLong.check_or_cache(possible_postcode) do
       {:ok, {lat, long}} ->
         conn
-        |> redirect(to: search_venue_path(conn, :index, ll: "#{lat},#{long}", postcode: possible_postcode))
-      {:error, _ } ->
+        |> redirect(
+          to: search_venue_path(conn, :index, ll: "#{lat},#{long}", postcode: possible_postcode)
+        )
+
+      {:error, _} ->
         search_by_text(conn, params)
     end
   end
@@ -20,7 +24,9 @@ defmodule CsGuideWeb.SearchAllController do
       Venue.all()
       |> Venue.preload([:venue_types, :venue_images])
       |> Enum.filter(fn v ->
-        !Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailers" end)
+        !Enum.find(v.venue_types, fn type ->
+          String.downcase(type.name) == "retailers" || String.downcase(type.name) == "wholesalers"
+        end)
       end)
       |> Enum.sort_by(&{5 - &1.cs_score, &1.venue_name})
 

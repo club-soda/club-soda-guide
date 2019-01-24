@@ -38,15 +38,23 @@ defmodule CsGuideWeb.SearchVenueController do
     venues =
       Venue.all()
       |> Venue.preload([:venue_types, :venue_images])
-      |> Enum.filter(fn v -> !Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailers" end) end)
+      |> Enum.filter(fn v ->
+        !Enum.find(v.venue_types, fn type ->
+          String.downcase(type.name) == "retailers" || String.downcase(type.name) == "wholesalers"
+        end)
+      end)
       |> Enum.sort_by(&{5 - &1.cs_score, &1.venue_name})
       |> Enum.map(&Venue.get_venue_card/1)
   end
 
-  defp getVenueCardsByLatLong(lat,long) do
-      Venue.nearest_venues(lat, long)
-      |> Venue.preload([:venue_types, :venue_images])
-      |> Enum.filter(fn v -> !Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailers" end) end)
-      |> Enum.map(&Venue.get_venue_card/1)
+  defp getVenueCardsByLatLong(lat, long) do
+    Venue.nearest_venues(lat, long)
+    |> Venue.preload([:venue_types, :venue_images])
+    |> Enum.filter(fn v ->
+      !Enum.find(v.venue_types, fn type ->
+        String.downcase(type.name) == "retailers" || String.downcase(type.name) == "wholesalers"
+      end)
+    end)
+    |> Enum.map(&Venue.get_venue_card/1)
   end
 end
