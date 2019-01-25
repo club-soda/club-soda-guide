@@ -1,7 +1,6 @@
 defmodule CsGuide.ResourcesTest do
   use CsGuide.DataCase
 
-  alias CsGuide.Resources
   alias CsGuide.Resources.Brand
   alias CsGuide.Fixtures
 

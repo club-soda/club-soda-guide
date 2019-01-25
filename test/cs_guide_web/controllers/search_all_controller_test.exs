@@ -1,7 +1,6 @@
 defmodule CsGuideWeb.SearchAllControllerTest do
   use CsGuideWeb.ConnCase
   alias CsGuide.{Resources, Categories, Fixtures}
-  # import CsGuide.SetupHelpers
   @create_types Fixtures.create_types()
   @create_brand Fixtures.create_brand()
 
@@ -45,6 +44,18 @@ defmodule CsGuideWeb.SearchAllControllerTest do
     brand
   end
 
+  def fixture(:venue) do
+    %Categories.VenueType{}
+    |> Categories.VenueType.changeset(%{name: "Pubs"})
+    |> Categories.VenueType.insert()
+
+    @venues
+    |> Enum.map(fn v ->
+      {:ok, venue} = Resources.Venue.insert(v)
+      venue
+    end)
+  end
+
   def fixture(:drink, brand) do
     {:ok, drink} =
       @create_attrs
@@ -81,18 +92,6 @@ defmodule CsGuideWeb.SearchAllControllerTest do
 
       assert html_response(conn, 200) =~ "The Favourite Pub"
     end
-  end
-
-  def fixture(:venue) do
-    %Categories.VenueType{}
-    |> Categories.VenueType.changeset(%{name: "Pubs"})
-    |> Categories.VenueType.insert()
-
-    @venues
-    |> Enum.map(fn v ->
-      {:ok, venue} = Resources.Venue.insert(v)
-      venue
-    end)
   end
 
   def create_venue(_) do

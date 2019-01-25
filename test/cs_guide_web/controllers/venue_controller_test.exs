@@ -20,7 +20,9 @@ defmodule CsGuideWeb.VenueControllerTest do
     drinks: %{"AF Beer 1" => "on"},
     venue_types: %{"Bars" => "on"},
     num_cocktails: 2,
-    slug: "The-Example-Pub-EC1-5AD"
+    slug: "the-example-pub-ec1-5ad",
+    lat: "51.520973",
+    long: "-0.102894"
   }
 
   @invalid_attrs %{phone_number: "", postcode: "", venue_name: ""}
@@ -398,6 +400,16 @@ defmodule CsGuideWeb.VenueControllerTest do
 
       conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "Club Soda Score of 2.0"
+    end
+  end
+
+  describe "show - venues nearby" do
+    setup [:create_venues]
+
+    test "shows Venue A with Venue B listed as nearby", %{conn: conn} do
+      conn = get(conn, venue_path(conn, :show, "venue-a-ec1a-7aa"))
+      assert html_response(conn, 200) =~ "Venue A"
+      assert html_response(conn, 200) =~ "Venue B"
     end
   end
 

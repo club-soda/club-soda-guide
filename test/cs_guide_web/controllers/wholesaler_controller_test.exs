@@ -5,8 +5,6 @@ defmodule CsGuideWeb.WholesalerControllerTest do
 
   import CsGuide.SetupHelpers
 
-  @spirits_premixed "Spirits & Premixed"
-
   @create_brand Fixtures.create_brand()
   @create_types Fixtures.create_types()
   @create_drinks Fixtures.create_drinks()
@@ -40,20 +38,6 @@ defmodule CsGuideWeb.WholesalerControllerTest do
     wholesaler
   end
 
-  def fixture(:drink, brand) do
-    drinks =
-      @create_drinks
-      |> Enum.map(fn d ->
-        {:ok, drink} =
-          Map.put(d, :brand, brand)
-          |> Resources.Drink.insert()
-
-        drink
-      end)
-
-    drinks
-  end
-
   def fixture(:brand) do
     {:ok, brand} =
       @create_brand
@@ -71,6 +55,20 @@ defmodule CsGuideWeb.WholesalerControllerTest do
       end)
 
     types
+  end
+
+  def fixture(:drink, brand) do
+    drinks =
+      @create_drinks
+      |> Enum.map(fn d ->
+        {:ok, drink} =
+          Map.put(d, :brand, brand)
+          |> Resources.Drink.insert()
+
+        drink
+      end)
+
+    drinks
   end
 
   describe "index" do
@@ -165,16 +163,5 @@ defmodule CsGuideWeb.WholesalerControllerTest do
   defp create_wholesaler(_) do
     wholesaler = fixture(:wholesaler)
     {:ok, wholesaler: wholesaler}
-  end
-
-  defp drink_setup(_) do
-    brand = fixture(:brand)
-    {:ok, brand: brand}
-
-    type = fixture(:type)
-    {:ok, type: type}
-
-    drinks = fixture(:drink, brand.name)
-    {:ok, drinks: drinks}
   end
 end
