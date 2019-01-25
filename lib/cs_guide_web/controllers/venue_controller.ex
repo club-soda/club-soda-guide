@@ -74,12 +74,15 @@ defmodule CsGuideWeb.VenueController do
     images = Enum.sort_by(venue.venue_images, fn i -> i.id end)
     venue = Map.put(venue, :venue_images, images)
 
+    nearby_venues = getVenueCardsByLatLong(venue.lat, venue.long, venue.venue_name)
+
     if venue != nil do
       venue_owner = conn.assigns[:venue_id] == venue.id
 
       render(conn, "show.html",
         venue: venue,
-        is_authenticated: conn.assigns[:admin] || venue_owner
+        is_authenticated: conn.assigns[:admin] || venue_owner,
+        nearby_venues: nearby_venues
       )
     else
       conn
@@ -234,5 +237,18 @@ defmodule CsGuideWeb.VenueController do
     conn
     |> put_flash(:info, "Venue deleted successfully.")
     |> redirect(to: venue_path(conn, :index))
+  end
+
+  defp getVenueCardsByLatLong(lat, long, venue_name) do
+    Venue.nearest_venues(lat, long)
+    |> Venue.preload([:venue_types, :venue_images])
+    |> Enum.filter(fn v ->
+      !Enum.find(v.venue_types, fn type ->
+        String.downcase(type.name) == "retailers" || String.downcase(type.name) == "wholesalers"
+      end)
+    end)
+    |> Enum.filter(fn v ->
+      v.venue_name != venue_name
+    end)
   end
 end

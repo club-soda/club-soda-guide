@@ -67,6 +67,15 @@
       <% end %>
     </div>
   </section>
+
+  <section class="tc center pv5 w-90">
+    <h1 class="roboto-slab f2 lh2 dib mb3">Venues Nearby</h1>
+    <div class="flex flex-wrap justify-center pv4-ns">
+        <%= for venue <- @nearby_venues do %>
+          <%= component("venue_card", venue: venue, conn: @conn) %>
+        <% end %>
+    </div>
+  </section>
 </section>
 
 <!-- Google Maps -->
