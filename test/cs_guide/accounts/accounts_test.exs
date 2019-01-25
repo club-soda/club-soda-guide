@@ -1,8 +1,6 @@
 defmodule CsGuide.AccountsTest do
   use CsGuide.DataCase
 
-  alias CsGuide.Accounts
-
   describe "users" do
     alias CsGuide.Accounts.User
 

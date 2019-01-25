@@ -1,6 +1,5 @@
 defmodule CsGuideWeb.SearchDrinkControllerTest do
   use CsGuideWeb.ConnCase
-  import CsGuide.SetupHelpers
   alias CsGuide.{Resources, Categories, Fixtures}
 
   @create_types Fixtures.create_types()

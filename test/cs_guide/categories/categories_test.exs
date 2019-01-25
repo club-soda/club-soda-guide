@@ -1,7 +1,6 @@
 defmodule CsGuide.CategoriesTest do
   use CsGuide.DataCase
 
-  alias CsGuide.Categories
   alias CsGuide.Categories.{VenueType, DrinkStyle}
 
   describe "venue_type" do
@@ -78,12 +77,14 @@ defmodule CsGuide.CategoriesTest do
 
     test "all/0 returns all drink_styles" do
       drink_style = drink_style_fixture()
-      assert DrinkStyle.all()|> DrinkStyle.preload([:drink_types]) == [drink_style]
+      assert DrinkStyle.all() |> DrinkStyle.preload([:drink_types]) == [drink_style]
     end
 
     test "get/1 returns the drink_style with given id" do
       drink_style = drink_style_fixture()
-      assert DrinkStyle.get(drink_style.entry_id) |> DrinkStyle.preload([:drink_types]) == drink_style
+
+      assert DrinkStyle.get(drink_style.entry_id) |> DrinkStyle.preload([:drink_types]) ==
+               drink_style
     end
 
     test "insert/1 with valid data creates a drink_style" do
@@ -110,7 +111,8 @@ defmodule CsGuide.CategoriesTest do
 
       assert {:error, %Ecto.Changeset{}} = DrinkStyle.update(drink_style, @invalid_attrs)
 
-      assert drink_style == DrinkStyle.get(drink_style.entry_id) |> DrinkStyle.preload([:drink_types])
+      assert drink_style ==
+               DrinkStyle.get(drink_style.entry_id) |> DrinkStyle.preload([:drink_types])
     end
 
     test "changeset/1 returns a drink_style changeset" do
