@@ -17,20 +17,24 @@ defmodule CsGuide.Fixtures do
         address: "1 number and road",
         city: "London",
         phone_number: "01234567890",
-        postcode: "EC1 5AD",
+        postcode: "EC1A 7AA",
         drinks: %{"AF Beer 1" => "on"},
         venue_types: %{"Bars" => "on"},
-        slug: "Venue-A-EC1-5AD"
+        slug: "venue-a-ec1a-7aa",
+        lat: "51.5162121774794",
+        long: "-0.101606872279769"
       },
       %{
         venue_name: "Venue B",
         address: "2 number and road",
         city: "London",
         phone_number: "01234567890",
-        postcode: "W6 8LY",
+        postcode: "E9 7LH",
         drinks: %{"AF Beer 1" => "on"},
         venue_types: %{"Bars" => "on"},
-        slug: "Venue-B-W6-8LY"
+        slug: "venue-b-e1-7lh",
+        lat: "51.5370697966524",
+        long: "-0.044906060143753"
       }
     ]
   end
