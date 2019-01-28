@@ -12,6 +12,8 @@ update_social_url = fn el, social_media_brand, url_template ->
         cleaned_handle = String.slice(social_media_value, 1..-1)
 
         url_template <> cleaned_handle
+      else
+        social_media_value
       end
   end
 end
@@ -24,6 +26,8 @@ update_website = fn v ->
     website ->
       if String.starts_with?(website, "http") == false do
         "http://#{website}"
+      else
+        website
       end
   end
 end
