@@ -76,7 +76,7 @@ defmodule CsGuide.NewVenues do
                 drinks
 
               not_found_drink ->
-                IO.inspect("Drink not found: #{not_found_drink}")
+                IO.inspect("Brand not found: #{not_found_drink}")
                 acc
             end
           else
@@ -99,10 +99,18 @@ defmodule CsGuide.NewVenues do
                 drinks,
                 fn {d, b} ->
                   brand = Brand.get_by(name: b)
-                  drink = Drink.get_by(name: d, brand_id: brand.id)
-                  {drink.entry_id, "on"}
+
+                  case Drink.get_by(name: d, brand_id: brand.id) do
+                    nil ->
+                      IO.inspect("Drink not found: #{d}, brand: #{b}")
+                      nil
+
+                    drink ->
+                      {drink.entry_id, "on"}
+                  end
                 end
               )
+              |> Enum.filter(fn d -> not is_nil(d) end)
             )
           )
           |> (fn v ->
