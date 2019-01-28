@@ -33,14 +33,13 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
     %{
       venue_name: "The Retailer",
       favourite: false,
-      venue_types: %{"Retailers" => "on"},
+      venue_types: %{"Retailer" => "on"},
       postcode: "SW1 4RV",
       lat: "51.468175746794700",
       long: "-0.363049000000000",
       slug: "retailer"
     }
   ]
-
 
   describe "renders landing page as expected" do
     setup [:create_venue]
@@ -99,7 +98,7 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
     |> Categories.VenueType.insert()
 
     %Categories.VenueType{}
-    |> Categories.VenueType.changeset(%{name: "Retailers"})
+    |> Categories.VenueType.changeset(%{name: "Retailer"})
     |> Categories.VenueType.insert()
 
     @venues

@@ -39,7 +39,7 @@ update_urls = fn schema, preloads ->
         Venue.all()
         |> Venue.preload(preloads)
         |> Enum.filter(fn v ->
-          !Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailers" end)
+          !Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailer" end)
         end)
 
       _ ->

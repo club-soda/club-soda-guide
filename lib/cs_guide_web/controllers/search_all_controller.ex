@@ -25,7 +25,7 @@ defmodule CsGuideWeb.SearchAllController do
       |> Venue.preload([:venue_types, :venue_images])
       |> Enum.filter(fn v ->
         !Enum.find(v.venue_types, fn type ->
-          String.downcase(type.name) == "retailers" || String.downcase(type.name) == "wholesalers"
+          String.downcase(type.name) == "retailer" || String.downcase(type.name) == "wholesaler"
         end)
       end)
       |> Enum.sort_by(&{5 - &1.cs_score, &1.venue_name})

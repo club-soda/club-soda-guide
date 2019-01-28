@@ -77,7 +77,11 @@ The venue types and drinks that can be added to a venue listing can be added to 
 
 <img width="250" alt="New Venue Type" src="https://user-images.githubusercontent.com/8939909/46818794-f7fba080-cd79-11e8-8caa-f05f65becbeb.png">
 
-You can also see a list of all venue types, and drinks on `/admin/venue_types` and `/admin/drinks`, where you can show, edit and delete them as with the venues. (These pages are still undergoing work so do not currently look very nice, but are functional).
+You can also see a list of all venue types, and drinks on `/admin/venue_types` and `/admin/drinks`, where you can show, edit and delete them as with the venues.
+It is important to note that some of the venue types are matched on in parts of
+the code. Changing them may break elements of the site as they no longer match.
+This is the case for 'retailer' and 'wholesaler' types. If you wish to change
+these types then it's best to consult with the development team first.
 
 ## User Admin Guide
 

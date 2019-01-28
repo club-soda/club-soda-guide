@@ -13,12 +13,12 @@ defmodule CsGuideWeb.WholesalerControllerTest do
   @create_attrs %{
     venue_name: "Amazon",
     website: "http://www.test.com",
-    venue_types: %{"Wholesalers" => "on"}
+    venue_types: %{"Wholesaler" => "on"}
   }
   @update_attrs %{
     venue_name: "Amazon",
     website: "http://www.updatedtest.com",
-    venue_types: %{"Wholesalers" => "on"}
+    venue_types: %{"Wholesaler" => "on"}
   }
   @invalid_attrs %{venue_types: nil, website: nil, venue_name: nil}
 
@@ -113,6 +113,7 @@ defmodule CsGuideWeb.WholesalerControllerTest do
 
       conn = get(conn, wholesaler_path(conn, :index))
       assert html_response(conn, 200) =~ "All Wholesalers"
+      assert html_response(conn, 200) =~ "Amazon"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do

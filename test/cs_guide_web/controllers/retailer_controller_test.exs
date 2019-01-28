@@ -11,14 +11,14 @@ defmodule CsGuideWeb.RetailerControllerTest do
   @create_venue_types Fixtures.create_venue_types()
 
   @create_attrs %{
-    venue_name: "Amazon",
+    venue_name: "Retailer 1",
     website: "http://www.test.com",
-    venue_types: %{"Retailers" => "on"}
+    venue_types: %{"Retailer" => "on"}
   }
   @update_attrs %{
-    venue_name: "Amazon",
+    venue_name: "Retailer 1",
     website: "http://www.updatedtest.com",
-    venue_types: %{"Retailers" => "on"}
+    venue_types: %{"Retailer" => "on"}
   }
   @invalid_attrs %{venue_types: nil, website: nil, venue_name: nil}
 
@@ -113,6 +113,7 @@ defmodule CsGuideWeb.RetailerControllerTest do
 
       conn = get(conn, retailer_path(conn, :index))
       assert html_response(conn, 200) =~ "All Retailers"
+      assert html_response(conn, 200) =~ "Retailer 1"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
