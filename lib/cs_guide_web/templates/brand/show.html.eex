@@ -26,7 +26,7 @@
       <% else %>
         <%= if @is_authenticated do %>
           <div class="pb3">
-            <a class="cs-mid-blue" href="admin/<%= @brand.name %>/edit">Add brand description</a>
+            <%= link "Add brand description", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue" %>
           </div>
         <% end %>
       <% end %>
@@ -39,7 +39,7 @@
         <% else %>
           <%= if @is_authenticated do %>
             <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
-            <a href="admin/<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand website</a>
+            <%= link "Add brand website", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue f6 lh6 v-top" %>
           <% end %>
         <% end %>
       </div>
@@ -54,7 +54,7 @@
           <% else %>
             <%= if @is_authenticated do %>
               <div class="db pv1">
-                <a href="admin/<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand facebook</a>
+                <%= link "Add brand facebook", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue f6 lh6 v-top" %>
               </div>
             <% end %>
           <% end %>
@@ -66,7 +66,7 @@
             </a>
           <% else %>
             <%= if @is_authenticated do %>
-              <a href="admin/<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand instagram</a>
+              <%= link "Add brand instagram", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue f6 lh6 v-top" %>
             <% end %>
           <% end %>
         </div>
@@ -86,7 +86,7 @@
           <p><%= @brand.copy %></p>
         <% else %>
           <%= if @is_authenticated do %>
-            <a href="admin/<%= @brand.name %>/edit" class="cs-mid-blue f6 lh6 v-top">Add brand copy</a>
+            <%= link "Add brand copy", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue f6 lh6 v-top" %>
           <% end %>
         <% end %>
       </div>
