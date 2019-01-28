@@ -9,7 +9,7 @@ defmodule CsGuideWeb.RetailerController do
       Venue.all()
       |> Venue.preload(:venue_types)
       |> Enum.filter(fn v ->
-        Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailers" end)
+        Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "retailer" end)
       end)
       |> Enum.sort_by(& &1.venue_name)
 
@@ -22,7 +22,7 @@ defmodule CsGuideWeb.RetailerController do
   end
 
   def create(conn, %{"venue" => venue_params}) do
-    venue_params = Map.put(venue_params, "venue_types", %{"Retailers" => "on"})
+    venue_params = Map.put(venue_params, "venue_types", %{"Retailer" => "on"})
 
     case Venue.retailer_insert(venue_params) do
       {:ok, _venue} ->
@@ -67,7 +67,7 @@ defmodule CsGuideWeb.RetailerController do
     venue_params =
       venue_params
       |> Map.put("drinks", venue.drinks)
-      |> Map.put("venue_types", %{"Retailers" => "on"})
+      |> Map.put("venue_types", %{"Retailer" => "on"})
 
     case Venue.retailer_update(venue, venue_params) do
       {:ok, _venue} ->

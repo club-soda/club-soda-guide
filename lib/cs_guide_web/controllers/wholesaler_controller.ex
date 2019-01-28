@@ -8,7 +8,7 @@ defmodule CsGuideWeb.WholesalerController do
       Venue.all()
       |> Venue.preload(:venue_types)
       |> Enum.filter(fn v ->
-        Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "wholesalers" end)
+        Enum.find(v.venue_types, fn type -> String.downcase(type.name) == "wholesaler" end)
       end)
       |> Enum.sort_by(& &1.venue_name)
 
@@ -21,7 +21,7 @@ defmodule CsGuideWeb.WholesalerController do
   end
 
   def create(conn, %{"venue" => venue_params}) do
-    venue_params = Map.put(venue_params, "venue_types", %{"Wholesalers" => "on"})
+    venue_params = Map.put(venue_params, "venue_types", %{"Wholesaler" => "on"})
 
     case Venue.retailer_insert(venue_params) do
       {:ok, _venue} ->
@@ -66,7 +66,7 @@ defmodule CsGuideWeb.WholesalerController do
     venue_params =
       venue_params
       |> Map.put("drinks", venue.drinks)
-      |> Map.put("venue_types", %{"Wholesalers" => "on"})
+      |> Map.put("venue_types", %{"Wholesaler" => "on"})
 
     case Venue.retailer_update(venue, venue_params) do
       {:ok, _venue} ->

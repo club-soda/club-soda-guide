@@ -12,7 +12,7 @@ defmodule CsGuideWeb.VenueController do
       |> Venue.preload(:venue_types)
       |> Enum.filter(fn v ->
         !Enum.find(v.venue_types, fn type ->
-          String.downcase(type.name) == "wholesalers" || String.downcase(type.name) == "retailers"
+          String.downcase(type.name) == "wholesaler" || String.downcase(type.name) == "retailer"
         end)
       end)
       |> sort_venues_by_date
@@ -26,7 +26,7 @@ defmodule CsGuideWeb.VenueController do
       |> Venue.preload(:venue_types)
       |> Enum.filter(fn v ->
         !Enum.find(v.venue_types, fn type ->
-          String.downcase(type.name) == "retailers" || String.downcase(type.name) == "wholesalers"
+          String.downcase(type.name) == "retailer" || String.downcase(type.name) == "wholesaler"
         end)
       end)
       |> Enum.sort_by(& &1.venue_name)
@@ -247,7 +247,7 @@ defmodule CsGuideWeb.VenueController do
     |> Venue.preload([:venue_types, :venue_images])
     |> Enum.filter(fn v ->
       !Enum.find(v.venue_types, fn type ->
-        String.downcase(type.name) == "retailers" || String.downcase(type.name) == "wholesalers"
+        String.downcase(type.name) == "retailer" || String.downcase(type.name) == "wholesaler"
       end)
     end)
     |> Enum.filter(fn v ->

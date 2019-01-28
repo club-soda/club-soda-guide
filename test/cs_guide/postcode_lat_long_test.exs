@@ -68,7 +68,7 @@ defmodule CsGuide.PostcodeLatLongTest do
     |> Categories.VenueType.insert()
 
     %Categories.VenueType{}
-    |> Categories.VenueType.changeset(%{name: "Retailers"})
+    |> Categories.VenueType.changeset(%{name: "Retailer"})
     |> Categories.VenueType.insert()
 
     @venue
