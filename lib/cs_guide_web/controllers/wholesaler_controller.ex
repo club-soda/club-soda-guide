@@ -92,7 +92,7 @@ defmodule CsGuideWeb.WholesalerController do
       brands: brands,
       current_drinks: Enum.map(venue.drinks, fn d -> d.entry_id end),
       changeset: changeset,
-      action: retailer_path(conn, :update, id)
+      action: wholesaler_path(conn, :update, id)
     )
   end
 
@@ -116,7 +116,7 @@ defmodule CsGuideWeb.WholesalerController do
            ) do
       conn
       |> put_flash(:info, "Wholesaler updated successfully.")
-      |> redirect(to: retailer_path(conn, :index))
+      |> redirect(to: wholesaler_path(conn, :index))
     else
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", venue: venue, changeset: changeset)
