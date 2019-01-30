@@ -29,7 +29,6 @@ import TypeAndStyle
         )
 
 
-
 -- MODEL
 
 
@@ -39,6 +38,7 @@ type alias Model =
     , abvFilter : String
     , searchTerm : Maybe String
     , typesAndStyles : List Filter
+    , drinksToDisplay : Int
     }
 
 
@@ -59,7 +59,6 @@ init flags =
         dtype_filter =
             if flags.dtype_filter == "none" then
                 []
-
             else
                 case getFilterById ("type-" ++ flags.dtype_filter) filters of
                     Nothing ->
@@ -68,19 +67,24 @@ init flags =
                     Just _ ->
                         [ "type-" ++ flags.dtype_filter ]
     in
-    ( { drinks = flags.drinks
-      , drinkFilters = Criteria.init dtype_filter
-      , abvFilter = ""
-      , searchTerm =
-            if String.isEmpty flags.term then
-                Nothing
+        ( { drinks = flags.drinks
+          , drinkFilters = Criteria.init dtype_filter
+          , drinksToDisplay = defaultDrinksToDisplay
+          , abvFilter = ""
+          , searchTerm =
+                if String.isEmpty flags.term then
+                    Nothing
+                else
+                    Just flags.term
+          , typesAndStyles = filters
+          }
+        , Cmd.none
+        )
 
-            else
-                Just flags.term
-      , typesAndStyles = filters
-      }
-    , Cmd.none
-    )
+
+defaultDrinksToDisplay : Int
+defaultDrinksToDisplay =
+    40
 
 
 
@@ -95,55 +99,56 @@ type Msg
     | CloseDropdown Bool
     | KeyDowns String
     | NoOp
+    | ScrolledToBottom Bool
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         SelectABVLevel abv_level ->
-            ( { model | abvFilter = abv_level }, Cmd.none )
+            ( { model | abvFilter = abv_level, drinksToDisplay = defaultDrinksToDisplay }, Cmd.none )
 
         SearchDrink term ->
             let
                 searchTerm =
                     if String.isEmpty term then
                         Nothing
-
                     else
                         Just term
             in
-            ( { model | searchTerm = searchTerm }, Cmd.none )
+                ( { model | searchTerm = searchTerm, drinksToDisplay = defaultDrinksToDisplay }, Cmd.none )
 
         UpdateFilters state ->
-            ( { model | drinkFilters = state }, Cmd.none )
+            ( { model | drinkFilters = state, drinksToDisplay = defaultDrinksToDisplay }, Cmd.none )
 
         UnselectFilter filterId ->
             let
                 filterState =
                     Criteria.unselectFilter filterId model.drinkFilters
             in
-            ( { model | drinkFilters = filterState }, Cmd.none )
+                ( { model | drinkFilters = filterState, drinksToDisplay = defaultDrinksToDisplay }, Cmd.none )
 
         CloseDropdown close ->
             let
                 drinkFilters =
                     if close then
                         Criteria.closeFilters model.drinkFilters
-
                     else
                         model.drinkFilters
             in
-            ( { model | drinkFilters = drinkFilters }, Cmd.none )
+                ( { model | drinkFilters = drinkFilters }, Cmd.none )
 
         KeyDowns k ->
             if k == "Enter" then
                 ( model, Task.attempt (\_ -> NoOp) (Dom.blur "search-input") )
-
             else
                 ( model, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
+
+        ScrolledToBottom pos ->
+            ( { model | drinksToDisplay = model.drinksToDisplay + defaultDrinksToDisplay }, Cmd.none )
 
 
 
@@ -161,23 +166,23 @@ criteriaConfig =
         defaulCustomisations =
             Criteria.defaultCustomisations
     in
-    Criteria.customConfig
-        { title = "Drink Type"
-        , toMsg = UpdateFilters
-        , toId = getFilterId
-        , toString = getFilterName
-        , getSubFilters = getSubFilters
-        , customisations =
-            { defaulCustomisations
-                | mainDivAttrs = mainDivAttrs
-                , filtersDivAttrs = filtersDivAttrs
-                , filterDivAttrs = filterDivAttrs
-                , buttonAttrs = buttonAttrs
-                , filterLabelAttrs = filterLabelAttrs
-                , filterNameAttrs = filterNameAttrs
-                , filterImgToggleAttrs = filterImgToggleAttrs
+        Criteria.customConfig
+            { title = "Drink Type"
+            , toMsg = UpdateFilters
+            , toId = getFilterId
+            , toString = getFilterName
+            , getSubFilters = getSubFilters
+            , customisations =
+                { defaulCustomisations
+                    | mainDivAttrs = mainDivAttrs
+                    , filtersDivAttrs = filtersDivAttrs
+                    , filterDivAttrs = filterDivAttrs
+                    , buttonAttrs = buttonAttrs
+                    , filterLabelAttrs = filterLabelAttrs
+                    , filterNameAttrs = filterNameAttrs
+                    , filterImgToggleAttrs = filterImgToggleAttrs
+                }
             }
-        }
 
 
 mainDivAttrs : List (Attribute Msg)
@@ -242,7 +247,7 @@ renderPills selectedFilterIds filters =
         pills =
             List.map (\f -> getFilterById f filters) (Set.toList selectedFilterIds)
     in
-    div [ classList [ ( "mb3", not (List.isEmpty pills) ) ] ] (List.map renderPillFilter pills)
+        div [ classList [ ( "mb3", not (List.isEmpty pills) ) ] ] (List.map renderPillFilter pills)
 
 
 renderPillFilter : Maybe Filter -> Html Msg
@@ -264,10 +269,10 @@ renderPillFilter filter =
                 Nothing ->
                     ""
     in
-    div [ class "ma1 dib pa2 br4 bg-cs-pink white", id "pill-type-style" ]
-        [ span [ class "pr1" ] [ text filterName ]
-        , span [ class "pointer pl3 b", onClick (UnselectFilter filterId) ] [ text "x" ]
-        ]
+        div [ class "ma1 dib pa2 br4 bg-cs-pink white", id "pill-type-style" ]
+            [ span [ class "pr1" ] [ text filterName ]
+            , span [ class "pointer pl3 b", onClick (UnselectFilter filterId) ] [ text "x" ]
+            ]
 
 
 filterDrinks : Model -> List (Html Msg)
@@ -276,6 +281,7 @@ filterDrinks model =
         |> List.filter (\d -> filterByTypeAndStyle (Set.toList <| Criteria.selectedIdFilters model.drinkFilters) d model.typesAndStyles)
         |> List.filter (\d -> filterByABV model d)
         |> List.filter (\d -> SharedTypes.searchDrinkByTerm model.searchTerm d)
+        |> List.take model.drinksToDisplay
         |> renderDrinks
 
 
@@ -330,7 +336,6 @@ renderDrinks drinks =
         Array.fromList drinks
             |> Array.indexedMap drinkCard
             |> Array.toList
-
     else
         [ div []
             [ p [ class "tc" ] [ text "Your search didn't return any drinks, change your filters and try again." ]
@@ -342,6 +347,9 @@ renderDrinks drinks =
 -- Subscriptions
 
 
+port scroll : (Bool -> msg) -> Sub msg
+
+
 port closeDropdownTypeStyle : (Bool -> msg) -> Sub msg
 
 
@@ -350,6 +358,7 @@ subscriptions model =
     Sub.batch
         [ closeDropdownTypeStyle CloseDropdown
         , Events.onKeyDown (Decode.map KeyDowns Search.keyDecoder)
+        , scroll ScrolledToBottom
         ]
 
 
