@@ -58,7 +58,7 @@
       <%= if @is_authenticated do %>
         <div class="w-third-m w-20-l shadow-4 br2 tr pb3 mh3 mv3 relative">
           <div class="bb b--cs-light-pink bw3 mb3 tl h-27rem">
-            <h4 class="f4 lh4 pa3 shadow-4 br2 mt4 mb3 tc bg-sheer-white absolute-horizontal-center top-1 w-80">Add Drinks Stocked</h4>
+            <h4 class="f4 lh4 pa3 shadow-4 br2 mt4 mb3 tc bg-sheer-white absolute-horizontal-center top-1 w-80">Add / Remove Drinks Stocked</h4>
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyT_ehuzfLvJKLPOAVjobqWtZjFO1--mgpQb_NJmq0wIfpEc5SyXkuPxpG" alt="Photo of drink" class="w-5rem db center pt4">
             <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib">% ABV</p>
           </div>
