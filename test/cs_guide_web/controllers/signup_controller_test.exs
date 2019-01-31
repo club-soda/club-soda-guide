@@ -4,13 +4,14 @@ defmodule CsGuideWeb.SignupControllerTest do
   alias CsGuide.Categories.VenueType
 
   @create_attrs %{
+    parent_company: "Parent Co",
     address: "number and road",
     city: "London",
     phone_number: "01234567890",
     postcode: "EC1M 5AD",
     venue_name: "The Example Pub",
     venue_types: %{"Bar" => "on"},
-    users:  %{"0" => %{"email" => "bob@dwyl.com"}}
+    users: %{"0" => %{"email" => "bob@dwyl.com"}}
   }
 
   describe "List new venue with signup endpoint" do
@@ -31,6 +32,7 @@ defmodule CsGuideWeb.SignupControllerTest do
       %VenueType{}
       |> VenueType.changeset(%{name: "Bar"})
       |> VenueType.insert()
+
     :ok
   end
 end

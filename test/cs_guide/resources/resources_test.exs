@@ -15,6 +15,7 @@ defmodule CsGuide.ResourcesTest do
       phone_number: "01234567890",
       postcode: "EC1 5AD",
       venue_name: "some venue_name",
+      parent_company: "Parent Co",
       venue_types: %{@venue_type_name => "on"},
       slug: "some-venue_name-ec1-5ad"
     }
@@ -22,6 +23,7 @@ defmodule CsGuide.ResourcesTest do
       phone_number: "09876543210",
       postcode: "EC2 6FV",
       venue_name: "some updated venue_name",
+      parent_company: "updated Parent Co",
       venue_types: %{@venue_type_name => "on"},
       slug: "some-venue_name-ec1-5ad"
     }
@@ -70,6 +72,7 @@ defmodule CsGuide.ResourcesTest do
       assert venue.phone_number == "01234567890"
       assert venue.postcode == "EC1 5AD"
       assert venue.venue_name == "some venue_name"
+      assert venue.parent_company == "Parent Co"
     end
 
     test "insert/1 with invalid data returns error changeset" do
@@ -83,6 +86,7 @@ defmodule CsGuide.ResourcesTest do
       assert venue.phone_number == "09876543210"
       assert venue.postcode == "EC2 6FV"
       assert venue.venue_name == "some updated venue_name"
+      assert venue.parent_company == "updated Parent Co"
     end
 
     test "update/2 with invalid data returns error changeset" do

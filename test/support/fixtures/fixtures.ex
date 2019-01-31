@@ -14,6 +14,7 @@ defmodule CsGuide.Fixtures do
     [
       %{
         venue_name: "Venue A",
+        parent_company: "Parent Co",
         address: "1 number and road",
         city: "London",
         phone_number: "01234567890",
@@ -26,6 +27,7 @@ defmodule CsGuide.Fixtures do
       },
       %{
         venue_name: "Venue B",
+        parent_company: "Parent Co",
         address: "2 number and road",
         city: "London",
         phone_number: "01234567890",

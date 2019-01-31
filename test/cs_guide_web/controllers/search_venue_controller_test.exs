@@ -5,6 +5,7 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
   @venues [
     %{
       venue_name: "The Favourite Pub",
+      parent_company: "Parent Co",
       favourite: true,
       venue_types: %{"Pubs" => "on"},
       postcode: "G1 1HF",
@@ -14,6 +15,7 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
     },
     %{
       venue_name: "The Not Favourite Pub",
+      parent_company: "Parent Co",
       favourite: false,
       venue_types: %{"Pubs" => "on"},
       postcode: "E2 0SY",
@@ -23,6 +25,7 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
     },
     %{
       venue_name: "same location as not fav",
+      parent_company: "Parent Co",
       favourite: false,
       venue_types: %{"Pubs" => "on"},
       postcode: "E2 0SY",
@@ -32,6 +35,7 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
     },
     %{
       venue_name: "The Retailer",
+      parent_company: "Parent Co",
       favourite: false,
       venue_types: %{"Retailer" => "on"},
       postcode: "SW1 4RV",
@@ -79,12 +83,13 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
 
       assert html_response(conn, 200) =~ "The Not Favourite Pub"
     end
-
   end
 
   describe "renders nearby venues - latest venue version" do
     setup [:create_venue, :update_venue]
-    test "GET /search/venues?ll=(north london latlong) displays nearby venues with the latest venue version", %{conn: conn} do
+
+    test "GET /search/venues?ll=(north london latlong) displays nearby venues with the latest venue version",
+         %{conn: conn} do
       conn = get(conn, "/search/venues?ll=51.54359770000001,-0.08807799999999999")
 
       refute html_response(conn, 200) =~ "The Not Favourite Pub"
@@ -114,13 +119,15 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
   end
 
   def update_venue(_) do
-    not_fav_pub = Resources.Venue.get_by(slug: "the-not-favourite-pub-e2-0sy")
-          |> Resources.Venue.preload(
-            drinks: [:brand, :drink_types, :drink_styles, :drink_images],
-            venue_types: [],
-            venue_images: [],
-            users: []
-          )
+    not_fav_pub =
+      Resources.Venue.get_by(slug: "the-not-favourite-pub-e2-0sy")
+      |> Resources.Venue.preload(
+        drinks: [:brand, :drink_types, :drink_styles, :drink_images],
+        venue_types: [],
+        venue_images: [],
+        users: []
+      )
+
     attrs = not_fav_pub |> Map.from_struct() |> Map.merge(%{venue_name: "new version venue"})
     attrs = if attrs.users, do: Map.delete(attrs, :users)
 

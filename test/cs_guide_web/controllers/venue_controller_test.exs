@@ -12,6 +12,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   @create_venue_types Fixtures.create_venue_types()
 
   @create_attrs %{
+    parent_company: "The Pub Co",
     address: "number and road",
     city: "London",
     phone_number: "01234567890",
@@ -26,7 +27,12 @@ defmodule CsGuideWeb.VenueControllerTest do
   }
 
   @invalid_attrs %{phone_number: "", postcode: "", venue_name: ""}
-  @invalid_facebook %{facebook: "@example_pub", postcode: "EC1 5AD", venue_name: "Example Venue"}
+  @invalid_facebook %{
+    facebook: "@example_pub",
+    postcode: "EC1 5AD",
+    venue_name: "Example Venue",
+    parent_company: "Parent Co"
+  }
 
   def fixture(:drink, brand) do
     drinks =

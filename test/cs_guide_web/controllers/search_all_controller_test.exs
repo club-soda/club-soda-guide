@@ -7,6 +7,7 @@ defmodule CsGuideWeb.SearchAllControllerTest do
   @venues [
     %{
       venue_name: "The Favourite Pub",
+      parent_company: "Parent Co",
       favourite: true,
       venue_types: %{"Pubs" => "on"},
       city: "London",

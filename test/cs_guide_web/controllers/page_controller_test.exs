@@ -5,6 +5,7 @@ defmodule CsGuideWeb.PageControllerTest do
   @venues [
     %{
       venue_name: "The Favourite Pub",
+      parent_company: "Parent Co",
       favourite: true,
       venue_types: %{"Pubs" => "on"},
       postcode: "TW3 5FG",
@@ -12,6 +13,7 @@ defmodule CsGuideWeb.PageControllerTest do
     },
     %{
       venue_name: "The Not Favourite Pub",
+      parent_company: "Parent Co",
       favourite: false,
       venue_types: %{"Pubs" => "on"},
       postcode: "SW1 4RV",

@@ -7,6 +7,7 @@ defmodule CsGuide.PostcodeLatLongTest do
   @venue [
     %{
       venue_name: "The Not Favourite Pub",
+      parent_company: "Parent Co",
       favourite: false,
       venue_types: %{"Pubs" => "on"},
       postcode: "E2 0SY",
@@ -16,6 +17,7 @@ defmodule CsGuide.PostcodeLatLongTest do
     },
     %{
       venue_name: "diff name, same location",
+      parent_company: "Parent Co",
       favourite: false,
       venue_types: %{"Pubs" => "on"},
       postcode: "E2 0SY",
