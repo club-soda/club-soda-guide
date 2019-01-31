@@ -199,7 +199,7 @@ defmodule CsGuideWeb.BrandController do
   end
 
   defp check_brand_name(name) do
-    brands_with_hyphens = ~w(Fritz-Kola)
+    brands_with_hyphens = ~w(Fritz-Kola Fever-Tree)
 
     if Enum.any?(brands_with_hyphens, &(&1 == name)) do
       name
