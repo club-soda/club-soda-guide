@@ -1,6 +1,5 @@
 <div class="w-third-m w-20-l shadow-4 br2 tr pb3 mh3 mv3 relative">
-  <input type="checkbox" name="card-front" id="display-back-<%=@index%>" class="display-back dn">
-  <label for="display-back-<%=@index%>" class="cs-mid-blue f6 lh6 tr pr4 underline">
+  <label for="display-back-<%=@index%>" class="pointer">
     <div class="card-front-contents">
       <div class="bb b--cs-light-pink bw3 mb3 tl h-27rem">
         <h4 class="cs-black f4 lh4 pa3 shadow-4 br2 mt4 mb1 tc bg-sheer-white absolute-horizontal-center top-1 w-80"><%= @drink.brand.name %> <%= @drink.name %></h4>
@@ -12,7 +11,9 @@
         <p class="bg-cs-mint br2 ph3 pv2 white shadow-4 ml4 mv4 dib"><%= @drink.abv %>% ABV</p>
       </div>
     </div>
-  </label>
+
+  <input type="checkbox" name="card-front" id="display-back-<%=@index%>" class="display-back dn">
+  <label for="display-back-<%=@index%>" class="cs-mid-blue f6 lh6 tr pr4 underline pointer">  </label>
 
   <div class="card-back-contents dn absolute top-0 left-0 bg-white pt3 ph3 w-100">
     <div class="tl h-25rem overflow-y-scroll">
@@ -41,4 +42,5 @@
       <% end %>
     </div>
   </div>
+  </label>
 </div>
