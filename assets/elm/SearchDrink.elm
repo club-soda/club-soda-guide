@@ -29,6 +29,7 @@ import TypeAndStyle
         )
 
 
+
 -- MODEL
 
 
@@ -59,6 +60,7 @@ init flags =
         dtype_filter =
             if flags.dtype_filter == "none" then
                 []
+
             else
                 case getFilterById ("type-" ++ flags.dtype_filter) filters of
                     Nothing ->
@@ -67,19 +69,20 @@ init flags =
                     Just _ ->
                         [ "type-" ++ flags.dtype_filter ]
     in
-        ( { drinks = flags.drinks
-          , drinkFilters = Criteria.init dtype_filter
-          , drinksToDisplay = defaultDrinksToDisplay
-          , abvFilter = ""
-          , searchTerm =
-                if String.isEmpty flags.term then
-                    Nothing
-                else
-                    Just flags.term
-          , typesAndStyles = filters
-          }
-        , Cmd.none
-        )
+    ( { drinks = flags.drinks
+      , drinkFilters = Criteria.init dtype_filter
+      , drinksToDisplay = defaultDrinksToDisplay
+      , abvFilter = ""
+      , searchTerm =
+            if String.isEmpty flags.term then
+                Nothing
+
+            else
+                Just flags.term
+      , typesAndStyles = filters
+      }
+    , Cmd.none
+    )
 
 
 defaultDrinksToDisplay : Int
@@ -113,10 +116,11 @@ update msg model =
                 searchTerm =
                     if String.isEmpty term then
                         Nothing
+
                     else
                         Just term
             in
-                ( { model | searchTerm = searchTerm, drinksToDisplay = defaultDrinksToDisplay }, Cmd.none )
+            ( { model | searchTerm = searchTerm, drinksToDisplay = defaultDrinksToDisplay }, Cmd.none )
 
         UpdateFilters state ->
             ( { model | drinkFilters = state, drinksToDisplay = defaultDrinksToDisplay }, Cmd.none )
@@ -126,21 +130,23 @@ update msg model =
                 filterState =
                     Criteria.unselectFilter filterId model.drinkFilters
             in
-                ( { model | drinkFilters = filterState, drinksToDisplay = defaultDrinksToDisplay }, Cmd.none )
+            ( { model | drinkFilters = filterState, drinksToDisplay = defaultDrinksToDisplay }, Cmd.none )
 
         CloseDropdown close ->
             let
                 drinkFilters =
                     if close then
                         Criteria.closeFilters model.drinkFilters
+
                     else
                         model.drinkFilters
             in
-                ( { model | drinkFilters = drinkFilters }, Cmd.none )
+            ( { model | drinkFilters = drinkFilters }, Cmd.none )
 
         KeyDowns k ->
             if k == "Enter" then
                 ( model, Task.attempt (\_ -> NoOp) (Dom.blur "search-input") )
+
             else
                 ( model, Cmd.none )
 
@@ -166,23 +172,23 @@ criteriaConfig =
         defaulCustomisations =
             Criteria.defaultCustomisations
     in
-        Criteria.customConfig
-            { title = "Drink Type"
-            , toMsg = UpdateFilters
-            , toId = getFilterId
-            , toString = getFilterName
-            , getSubFilters = getSubFilters
-            , customisations =
-                { defaulCustomisations
-                    | mainDivAttrs = mainDivAttrs
-                    , filtersDivAttrs = filtersDivAttrs
-                    , filterDivAttrs = filterDivAttrs
-                    , buttonAttrs = buttonAttrs
-                    , filterLabelAttrs = filterLabelAttrs
-                    , filterNameAttrs = filterNameAttrs
-                    , filterImgToggleAttrs = filterImgToggleAttrs
-                }
+    Criteria.customConfig
+        { title = "Drink Type"
+        , toMsg = UpdateFilters
+        , toId = getFilterId
+        , toString = getFilterName
+        , getSubFilters = getSubFilters
+        , customisations =
+            { defaulCustomisations
+                | mainDivAttrs = mainDivAttrs
+                , filtersDivAttrs = filtersDivAttrs
+                , filterDivAttrs = filterDivAttrs
+                , buttonAttrs = buttonAttrs
+                , filterLabelAttrs = filterLabelAttrs
+                , filterNameAttrs = filterNameAttrs
+                , filterImgToggleAttrs = filterImgToggleAttrs
             }
+        }
 
 
 mainDivAttrs : List (Attribute Msg)
@@ -200,9 +206,13 @@ filterDivAttrs _ _ =
     [ style "padding" "0.5rem 0" ]
 
 
-buttonAttrs : List (Attribute Msg)
-buttonAttrs =
-    [ class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6 cs-gray mr2 pointer" ]
+buttonAttrs : Criteria.State -> List (Attribute Msg)
+buttonAttrs stateCriteria =
+    if Criteria.isOpen stateCriteria then
+        [ class "f6 lh6 br2 bw1 pv2 ph3 dib w6 mr2 pointer bg-cs-navy b--cs-navy white" ]
+
+    else
+        [ class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6 cs-gray mr2 pointer" ]
 
 
 filterLabelAttrs : Filter -> Criteria.State -> List (Attribute Msg)
@@ -247,7 +257,7 @@ renderPills selectedFilterIds filters =
         pills =
             List.map (\f -> getFilterById f filters) (Set.toList selectedFilterIds)
     in
-        div [ classList [ ( "mb3", not (List.isEmpty pills) ) ] ] (List.map renderPillFilter pills)
+    div [ classList [ ( "mb3", not (List.isEmpty pills) ) ] ] (List.map renderPillFilter pills)
 
 
 renderPillFilter : Maybe Filter -> Html Msg
@@ -269,10 +279,10 @@ renderPillFilter filter =
                 Nothing ->
                     ""
     in
-        div [ class "ma1 dib pa2 br4 bg-cs-pink white", id "pill-type-style" ]
-            [ span [ class "pr1" ] [ text filterName ]
-            , span [ class "pointer pl3 b", onClick (UnselectFilter filterId) ] [ text "x" ]
-            ]
+    div [ class "ma1 dib pa2 br4 bg-cs-pink white", id "pill-type-style" ]
+        [ span [ class "pr1" ] [ text filterName ]
+        , span [ class "pointer pl3 b", onClick (UnselectFilter filterId) ] [ text "x" ]
+        ]
 
 
 filterDrinks : Model -> List (Html Msg)
@@ -336,6 +346,7 @@ renderDrinks drinks =
         Array.fromList drinks
             |> Array.indexedMap drinkCard
             |> Array.toList
+
     else
         [ div []
             [ p [ class "tc" ] [ text "Your search didn't return any drinks, change your filters and try again." ]
