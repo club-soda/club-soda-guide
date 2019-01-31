@@ -14,13 +14,13 @@
     <%= render("top_gradient_banner.html", drink_type: @drink_type, brand_name: @brand.name) %>
   <% end %>
 
-  <section class="center w-50 flex-ns mb5">
+  <section class="center mt3 mb5">
     <%= if @brand.member do %>
       <%= if @is_authenticated do %>
-        <%= link "Upload Photo", to: brand_path(@conn, :add_photo, @brand.name), class: "dib dn-ns btn-primary no-underline" %>
+        <%= link "Upload Photo", to: brand_path(@conn, :add_photo, @brand.name), class: "dib dn-ns btn-primary no-underline ml3" %>
       <% end %>
     <% end %>
-    <div class="w-60-ns center">
+    <div class="w-90 w-70-m w-50-l center">
       <%= if @brand.description do %>
         <p class="pv3 lh5"><%= raw @brand.description %></p>
       <% else %>
@@ -30,46 +30,67 @@
           </div>
         <% end %>
       <% end %>
-      <div class="db pv1">
-        <%= if @brand.website do %>
+      <%= if @brand.website do %>
+        <div class="db pv1">
           <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
           <a class="f6 lh6 cs-mid-blue underline dib v-top" target="_blank" href="<%= @brand.website %>">
             <%= @brand.website %>
           </a>
-        <% else %>
-          <%= if @is_authenticated do %>
+        </div>
+      <% else %>
+        <%= if @is_authenticated do %>
+          <div class="db pv1">
             <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
             <%= link "Add brand website", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue f6 lh6 v-top" %>
-          <% end %>
+          </div>
         <% end %>
-      </div>
+      <% end %>
       <%= if @brand.member do %>
-          <%= if @brand.facebook do %>
+        <%= if @brand.facebook do %>
+          <div class="db pv1">
+            <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/facebook-icon.png") %>" alt="Facebook icon">
+            <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @brand.facebook %>" target="_blank">
+              <%= @brand.facebook %>
+            </a>
+          </div>
+        <% else %>
+          <%= if @is_authenticated do %>
             <div class="db pv1">
               <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/facebook-icon.png") %>" alt="Facebook icon">
-              <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @brand.facebook %>" target="_blank">
-                <%= @brand.facebook %>
-              </a>
+              <%= link "Add brand facebook", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue f6 lh6 v-top" %>
             </div>
-          <% else %>
-            <%= if @is_authenticated do %>
-              <div class="db pv1">
-                <%= link "Add brand facebook", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue f6 lh6 v-top" %>
-              </div>
-            <% end %>
           <% end %>
-        <div class="db pv1">
-          <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/instagram-icon.png") %>" alt="Instagram icon">
-          <%= if @brand.instagram do %>
+        <% end %>
+        <%= if @brand.twitter do %>
+          <div class="db pv1">
+            <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/twitter.svg") %>" alt="Twitter icon">
+            <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @brand.twitter %>" target="_blank">
+              <%= @brand.twitter %>
+            </a>
+          </div>
+        <% else %>
+          <%= if @is_authenticated do %>
+            <div class="db pv1">
+              <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/twitter.svg") %>" alt="Twitter icon">
+              <%= link "Add brand twitter", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue f6 lh6 v-top" %>
+            </div>
+          <% end %>
+        <% end %>
+        <%= if @brand.instagram do %>
+          <div class="db pv1">
+            <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/instagram-icon.png") %>" alt="Instagram icon">
             <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @brand.instagram %>" target="_blank">
               <%= @brand.instagram %>
             </a>
-          <% else %>
-            <%= if @is_authenticated do %>
+          </div>
+        <% else %>
+          <%= if @is_authenticated do %>
+            <div class="db pv1">
+              <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/instagram-icon.png") %>" alt="Instagram icon">
               <%= link "Add brand instagram", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue f6 lh6 v-top" %>
-            <% end %>
+            </div>
           <% end %>
-        </div>
+        <% end %>
       <% end %>
     </div>
   </section>
