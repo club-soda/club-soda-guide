@@ -1,9 +1,15 @@
 <section class="center w-80 w-75-l mv5">
   <h2 class="f4 lh4">New Venue</h2>
   <%= custom_render_autoform(@conn,
-     :create,
-     [CsGuide.Resources.Venue],
-     assigns: [changeset: @changeset],
+     :create, [
+     {CsGuide.Resources.Venue, custom_labels: %{parent_company: "Parent company/chain"}, exclude: [:parent_company, :description, :address, :city, :postcode, :website, :phone_number, :twitter, :facebook, :instagram, :favourite, :venue_types]},
+     "<div class=\"form-group\">
+       <label class=\"control-label required\" for=\"venue_parent_company\">Parent company/chain</label>
+       <p class=\"f6 lh6 mb2\">Put 'independent' if the venue is not part of any parent company or chain.</p>
+       <input class=\"form-control\" id=\"venue_parent_company\" name=\"venue[parent_company]\" type=\"text\" required=\"\">
+     </div>",
+     {CsGuide.Resources.Venue, exclude: [:venue_name, :parent_company]},
+     ], assigns: [changeset: @changeset],
      exclude: [:deleted, :entry_id, :drinks, :num_cocktails, :cs_score, :venue_images, :users, :slug, :lat, :long, :discount_codes],
      assoc_query: &query/1
      ) %>

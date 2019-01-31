@@ -1,7 +1,8 @@
 <section class="center w-80 w-75-l mv5">
   <h2 class="f4 lh4">New Wholesaler</h2>
   <%= custom_render_autoform(@conn, :create, [CsGuide.Resources.Venue], assigns: [changeset: @changeset], exclude:
-   [:description,
+   [:parent_company,
+    :description,
     :address,
     :city,
     :phone_number,

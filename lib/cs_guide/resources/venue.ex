@@ -9,6 +9,7 @@ defmodule CsGuide.Resources.Venue do
 
   schema "venues" do
     field(:venue_name, :string)
+    field(:parent_company, :string)
     field(:description, Fields.DescriptionPlaintextUnlimited)
     field(:address, Fields.Address)
     field(:city, Fields.Address)
@@ -63,6 +64,7 @@ defmodule CsGuide.Resources.Venue do
     venue
     |> cast(attrs, [
       :venue_name,
+      :parent_company,
       :postcode,
       :phone_number,
       :cs_score,
@@ -80,7 +82,7 @@ defmodule CsGuide.Resources.Venue do
       :slug
     ])
     |> cast_assoc(:users)
-    |> validate_required([:venue_name, :postcode, :venue_types, :slug])
+    |> validate_required([:venue_name, :parent_company, :postcode, :venue_types, :slug])
   end
 
   def retailer_changeset(venue, attrs \\ %{}) do
