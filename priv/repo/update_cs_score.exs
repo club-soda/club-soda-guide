@@ -21,12 +21,15 @@ defmodule CsGuide.UpdateCsScore do
         venue.num_cocktails
       )
 
-    if venue.cs_score != calculatedScore do
-      Venue.update(venue, Map.put( %{drinks: venue.drinks}, :cs_score, calculatedScore ) )
+    if venue.cs_score != calculatedScore && map_size(venue.drinks) != 0 do
+      Venue.update(
+        venue,
+        venue |> Map.from_struct() |> Map.merge(%{cs_score: calculatedScore})
+      )
     end
   end
 end
 
 CsGuide.Resources.Venue.all()
-|> CsGuide.Resources.Venue.preload(:drinks)
-|> Enum.map(&(CsGuide.UpdateCsScore.update_cs_score(&1)))
+|> CsGuide.Resources.Venue.preload([:drinks, :venue_types, :users])
+|> Enum.map(&CsGuide.UpdateCsScore.update_cs_score(&1))
