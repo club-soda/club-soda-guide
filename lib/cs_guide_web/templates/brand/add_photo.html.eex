@@ -14,7 +14,7 @@
     <%= checkbox(f, :cover) %>
 
     <div class="form-group">
-      <%= submit "Submit", class: "btn btn-primary" %>
+      <%= submit "Submit", class: "btn btn-primary", id: "submit-photo" %>
     </div>
   <% end %>
 
