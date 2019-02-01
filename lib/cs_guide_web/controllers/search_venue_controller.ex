@@ -31,7 +31,10 @@ defmodule CsGuideWeb.SearchVenueController do
   end
 
   defp getVenueTypes do
-    VenueType.all() |> Enum.map(&(&1.name)) |> Enum.sort()
+    VenueType.all()
+    |> Enum.map(&(&1.name))
+    |> Enum.filter(&(&1 != "Retailer" && &1 != "Wholesaler" ))
+    |> Enum.sort()
   end
 
   defp getAllVenueCards do
