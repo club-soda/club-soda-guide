@@ -1,9 +1,9 @@
 <section class="center mt5 mb6">
   <%= if @brand.member do %>
     <%= if @is_authenticated do %>
-      <%= link "Upload Photo", to: brand_path(@conn, :add_photo, @brand.name), class: "mt5 dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
+      <%= link "Upload Photo", to: brand_path(@conn, :add_cover_photo, @brand.name), class: "mt3 dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
     <% end %>
-    <%= if img = @brand.brand_images |> Enum.reverse |> Enum.find(fn i -> i.cover end) do %>
+    <%= if img = @brand.brand_images |> Enum.find(fn i -> i.one end) do %>
       <div class="db bg-venue w-100"
         style="background-image: url('https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%= img.entry_id %>');">
       </div>
@@ -96,13 +96,22 @@
   </section>
 
   <%= if @brand.member do %>
-    <section class="flex w-70-ns center">
-      <%= if img = @brand.brand_images |> Enum.reverse |> Enum.find(fn i -> !i.cover end) do %>
-        <div class="w-50-ns pa3 <%= if img do %>shadow-1<% end %>">
+    <section class="flex-ns w-70-ns center">
+      <%= if img = @brand.brand_images |> Enum.find(fn i -> !i.one end) do %>
+        <div class="w-90 w-50-ns pa3 relative center <%= if img do %>shadow-1<% end %>">
           <img class="w-100" src="https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%=img.entry_id%>" alt="Brand image">
+          <%= if @is_authenticated do %>
+          <%= link "Upload Photo", to: brand_path(@conn, :add_photo, @brand.name), class: "mt1 mr1 absolute top-1 right-1 btn-primary no-underline" %>
+          <% end %>
         </div>
+      <% else %>
+        <%= if @is_authenticated do %>
+        <div class="w-90 center pa3 w-40-ns tc shadow-1 h5 relative">
+          <%= link "Upload an image to accompany your text", to: brand_path(@conn, :add_photo, @brand.name), class: "absolute-center cs-mid-blue f6 lh6" %>
+        </div>
+        <% end %>
       <% end %>
-      <div class="w-50-ns pl4 lh6 f6">
+      <div class="w-50-ns pl4 lh6 f6 pt4 pt0-ns">
         <%= if @brand.copy do %>
           <p><%= @brand.copy %></p>
         <% else %>

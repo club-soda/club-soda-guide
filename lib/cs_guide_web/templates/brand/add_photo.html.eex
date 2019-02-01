@@ -1,21 +1,4 @@
 <section class="center w-80 w-75-l mv6">
   <h2 class="f4 lh4">Upload a photo for this brand</h2>
-
-  <%= form_for @conn, brand_path(@conn, :upload_photo, @name), [multipart: true], fn f -> %>
-    <div class="form-group mb4">
-      <label class="db pt4 pb3">Select brand photo</label>
-      <%= file_input f, :photo, class: "form-control" %>
-      <%= if assigns[:error] do %>
-      <p class="f5 lh5 red">Error uploading image, please try again or an alternative image.</p>
-      <% end %>
-    </div>
-
-    <%= label f, :cover, "Use as cover photo" %>
-    <%= checkbox(f, :cover) %>
-
-    <div class="form-group">
-      <%= submit "Submit", class: "btn btn-primary", id: "submit-photo" %>
-    </div>
-  <% end %>
-
+  <%= component("image_upload", upload_type: "body_photo", name: @name, conn: @conn) %>
 </section>
