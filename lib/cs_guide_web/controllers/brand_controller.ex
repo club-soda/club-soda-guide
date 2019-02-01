@@ -119,6 +119,14 @@ defmodule CsGuideWeb.BrandController do
       |> Enum.take(4)
 
     if brand != nil do
+      brand =
+        Map.update(brand, :brand_images, [], fn images ->
+          images
+          |> Enum.sort(fn img1, img2 ->
+            img1.id >= img2.id
+          end)
+        end)
+
       render(conn, "show.html",
         brand: brand,
         related_drinks: related_drinks,
@@ -176,14 +184,29 @@ defmodule CsGuideWeb.BrandController do
     end
   end
 
+  def add_cover_photo(conn, %{"name" => name}) do
+    case Brand.get_by([name: name], case_insensitive: true) do
+      nil ->
+        conn
+        |> put_status(:not_found)
+        |> put_view(CsGuideWeb.ErrorView)
+        |> render("404.html")
+
+      _brand ->
+        render(conn, "add_cover_photo.html", name: name)
+    end
+  end
+
   def upload_photo(conn, params) do
+    one = if params["cover_photo"], do: true, else: false
+
     brand = Brand.get_by([name: params["name"]], case_insensitive: true)
 
     CsGuide.Repo.transaction(fn ->
       with {:ok, brand_image} <-
              BrandImage.insert(%{
                brand: brand.entry_id,
-               cover: String.to_existing_atom(params["cover"])
+               one: one
              }),
            {:ok, _} <- CsGuide.Resources.upload_photo(params, brand_image.entry_id) do
         {:ok, brand_image}

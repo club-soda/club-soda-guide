@@ -6,7 +6,7 @@ defmodule CsGuide.Images.BrandImage do
   schema "brand_images" do
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
-    field(:cover, :boolean)
+    field(:one, :boolean)
 
     belongs_to(:brand, CsGuide.Resources.Brand)
 
@@ -16,7 +16,7 @@ defmodule CsGuide.Images.BrandImage do
   @doc false
   def changeset(brand, attrs) do
     brand
-    |> cast(attrs, [:brand_id, :cover])
+    |> cast(attrs, [:brand_id, :one])
   end
 
   def insert(attrs) do
