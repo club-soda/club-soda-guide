@@ -137,7 +137,7 @@
     </div>
   </section>
 
-  <%= if any_type?(@brand, "retailer") do %>
+  <%= if any_type?(@brand, "retailer") || brand_sold?(@brand) do %>
     <section class="w-90 center pv5">
       <h2 class="roboto-slab f2 lh2 db tc pb4">Where to Buy <%= @brand.name %></h2>
       <div class="flex flex-wrap">
