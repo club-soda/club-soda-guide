@@ -14,6 +14,29 @@ defmodule CsGuideWeb.BrandView do
     |> sort_by_cs_score()
   end
 
+  def any_type?(brand, type) do
+    venues = get_venues(brand)
+
+    types =
+      venues
+      |> Enum.flat_map(&(&1.venue_types))
+      |> Enum.map(&(String.downcase(&1.name)))
+
+    Enum.member?(types, type)
+  end
+
+  def brand_sold?(brand) do
+    brand.sold_aldi
+    || brand.sold_asda
+    || brand.sold_dd
+    || brand.sold_morrisons
+    || brand.sold_sainsburys
+    || brand.sold_tesco
+    || brand.sold_waitrose
+    || brand.sold_wb
+    || brand.sold_amazon
+
+  end
   defp sort_by_cs_score(venues) do
     venues
     |> Enum.sort(fn v1, v2 -> v1.cs_score >= v2.cs_score end)
