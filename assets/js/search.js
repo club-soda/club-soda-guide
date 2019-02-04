@@ -36,6 +36,7 @@ if (searchAll) {
 function closeDropdown(elmApp) {
   //ids defined in SearchDrink.elm
   var excludeIds = ["pill-type-style", "dropdown-types-styles"];
+  var excludeIdsAbv = ["pill-abv", "dropdown-abv"];
 
   document.addEventListener('click', function (e) {
     var ids = getParentsId(e.target);
@@ -43,9 +44,15 @@ function closeDropdown(elmApp) {
       return ids.indexOf(id) >= 0;
     }).length == 0;
 
+    var closeAbv = excludeIdsAbv.filter(function (id) {
+      return ids.indexOf(id) >= 0;
+    }).length == 0;
+
     elmApp.ports.closeDropdownTypeStyle.send(close)
+    elmApp.ports.closeAbvDropdown.send(closeAbv)
   })
 }
+
 
 function getParentsId(elt) {
   var res = [];
@@ -62,7 +69,7 @@ window.addEventListener("scroll", function (e) {
   var top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
   var height = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
 
-  // We send the message if they have scrolled to within 10% 
+  // We send the message if they have scrolled to within 10%
   // of the bottom of the page to create a smoother transition
   if (top + window.innerHeight >= height - (height / 10)) {
     elmApp.ports.scroll.send(true);
