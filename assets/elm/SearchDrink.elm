@@ -257,9 +257,13 @@ filterDivAttrs _ _ =
     [ style "padding" "0.5rem 0" ]
 
 
-buttonAttrs : List (Attribute Msg)
-buttonAttrs =
-    [ class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6 cs-gray mr2 pointer" ]
+buttonAttrs : Criteria.State -> List (Attribute Msg)
+buttonAttrs stateCriteria =
+    if Criteria.isOpen stateCriteria then
+        [ class "f6 lh6 br2 bw1 pv2 ph3 dib w6 mr2 pointer bg-cs-navy b--cs-navy white" ]
+
+    else
+        [ class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6 cs-gray mr2 pointer" ]
 
 
 filterLabelAttrs : f -> Criteria.State -> List (Attribute Msg)

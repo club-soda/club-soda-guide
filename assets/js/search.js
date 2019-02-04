@@ -56,15 +56,21 @@ function closeDropdown(elmApp) {
 
 function closeDropdownSearchVenues(elmApp) {
   var excludeVenueIds = ["pill-venue-score", "dropdown-venue-score"];
+  var excludeVenueTypeIds = ["pill-venue-type", "dropdown-venue-type"];
 
   document.addEventListener('click', function (e) {
     var ids = getParentsId(e.target);
+
+    var closeVenueType = excludeVenueTypeIds.filter(function (id) {
+      return ids.indexOf(id) >= 0;
+    }).length == 0;
 
     var closeVenueScore = excludeVenueIds.filter(function (id) {
       return ids.indexOf(id) >= 0;
     }).length == 0;
 
     elmApp.ports.closeVenueScoreDropdown.send(closeVenueScore)
+    elmApp.ports.closeVenueTypeDropdown.send(closeVenueType)
   })
 }
 

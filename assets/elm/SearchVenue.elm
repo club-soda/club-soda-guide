@@ -13,14 +13,15 @@ import Set
 import SharedTypes exposing (Venue)
 import Task
 import VenueScore exposing (..)
+import VenueType exposing (..)
 
 
 type alias Model =
     { venues : List Venue
-    , filterType : Maybe String
+    , filterType : Criteria.State
     , filterScore : Criteria.State
     , filterName : Maybe String
-    , venueTypes : List String
+    , venueTypeFilters : List VenueType.VenueTypeFilter
     , postcode : String
     , locationSearch : Bool
     }
@@ -36,7 +37,9 @@ type alias Flags =
 
 
 type Msg
-    = FilterVenueType String
+    = UpdateVenueType Criteria.State
+    | UnselectVenueType IdVenueType
+    | CloseVenueTypeDropdown Bool
     | UpdateVenueScore Criteria.State
     | UnselectVenueScore IdVenueScore
     | CloseVenueScoreDropdown Bool
@@ -56,10 +59,10 @@ init flags =
                 Just flags.term
     in
     ( { venues = flags.venues
-      , filterType = Nothing
+      , filterType = Criteria.init []
       , filterScore = Criteria.init []
       , filterName = searchTerm
-      , venueTypes = flags.venueTypes
+      , venueTypeFilters = VenueType.getVenueTypeFilters flags.venueTypes
       , postcode = flags.postcode
       , locationSearch = flags.locationSearch
       }
@@ -70,15 +73,24 @@ init flags =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        FilterVenueType venueType ->
+        UpdateVenueType state ->
+            ( { model | filterType = state }, Cmd.none )
+
+        UnselectVenueType filterId ->
+            let
+                filterState =
+                    Criteria.unselectFilter filterId model.filterType
+            in
+            ( { model | filterType = filterState }, Cmd.none )
+
+        CloseVenueTypeDropdown close ->
             let
                 filterType =
-                    case venueType of
-                        "" ->
-                            Nothing
+                    if close then
+                        Criteria.closeFilters model.filterType
 
-                        _ ->
-                            Just venueType
+                    else
+                        model.filterType
             in
             ( { model | filterType = filterType }, Cmd.none )
 
@@ -132,15 +144,20 @@ view model =
         venueScorePills =
             Set.toList (Criteria.selectedIdFilters model.filterScore)
                 |> List.map (\f -> VenueScore.getVenueScoreFitlerById f VenueScore.venueScoreFilters)
+
+        venueTypePills =
+            Set.toList (Criteria.selectedIdFilters model.filterType)
+                |> List.map (\f -> VenueType.getVenueTypeFitlerById f model.venueTypeFilters)
     in
     div [ class "mt5 mt6-ns center mw-1500px" ]
         [ div [ class "w-90 center pl2-ns" ]
             [ renderSearch "Search Venues..." (Maybe.withDefault "" model.filterName) FilterVenueName
             , renderLocationSearchTitle ( model.locationSearch, model.postcode )
             , div []
-                [ div [ classList [ ( "mb3", not (List.isEmpty venueScorePills) ) ] ] <|
-                    List.map renderVenuseScorePills venueScorePills
-                , renderFilter "Venue Type" model.venueTypes FilterVenueType (Maybe.withDefault "" model.filterType)
+                [ div [ classList [ ( "mb3", not (List.isEmpty venueScorePills) ), ( "mb3", not (List.isEmpty venueTypePills) ) ] ] <|
+                    List.map renderVenuesTypePills venueTypePills
+                        ++ List.map renderVenuseScorePills venueScorePills
+                , Criteria.view venueTypeConfig model.filterType model.venueTypeFilters
                 , Criteria.view venueScoreConfig model.filterScore VenueScore.venueScoreFilters
                 ]
             ]
@@ -148,6 +165,31 @@ view model =
             [ div []
                 (Search.renderVenues <| filterVenues model)
             ]
+        ]
+
+
+renderVenuesTypePills : Maybe VenueType.VenueTypeFilter -> Html Msg
+renderVenuesTypePills filter =
+    let
+        filterName =
+            case filter of
+                Just f ->
+                    VenueType.getVenueTypeFilterName f
+
+                Nothing ->
+                    ""
+
+        filterId =
+            case filter of
+                Just f ->
+                    VenueType.getVenueTypeFilterId f
+
+                Nothing ->
+                    ""
+    in
+    div [ class "ma1 dib pa2 br4 bg-cs-pink white", id "pill-venue-type" ]
+        [ span [ class "pr1" ] [ text filterName ]
+        , span [ class "pointer pl3 b", onClick (UnselectVenueType filterId) ] [ text "x" ]
         ]
 
 
@@ -205,15 +247,39 @@ venueScoreConfig =
         }
 
 
+venueTypeConfig : Criteria.Config Msg VenueTypeFilter
+venueTypeConfig =
+    let
+        defaulCustomisations =
+            Criteria.defaultCustomisations
+    in
+    Criteria.customConfig
+        { title = "Venue Type"
+        , toMsg = UpdateVenueType
+        , toId = VenueType.getVenueTypeFilterId
+        , toString = VenueType.getVenueTypeFilterName
+        , getSubFilters = \_ -> []
+        , customisations =
+            { defaulCustomisations
+                | mainDivAttrs = typeMainDivAttrs
+                , filtersDivAttrs = filtersDivAttrs
+                , filterDivAttrs = filterDivAttrs
+                , buttonAttrs = buttonAttrs
+                , filterLabelAttrs = filterLabelAttrs
+                , filterNameAttrs = filterNameAttrs
+                , filterImgToggleAttrs = filterImgToggleAttrs
+            }
+        }
+
+
 mainDivAttrs : List (Attribute Msg)
 mainDivAttrs =
     [ class "relative bg-white dib z-1", id "dropdown-venue-score" ]
 
 
-
--- abvMainDivAttrs : List (Attribute Msg)
--- abvMainDivAttrs =
---     [ class "relative bg-white dib z-1", id "dropdown-abv" ]
+typeMainDivAttrs : List (Attribute Msg)
+typeMainDivAttrs =
+    [ class "relative bg-white dib z-1", id "dropdown-venue-type" ]
 
 
 filtersDivAttrs : List (Attribute Msg)
@@ -226,9 +292,13 @@ filterDivAttrs _ _ =
     [ style "padding" "0.5rem 0" ]
 
 
-buttonAttrs : List (Attribute Msg)
-buttonAttrs =
-    [ class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6 cs-gray mr2 pointer" ]
+buttonAttrs : Criteria.State -> List (Attribute Msg)
+buttonAttrs stateCriteria =
+    if Criteria.isOpen stateCriteria then
+        [ class "f6 lh6 br2 bw1 pv2 ph3 dib w6 mr2 pointer bg-cs-navy b--cs-navy white" ]
+
+    else
+        [ class "f6 lh6 bg-white b--cs-gray br2 bw1 pv2 ph3 dib w6 cs-gray mr2 pointer" ]
 
 
 filterLabelAttrs : f -> Criteria.State -> List (Attribute Msg)
@@ -263,7 +333,7 @@ filterVenues : Model -> List Venue
 filterVenues model =
     model.venues
         |> filterByName model.filterName
-        |> filterByType model.filterType
+        |> List.filter (\v -> filterTypes (Set.toList <| Criteria.selectedIdFilters model.filterType) v)
         |> List.filter (\v -> filterScores (Set.toList <| Criteria.selectedIdFilters model.filterScore) v)
 
 
@@ -272,14 +342,26 @@ filterByName searchTerm venues =
     List.filter (SharedTypes.searchVenueByTerm searchTerm) venues
 
 
-filterByType : Maybe String -> List Venue -> List Venue
-filterByType typeVenue venues =
-    case typeVenue of
-        Nothing ->
-            venues
+filterTypes : List VenueType.IdVenueType -> Venue -> Bool
+filterTypes filters venue =
+    case filters of
+        [] ->
+            True
 
-        Just t ->
-            List.filter (\v -> List.member t v.types) venues
+        _ ->
+            filters
+                |> List.map (\f -> filterByType f venue)
+                |> List.any (\f -> f == True)
+
+
+filterByType : VenueScore.IdVenueScore -> Venue -> Bool
+filterByType typeVenue venue =
+    let
+        types =
+            venue.types
+                |> List.map (\t -> String.toLower t)
+    in
+    List.member typeVenue types
 
 
 filterScores : List VenueScore.IdVenueScore -> Venue -> Bool
@@ -311,10 +393,14 @@ filterByScore score venue =
 port closeVenueScoreDropdown : (Bool -> msg) -> Sub msg
 
 
+port closeVenueTypeDropdown : (Bool -> msg) -> Sub msg
+
+
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ closeVenueScoreDropdown CloseVenueScoreDropdown
+        , closeVenueTypeDropdown CloseVenueTypeDropdown
         , Events.onKeyDown (Decode.map KeyDowns Search.keyDecoder)
         ]
 
