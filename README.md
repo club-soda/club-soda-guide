@@ -214,10 +214,26 @@ best quality, but other sizes will be stretched or cropped to fit.
 
 ### Venues
 
+Venues can be searched for by venue name, location or _post code_ (see below).
+
+The search is run **case insensitive** on the **name** and **address** of the venues.
+The venues matching the search term are displayed first by _Club Soda Score_ (highest first)
+and then sorted alphabetically alphabetically.
+
 Example of a search on venues with "London"
 ![search venues](https://user-images.githubusercontent.com/6057298/49628521-6d7f9800-f9dc-11e8-9a38-5d62f4873d5e.png)
 
-The search is run **case insensitive** on the **name** of the venues. The venues matching the search term are displayed alphabetically.
+#### Searching by post code
+Searching for a **partial post code** works in the same way as the standard search
+and will display any venues and drinks found with this combination of letters and numbers
+in the name or address
+![searching-for-partial-post-code](https://user-images.githubusercontent.com/6057298/52043498-c597ce00-2537-11e9-8344-19eaa54dc9b7.png)
+
+Searching for a **full post code** calculates the latitude and longitude of that
+post code and returns search results for venues _near_ this post code, within a
+30km radius.
+![searching-for-full-post-code](https://user-images.githubusercontent.com/4185328/52587805-c8959700-2e32-11e9-8a8c-ede156ecd679.png)
+
 
 ### Drinks
 Example of a search on drinks with "beer"
