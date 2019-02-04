@@ -78,6 +78,7 @@ defmodule CsGuideWeb.VenueController do
     venue = Map.put(venue, :venue_images, images)
 
     nearby_venues = getVenueCardsByLatLong(venue.lat, venue.long, venue.venue_name)
+                    |> Enum.take(4)
 
     if venue != nil do
       venue_owner = conn.assigns[:venue_id] == venue.id
