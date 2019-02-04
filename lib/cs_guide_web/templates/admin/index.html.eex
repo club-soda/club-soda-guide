@@ -2,7 +2,7 @@
   <h1 class="f4 lh4">Admin Dashboard</h1>
   <div class="mv3">
     <%= link "Brands", to: brand_path(@conn, :index), class: "cs-black" %>  -
-    <%= link "download", to: csv_path(@conn, :export, data: "brands"), class: "cs-black" %>
+    <%= link "download", to: csv_path(@conn, :export, data: "brands"), class: "cs-black" %> - 
     <%= link "download brands with drinks", to: csv_path(@conn, :export, data: "brands-drinks"), class: "cs-black" %>
   </div>
   <div class="mv3">
