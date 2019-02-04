@@ -77,8 +77,9 @@ defmodule CsGuideWeb.VenueController do
     images = Enum.sort_by(venue.venue_images, fn i -> i.id end)
     venue = Map.put(venue, :venue_images, images)
 
-    nearby_venues = getVenueCardsByLatLong(venue.lat, venue.long, venue.venue_name)
-                    |> Enum.take(4)
+    nearby_venues =
+      getVenueCardsByLatLong(venue.lat, venue.long, venue.venue_name)
+      |> Enum.take(4)
 
     if venue != nil do
       venue_owner = conn.assigns[:venue_id] == venue.id
@@ -198,8 +199,20 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def add_photo(conn, %{"slug" => slug}) do
-    venue = Venue.get_by(slug: slug)
-    render(conn, "add_photo.html", id: venue.entry_id)
+    venue =
+      Venue.get_by(slug: slug)
+      |> Venue.preload([:venue_images])
+      |> Map.update(:venue_images, [], fn images ->
+        images
+        |> Enum.sort(fn img1, img2 ->
+          img1.id >= img2.id
+        end)
+      end)
+
+    render(conn, "add_photo.html",
+      id: venue.entry_id,
+      img: Enum.at(venue.venue_images, 0)
+    )
   end
 
   def upload_photo(conn, params) do
