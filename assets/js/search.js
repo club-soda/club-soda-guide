@@ -15,7 +15,7 @@ if (search) {
 
 var searchVenue = document.getElementById('search-venue');
 if (searchVenue) {
-  Elm.SearchVenue.init({
+  var elmAppSearchVenue = Elm.SearchVenue.init({
     node: searchVenue, flags: {
       venues: venues,
       term: searchTerm,
@@ -24,6 +24,7 @@ if (searchVenue) {
       locationSearch: locationSearch
     }
   })
+  closeDropdownSearchVenues(elmAppSearchVenue)
 }
 
 var searchAll = document.getElementById('search-all');
@@ -53,6 +54,19 @@ function closeDropdown(elmApp) {
   })
 }
 
+function closeDropdownSearchVenues(elmApp) {
+  var excludeVenueIds = ["pill-venue-score", "dropdown-venue-score"];
+
+  document.addEventListener('click', function (e) {
+    var ids = getParentsId(e.target);
+
+    var closeVenueScore = excludeVenueIds.filter(function (id) {
+      return ids.indexOf(id) >= 0;
+    }).length == 0;
+
+    elmApp.ports.closeVenueScoreDropdown.send(closeVenueScore)
+  })
+}
 
 function getParentsId(elt) {
   var res = [];

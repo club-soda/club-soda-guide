@@ -277,11 +277,6 @@ filterImgToggleAttrs =
     [ class "fr pointer", style "padding-right" "0.5rem" ]
 
 
-abv_levels : List String
-abv_levels =
-    [ "<0.05%", "0.05% - 0.5%", "0.51% - 1%", "1.1% - 3%", "3.1% +" ]
-
-
 view : Model -> Html Msg
 view model =
     let
@@ -296,7 +291,9 @@ view model =
     div [ class "mt5 mt6-ns center mw-1500px" ]
         [ div [ class "w-90 center pl2-ns" ]
             [ renderSearch "Search Drinks..." (Maybe.withDefault "" model.searchTerm) SearchDrink
-            , div [ classList [ ( "mb3", not (List.isEmpty typeAndStylePills) ), ( "mb3", not (List.isEmpty abvPills) ) ] ] <| List.map renderPillFilter typeAndStylePills ++ List.map renderPillAbv abvPills
+            , div [ classList [ ( "mb3", not (List.isEmpty typeAndStylePills) ), ( "mb3", not (List.isEmpty abvPills) ) ] ] <|
+                List.map renderPillFilter typeAndStylePills
+                    ++ List.map renderPillAbv abvPills
             , Criteria.view criteriaConfig model.drinkFilters model.typesAndStyles
             , Criteria.view abvConfig model.abvFilter Abv.abvFilters
             , div [ class "relative center w-90" ]
