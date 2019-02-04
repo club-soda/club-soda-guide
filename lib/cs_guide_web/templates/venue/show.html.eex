@@ -3,8 +3,7 @@
     <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.slug), class: "dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
   <% end %>
   <section class="mt5">
-
-    <%= if img = List.last(@venue.venue_images) do %>
+    <%= if img = @venue.venue_images |> Enum.find(fn i -> i.photo_number == 1 end) do %>
       <div class="db bg-venue w-100"
         style="background-image: url('https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%= img.entry_id %>');">
       </div>

@@ -1,4 +1,4 @@
-<%= form_for @conn, brand_path(@conn, :upload_photo, @name), [multipart: true], fn f -> %>
+<%= form_for @conn, venue_path(@conn, :upload_photo, @id), [multipart: true], fn f -> %>
   <div class="form-group mb4">
     <label class="db pt4 pb3">Select <%= @category %> photo</label>
     <%= file_input f, :photo, class: "form-control" %>
@@ -8,6 +8,6 @@
   </div>
 
   <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary", id: "submit-photo", name: @upload_type %>
+    <%= submit "Submit", class: "btn btn-primary", id: "submit-photo", name: @photo_number %>
   </div>
 <% end %>

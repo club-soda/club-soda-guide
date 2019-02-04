@@ -218,8 +218,24 @@ defmodule CsGuideWeb.VenueController do
   def upload_photo(conn, params) do
     venue = Venue.get(params["id"])
 
+    photo_number =
+      cond do
+        params["1"] ->
+          1
+
+        params["2"] ->
+          2
+
+        params["3"] ->
+          3
+
+        params["4"] ->
+          4
+      end
+
     CsGuide.Repo.transaction(fn ->
-      with {:ok, venue_image} <- VenueImage.insert(%{venue: params["id"]}),
+      with {:ok, venue_image} <-
+             VenueImage.insert(%{venue: params["id"], photo_number: photo_number}),
            {:ok, _} <- CsGuide.Resources.upload_photo(params, venue_image.entry_id) do
         {:ok, venue_image}
       else
