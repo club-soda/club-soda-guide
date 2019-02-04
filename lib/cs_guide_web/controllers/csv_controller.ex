@@ -8,11 +8,13 @@ defmodule CsGuideWeb.CsvController do
      case params["data"] do
         "venues" -> venues_csv_content(conn)
 
-        # "retailers"
+        "venues-drinks" -> venues_drinks_csv_content(conn)
 
         "drinks" -> drinks_csv_content(conn)
 
         "brands" -> brands_csv_content(conn)
+
+        "brands-drinks" -> brands_drinks_csv_content(conn)
 
         "drink-types" -> drink_types_csv_content(conn)
 
@@ -78,6 +80,35 @@ defmodule CsGuideWeb.CsvController do
       slug: venue.slug
      }
   end
+
+# Venues and Drinks
+  defp venues_drinks_csv_content(conn) do
+    venues_drinks = Venue.all()
+    |> Venue.preload([:drinks])
+    |> Enum.map(&venues_drinks_csv_data(&1))
+    |> Enum.flat_map(&(&1))
+    |> CSV.encode(headers: [ :venue_id, :venue_name, :drink_id, :drink_name])
+    |> Enum.to_list
+    |> to_string
+    conn
+
+    |> put_resp_content_type("text/csv")
+    |> put_resp_header("content-disposition", "attachment; filename=\"venues_drinks.csv\"")
+    |> send_resp(200, venues_drinks)
+  end
+
+  defp venues_drinks_csv_data(v) do
+    v.drinks
+    |> Enum.map(fn(d) ->
+      %{
+        venue_id: v.entry_id,
+        venue_name: v.venue_name,
+        drink_id: d.entry_id,
+        drink_name: d.name
+      }
+    end)
+  end
+
 
 # Drinks
 
@@ -160,6 +191,34 @@ defmodule CsGuideWeb.CsvController do
      }
   end
 
+# BRANDS and DRINKS
+
+  defp brands_drinks_csv_content(conn) do
+    brands = Brand.all()
+    |> Brand.preload([:drinks])
+    |> Enum.map(&brands_drinks_csv_data(&1))
+    |> Enum.flat_map(&(&1))
+    |> CSV.encode(headers: [ :brand_id, :brand_name, :drink_id, :drink_name])
+    |> Enum.to_list
+    |> to_string
+
+    conn
+    |> put_resp_content_type("text/csv")
+    |> put_resp_header("content-disposition", "attachment; filename=\"brands_drinks.csv\"")
+    |> send_resp(200, brands)
+  end
+
+  defp brands_drinks_csv_data(brand) do
+    brand.drinks
+    |> Enum.map(fn(d) ->
+      %{
+        brand_id: brand.entry_id,
+        brand_name: brand.name,
+        drink_id: d.entry_id,
+        drink_name: d.name
+      }
+    end)
+  end
 # DRINK TYPES
   defp drink_types_csv_content(conn) do
     brands = DrinkType.all() |> Enum.map(fn drink_type -> %{name: drink_type.name} end)
