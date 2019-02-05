@@ -75,7 +75,8 @@ defmodule CsGuideWeb.VenueController do
       )
 
     images = Enum.sort_by(venue.venue_images, fn i -> i.id end)
-    venue = Map.put(venue, :venue_images, images)
+
+    venue = sortImagesByMostRecent(venue)
 
     nearby_venues =
       getVenueCardsByLatLong(venue.lat, venue.long, venue.venue_name)
@@ -202,16 +203,11 @@ defmodule CsGuideWeb.VenueController do
     venue =
       Venue.get_by(slug: slug)
       |> Venue.preload([:venue_images])
-      |> Map.update(:venue_images, [], fn images ->
-        images
-        |> Enum.sort(fn img1, img2 ->
-          img1.id >= img2.id
-        end)
-      end)
+      |> sortImagesByMostRecent()
 
     render(conn, "add_photo.html",
       id: venue.entry_id,
-      img: Enum.at(venue.venue_images, 0)
+      venue_images: venue.venue_images
     )
   end
 
@@ -282,6 +278,15 @@ defmodule CsGuideWeb.VenueController do
     end)
     |> Enum.filter(fn v ->
       v.venue_name != venue_name
+    end)
+  end
+
+  defp sortImagesByMostRecent(venue) do
+    Map.update(venue, :venue_images, [], fn images ->
+      images
+      |> Enum.sort(fn img1, img2 ->
+        img1.id >= img2.id
+      end)
     end)
   end
 end

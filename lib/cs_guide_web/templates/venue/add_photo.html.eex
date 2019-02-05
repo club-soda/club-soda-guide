@@ -1,14 +1,8 @@
 <section class="center w-80 w-75-l mv6">
   <h2 class="f4 lh4 pb3">Upload a photo for your venue</h2>
-<!-- Provide list of images not just 1 -->
-  <%= if img = @img |> Enum.find(fn i -> i.photo_number == 1 end) do %>
-    <h3 class="f5 lh5 pb3">Existing Venue Photo</h3>
-    <img class="w-100 w-50-ns br2" src="https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%=@img.entry_id%>" alt="Existing venue image">
-  <% end %>
-
-  <%= component("venue_image_upload", photo_number: 1, id: @id, conn: @conn, category: "venue") %>
-  <%= component("venue_image_upload", photo_number: 2, id: @id, conn: @conn, category: "venue") %>
-  <%= component("venue_image_upload", photo_number: 3, id: @id, conn: @conn, category: "venue") %>
-  <%= component("venue_image_upload", photo_number: 4, id: @id, conn: @conn, category: "venue") %>
+  <%= component("venue_image_upload", photo_number: 1, id: @id, conn: @conn, venue_images: @venue_images) %>
+  <%= component("venue_image_upload", photo_number: 2, id: @id, conn: @conn, venue_images: @venue_images) %>
+  <%= component("venue_image_upload", photo_number: 3, id: @id, conn: @conn, venue_images: @venue_images) %>
+  <%= component("venue_image_upload", photo_number: 4, id: @id, conn: @conn, venue_images: @venue_images) %>
 
 </section>
