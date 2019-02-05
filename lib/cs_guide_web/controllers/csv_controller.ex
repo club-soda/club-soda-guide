@@ -49,7 +49,9 @@ defmodule CsGuideWeb.CsvController do
                             :favourite,
                             :lat,
                             :long,
-                            :slug
+                            :slug,
+                            :inserted_at,
+                            :updated_at
                             ])
     |> Enum.to_list
     |> to_string
@@ -77,7 +79,9 @@ defmodule CsGuideWeb.CsvController do
       favourite: venue.favourite,
       lat: venue.lat,
       long: venue.long,
-      slug: venue.slug
+      slug: venue.slug,
+      inserted_at: venue.inserted_at,
+      updated_at: venue.updated_at
      }
   end
 
@@ -118,7 +122,9 @@ defmodule CsGuideWeb.CsvController do
                              :abv,
                              :description,
                              :weighting,
-                             :ingredients
+                             :ingredients,
+                             :inserted_at,
+                             :updated_at
                             ])
     |> Enum.to_list
     |> to_string
@@ -135,7 +141,9 @@ defmodule CsGuideWeb.CsvController do
       abv: drink.abv,
       description: drink.description,
       weighting: drink.weighting,
-      ingredients: drink.ingredients
+      ingredients: drink.ingredients,
+      inserted_at: drink.inserted_at,
+      updated_at: drink.updated_at
      }
   end
 
@@ -158,7 +166,9 @@ defmodule CsGuideWeb.CsvController do
                              :sold_sainsburys,
                              :sold_tesco,
                              :sold_waitrose,
-                             :sold_wb
+                             :sold_wb,
+                             :inserted_at,
+                             :updated_at
                             ])
     |> Enum.to_list
     |> to_string
@@ -187,7 +197,9 @@ defmodule CsGuideWeb.CsvController do
       sold_sainsburys: brand.sold_sainsburys,
       sold_tesco: brand.sold_tesco,
       sold_waitrose: brand.sold_waitrose,
-      sold_wb: brand.sold_wb
+      sold_wb: brand.sold_wb,
+      inserted_at: brand.inserted_at,
+      updated_at: brand.updated_at
      }
   end
 
@@ -221,8 +233,14 @@ defmodule CsGuideWeb.CsvController do
   end
 # DRINK TYPES
   defp drink_types_csv_content(conn) do
-    brands = DrinkType.all() |> Enum.map(fn drink_type -> %{name: drink_type.name} end)
-    |> CSV.encode(headers: [ :name,])
+    brands = DrinkType.all() |> Enum.map(fn drink_type ->
+      %{
+        name: drink_type.name,
+        inserted_at: drink_type.inserted_at,
+        updated_at: drink_type.updated_at
+      }
+    end)
+    |> CSV.encode(headers: [ :name, :inserted_at, :updated_at])
     |> Enum.to_list
     |> to_string
 
@@ -234,8 +252,14 @@ defmodule CsGuideWeb.CsvController do
 
 # DRINK STYLES
   defp drink_styles_csv_content(conn) do
-    brands = DrinkStyle.all() |> Enum.map(fn drink_style -> %{name: drink_style.name} end)
-    |> CSV.encode(headers: [ :name,])
+    brands = DrinkStyle.all() |> Enum.map(fn drink_style ->
+      %{
+        name: drink_style.name,
+        inserted_at: drink_style.inserted_at,
+        updated_at: drink_style.updated_at
+      }
+    end)
+    |> CSV.encode(headers: [ :name, :inserted_at, :updated_at])
     |> Enum.to_list
     |> to_string
 
@@ -247,8 +271,14 @@ defmodule CsGuideWeb.CsvController do
 
 # VENUE TYPES
     defp venue_types_csv_content(conn) do
-      brands = VenueType.all() |> Enum.map(fn venue_type -> %{name: venue_type.name} end)
-      |> CSV.encode(headers: [ :name,])
+      brands = VenueType.all() |> Enum.map(fn venue_type ->
+        %{
+          name: venue_type.name,
+          inserted_at: venue_type.inserted_at,
+          updated_at: venue_type.updated_at
+        }
+      end)
+      |> CSV.encode(headers: [ :name, :inserted_at, :udpated_at])
       |> Enum.to_list
       |> to_string
 

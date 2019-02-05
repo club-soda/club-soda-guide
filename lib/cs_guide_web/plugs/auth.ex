@@ -31,7 +31,7 @@ defmodule CsGuideWeb.Plugs.Auth do
   end
 
   def authenticate_user(conn, opts \\ %{}) do
-    cond do
+    cond do      
       !opts[:admin] || (opts[:admin] && conn.assigns[:admin]) ->
         conn
 
