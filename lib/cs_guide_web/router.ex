@@ -44,6 +44,7 @@ defmodule CsGuideWeb.Router do
     resources("/sessions", SessionController, only: [:new, :create])
 
     get("/json_drinks", DrinkController, :json_index)
+    get("/json_venue_images", VenueController, :json_index)
   end
 
   scope "/search", CsGuideWeb do

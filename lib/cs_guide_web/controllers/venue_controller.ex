@@ -64,6 +64,37 @@ defmodule CsGuideWeb.VenueController do
     end
   end
 
+  def json_index(conn, _params) do
+    # How do I get the slug from the venue you are on?
+    venue =
+      Venue.get_by(slug: "all-bar-one-aberdeen-ab10-1bl")
+      |> Venue.preload(
+        drinks: [:brand, :drink_types, :drink_styles, :drink_images],
+        venue_types: [],
+        venue_images: [],
+        discount_codes: []
+      )
+      |> sortImagesByMostRecent()
+
+    venue_images = venue.venue_images
+
+    json(
+      conn,
+      venue_images
+      |> Enum.slice(0, 4)
+      |> Enum.map(fn i ->
+        %{
+          photoUrl:
+            "https://s3-eu-west-1.amazonaws.com/#{Application.get_env(:ex_aws, :bucket)}/#{
+              i.entry_id
+            }",
+          photoNumber: i.photo_number,
+          venueId: i.venue_id
+        }
+      end)
+    )
+  end
+
   def show(conn, %{"slug" => slug}) do
     venue =
       Venue.get_by(slug: slug)
@@ -74,7 +105,7 @@ defmodule CsGuideWeb.VenueController do
         discount_codes: []
       )
 
-    images = Enum.sort_by(venue.venue_images, fn i -> i.id end)
+    # images = Enum.sort_by(venue.venue_images, fn i -> i.id end)
 
     venue = sortImagesByMostRecent(venue)
 

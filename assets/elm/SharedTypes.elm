@@ -1,4 +1,4 @@
-module SharedTypes exposing (Drink, Venue, searchDrinkByTerm, searchVenueByTerm)
+module SharedTypes exposing (Drink, Venue, VenueImage, searchDrinkByTerm, searchVenueByTerm)
 
 
 type alias Drink =
@@ -10,6 +10,13 @@ type alias Drink =
     , drink_styles : List String
     , description : String
     , image : String
+    }
+
+
+type alias VenueImage =
+    { photoUrl : String
+    , photoNumber : Int
+    , venueId : Int
     }
 
 

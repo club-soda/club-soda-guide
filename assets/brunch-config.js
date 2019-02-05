@@ -51,6 +51,7 @@ exports.config = {
   plugins: {
     elmBrunch: {
       mainModules: ["elm/DrinksCarousel.elm",
+                    "elm/VenueCarousel.elm",
                     "elm/SearchDrink.elm",
                     "elm/SearchVenue.elm",
                     "elm/SearchAll.elm"
