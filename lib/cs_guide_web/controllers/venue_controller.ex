@@ -150,7 +150,7 @@ defmodule CsGuideWeb.VenueController do
       sub =
         from(mod in Map.get(m.__schema__(:association, s), :queryable),
           distinct: mod.entry_id,
-          order_by: [desc: :inserted_at],
+          order_by: [desc: :updated_at],
           select: mod
         )
 
@@ -231,7 +231,7 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def sort_venues_by_date(venues) do
-    Enum.sort(venues, &compareDates(&1.inserted_at, &2.inserted_at))
+    Enum.sort(venues, &compareDates(&1.updated_at, &2.updated_at))
   end
 
   def delete(conn, %{"id" => id}) do

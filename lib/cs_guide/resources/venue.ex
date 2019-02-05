@@ -130,7 +130,6 @@ defmodule CsGuide.Resources.Venue do
     item
     |> __MODULE__.preload(__MODULE__.__schema__(:associations))
     |> Map.put(:id, nil)
-    |> Map.put(:inserted_at, nil)
     |> Map.put(:updated_at, nil)
     |> __MODULE__.changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
@@ -142,7 +141,6 @@ defmodule CsGuide.Resources.Venue do
     item
     |> __MODULE__.preload(__MODULE__.__schema__(:associations))
     |> Map.put(:id, nil)
-    |> Map.put(:inserted_at, nil)
     |> Map.put(:updated_at, nil)
     |> __MODULE__.changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
@@ -175,7 +173,6 @@ defmodule CsGuide.Resources.Venue do
     item
     |> __MODULE__.preload(__MODULE__.__schema__(:associations))
     |> Map.put(:id, nil)
-    |> Map.put(:inserted_at, nil)
     |> Map.put(:updated_at, nil)
     |> __MODULE__.retailer_changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
@@ -241,7 +238,7 @@ defmodule CsGuide.Resources.Venue do
     # selects all venues 'where' tells it to and adds the :distance key to
     # each (:distance is a virtual field that needs to be added to each venue
     # as the lat, long and distance variables passed in can all change)
-    |> order_by([v], desc: v.inserted_at)
+    |> order_by([v], desc: v.updated_at)
     |> distinct([v], asc: fragment("distance"), asc: :entry_id)
     # filters the results to make sure it returns only venues with a unique
     # combination of distance and entry_id. The reason for the combination is to

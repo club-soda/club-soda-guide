@@ -64,7 +64,6 @@ defmodule CsGuide.Resources.Brand do
     item
     |> __MODULE__.preload(__MODULE__.__schema__(:associations))
     |> Map.put(:id, nil)
-    |> Map.put(:inserted_at, nil)
     |> Map.put(:updated_at, nil)
     |> __MODULE__.changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)

@@ -18,7 +18,7 @@ defmodule CsGuide.Resources do
                 from(a in assoc_module,
                   where: field(a, ^field) == ^f,
                   limit: 1,
-                  order_by: [desc: :inserted_at],
+                  order_by: [desc: :updated_at],
                   select: a
                 )
               )
@@ -43,7 +43,7 @@ defmodule CsGuide.Resources do
         from(a in assoc_module,
           where: field(a, ^field) == ^assoc,
           limit: 1,
-          order_by: [desc: :inserted_at],
+          order_by: [desc: :updated_at],
           select: a
         )
       )
