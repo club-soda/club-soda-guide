@@ -7,6 +7,7 @@ defmodule CsGuide.Resources.Venue do
   alias CsGuide.Repo
   alias CsGuide.{Resources, PostcodeLatLong}
 
+  @timestamps_opts [type: :naive_datetime_usec]
   schema "venues" do
     field(:venue_name, :string)
     field(:parent_company, :string)

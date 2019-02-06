@@ -3,6 +3,7 @@ defmodule CsGuide.Images.DrinkImage do
   use Alog
   import Ecto.Changeset
 
+  @timestamps_opts [type: :naive_datetime_usec]
   schema "drink_images" do
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)

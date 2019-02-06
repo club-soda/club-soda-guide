@@ -5,6 +5,7 @@ defmodule CsGuide.Resources.Brand do
   alias CsGuide.Resources
   import Ecto.Changeset
 
+  @timestamps_opts [type: :naive_datetime_usec]
   schema "brands" do
     field(:name, :string)
     field(:description, Fields.DescriptionPlaintextUnlimited)

@@ -3,6 +3,7 @@ defmodule CsGuide.Categories.VenueType do
   use Alog
   import Ecto.Changeset
 
+  @timestamps_opts [type: :naive_datetime_usec]
   schema "venue_types" do
     field(:name, :string)
     field(:entry_id, :string)

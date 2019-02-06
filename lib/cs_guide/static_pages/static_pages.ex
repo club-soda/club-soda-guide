@@ -3,6 +3,7 @@ defmodule CsGuide.StaticPage do
   use Alog
   import Ecto.Changeset
 
+  @timestamps_opts [type: :naive_datetime_usec]
   schema "static_pages" do
     field(:page_title, :string)
     field(:title_in_menu, :string)

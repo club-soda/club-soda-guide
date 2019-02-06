@@ -12,6 +12,7 @@ config :logger, level: :warn
 # Configure your database
 if System.get_env("DATABASE_HOST") do
   config :cs_guide, CsGuide.Repo,
+  migration_timestamps: [type: :naive_datetime_usec],
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "",
@@ -20,6 +21,7 @@ if System.get_env("DATABASE_HOST") do
   pool: Ecto.Adapters.SQL.Sandbox
 else
   config :cs_guide, CsGuide.Repo,
+  migration_timestamps: [type: :naive_datetime_usec],
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",

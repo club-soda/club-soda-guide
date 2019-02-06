@@ -3,6 +3,7 @@ defmodule CsGuide.DiscountCode do
   use Alog
   import Ecto.Changeset
 
+  @timestamps_opts [type: :naive_datetime_usec]
   schema "discount_codes" do
     field(:code, :string)
     field(:entry_id, :string)
