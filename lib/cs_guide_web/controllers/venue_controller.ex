@@ -64,7 +64,7 @@ defmodule CsGuideWeb.VenueController do
     end
   end
 
-  def json_index(conn, _params) do
+  def json_index(conn, params) do
     # How do I get the slug from the venue you are on?
     venue =
       Venue.get_by(slug: "all-bar-one-aberdeen-ab10-1bl")
@@ -76,7 +76,35 @@ defmodule CsGuideWeb.VenueController do
       )
       |> sortImagesByMostRecent()
 
-    venue_images = venue.venue_images
+    # Filter by most recent and only one of each index
+
+    ph1 =
+      venue.venue_images
+      |> Enum.find(false, fn i ->
+        i.photo_number == 1
+      end)
+
+    ph2 =
+      venue.venue_images
+      |> Enum.find(false, fn i ->
+        i.photo_number == 2
+      end)
+
+    ph3 =
+      venue.venue_images
+      |> Enum.find(false, fn i ->
+        i.photo_number == 3
+      end)
+
+    ph4 =
+      venue.venue_images
+      |> Enum.find(false, fn i ->
+        i.photo_number == 4
+      end)
+
+    venue_images =
+      [ph1, ph2, ph3, ph4]
+      |> Enum.filter(fn i -> i != false end)
 
     json(
       conn,

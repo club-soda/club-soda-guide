@@ -6,10 +6,10 @@
     <%= if @venue.venue_images != [] do %>
       <div class="" id="venue-carousel"></div>
     <% else %>
-      <div class="dn db-l bg-venue w-100"
+      <div class="dn db-l bg-default-venue w-100"
         style="background-image: url('/images/default-venue-img.jpg');">
       </div>
-      <div class="db dn-l bg-venue w-100"
+      <div class="db dn-l bg-default-venue w-100"
         style="background-image: url('/images/default-venue-img-2-1.jpg');">
       </div>
     <% end %>

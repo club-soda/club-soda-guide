@@ -53,13 +53,15 @@ type alias HttpData data =
 type alias Model =
     { images : List VenueImage
     , carouselIndex : Int
+    , numberImages : Int
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
     ( { images = []
-      , carouselIndex = 1
+      , carouselIndex = 0
+      , numberImages = 1
       }
     , getVenueImages
     )
@@ -83,23 +85,27 @@ update msg model =
             ( model, Cmd.none )
 
         ReceiveImages (Ok images) ->
-            ( { model | images = images }, Cmd.none )
+            let
+                numberImages =
+                    List.length images
+            in
+            ( { model | images = images, numberImages = numberImages }, Cmd.none )
 
         CarouselLeft ->
-            ( { model | carouselIndex = modBy 4 model.carouselIndex + 1 }, Cmd.none )
+            ( { model | carouselIndex = modBy model.numberImages model.carouselIndex - 1 }, Cmd.none )
 
         CarouselRight ->
-            ( { model | carouselIndex = modBy 4 model.carouselIndex - 1 }, Cmd.none )
+            ( { model | carouselIndex = modBy model.numberImages model.carouselIndex + 1 }, Cmd.none )
 
         Swipe dir ->
             let
                 newIndex =
                     case dir of
                         "right" ->
-                            modBy 4 model.carouselIndex - 1
+                            modBy model.numberImages model.carouselIndex + 1
 
                         "left" ->
-                            modBy 4 model.carouselIndex + 1
+                            modBy model.numberImages model.carouselIndex - 1
 
                         _ ->
                             model.carouselIndex
@@ -123,26 +129,31 @@ view : Model -> Html Msg
 view model =
     div [ class "relative" ]
         [ img [ src "/images/up-chevron.svg", alt "left arrow", class "dn db-ns f1 b pointer absolute-vertical-center left-2 rotate-270 h1", onClick CarouselLeft ] []
-        , div [ class "w-100 bg-venue center dn db-ns overflow-hidden" ]
-            (renderImagesCarousel model 0)
+        , div [ class "w-100 center dn db-ns" ]
+            (renderImagesCarousel model)
         , div [ class "flex-wrap w-90 center db dn-ns", id "carousel" ]
-            (renderImagesCarousel model 0)
+            (renderImagesCarousel model)
         , img [ src "/images/up-chevron.svg", alt "right arrow", onClick CarouselRight, class "dn db-ns f1 b pointer absolute-vertical-center right-2 rotate-90 h1" ] []
         ]
 
 
-renderImagesCarousel : Model -> Int -> List (Html Msg)
-renderImagesCarousel model displayXImages =
-    List.range model.carouselIndex (model.carouselIndex + displayXImages)
-        |> List.map (\index -> getImageByIndex model <| modBy 4 index)
-        |> List.indexedMap displayImage
+
+-- Change modBy 4 to be the length of the images list to change if not all 4 photos exist for all modBys
 
 
-displayImage : Int -> VenueImage -> Html msg
-displayImage index venueImage =
+renderImagesCarousel : Model -> List (Html Msg)
+renderImagesCarousel model =
+    List.range model.carouselIndex model.carouselIndex
+        |> List.map (\index -> getImageByIndex model <| modBy model.numberImages index)
+        |> List.map displayImage
+
+
+displayImage : VenueImage -> Html msg
+displayImage venueImage =
     div []
         [ h1 [] [ text venueImage.photoUrl ]
-        , img [ class "w-100", src venueImage.photoUrl ] []
+        , h1 [] [ text <| String.fromInt <| venueImage.photoNumber ]
+        , img [ class "w-100 bg-venue", src venueImage.photoUrl ] []
         ]
 
 
@@ -150,4 +161,4 @@ getImageByIndex : Model -> Int -> VenueImage
 getImageByIndex model index =
     Array.fromList model.images
         |> Array.get index
-        |> Maybe.withDefault (VenueImage "default" 1 1)
+        |> Maybe.withDefault (VenueImage "default url" 1 1)
