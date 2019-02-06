@@ -144,6 +144,7 @@ renderDrinksCarousel model displayXDrinks =
         |> List.indexedMap drinkCard
 
 
+getDrinkByIndex : Model -> Int -> Drink
 getDrinkByIndex model index =
     Array.fromList model.drinks
         |> Array.get index

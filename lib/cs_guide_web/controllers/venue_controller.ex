@@ -64,10 +64,16 @@ defmodule CsGuideWeb.VenueController do
     end
   end
 
-  def json_index(conn, params) do
-    # How do I get the slug from the venue you are on?
+  def json_index(conn, _params) do
+    slug =
+      conn.req_headers
+      |> Enum.into(%{})
+      |> Map.get("referer")
+      |> String.split("/")
+      |> List.last()
+
     venue =
-      Venue.get_by(slug: "all-bar-one-aberdeen-ab10-1bl")
+      Venue.get_by(slug: slug)
       |> Venue.preload(
         drinks: [:brand, :drink_types, :drink_styles, :drink_images],
         venue_types: [],
