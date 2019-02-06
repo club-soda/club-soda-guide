@@ -1,10 +1,10 @@
 <section class="relative">
   <%= if @is_authenticated do %>
-    <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.slug), class: "dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
+    <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.slug), class: "dn db-ns absolute top-2 right-4 btn-primary no-underline z-1" %>
   <% end %>
   <section class="mt5">
     <%= if @venue.venue_images != [] do %>
-      <div class="" id="venue-carousel"></div>
+      <div id="venue-carousel"></div>
     <% else %>
       <div class="dn db-l bg-default-venue w-100"
         style="background-image: url('/images/default-venue-img.jpg');">

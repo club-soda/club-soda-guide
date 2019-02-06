@@ -137,10 +137,6 @@ view model =
         ]
 
 
-
--- Change modBy 4 to be the length of the images list to change if not all 4 photos exist for all modBys
-
-
 renderImagesCarousel : Model -> List (Html Msg)
 renderImagesCarousel model =
     List.range model.carouselIndex model.carouselIndex
