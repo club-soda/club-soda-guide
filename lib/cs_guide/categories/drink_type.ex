@@ -5,7 +5,6 @@ defmodule CsGuide.Categories.DrinkType do
   alias CsGuide.Resources
   alias CsGuide.Repo
 
-  @timestamps_opts [type: :naive_datetime_usec]
   schema "drink_types" do
     field(:name, :string)
     field(:entry_id, :string)

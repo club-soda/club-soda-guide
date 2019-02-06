@@ -3,7 +3,6 @@ defmodule CsGuide.Accounts.User do
   use Alog
   import Ecto.Changeset
 
-  @timestamps_opts [type: :naive_datetime_usec]
   schema "users" do
     field(:email, Fields.EmailEncrypted)
     field(:email_hash, Fields.EmailHash)

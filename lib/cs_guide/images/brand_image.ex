@@ -3,7 +3,6 @@ defmodule CsGuide.Images.BrandImage do
   use Alog
   import Ecto.Changeset
 
-  @timestamps_opts [type: :naive_datetime_usec]
   schema "brand_images" do
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
