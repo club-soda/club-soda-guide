@@ -146,15 +146,23 @@ renderImagesCarousel model =
 
 displayImage : VenueImage -> Html msg
 displayImage venueImage =
-    div []
-        [ h1 [] [ text venueImage.photoUrl ]
-        , h1 [] [ text <| String.fromInt <| venueImage.photoNumber ]
-        , img [ class "w-100 bg-venue", src venueImage.photoUrl ] []
-        ]
+    if String.isEmpty venueImage.photoUrl then
+        div [] []
+
+    else
+        div []
+            [ h1 [] [ text venueImage.photoUrl ]
+            , h1 [] [ text <| String.fromInt <| venueImage.photoNumber ]
+            , img [ class "w-100 bg-venue", src venueImage.photoUrl ] []
+            ]
 
 
 getImageByIndex : Model -> Int -> VenueImage
 getImageByIndex model index =
+    let
+        _ =
+            Debug.log "set default 5" index
+    in
     Array.fromList model.images
         |> Array.get index
-        |> Maybe.withDefault (VenueImage "default url" 1 1)
+        |> Maybe.withDefault (VenueImage "" 0 1)

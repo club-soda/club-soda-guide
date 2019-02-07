@@ -28,6 +28,8 @@ defmodule CsGuideWeb.SearchAllController do
           String.downcase(type.name) == "retailer" || String.downcase(type.name) == "wholesaler"
         end)
       end)
+      # Add other search_venue sorting fn here
+      # And also on the landing page and the brands page
       |> Enum.sort_by(&{5 - &1.cs_score, &1.venue_name})
 
     venue_cards = Enum.map(venues, fn v -> Venue.get_venue_card(v) end)

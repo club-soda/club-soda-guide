@@ -11,29 +11,32 @@ defmodule CsGuideWeb.SearchVenueController do
     term = params["term"] || ""
     venue_types = getVenueTypes()
 
-    cards = if latlong do
-      [lat_str, long_str] = String.split(latlong, ",")
-      {lat, _} = Float.parse(lat_str)
-      {long, _} = Float.parse(long_str)
+    cards =
+      if latlong do
+        [lat_str, long_str] = String.split(latlong, ",")
+        {lat, _} = Float.parse(lat_str)
+        {long, _} = Float.parse(long_str)
 
-      getVenueCardsByLatLong(lat,long)
-    else
-      getAllVenueCards()
-    end
+        getVenueCardsByLatLong(lat, long)
+      else
+        getAllVenueCards()
+      end
 
-    render(conn,
-           "index.html",
-           venues: cards,
-           term: term,
-           venue_types: venue_types,
-           postcode: postcode,
-           locationSearch: locationSearch)
+    render(
+      conn,
+      "index.html",
+      venues: cards,
+      term: term,
+      venue_types: venue_types,
+      postcode: postcode,
+      locationSearch: locationSearch
+    )
   end
 
   defp getVenueTypes do
     VenueType.all()
-    |> Enum.map(&(&1.name))
-    |> Enum.filter(&(String.downcase(&1) != "retailer" && String.downcase(&1) != "wholesaler" ))
+    |> Enum.map(& &1.name)
+    |> Enum.filter(&(String.downcase(&1) != "retailer" && String.downcase(&1) != "wholesaler"))
     |> Enum.sort()
   end
 
@@ -47,6 +50,24 @@ defmodule CsGuideWeb.SearchVenueController do
         end)
       end)
       |> Enum.sort_by(&{5 - &1.cs_score, &1.venue_name})
+      # Sorts images in order exists as a fn elsewhere
+      |> Enum.map(fn v ->
+        Map.update(v, :venue_images, [], fn images ->
+          images
+          |> Enum.sort(fn img1, img2 ->
+            img1.id >= img2.id
+          end)
+        end)
+      end)
+      # Then need to filter out so you only have number 1
+      |> Enum.map(fn v ->
+        Map.update(v, :venue_images, [], fn images ->
+          images
+          |> Enum.filter(fn i ->
+            i.photo_number == 1
+          end)
+        end)
+      end)
       |> Enum.map(&Venue.get_venue_card/1)
   end
 

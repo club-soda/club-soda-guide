@@ -84,6 +84,7 @@ defmodule CsGuideWeb.VenueController do
 
     # Filter by most recent and only one of each index
 
+    # put this into a fn that accepts a photo number arg
     ph1 =
       venue.venue_images
       |> Enum.find(false, fn i ->
