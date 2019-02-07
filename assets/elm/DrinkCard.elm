@@ -60,4 +60,12 @@ drinkCard index d =
 
 brandNameURL : Drink -> String
 brandNameURL drink =
-    "/brands/" ++ drink.brand |> String.split " " |> String.join "-"
+    let
+        brandName =
+            drink.brand
+                |> String.split "-"
+                |> String.join "_"
+                |> String.split " "
+                |> String.join "-"
+    in
+    "/brands/" ++ brandName
