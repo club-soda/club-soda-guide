@@ -8,7 +8,7 @@ defmodule CsGuideWeb.DrinkView do
     sub =
       from(s in sch,
         distinct: s.entry_id,
-        order_by: [desc: :inserted_at],
+        order_by: [desc: :updated_at],
         select: s
       )
 

@@ -73,7 +73,7 @@ defmodule CsGuideWeb.DiscountCodeController do
       limit: 1,
       select: dc,
       where: dc.venue_id == ^retailer_id,
-      order_by: [desc: dc.inserted_at]
+      order_by: [desc: dc.updated_at]
     )
   end
 

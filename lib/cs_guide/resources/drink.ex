@@ -82,7 +82,7 @@ defmodule CsGuide.Resources.Drink do
         {a,
          from(s in schema,
            distinct: s.entry_id,
-           order_by: [desc: :inserted_at],
+           order_by: [desc: :updated_at],
            select: s
          )}
       end)
@@ -90,7 +90,6 @@ defmodule CsGuide.Resources.Drink do
     item
     |> CsGuide.Repo.preload(assocs)
     |> Map.put(:id, nil)
-    |> Map.put(:inserted_at, nil)
     |> Map.put(:updated_at, nil)
     |> Resources.put_belongs_to_assoc(attrs, :brand, :brand_id, CsGuide.Resources.Brand, :name)
     |> __MODULE__.changeset(attrs)

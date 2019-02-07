@@ -7,7 +7,7 @@ defmodule CsGuide.UpdateCsScore do
       sub =
         from(mod in Map.get(m.__schema__(:association, s), :queryable),
           distinct: mod.entry_id,
-          order_by: [desc: :inserted_at],
+          order_by: [desc: :updated_at],
           select: mod
         )
 
