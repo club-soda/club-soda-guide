@@ -63,7 +63,7 @@
         <% end %>
         <%= if @brand.twitter do %>
           <div class="db pv1">
-            <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/twitter.svg") %>" alt="Twitter icon">
+            <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/twitter-icon.svg") %>" alt="Twitter icon">
             <a class="f6 lh6 cs-mid-blue underline dib v-top" href="<%= @brand.twitter %>" target="_blank">
               <%= @brand.twitter %>
             </a>
@@ -71,7 +71,7 @@
         <% else %>
           <%= if @is_authenticated do %>
             <div class="db pv1">
-              <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/twitter.svg") %>" alt="Twitter icon">
+              <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/twitter-icon.svg") %>" alt="Twitter icon">
               <%= link "Add brand twitter", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue f6 lh6 v-top" %>
             </div>
           <% end %>
