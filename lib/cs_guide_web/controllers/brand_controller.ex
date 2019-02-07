@@ -222,12 +222,8 @@ defmodule CsGuideWeb.BrandController do
   end
 
   defp check_brand_name(name) do
-    brands_with_hyphens = ~w(Fritz-Kola Fever-Tree)
-
-    if Enum.any?(brands_with_hyphens, &(&1 == name)) do
       name
-    else
-      name |> String.split("-") |> Enum.join(" ")
-    end
+      |> String.split("-") |> Enum.join(" ")
+      |> String.split("_") |> Enum.join("-")
   end
 end
