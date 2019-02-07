@@ -5,9 +5,9 @@ defmodule CsGuideWeb.DiscountCodeController do
   import Ecto.Query
 
   def index(conn, _params) do
-    discount_code = DiscountCode.all()
+    discount_codes = DiscountCode.all()
 
-    render(conn, "index.html", discount_codes: discount_code)
+    render(conn, "index.html", discount_codes: discount_codes)
   end
 
   def new(conn, _params) do
