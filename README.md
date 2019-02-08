@@ -234,17 +234,17 @@ post code and returns search results for venues _near_ this post code, within a
 30km radius.
 ![searching-for-full-post-code](https://user-images.githubusercontent.com/4185328/52587805-c8959700-2e32-11e9-8a8c-ede156ecd679.png)
 
-
 ### Drinks
 Example of a search on drinks with "beer"
 ![image](https://user-images.githubusercontent.com/6057298/49628671-77ee6180-f9dd-11e8-8946-300c0c5e91e4.png)
 
 The search is run **case insensitive** on the **name** and on the **description** of the drinks.
 
-When a drink type is selected, a pill is displayed above the "Drink Type" dropdown
-and allow the users to unselect the filter.
+When a drop-down is selected, a pill is displayed above the drop-down
+which allows the user to see which filters have been applied at a glance and
+also to quickly unselect them
 
-![image](https://user-images.githubusercontent.com/6057298/50681993-49c46780-1005-11e9-8348-c82b02a53378.png)
+![drink-type-filter-pills](https://user-images.githubusercontent.com/4185328/52588512-8c633600-2e34-11e9-8b80-1c50048b2bd1.png)
 
 ## Exporting to CSV
 
