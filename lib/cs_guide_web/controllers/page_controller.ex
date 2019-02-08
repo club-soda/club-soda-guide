@@ -1,6 +1,7 @@
 defmodule CsGuideWeb.PageController do
   use CsGuideWeb, :controller
   alias CsGuide.Resources.Venue
+  alias CsGuideWeb.{VenueController, SearchVenueController}
 
   def index(conn, _params) do
     venues =
@@ -11,6 +12,12 @@ defmodule CsGuideWeb.PageController do
       end)
       |> Enum.slice(0, 4)
       |> Enum.sort(fn v1, v2 -> v1.cs_score >= v2.cs_score end)
+      |> Enum.map(fn v ->
+        VenueController.sortImagesByMostRecent(v)
+      end)
+      |> Enum.map(fn v ->
+        SearchVenueController.selectPhotoNumber1(v)
+      end)
 
     render(conn, "index.html", venues: venues)
   end

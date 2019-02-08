@@ -4,6 +4,7 @@ defmodule CsGuideWeb.BrandController do
   alias CsGuide.Resources.{Brand, Venue, Drink}
   alias CsGuide.Images.BrandImage
   alias CsGuide.DiscountCode
+  alias CsGuideWeb.{VenueController, SearchVenueController}
   import Ecto.Query
 
   def index(conn, _params) do
@@ -77,6 +78,18 @@ defmodule CsGuideWeb.BrandController do
         ],
         brand_images: []
       )
+      |> Map.update(:venues, [], fn venues ->
+        venues
+        |> Enum.map(fn v ->
+          VenueController.sortImagesByMostRecent(v)
+        end)
+      end)
+      |> Map.update(:venues, [], fn venues ->
+        venues
+        |> Enum.map(fn v ->
+          SearchVenueController.selectPhotoNumber1(v)
+        end)
+      end)
 
     {drink_type, count} =
       Enum.map(brand.drinks, fn d ->

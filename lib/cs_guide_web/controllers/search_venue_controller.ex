@@ -3,6 +3,7 @@ defmodule CsGuideWeb.SearchVenueController do
 
   alias CsGuide.Resources.Venue
   alias CsGuide.Categories.VenueType
+  alias CsGuideWeb.VenueController
 
   def index(conn, params) do
     latlong = params["ll"]
@@ -50,25 +51,22 @@ defmodule CsGuideWeb.SearchVenueController do
         end)
       end)
       |> Enum.sort_by(&{5 - &1.cs_score, &1.venue_name})
-      # Sorts images in order exists as a fn elsewhere
       |> Enum.map(fn v ->
-        Map.update(v, :venue_images, [], fn images ->
-          images
-          |> Enum.sort(fn img1, img2 ->
-            img1.id >= img2.id
-          end)
-        end)
+        VenueController.sortImagesByMostRecent(v)
       end)
-      # Then need to filter out so you only have number 1
       |> Enum.map(fn v ->
-        Map.update(v, :venue_images, [], fn images ->
-          images
-          |> Enum.filter(fn i ->
-            i.photo_number == 1
-          end)
-        end)
+        selectPhotoNumber1(v)
       end)
       |> Enum.map(&Venue.get_venue_card/1)
+  end
+
+  def selectPhotoNumber1(venue) do
+    Map.update(venue, :venue_images, [], fn images ->
+      images
+      |> Enum.filter(fn i ->
+        i.photo_number == 1
+      end)
+    end)
   end
 
   defp getVenueCardsByLatLong(lat, long) do

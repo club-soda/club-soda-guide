@@ -3,6 +3,7 @@ defmodule CsGuideWeb.VenueController do
 
   alias CsGuide.Resources.{Venue, Drink, Brand}
   alias CsGuide.Images.VenueImage
+  alias CsGuideWeb.SearchVenueController
 
   import Ecto.Query, only: [from: 2, subquery: 1]
 
@@ -140,13 +141,17 @@ defmodule CsGuideWeb.VenueController do
         discount_codes: []
       )
 
-    # images = Enum.sort_by(venue.venue_images, fn i -> i.id end)
-
     venue = sortImagesByMostRecent(venue)
 
     nearby_venues =
       getVenueCardsByLatLong(venue.lat, venue.long, venue.venue_name)
       |> Enum.take(4)
+      |> Enum.map(fn v ->
+        sortImagesByMostRecent(v)
+      end)
+      |> Enum.map(fn v ->
+        SearchVenueController.selectPhotoNumber1(v)
+      end)
 
     if venue != nil do
       venue_owner = conn.assigns[:venue_id] == venue.id
@@ -347,7 +352,7 @@ defmodule CsGuideWeb.VenueController do
     end)
   end
 
-  defp sortImagesByMostRecent(venue) do
+  def sortImagesByMostRecent(venue) do
     Map.update(venue, :venue_images, [], fn images ->
       images
       |> Enum.sort(fn img1, img2 ->
