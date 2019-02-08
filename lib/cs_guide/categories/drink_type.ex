@@ -46,7 +46,6 @@ defmodule CsGuide.Categories.DrinkType do
     item
     |> __MODULE__.preload(__MODULE__.__schema__(:associations))
     |> Map.put(:id, nil)
-    |> Map.put(:inserted_at, nil)
     |> Map.put(:updated_at, nil)
     |> __MODULE__.changeset(attrs)
     |> Repo.insert()

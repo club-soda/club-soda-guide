@@ -5,10 +5,9 @@ defmodule CsGuideWeb.DiscountCodeController do
   import Ecto.Query
 
   def index(conn, _params) do
-    wb_dc = get_discount_code("WiseBartender")
-    dd_dc = get_discount_code("DryDrinker")
+    discount_codes = DiscountCode.all()
 
-    render(conn, "index.html", discount_codes: [wb_dc, dd_dc])
+    render(conn, "index.html", discount_codes: discount_codes)
   end
 
   def new(conn, _params) do
@@ -68,24 +67,4 @@ defmodule CsGuideWeb.DiscountCodeController do
     |> redirect(to: discount_code_path(conn, :index))
   end
 
-  defp make_query(retailer_id) do
-    from(dc in DiscountCode,
-      limit: 1,
-      select: dc,
-      where: dc.venue_id == ^retailer_id,
-      order_by: [desc: dc.inserted_at]
-    )
-  end
-
-  defp get_discount_code(retailer_name) do
-    case Venue.get_by(venue_name: retailer_name) do
-      nil ->
-        nil
-
-      retailer ->
-        retailer.id
-        |> make_query()
-        |> CsGuide.Repo.one()
-    end
-  end
 end

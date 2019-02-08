@@ -27,7 +27,7 @@
         <%= under_map_link(@conn, :website, "/images/website-icon.png", @is_authenticated) %>
         <%= under_map_link(@conn, :facebook, "/images/facebook-icon.png", @is_authenticated) %>
         <%= under_map_link(@conn, :instagram, "/images/instagram-icon.png", @is_authenticated) %>
-        <%= under_map_link(@conn, :twitter, "/images/twitter.svg", @is_authenticated) %>
+        <%= under_map_link(@conn, :twitter, "/images/twitter-icon.svg", @is_authenticated) %>
 
         <!-- To be added at a later date, see #119 -->
         <!-- <h3 class="f4 lh4 pv3">Opening Hours</h3>
