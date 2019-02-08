@@ -8,7 +8,6 @@ defmodule CsGuideWeb.BrandController do
 
   def index(conn, _params) do
     brands = Brand.all()
-    IO.inspect Enum.filter(brands, &(&1.slug == nil))
     render(conn, "index.html", brands: brands)
   end
 

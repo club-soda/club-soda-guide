@@ -25,7 +25,7 @@ drinkCard index d =
                         [ div [ class "bb b--pink mt2 mh2 pb3 center" ]
                             [ h4 [ class "f4 lh4 mb1" ] [ text d.name ]
                             , p [ class "f5 lh5 mv1" ] [ text "by" ]
-                            , a [ class "f4 lh4 cs-mid-blue mv1", href <| brandNameURL d ] [ text d.brand ] -- this line. d.brand link
+                            , a [ class "f4 lh4 cs-mid-blue mv1", href <| "/brands/" ++ d.brandSlug ] [ text d.brand ] -- this line. d.brand link
                             ]
                         , div [ class "flex flex-wrap" ]
                             [ p [ class "w-50 pv2 dib" ]
@@ -56,16 +56,3 @@ drinkCard index d =
                 ]
             ]
         ]
-
-
-brandNameURL : Drink -> String
-brandNameURL drink =
-    let
-        brandName =
-            drink.brand
-                |> String.split "-"
-                |> String.join "_"
-                |> String.split " "
-                |> String.join "-"
-    in
-    "/brands/" ++ brandName
