@@ -83,35 +83,13 @@ defmodule CsGuideWeb.VenueController do
       )
       |> sortImagesByMostRecent()
 
-    # Filter by most recent and only one of each index
-
-    # put this into a fn that accepts a photo number arg
-    ph1 =
-      venue.venue_images
-      |> Enum.find(false, fn i ->
-        i.photo_number == 1
-      end)
-
-    ph2 =
-      venue.venue_images
-      |> Enum.find(false, fn i ->
-        i.photo_number == 2
-      end)
-
-    ph3 =
-      venue.venue_images
-      |> Enum.find(false, fn i ->
-        i.photo_number == 3
-      end)
-
-    ph4 =
-      venue.venue_images
-      |> Enum.find(false, fn i ->
-        i.photo_number == 4
-      end)
-
     venue_images =
-      [ph1, ph2, ph3, ph4]
+      [
+        getPhotoOfPhotoNumber(venue, 1),
+        getPhotoOfPhotoNumber(venue, 2),
+        getPhotoOfPhotoNumber(venue, 3),
+        getPhotoOfPhotoNumber(venue, 4)
+      ]
       |> Enum.filter(fn i -> i != false end)
 
     json(
@@ -358,6 +336,13 @@ defmodule CsGuideWeb.VenueController do
       |> Enum.sort(fn img1, img2 ->
         img1.id >= img2.id
       end)
+    end)
+  end
+
+  defp getPhotoOfPhotoNumber(venue, photo_number) do
+    venue.venue_images
+    |> Enum.find(false, fn i ->
+      i.photo_number == photo_number
     end)
   end
 end
