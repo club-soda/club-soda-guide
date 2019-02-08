@@ -1,6 +1,6 @@
 <section class="relative">
   <%= if @is_authenticated do %>
-    <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.slug), class: "dn db-ns absolute top-2 right-4 btn-primary no-underline z-1" %>
+    <%= link "Upload Photos", to: venue_path(@conn, :add_photo, @venue.slug), class: "dn db-ns absolute top-2 right-4 btn-primary no-underline z-1" %>
   <% end %>
   <section class="mt5">
     <%= if @venue.venue_images != [] do %>

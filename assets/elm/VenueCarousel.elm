@@ -128,12 +128,12 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div [ class "relative" ]
-        [ img [ src "/images/left-chevron.svg", alt "left arrow", class "dn db-ns b pointer absolute-vertical-center left-2 w1", onClick CarouselLeft ] []
+        [ img [ classList [ ( "db-ns", model.numberImages > 1 ) ], src "/images/left-chevron.svg", alt "left arrow", class "dn b pointer absolute-vertical-center left-2 w1", onClick CarouselLeft ] []
         , div [ class "w-100 center dn db-ns" ]
             (renderImagesCarousel model)
-        , div [ class "flex-wrap w-90 center db dn-ns", id "carousel" ]
+        , div [ class "w-100 center db dn-ns", id "carousel" ]
             (renderImagesCarousel model)
-        , img [ src "/images/right-chevron.svg", alt "right arrow", onClick CarouselRight, class "dn db-ns b pointer absolute-vertical-center right-2 w1" ] []
+        , img [ classList [ ( "db-ns", model.numberImages > 1 ) ], src "/images/right-chevron.svg", alt "right arrow", onClick CarouselRight, class "dn b pointer absolute-vertical-center right-2 w1" ] []
         ]
 
 
@@ -151,9 +151,7 @@ displayImage venueImage =
 
     else
         div []
-            [ h1 [] [ text venueImage.photoUrl ]
-            , h1 [] [ text <| String.fromInt <| venueImage.photoNumber ]
-            , img [ class "w-100 bg-venue", src venueImage.photoUrl ] []
+            [ img [ class "w-100 bg-venue", src venueImage.photoUrl ] []
             ]
 
 
