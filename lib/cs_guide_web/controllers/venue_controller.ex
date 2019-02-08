@@ -276,6 +276,9 @@ defmodule CsGuideWeb.VenueController do
 
         params["4"] ->
           4
+
+        true ->
+          1
       end
 
     CsGuide.Repo.transaction(fn ->
