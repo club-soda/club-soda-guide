@@ -12,7 +12,6 @@
     </thead>
     <tbody>
   <%= for brand <- @brands do %>
-  <!-- <h1 class="pa3"><%= brand.slug %></h1> -->
       <tr class="bt bb b--cs-light-gray">
         <td class="pv3 pr3 w5"><%= brand.name %></td>
         <td class="pa3"><%= brand.member %></td>

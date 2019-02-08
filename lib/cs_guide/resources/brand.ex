@@ -58,8 +58,8 @@ defmodule CsGuide.Resources.Brand do
       :sold_waitrose,
       :sold_wb
     ])
-    |> put_slug()
     |> validate_required([:name])
+    |> put_slug()
   end
 
   defp put_slug(changeset) do

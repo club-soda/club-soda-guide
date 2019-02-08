@@ -3,7 +3,7 @@
 
 
   <%= custom_render_autoform(@conn, :update,
-    [{CsGuide.Resources.Brand, custom_labels: %{sold_aldi: "Sold on Aldi", sold_amazon: "Sold on Amazon", sold_asda: "Sold on Asda", sold_dd: "Sold on DryDrinker", sold_morrisons: "Sold on Morrisons", sold_sainsburys: "Sold on Sainsburys", sold_tesco: "Sold on Tesco", sold_waitrose: "Sold on Waitrose", sold_wb: "Sold on WiseBartender"}}], exclude: [:entry_id, :slug, :logo, :deleted, :drinks, :brand_images, :brand_images], custom_labels: %{sold_amazon: "Sold on Amazon YYYYY"}, path: brand_path(@conn, :update, @brand.name), assigns: [changeset: @changeset, brand: @brand], update_field: :entry_id, assoc_query: &query/1) %>
+    [{CsGuide.Resources.Brand, custom_labels: %{sold_aldi: "Sold on Aldi", sold_amazon: "Sold on Amazon", sold_asda: "Sold on Asda", sold_dd: "Sold on DryDrinker", sold_morrisons: "Sold on Morrisons", sold_sainsburys: "Sold on Sainsburys", sold_tesco: "Sold on Tesco", sold_waitrose: "Sold on Waitrose", sold_wb: "Sold on WiseBartender"}}], exclude: [:entry_id, :slug, :logo, :deleted, :drinks, :brand_images, :brand_images], custom_labels: %{sold_amazon: "Sold on Amazon YYYYY"}, path: brand_path(@conn, :update, @brand.slug), assigns: [changeset: @changeset, brand: @brand], update_field: :entry_id, assoc_query: &query/1) %>
 
   <span><%= link "Back", to: brand_path(@conn, :index) %></span>
 </section>

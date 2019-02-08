@@ -218,10 +218,4 @@ defmodule CsGuideWeb.BrandController do
       {:error, _} -> render(conn, "add_photo.html", id: params["id"], error: true)
     end
   end
-
-  defp check_brand_name(name) do
-      name
-      |> String.split("-") |> Enum.join(" ")
-      |> String.split("_") |> Enum.join("-")
-  end
 end

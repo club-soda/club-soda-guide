@@ -1,7 +1,7 @@
 <section class="center mt5 mb6">
   <%= if @brand.member do %>
     <%= if @is_authenticated do %>
-      <%= link "Upload Photo", to: brand_path(@conn, :add_cover_photo, @brand.name), class: "mt3 dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
+      <%= link "Upload Photo", to: brand_path(@conn, :add_cover_photo, @brand.slug), class: "mt3 dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
     <% end %>
     <%= if img = @brand.brand_images |> Enum.find(fn i -> i.one end) do %>
       <div class="db bg-venue w-100"
@@ -17,7 +17,7 @@
   <section class="center mt3 mb5">
     <%= if @brand.member do %>
       <%= if @is_authenticated do %>
-        <%= link "Upload Photo", to: brand_path(@conn, :add_photo, @brand.name), class: "dib dn-ns btn-primary no-underline ml3" %>
+        <%= link "Upload Photo", to: brand_path(@conn, :add_photo, @brand.slug), class: "dib dn-ns btn-primary no-underline ml3" %>
       <% end %>
     <% end %>
     <div class="w-90 w-70-m w-50-l center">
@@ -26,7 +26,7 @@
       <% else %>
         <%= if @is_authenticated do %>
           <div class="pb3">
-            <%= link "Add brand description", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue" %>
+            <%= link "Add brand description", to: brand_path(@conn, :edit, @brand.slug), class: "cs-mid-blue" %>
           </div>
         <% end %>
       <% end %>
@@ -41,7 +41,7 @@
         <%= if @is_authenticated do %>
           <div class="db pv1">
             <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/website-icon.png") %>" alt="Website icon">
-            <%= link "Add brand website", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue f6 lh6 v-top" %>
+            <%= link "Add brand website", to: brand_path(@conn, :edit, @brand.slug), class: "cs-mid-blue f6 lh6 v-top" %>
           </div>
         <% end %>
       <% end %>
@@ -57,7 +57,7 @@
           <%= if @is_authenticated do %>
             <div class="db pv1">
               <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/facebook-icon.png") %>" alt="Facebook icon">
-              <%= link "Add brand facebook", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue f6 lh6 v-top" %>
+              <%= link "Add brand facebook", to: brand_path(@conn, :edit, @brand.slug), class: "cs-mid-blue f6 lh6 v-top" %>
             </div>
           <% end %>
         <% end %>
@@ -72,7 +72,7 @@
           <%= if @is_authenticated do %>
             <div class="db pv1">
               <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/twitter-icon.svg") %>" alt="Twitter icon">
-              <%= link "Add brand twitter", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue f6 lh6 v-top" %>
+              <%= link "Add brand twitter", to: brand_path(@conn, :edit, @brand.slug), class: "cs-mid-blue f6 lh6 v-top" %>
             </div>
           <% end %>
         <% end %>
@@ -87,7 +87,7 @@
           <%= if @is_authenticated do %>
             <div class="db pv1">
               <img class="w-1-5rem dib pr2" src="<%= static_path(@conn, "/images/instagram-icon.png") %>" alt="Instagram icon">
-              <%= link "Add brand instagram", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue f6 lh6 v-top" %>
+              <%= link "Add brand instagram", to: brand_path(@conn, :edit, @brand.slug), class: "cs-mid-blue f6 lh6 v-top" %>
             </div>
           <% end %>
         <% end %>
@@ -101,13 +101,13 @@
         <div class="w-90 w-50-ns pa3 relative center <%= if img do %>shadow-1<% end %>">
           <img class="w-100" src="https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%=img.entry_id%>" alt="Brand image">
           <%= if @is_authenticated do %>
-          <%= link "Upload Photo", to: brand_path(@conn, :add_photo, @brand.name), class: "mt1 mr1 absolute top-1 right-1 btn-primary no-underline" %>
+          <%= link "Upload Photo", to: brand_path(@conn, :add_photo, @brand.slug), class: "mt1 mr1 absolute top-1 right-1 btn-primary no-underline" %>
           <% end %>
         </div>
       <% else %>
         <%= if @is_authenticated do %>
         <div class="w-90 center pa3 w-40-ns tc shadow-1 h5 relative">
-          <%= link "Upload an image to accompany your text", to: brand_path(@conn, :add_photo, @brand.name), class: "absolute-center cs-mid-blue f6 lh6" %>
+          <%= link "Upload an image to accompany your text", to: brand_path(@conn, :add_photo, @brand.slug), class: "absolute-center cs-mid-blue f6 lh6" %>
         </div>
         <% end %>
       <% end %>
@@ -116,7 +116,7 @@
           <p><%= @brand.copy %></p>
         <% else %>
           <%= if @is_authenticated do %>
-            <%= link "Add brand copy", to: brand_path(@conn, :edit, @brand.name), class: "cs-mid-blue f6 lh6 v-top" %>
+            <%= link "Add brand copy", to: brand_path(@conn, :edit, @brand.slug), class: "cs-mid-blue f6 lh6 v-top" %>
           <% end %>
         <% end %>
       </div>
