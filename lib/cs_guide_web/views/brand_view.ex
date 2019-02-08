@@ -10,6 +10,10 @@ defmodule CsGuideWeb.BrandView do
       d.venues
     end)
     |> List.flatten()
+    |> Enum.filter(fn v ->
+      String.downcase(v.venue_name) != "drydrinker" &&
+        String.downcase(v.venue_name) != "wisebartender"
+    end)
     |> Enum.uniq()
     |> sort_by_cs_score()
   end

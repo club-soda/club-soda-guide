@@ -165,7 +165,10 @@ Ensure that for the website you include the `http://` or `https://` at the
 beginning of the website url, otherwise the link will not work properly when
 clicked on. Then from `/admin/retailers` you can click the link to add drinks to
 a retailer. Once you have selected the appropriate drinks, the retailer will be
-listed in the 'where to buy' section.
+listed in the 'where to buy' section. Note: DryDrinker and WiseBartender do appear
+in the `admin/retailers` list and should not be deleted. However, they do not have
+a 'Add drinks' button because the way you determine which brand pages they display
+on is via the 'Sold on WiseBartender' checkboxes on the new/edit brand pages.
 
 To add a wholesaler fill in the details at `/admin/wholesalers/new`. Then follow
 the same procedure as for retailers to add drinks that the wholesaler stocks using
