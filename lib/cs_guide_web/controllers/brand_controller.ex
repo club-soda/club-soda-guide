@@ -80,15 +80,11 @@ defmodule CsGuideWeb.BrandController do
       )
       |> Map.update(:venues, [], fn venues ->
         venues
-        |> Enum.map(fn v ->
-          VenueController.sortImagesByMostRecent(v)
-        end)
+        |> Enum.map(&VenueController.sortImagesByMostRecent/1)
       end)
       |> Map.update(:venues, [], fn venues ->
         venues
-        |> Enum.map(fn v ->
-          SearchVenueController.selectPhotoNumber1(v)
-        end)
+        |> Enum.map(&SearchVenueController.selectPhotoNumber1/1)
       end)
 
     {drink_type, count} =
@@ -235,8 +231,6 @@ defmodule CsGuideWeb.BrandController do
   end
 
   defp check_brand_name(name) do
-      name
-      |> String.split("-") |> Enum.join(" ")
-      |> String.split("_") |> Enum.join("-")
+    name |> String.split("-") |> Enum.join(" ") |> String.split("_") |> Enum.join("-")
   end
 end

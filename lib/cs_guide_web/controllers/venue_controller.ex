@@ -124,12 +124,8 @@ defmodule CsGuideWeb.VenueController do
     nearby_venues =
       getVenueCardsByLatLong(venue.lat, venue.long, venue.venue_name)
       |> Enum.take(4)
-      |> Enum.map(fn v ->
-        sortImagesByMostRecent(v)
-      end)
-      |> Enum.map(fn v ->
-        SearchVenueController.selectPhotoNumber1(v)
-      end)
+      |> Enum.map(&sortImagesByMostRecent/1)
+      |> Enum.map(&SearchVenueController.selectPhotoNumber1/1)
 
     if venue != nil do
       venue_owner = conn.assigns[:venue_id] == venue.id

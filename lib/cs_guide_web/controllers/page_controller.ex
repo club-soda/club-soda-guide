@@ -15,9 +15,7 @@ defmodule CsGuideWeb.PageController do
       |> Enum.map(fn v ->
         VenueController.sortImagesByMostRecent(v)
       end)
-      |> Enum.map(fn v ->
-        SearchVenueController.selectPhotoNumber1(v)
-      end)
+      |> Enum.map(&SearchVenueController.selectPhotoNumber1/1)
 
     render(conn, "index.html", venues: venues)
   end
