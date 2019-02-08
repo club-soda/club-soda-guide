@@ -7,6 +7,7 @@ defmodule CsGuide.Resources.Brand do
 
   schema "brands" do
     field(:name, :string)
+    field(:slug, :string)
     field(:description, Fields.DescriptionPlaintextUnlimited)
     field(:member, :boolean, default: false)
     field(:logo, :string)
@@ -57,7 +58,18 @@ defmodule CsGuide.Resources.Brand do
       :sold_waitrose,
       :sold_wb
     ])
+    |> put_slug()
     |> validate_required([:name])
+  end
+
+  defp put_slug(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{name: name}} ->
+        put_change(changeset, :slug, create_slug(name))
+
+      _ ->
+        changeset
+    end
   end
 
   def update(%__MODULE__{} = item, attrs) do
@@ -68,5 +80,15 @@ defmodule CsGuide.Resources.Brand do
     |> __MODULE__.changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
     |> Repo.insert()
+  end
+
+  def create_slug(name) do
+    name
+    |> String.split(" ")
+    |> Enum.join("-")
+    |> String.replace(~r/(,|')/, "")
+    |> String.replace(~r/(-{3})/, "-")
+    |> String.replace(~r/(&|\+)/, "and")
+    |> String.downcase()
   end
 end
