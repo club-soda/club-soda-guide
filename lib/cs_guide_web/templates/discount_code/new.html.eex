@@ -8,10 +8,10 @@
   <h4 class="pt2 pb2 f6 lh6">Retailer</h4>
 
     <label for="discount_code_venue_name_DryDrinker" class="f6">DryDrinker</label>
-    <input type="radio" id="discount_code_venue_name_drydrinker" name="discount_code[venue_name][DryDrinker]" class="form-control">
+    <input type="radio" id="discount_code_venue_name_drydrinker" name="discount_code[venue_name]" value="DryDrinker" class="form-control">
     <div>
       <label for="discount_code_venue_name_WiseBartender" class="f6">WiseBartender</label>
-      <input type="radio" id="discount_code_venue_name_wisebartender" name="discount_code[venue_name][WiseBartender]" class="form-control">
+      <input type="radio" id="discount_code_venue_name_wisebartender" name="discount_code[venue_name]" value="WiseBartender" class="form-control">
     </div>
   </div>
   """,
