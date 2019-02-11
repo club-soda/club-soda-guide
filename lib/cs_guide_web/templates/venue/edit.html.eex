@@ -5,7 +5,7 @@
     {CsGuide.Resources.Venue, custom_labels: %{parent_company: "Parent company/chain"}, exclude: [:parent_company, :description, :address, :city, :postcode, :website, :phone_number, :twitter, :facebook, :instagram, :favourite, :venue_types]},
     "<div class=\"form-group\">
       <label class=\"control-label required\" for=\"venue_parent_company\">Parent company/chain</label>
-      <p class=\"f6 lh6 mb2\">Put 'independent' if the venue is not part of any parent company or chain.</p>
+      <p class=\"f6 lh6 i mb2\">Please write 'independent' if your venue is not part of any parent company or chain.</p>
       <input class=\"form-control\" id=\"venue_parent_company\" name=\"venue[parent_company]\" type=\"text\" required=\"\" value=\"" <> @venue.parent_company <> "\">
     </div>",
     {CsGuide.Resources.Venue, exclude: [:venue_name, :parent_company]},
