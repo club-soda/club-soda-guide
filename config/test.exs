@@ -27,3 +27,6 @@ else
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 end
+
+config :cs_guide,
+  ex_aws: Bep.Mock.ExAws
