@@ -302,12 +302,21 @@ select {
   }
 }
 
+.h-23rem {
+  height: 23rem;
+}
+
 .h-25rem {
   height: 25rem;
 }
 
-.h-27rem {
-  height: 27rem;
+@media (min-width: 64em) {
+  .h-25rem-l {
+    height: 25rem;
+  }
+  .h-27rem-l {
+    height: 27rem;
+  }
 }
 
 .pl-2-5rem {
