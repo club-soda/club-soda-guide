@@ -108,6 +108,7 @@ defmodule CsGuide.Resources.Drink do
       name: drink.name,
       brand: drink.brand.name,
       brandId: drink.brand.entry_id,
+      brandSlug: drink.brand.slug,
       abv: drink.abv,
       drink_types: Enum.map(drink.drink_types, fn t -> t.name end),
       drink_styles: Enum.map(drink.drink_styles, fn t -> t.name end),

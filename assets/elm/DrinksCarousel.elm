@@ -41,15 +41,16 @@ drinksDecoder =
 
 drinkDecoder : Decoder Drink
 drinkDecoder =
-    Decode.map8 Drink
-        (field "name" string)
-        (field "brand" string)
-        (field "brandId" string)
-        (field "abv" float)
-        (field "drink_types" (Decode.list string))
-        (field "drink_styles" (Decode.list string))
-        (field "description" string)
-        (field "image" string)
+    Decode.succeed Drink
+        |> Json.Decode.Pipeline.required "name" string
+        |> Json.Decode.Pipeline.required "brand" string
+        |> Json.Decode.Pipeline.required "brandId" string
+        |> Json.Decode.Pipeline.required "brandSlug" string
+        |> Json.Decode.Pipeline.required "abv" float
+        |> Json.Decode.Pipeline.required "drink_types" (Decode.list string)
+        |> Json.Decode.Pipeline.required "drink_styles" (Decode.list string)
+        |> Json.Decode.Pipeline.required "description" string
+        |> Json.Decode.Pipeline.required "image" string
 
 
 type alias HttpData data =
@@ -147,4 +148,4 @@ renderDrinksCarousel model displayXDrinks =
 getDrinkByIndex model index =
     Array.fromList model.drinks
         |> Array.get index
-        |> Maybe.withDefault (Drink "" "" "" 0.0 [] [] "" "")
+        |> Maybe.withDefault (Drink "" "" "" "" 0.0 [] [] "" "")
