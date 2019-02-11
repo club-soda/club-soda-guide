@@ -2,7 +2,7 @@
   <div class="w-100 h-100 mb4 mb0-ns">
     <div class="w-90 w-60-m w-40-ns absolute-center">
 
-    <h1 class="tc center f3  lh3 f2-ns lh2-ns roboto-slab">
+    <h1 class="tc center f3  lh3 f2-ns lh2-ns roboto-slab pt6 pt0-ns">
       The best low and no alcohol drinks and where to find them</h1>
       <div class="tc mt3">
         <%= form_for @conn, search_all_path(@conn, :index), [method: :get], fn f -> %>

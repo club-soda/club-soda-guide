@@ -39,6 +39,7 @@ defmodule CsGuideWeb.DrinkController do
           name: d.name,
           brand: d.brand.name,
           brandId: d.brand.entry_id,
+          brandSlug: d.brand.slug,
           abv: d.abv,
           drink_types: Enum.map(d.drink_types, fn t -> t.name end),
           drink_styles: Enum.map(d.drink_styles, fn t -> t.name end),

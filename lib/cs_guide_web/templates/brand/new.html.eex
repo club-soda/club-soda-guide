@@ -1,5 +1,23 @@
 <section class="center w-80 w-75-l mv6-ns mv5">
   <h2 class="f4 lh4">New Brand</h2>
-  <%= custom_render_autoform(@conn, :create, [{CsGuide.Resources.Brand, custom_labels: %{sold_aldi: "Sold on Aldi", sold_amazon: "Sold on Amazon", sold_asda: "Sold on Asda", sold_dd: "Sold on DryDrinker", sold_morrisons: "Sold on Morrisons", sold_sainsburys: "Sold on Sainsburys", sold_tesco: "Sold on Tesco", sold_waitrose: "Sold on Waitrose", sold_wb: "Sold on WiseBartender"}}], assigns: [changeset: @changeset], exclude: [:entry_id, :logo, :deleted, :drinks, :brand_images], update_field: :entry_id) %>
+  <%= custom_render_autoform(@conn,
+        :create,
+        [ {
+            CsGuide.Resources.Brand,
+            custom_labels: %{
+              sold_aldi: "Sold on Aldi",
+              sold_amazon: "Sold on Amazon",
+              sold_asda: "Sold on Asda",
+              sold_dd: "Sold on DryDrinker",
+              sold_morrisons: "Sold on Morrisons",
+              sold_sainsburys: "Sold on Sainsburys",
+              sold_tesco: "Sold on Tesco",
+              sold_waitrose: "Sold on Waitrose",
+              sold_wb: "Sold on WiseBartender"
+              }
+              }
+         ],
+         assigns: [changeset: @changeset],
+         exclude: [:entry_id, :slug, :logo, :deleted, :drinks, :brand_images], update_field: :entry_id) %>
   <span><%= link "Back", to: brand_path(@conn, :index) %></span>
 </section>

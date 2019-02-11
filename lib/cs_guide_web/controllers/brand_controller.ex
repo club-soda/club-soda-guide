@@ -60,14 +60,12 @@ defmodule CsGuideWeb.BrandController do
     end
   end
 
-  def show(conn, %{"name" => name}) do
+  def show(conn, %{"slug" => slug}) do
     dd_code = get_code("DryDrinker")
     wb_code = get_code("WiseBartender")
 
-    name = check_brand_name(name)
-
     brand =
-      Brand.get_by([name: name], case_insensitive: true)
+      Brand.get_by(slug: slug)
       |> Brand.preload(
         drinks: [
           :drink_images,
@@ -151,28 +149,28 @@ defmodule CsGuideWeb.BrandController do
     end
   end
 
-  def edit(conn, %{"name" => name}) do
-    brand = Brand.get_by([name: name], case_insensitive: true)
+  def edit(conn, %{"slug" => slug}) do
+    brand = Brand.get_by(slug: slug)
     changeset = Brand.changeset(brand, %{})
     render(conn, "edit.html", brand: brand, changeset: changeset)
   end
 
-  def update(conn, %{"name" => name, "brand" => brand_params}) do
-    brand = Brand.get_by([name: name], case_insensitive: true)
+  def update(conn, %{"slug" => slug, "brand" => brand_params}) do
+    brand = Brand.get_by(slug: slug)
 
     case brand |> Brand.changeset(brand_params) |> Brand.update() do
       {:ok, brand} ->
         conn
         |> put_flash(:info, "Brand updated successfully.")
-        |> redirect(to: brand_path(conn, :show, brand.name))
+        |> redirect(to: brand_path(conn, :show, brand.slug))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", brand: brand, changeset: changeset)
     end
   end
 
-  def delete(conn, %{"name" => name}) do
-    brand = Brand.get_by([name: name], case_insensitive: true)
+  def delete(conn, %{"slug" => slug}) do
+    brand = Brand.get_by(slug: slug)
     {:ok, _brand} = Brand.delete(brand)
 
     conn
@@ -180,8 +178,8 @@ defmodule CsGuideWeb.BrandController do
     |> redirect(to: brand_path(conn, :index))
   end
 
-  def add_photo(conn, %{"name" => name}) do
-    case Brand.get_by([name: name], case_insensitive: true) do
+  def add_photo(conn, %{"slug" => slug}) do
+    case Brand.get_by(slug: slug) do
       nil ->
         conn
         |> put_status(:not_found)
@@ -189,12 +187,12 @@ defmodule CsGuideWeb.BrandController do
         |> render("404.html")
 
       _brand ->
-        render(conn, "add_photo.html", name: name)
+        render(conn, "add_photo.html", slug: slug)
     end
   end
 
-  def add_cover_photo(conn, %{"name" => name}) do
-    case Brand.get_by([name: name], case_insensitive: true) do
+  def add_cover_photo(conn, %{"slug" => slug}) do
+    case Brand.get_by(slug: slug) do
       nil ->
         conn
         |> put_status(:not_found)
@@ -202,14 +200,14 @@ defmodule CsGuideWeb.BrandController do
         |> render("404.html")
 
       _brand ->
-        render(conn, "add_cover_photo.html", name: name)
+        render(conn, "add_cover_photo.html", slug: slug)
     end
   end
 
   def upload_photo(conn, params) do
     one = if params["cover_photo"], do: true, else: false
 
-    brand = Brand.get_by([name: params["name"]], case_insensitive: true)
+    brand = Brand.get_by(slug: params["slug"])
 
     CsGuide.Repo.transaction(fn ->
       with {:ok, brand_image} <-
@@ -225,7 +223,7 @@ defmodule CsGuideWeb.BrandController do
       end
     end)
     |> case do
-      {:ok, _} -> redirect(conn, to: brand_path(conn, :show, params["name"]))
+      {:ok, _} -> redirect(conn, to: brand_path(conn, :show, params["slug"]))
       {:error, _} -> render(conn, "add_photo.html", id: params["id"], error: true)
     end
   end

@@ -36,7 +36,7 @@ defmodule CsGuideWeb.Router do
     get("/", PageController, :index)
     post("/signup", SignupController, :create)
 
-    get("/brands/:name", BrandController, :show)
+    get("/brands/:slug", BrandController, :show)
     resources("/drinks", DrinkController, only: [:show])
     resources("/users", UserController, only: [:new, :create])
     get("/venues/:slug", VenueController, :show)
@@ -59,7 +59,7 @@ defmodule CsGuideWeb.Router do
     pipe_through([:browser, :admin])
 
     resources("/", AdminController, only: [:index])
-    resources("/brands", BrandController, except: [:show], param: "name")
+    resources("/brands", BrandController, except: [:show], param: "slug")
     resources("/drinks", DrinkController, except: [:show])
     resources("/wholesalers", WholesalerController, except: [:show])
     resources("/retailers", RetailerController, except: [:show])
@@ -74,11 +74,11 @@ defmodule CsGuideWeb.Router do
     resources("/discount_codes", DiscountCodeController)
 
     get("/drinks/:id/add_photo", DrinkController, :add_photo)
-    get("/brands/:name/add_cover_photo", BrandController, :add_cover_photo)
-    get("/brands/:name/add_photo", BrandController, :add_photo)
+    get("/brands/:slug/add_cover_photo", BrandController, :add_cover_photo)
+    get("/brands/:slug/add_photo", BrandController, :add_photo)
 
     post("/drinks/:id/", DrinkController, :upload_photo)
-    post("/brands/:name/", BrandController, :upload_photo)
+    post("/brands/:slug/", BrandController, :upload_photo)
   end
 
   scope "/admin", CsGuideWeb do
