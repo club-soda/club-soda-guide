@@ -18,6 +18,7 @@ defmodule CsGuideWeb.VenueControllerTest do
     phone_number: "01234567890",
     postcode: "EC1M 5AD",
     venue_name: "The Example Pub",
+    description: "A \r description \n with new lines\r\n",
     drinks: %{"AF Beer 1" => "on"},
     venue_types: %{"Bars" => "on"},
     num_cocktails: 2,
@@ -143,6 +144,7 @@ defmodule CsGuideWeb.VenueControllerTest do
 
       conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "The Example Pub"
+      assert html_response(conn, 200) =~ "A <br/> description <br/> with new lines<br/>"
       assert html_response(conn, 200) =~ "Alcohol Free Cocktails: 2"
 
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)

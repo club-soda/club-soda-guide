@@ -22,7 +22,7 @@
   </div>
   <%= if @venue.description do %>
     <p class="min-h5 pa3 mv4 mr5-ns br2 tl f5 lh5">
-      <%= raw @venue.description %>
+      <%= raw add_line_breaks(@venue.description) %>
     </p>
   <% else %>
     <p class="h5 bg-cs-light-gray pa3 mv4 mr5-ns br2 tl">
