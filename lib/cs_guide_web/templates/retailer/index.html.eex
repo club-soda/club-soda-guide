@@ -16,7 +16,9 @@
           <td class="pv3 pr3"><%= venue.venue_name %></td>
           <td class="pa3"><%= venue.website %></td>
           <td class="pv3 pa3-ns tr">
-            <span><%= link "Add drinks", to: retailer_path(@conn, :add_drinks, venue.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
+            <%= if venue.venue_name != "WiseBartender" && venue.venue_name != "DryDrinker" do %>
+              <span><%= link "Add drinks", to: retailer_path(@conn, :add_drinks, venue.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
+            <% end %>
             <span><%= link "Edit", to: retailer_path(@conn, :edit, venue.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
             <span>
               <%= link "Delete", to: venue_path(@conn, :delete, venue.entry_id),

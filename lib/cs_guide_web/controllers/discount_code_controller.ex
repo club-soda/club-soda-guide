@@ -17,7 +17,7 @@ defmodule CsGuideWeb.DiscountCodeController do
   end
 
   def create(conn, %{"discount_code" => discount_code_params}) do
-    retailer = discount_code_params["venue_name"] |> Map.keys() |> Enum.at(0)
+    retailer = discount_code_params["venue_name"]
     retailer_id = Venue.get_by(venue_name: retailer).id
     discount_code_params = Map.put(discount_code_params, "venue_id", retailer_id)
 
@@ -66,5 +66,4 @@ defmodule CsGuideWeb.DiscountCodeController do
     |> put_flash(:info, "Discount code deleted successfully.")
     |> redirect(to: discount_code_path(conn, :index))
   end
-
 end
