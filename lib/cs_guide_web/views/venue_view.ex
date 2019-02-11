@@ -48,6 +48,10 @@ defmodule CsGuideWeb.VenueView do
     values[type_name] || "bg-cs-black white"
   end
 
+  def add_line_breaks(str) do
+    String.replace(str, ~r{\r\n|\n|\r}, "<br/>")
+  end
+
   defp format_str(str) do
     str
     |> String.split(" ")
