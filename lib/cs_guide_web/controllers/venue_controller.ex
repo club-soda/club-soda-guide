@@ -257,7 +257,10 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def upload_photo(conn, params) do
-    venue = Venue.get(params["id"])
+    venue =
+      Venue.get(params["id"])
+      |> Venue.preload([:venue_images])
+      |> sortImagesByMostRecent()
 
     photo_number =
       cond do
@@ -288,8 +291,15 @@ defmodule CsGuideWeb.VenueController do
       end
     end)
     |> case do
-      {:ok, _} -> redirect(conn, to: venue_path(conn, :show, venue.slug))
-      {:error, _} -> render(conn, "add_photo.html", id: venue.entry_id, error: true)
+      {:ok, _} ->
+        redirect(conn, to: venue_path(conn, :show, venue.slug))
+
+      {:error, _} ->
+        render(conn, "add_photo.html",
+          id: venue.entry_id,
+          venue_images: venue.venue_images,
+          error: true
+        )
     end
   end
 

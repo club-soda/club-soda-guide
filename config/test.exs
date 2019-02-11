@@ -29,4 +29,4 @@ else
 end
 
 config :cs_guide,
-  ex_aws: Bep.Mock.ExAws
+  ex_aws: CsGuide.Mock.ExAws

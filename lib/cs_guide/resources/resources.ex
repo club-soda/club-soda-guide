@@ -5,6 +5,7 @@ defmodule CsGuide.Resources do
 
   import Ecto.Query, warn: false
   alias CsGuide.Repo
+  @ex_aws Application.get_env(:cs_guide, :ex_aws)
 
   alias CsGuide.Resources.Venue
 
@@ -79,8 +80,15 @@ defmodule CsGuide.Resources do
   def upload_photo(params, filename) do
     file = File.read!(params["photo"].path)
 
+    filename =
+      if Mix.env() == :test do
+        params["photo"].filename
+      else
+        filename
+      end
+
     Application.get_env(:ex_aws, :bucket)
     |> ExAws.S3.put_object(filename, file)
-    |> ExAws.request()
+    |> @ex_aws.request()
   end
 end

@@ -2,7 +2,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   use CsGuideWeb.ConnCase
   alias CsGuide.Fixtures
   alias CsGuide.{Resources, Categories}
-
+  alias CsGuide.Resources.Venue
   import CsGuide.SetupHelpers
 
   @upload %Plug.Upload{path: "test/support/good-file.jpg", filename: "good-file.jpg"}
@@ -26,24 +26,7 @@ defmodule CsGuideWeb.VenueControllerTest do
     num_cocktails: 2,
     slug: "the-example-pub-ec1-5ad",
     lat: "51.520973",
-    long: "-0.102894",
-    venue_images: @upload
-  }
-
-  @bad_image_upload_attrs %{
-    parent_company: "The Pub Co",
-    address: "number and road",
-    city: "London",
-    phone_number: "01234567890",
-    postcode: "EC1M 5AD",
-    venue_name: "The Example Pub",
-    drinks: %{"AF Beer 1" => "on"},
-    venue_types: %{"Bars" => "on"},
-    num_cocktails: 2,
-    slug: "the-example-pub-ec1-5ad",
-    lat: "51.520973",
-    long: "-0.102894",
-    venue_images: @bad_upload
+    long: "-0.102894"
   }
 
   @invalid_attrs %{phone_number: "", postcode: "", venue_name: ""}
@@ -115,14 +98,17 @@ defmodule CsGuideWeb.VenueControllerTest do
     setup [:create_venues, :admin_login]
 
     test "POST /add_photo with bad s3 upload", %{conn: conn} do
-      # wants slug
-      conn = post(conn, venue_path(conn, :create), venue: @bad_image_upload_attrs)
+      conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
+      venue = Venue.get_by(venue_name: "The Example Pub")
 
       conn =
         post(
           conn,
-          venue_path(conn, :add_photo),
-          slug: @bad_upload_details["slug"]
+          venue_path(conn, :upload_photo, venue.entry_id),
+          %{
+            "1": "",
+            photo: @bad_upload
+          }
         )
 
       assert html_response(conn, 200) =~ "Upload a photo for your venue"
@@ -130,9 +116,15 @@ defmodule CsGuideWeb.VenueControllerTest do
 
     test "POST /add_photo with correct details", %{conn: conn} do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
-      path = venue_path(conn, :add_photo)
-      conn = post(conn, path, client: @create_attrs)
-      assert html_response(conn, 200) =~ "The Pub Co"
+      venue = Venue.get_by(venue_name: "The Example Pub")
+
+      conn =
+        post(conn, venue_path(conn, :upload_photo, venue.entry_id), %{
+          "1": "",
+          photo: @upload
+        })
+
+      assert redirected_to(conn) == venue_path(conn, :show, venue.slug)
     end
   end
 
