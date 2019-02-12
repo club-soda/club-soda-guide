@@ -11,9 +11,9 @@ update_social_url = fn el, social_media_brand, url_template ->
       if String.starts_with?(social_media_value, "@") do
         cleaned_handle = String.slice(social_media_value, 1..-1)
 
-        url_template <> cleaned_handle
+        String.trim(url_template <> cleaned_handle)
       else
-        social_media_value
+        String.trim(social_media_value)
       end
   end
 end
@@ -50,7 +50,7 @@ update_urls = fn schema, preloads ->
   elements
   |> Enum.each(fn v ->
     fb = update_social_url.(v, :facebook, "https://www.facebook.com/")
-    twitter = update_social_url.(v, :twitter, "https://twitter.com/")
+    twitter = update_social_url.(v, :twitter, "https://www.twitter.com/")
     instagram = update_social_url.(v, :instagram, "https://www.instagram.com/")
     website = update_website.(v)
     updated_links = %{facebook: fb, twitter: twitter, instagram: instagram, website: website}
