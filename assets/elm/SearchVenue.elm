@@ -199,7 +199,7 @@ renderVenuseScorePills filter =
         filterName =
             case filter of
                 Just f ->
-                    VenueScore.getVenueScoreFilterName f
+                    "Score: " ++ VenueScore.getVenueScoreFilterName f
 
                 Nothing ->
                     ""
