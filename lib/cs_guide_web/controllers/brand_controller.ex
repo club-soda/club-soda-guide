@@ -4,6 +4,7 @@ defmodule CsGuideWeb.BrandController do
   alias CsGuide.Resources.{Brand, Venue, Drink}
   alias CsGuide.Images.BrandImage
   alias CsGuide.DiscountCode
+  alias CsGuideWeb.{VenueController, SearchVenueController}
   import Ecto.Query
 
   def index(conn, _params) do
@@ -64,7 +65,7 @@ defmodule CsGuideWeb.BrandController do
     wb_code = get_code("WiseBartender")
 
     brand =
-      Brand.get_by([slug: slug])
+      Brand.get_by(slug: slug)
       |> Brand.preload(
         drinks: [
           :drink_images,
@@ -75,6 +76,14 @@ defmodule CsGuideWeb.BrandController do
         ],
         brand_images: []
       )
+      |> Map.update(:venues, [], fn venues ->
+        venues
+        |> Enum.map(&VenueController.sortImagesByMostRecent/1)
+      end)
+      |> Map.update(:venues, [], fn venues ->
+        venues
+        |> Enum.map(&SearchVenueController.selectPhotoNumber1/1)
+      end)
 
     {drink_type, count} =
       Enum.map(brand.drinks, fn d ->
@@ -141,13 +150,13 @@ defmodule CsGuideWeb.BrandController do
   end
 
   def edit(conn, %{"slug" => slug}) do
-    brand = Brand.get_by([slug: slug])
+    brand = Brand.get_by(slug: slug)
     changeset = Brand.changeset(brand, %{})
     render(conn, "edit.html", brand: brand, changeset: changeset)
   end
 
   def update(conn, %{"slug" => slug, "brand" => brand_params}) do
-    brand = Brand.get_by([slug: slug])
+    brand = Brand.get_by(slug: slug)
 
     case brand |> Brand.changeset(brand_params) |> Brand.update() do
       {:ok, brand} ->
@@ -161,7 +170,7 @@ defmodule CsGuideWeb.BrandController do
   end
 
   def delete(conn, %{"slug" => slug}) do
-    brand = Brand.get_by([slug: slug])
+    brand = Brand.get_by(slug: slug)
     {:ok, _brand} = Brand.delete(brand)
 
     conn
@@ -170,7 +179,7 @@ defmodule CsGuideWeb.BrandController do
   end
 
   def add_photo(conn, %{"slug" => slug}) do
-    case Brand.get_by([slug: slug]) do
+    case Brand.get_by(slug: slug) do
       nil ->
         conn
         |> put_status(:not_found)
@@ -183,7 +192,7 @@ defmodule CsGuideWeb.BrandController do
   end
 
   def add_cover_photo(conn, %{"slug" => slug}) do
-    case Brand.get_by([slug: slug]) do
+    case Brand.get_by(slug: slug) do
       nil ->
         conn
         |> put_status(:not_found)
@@ -198,7 +207,7 @@ defmodule CsGuideWeb.BrandController do
   def upload_photo(conn, params) do
     one = if params["cover_photo"], do: true, else: false
 
-    brand = Brand.get_by([slug: params["slug"]])
+    brand = Brand.get_by(slug: params["slug"])
 
     CsGuide.Repo.transaction(fn ->
       with {:ok, brand_image} <-
@@ -217,5 +226,9 @@ defmodule CsGuideWeb.BrandController do
       {:ok, _} -> redirect(conn, to: brand_path(conn, :show, params["slug"]))
       {:error, _} -> render(conn, "add_photo.html", id: params["id"], error: true)
     end
+  end
+
+  defp check_brand_name(name) do
+    name |> String.split("-") |> Enum.join(" ") |> String.split("_") |> Enum.join("-")
   end
 end

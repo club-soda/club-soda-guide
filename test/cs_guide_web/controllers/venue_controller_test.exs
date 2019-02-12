@@ -2,8 +2,11 @@ defmodule CsGuideWeb.VenueControllerTest do
   use CsGuideWeb.ConnCase
   alias CsGuide.Fixtures
   alias CsGuide.{Resources, Categories}
-
+  alias CsGuide.Resources.Venue
   import CsGuide.SetupHelpers
+
+  @upload %Plug.Upload{path: "test/support/good-file.jpg", filename: "good-file.jpg"}
+  @bad_upload %Plug.Upload{path: "test/support/bad-file.jpg", filename: "bad-file.jpg"}
 
   @create_brand Fixtures.create_brand()
   @create_types Fixtures.create_types()
@@ -90,6 +93,40 @@ defmodule CsGuideWeb.VenueControllerTest do
       end)
 
     types
+  end
+
+  describe "Image uploading" do
+    setup [:create_venues, :admin_login]
+
+    test "POST /add_photo with bad s3 upload", %{conn: conn} do
+      conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
+      venue = Venue.get_by(venue_name: "The Example Pub")
+
+      conn =
+        post(
+          conn,
+          venue_path(conn, :upload_photo, venue.entry_id),
+          %{
+            "1": "",
+            photo: @bad_upload
+          }
+        )
+
+      assert html_response(conn, 200) =~ "Upload a photo for your venue"
+    end
+
+    test "POST /add_photo with correct details", %{conn: conn} do
+      conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
+      venue = Venue.get_by(venue_name: "The Example Pub")
+
+      conn =
+        post(conn, venue_path(conn, :upload_photo, venue.entry_id), %{
+          "1": "",
+          photo: @upload
+        })
+
+      assert redirected_to(conn) == venue_path(conn, :show, venue.slug)
+    end
   end
 
   describe "index" do

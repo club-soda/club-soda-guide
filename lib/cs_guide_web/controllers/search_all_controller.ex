@@ -3,6 +3,7 @@ defmodule CsGuideWeb.SearchAllController do
 
   alias CsGuide.Resources.{Drink, Venue}
   alias CsGuide.{Resources, PostcodeLatLong}
+  alias CsGuideWeb.{VenueController, SearchVenueController}
 
   def index(conn, params) do
     possible_postcode = params["term"] || ""
@@ -29,6 +30,8 @@ defmodule CsGuideWeb.SearchAllController do
         end)
       end)
       |> Enum.sort_by(&{5 - &1.cs_score, &1.venue_name})
+      |> Enum.map(&VenueController.sortImagesByMostRecent/1)
+      |> Enum.map(&SearchVenueController.selectPhotoNumber1/1)
 
     venue_cards = Enum.map(venues, fn v -> Venue.get_venue_card(v) end)
 

@@ -553,20 +553,32 @@ select {
   margin-top: 2rem;
 }
 
-.bg-venue {
+.bg-default-venue {
   height: 30vh;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
 }
 
+.bg-venue {
+  height: 30vh;
+  object-fit: cover;
+  object-position: center;
+}
+
 @media (min-width: 48em) {
+  .bg-default-venue {
+    height: 35vh;
+  }
   .bg-venue {
     height: 35vh;
   }
 }
 
 @media (min-width: 70em) {
+  .bg-default-venue {
+    height: 60vh;
+  }
   .bg-venue {
     height: 60vh;
   }

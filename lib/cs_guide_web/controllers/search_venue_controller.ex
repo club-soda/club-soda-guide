@@ -3,6 +3,7 @@ defmodule CsGuideWeb.SearchVenueController do
 
   alias CsGuide.Resources.Venue
   alias CsGuide.Categories.VenueType
+  alias CsGuideWeb.VenueController
 
   def index(conn, params) do
     latlong = params["ll"]
@@ -11,29 +12,32 @@ defmodule CsGuideWeb.SearchVenueController do
     term = params["term"] || ""
     venue_types = getVenueTypes()
 
-    cards = if latlong do
-      [lat_str, long_str] = String.split(latlong, ",")
-      {lat, _} = Float.parse(lat_str)
-      {long, _} = Float.parse(long_str)
+    cards =
+      if latlong do
+        [lat_str, long_str] = String.split(latlong, ",")
+        {lat, _} = Float.parse(lat_str)
+        {long, _} = Float.parse(long_str)
 
-      getVenueCardsByLatLong(lat,long)
-    else
-      getAllVenueCards()
-    end
+        getVenueCardsByLatLong(lat, long)
+      else
+        getAllVenueCards()
+      end
 
-    render(conn,
-           "index.html",
-           venues: cards,
-           term: term,
-           venue_types: venue_types,
-           postcode: postcode,
-           locationSearch: locationSearch)
+    render(
+      conn,
+      "index.html",
+      venues: cards,
+      term: term,
+      venue_types: venue_types,
+      postcode: postcode,
+      locationSearch: locationSearch
+    )
   end
 
   defp getVenueTypes do
     VenueType.all()
-    |> Enum.map(&(&1.name))
-    |> Enum.filter(&(String.downcase(&1) != "retailer" && String.downcase(&1) != "wholesaler" ))
+    |> Enum.map(& &1.name)
+    |> Enum.filter(&(String.downcase(&1) != "retailer" && String.downcase(&1) != "wholesaler"))
     |> Enum.sort()
   end
 
@@ -47,7 +51,18 @@ defmodule CsGuideWeb.SearchVenueController do
         end)
       end)
       |> Enum.sort_by(&{5 - &1.cs_score, &1.venue_name})
+      |> Enum.map(&VenueController.sortImagesByMostRecent/1)
+      |> Enum.map(&selectPhotoNumber1/1)
       |> Enum.map(&Venue.get_venue_card/1)
+  end
+
+  def selectPhotoNumber1(venue) do
+    Map.update(venue, :venue_images, [], fn images ->
+      images
+      |> Enum.filter(fn i ->
+        i.photo_number == 1
+      end)
+    end)
   end
 
   defp getVenueCardsByLatLong(lat, long) do

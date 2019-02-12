@@ -1,18 +1,15 @@
 <section class="relative">
   <%= if @is_authenticated do %>
-    <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.slug), class: "dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
+    <%= link "Upload Photos", to: venue_path(@conn, :add_photo, @venue.slug), class: "dn db-ns absolute top-2 right-4 btn-primary no-underline z-1" %>
   <% end %>
   <section class="mt5">
-
-    <%= if img = List.last(@venue.venue_images) do %>
-      <div class="db bg-venue w-100"
-        style="background-image: url('https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%= img.entry_id %>');">
-      </div>
+    <%= if @venue.venue_images != [] do %>
+      <div id="venue-carousel"></div>
     <% else %>
-      <div class="dn db-l bg-venue w-100"
+      <div class="dn db-l bg-default-venue w-100"
         style="background-image: url('/images/default-venue-img.jpg');">
       </div>
-      <div class="db dn-l bg-venue w-100"
+      <div class="db dn-l bg-default-venue w-100"
         style="background-image: url('/images/default-venue-img-2-1.jpg');">
       </div>
     <% end %>

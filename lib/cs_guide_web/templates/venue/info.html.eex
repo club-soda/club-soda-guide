@@ -1,6 +1,6 @@
 <div class="w-90 w-60-ns pt4 ph5-ns center tr">
   <%= if @is_authenticated do %>
-    <%= link "Upload Photo", to: venue_path(@conn, :add_photo, @venue.slug), class: "dib dn-ns btn-primary no-underline" %>
+    <%= link "Upload Photos", to: venue_path(@conn, :add_photo, @venue.slug), class: "dib dn-ns btn-primary no-underline" %>
   <% end %>
   <div class="flex-ns items-center tl flex-wrap">
     <h1 class="roboto-slab f2 lh2 dib-ns mr4-ns"><%= @venue.venue_name %></h1>
