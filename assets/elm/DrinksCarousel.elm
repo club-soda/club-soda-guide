@@ -133,7 +133,7 @@ view model =
         , div [ class "flex-ns flex-wrap w-90 center pv4-ns dn dib-ns" ]
             (renderDrinksCarousel model 3)
         , div [ class "flex-wrap w-90 center db dn-ns", id "carousel" ]
-            (renderDrinksCarousel model 0)
+            [ renderDrinksCarouselMobile model ]
         , img [ src "images/up-chevron.svg", alt "right arrow", onClick CarouselRight, class "dn db-ns f1 b pointer absolute-vertical-center right-2 rotate-90 h1" ] []
         ]
 
@@ -144,6 +144,11 @@ renderDrinksCarousel model displayXDrinks =
         |> List.map (\index -> getDrinkByIndex model <| modBy 12 index)
         |> List.indexedMap drinkCard
 
+renderDrinksCarouselMobile : Model -> Html Msg
+renderDrinksCarouselMobile model =
+    List.head model.drinks
+        |> Maybe.withDefault (Drink "" "" "" "" 0.0 [] [] "" "")
+        |> drinkCard -1
 
 getDrinkByIndex : Model -> Int -> Drink
 getDrinkByIndex model index =
