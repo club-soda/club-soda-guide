@@ -4,7 +4,7 @@ defmodule CsGuideWeb.DrinkControllerTest do
   import CsGuide.SetupHelpers
 
   alias CsGuide.{Resources, Categories, Fixtures}
-
+  alias CsGuideWeb.DrinkController
   @create_types Fixtures.create_types()
   @create_brand Fixtures.create_brand()
 
@@ -129,6 +129,14 @@ defmodule CsGuideWeb.DrinkControllerTest do
 
       conn = get(conn, drink_path(conn, :show, drink.entry_id))
       assert html_response(conn, 200) =~ "Updated AF Beer 1"
+    end
+  end
+
+  describe "tests drink carousel shuffling" do
+    test "drinks are shuffled by weighting" do
+      drinks = [%{weighting: 1, drink: "a"},%{weighting: 1, drink: "b"},%{weighting: 2, drink: "c"},%{weighting: 3, drink: "d"}]
+      drinks2 = [%{weighting: 1, drink: "b"},%{weighting: 1, drink: "a"},%{weighting: 2, drink: "c"},%{weighting: 3, drink: "d"}]
+      assert DrinkController.shuffle_drinks(drinks) == drinks || drinks2
     end
   end
 
