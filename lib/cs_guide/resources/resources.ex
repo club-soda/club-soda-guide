@@ -5,7 +5,7 @@ defmodule CsGuide.Resources do
 
   import Ecto.Query, warn: false
   alias CsGuide.Repo
-  @ex_aws Application.get_env(:cs_guide, :ex_aws)
+  @ex_aws Application.get_env(:ex_aws, :ex_aws_request)
 
   alias CsGuide.Resources.Venue
 

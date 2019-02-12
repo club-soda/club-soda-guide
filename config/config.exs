@@ -25,7 +25,9 @@ config :logger, :console,
 
 config :ex_aws,
   region: System.get_env("AWS_S3_REGION"),
-  bucket: System.get_env("AWS_S3_BUCKET")
+  bucket: System.get_env("AWS_S3_BUCKET"),
+  ex_aws_request: ExAws
+
 
 config :fields, Fields.AES,
   # get the ENCRYPTION_KEYS env variable

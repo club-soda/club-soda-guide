@@ -28,5 +28,5 @@ else
   pool: Ecto.Adapters.SQL.Sandbox
 end
 
-config :cs_guide,
-  ex_aws: CsGuide.Mock.ExAws
+config :ex_aws,
+  ex_aws_request: CsGuide.Mock.ExAws
