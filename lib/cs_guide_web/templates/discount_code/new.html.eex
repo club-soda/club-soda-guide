@@ -5,7 +5,7 @@
     {CsGuide.DiscountCode, exclude: [:entry_id, :deleted, :venue_id, :venue]},
   """
   <div class="form-group discount_code_venue_id-group">
-  <h4 class="pt2 pb2 f6 lh6">Retailer</h4>
+  <h4 class="pt2 pb2 f6 lh6">Retailer:</h4>
 
     <label for="discount_code_venue_name_DryDrinker" class="f6">DryDrinker</label>
     <input type="radio" id="discount_code_venue_name_drydrinker" name="discount_code[venue_name]" value="DryDrinker" class="form-control">
