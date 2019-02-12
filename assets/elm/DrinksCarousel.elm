@@ -144,14 +144,13 @@ renderDrinksCarousel model displayXDrinks =
         |> List.map (\index -> getDrinkByIndex model <| modBy 12 index)
         |> List.indexedMap drinkCard
 
-
 renderDrinksCarouselMobile : Model -> Html Msg
 renderDrinksCarouselMobile model =
     List.head model.drinks
         |> Maybe.withDefault (Drink "" "" "" "" 0.0 [] [] "" "")
         |> drinkCard -1
 
-
+getDrinkByIndex : Model -> Int -> Drink
 getDrinkByIndex model index =
     Array.fromList model.drinks
         |> Array.get index

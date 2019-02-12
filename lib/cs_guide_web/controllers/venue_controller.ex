@@ -3,6 +3,7 @@ defmodule CsGuideWeb.VenueController do
 
   alias CsGuide.Resources.{Venue, Drink, Brand}
   alias CsGuide.Images.VenueImage
+  alias CsGuideWeb.SearchVenueController
 
   import Ecto.Query, only: [from: 2, subquery: 1]
 
@@ -64,6 +65,50 @@ defmodule CsGuideWeb.VenueController do
     end
   end
 
+  def json_index(conn, _params) do
+    slug =
+      conn.req_headers
+      |> Enum.into(%{})
+      |> Map.get("referer")
+      |> String.split("/")
+      |> List.last()
+
+    venue =
+      Venue.get_by(slug: slug)
+      |> Venue.preload(
+        drinks: [:brand, :drink_types, :drink_styles, :drink_images],
+        venue_types: [],
+        venue_images: [],
+        discount_codes: []
+      )
+      |> sortImagesByMostRecent()
+
+    venue_images =
+      [
+        getPhotoOfPhotoNumber(venue, 1),
+        getPhotoOfPhotoNumber(venue, 2),
+        getPhotoOfPhotoNumber(venue, 3),
+        getPhotoOfPhotoNumber(venue, 4)
+      ]
+      |> Enum.filter(fn i -> i != false end)
+
+    json(
+      conn,
+      venue_images
+      |> Enum.slice(0, 4)
+      |> Enum.map(fn i ->
+        %{
+          photoUrl:
+            "https://s3-eu-west-1.amazonaws.com/#{Application.get_env(:ex_aws, :bucket)}/#{
+              i.entry_id
+            }",
+          photoNumber: i.photo_number,
+          venueId: i.venue_id
+        }
+      end)
+    )
+  end
+
   def show(conn, %{"slug" => slug}) do
     venue =
       Venue.get_by(slug: slug)
@@ -74,11 +119,13 @@ defmodule CsGuideWeb.VenueController do
         discount_codes: []
       )
 
-    images = Enum.sort_by(venue.venue_images, fn i -> i.id end)
-    venue = Map.put(venue, :venue_images, images)
+    venue = sortImagesByMostRecent(venue)
 
-    nearby_venues = getVenueCardsByLatLong(venue.lat, venue.long, venue.venue_name)
-                    |> Enum.take(4)
+    nearby_venues =
+      getVenueCardsByLatLong(venue.lat, venue.long, venue.venue_name)
+      |> Enum.take(4)
+      |> Enum.map(&sortImagesByMostRecent/1)
+      |> Enum.map(&SearchVenueController.selectPhotoNumber1/1)
 
     if venue != nil do
       venue_owner = conn.assigns[:venue_id] == venue.id
@@ -198,15 +245,44 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def add_photo(conn, %{"slug" => slug}) do
-    venue = Venue.get_by(slug: slug)
-    render(conn, "add_photo.html", id: venue.entry_id)
+    venue =
+      Venue.get_by(slug: slug)
+      |> Venue.preload([:venue_images])
+      |> sortImagesByMostRecent()
+
+    render(conn, "add_photo.html",
+      id: venue.entry_id,
+      venue_images: venue.venue_images
+    )
   end
 
   def upload_photo(conn, params) do
-    venue = Venue.get(params["id"])
+    venue =
+      Venue.get(params["id"])
+      |> Venue.preload([:venue_images])
+      |> sortImagesByMostRecent()
+
+    photo_number =
+      cond do
+        params["1"] ->
+          1
+
+        params["2"] ->
+          2
+
+        params["3"] ->
+          3
+
+        params["4"] ->
+          4
+
+        true ->
+          1
+      end
 
     CsGuide.Repo.transaction(fn ->
-      with {:ok, venue_image} <- VenueImage.insert(%{venue: params["id"]}),
+      with {:ok, venue_image} <-
+             VenueImage.insert(%{venue: params["id"], photo_number: photo_number}),
            {:ok, _} <- CsGuide.Resources.upload_photo(params, venue_image.entry_id) do
         {:ok, venue_image}
       else
@@ -215,8 +291,15 @@ defmodule CsGuideWeb.VenueController do
       end
     end)
     |> case do
-      {:ok, _} -> redirect(conn, to: venue_path(conn, :show, venue.slug))
-      {:error, _} -> render(conn, "add_photo.html", id: venue.entry_id, error: true)
+      {:ok, _} ->
+        redirect(conn, to: venue_path(conn, :show, venue.slug))
+
+      {:error, _} ->
+        render(conn, "add_photo.html",
+          id: venue.entry_id,
+          venue_images: venue.venue_images,
+          error: true
+        )
     end
   end
 
@@ -253,6 +336,22 @@ defmodule CsGuideWeb.VenueController do
     end)
     |> Enum.filter(fn v ->
       v.venue_name != venue_name
+    end)
+  end
+
+  def sortImagesByMostRecent(venue) do
+    Map.update(venue, :venue_images, [], fn images ->
+      images
+      |> Enum.sort(fn img1, img2 ->
+        img1.id >= img2.id
+      end)
+    end)
+  end
+
+  defp getPhotoOfPhotoNumber(venue, photo_number) do
+    venue.venue_images
+    |> Enum.find(false, fn i ->
+      i.photo_number == photo_number
     end)
   end
 end

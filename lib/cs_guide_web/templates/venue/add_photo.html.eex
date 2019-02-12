@@ -1,18 +1,8 @@
 <section class="center w-80 w-75-l mv6">
-  <h2 class="f4 lh4">Upload a photo for your venue</h2>
-
-  <%= form_for @conn, venue_path(@conn, :upload_photo, @id), [multipart: true], fn f -> %>
-    <div class="form-group mb4">
-      <label class="db pt4 pb3">Select venue photo</label>
-      <%= file_input f, :photo, class: "form-control" %>
-      <%= if assigns[:error] do %>
-      <p class="f5 lh5 red">Error uploading image, please try again or an alternative image.</p>
-      <% end %>
-    </div>
-
-    <div class="form-group">
-      <%= submit "Submit", class: "btn btn-primary", id: "submit-photo" %>
-    </div>
-  <% end %>
+  <h2 class="f4 lh4 pb3">Upload a photo for your venue</h2>
+  <%= component("venue_image_upload", photo_number: 1, id: @id, conn: @conn, venue_images: @venue_images) %>
+  <%= component("venue_image_upload", photo_number: 2, id: @id, conn: @conn, venue_images: @venue_images) %>
+  <%= component("venue_image_upload", photo_number: 3, id: @id, conn: @conn, venue_images: @venue_images) %>
+  <%= component("venue_image_upload", photo_number: 4, id: @id, conn: @conn, venue_images: @venue_images) %>
 
 </section>

@@ -300,7 +300,7 @@ view model =
                     ++ List.map renderPillAbv abvPills
             , Criteria.view criteriaConfig model.drinkFilters model.typesAndStyles
             , Criteria.view abvConfig model.abvFilter Abv.abvFilters
-            , div [ class "relative center w-90" ]
+            , div [ class "relative center" ]
                 [ div [ class "flex-ns flex-wrap pt3 pb4-ns db dib-ns" ]
                     (filterDrinks model)
                 ]

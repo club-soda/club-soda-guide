@@ -34,6 +34,7 @@ defmodule CsGuideWeb.DrinkController do
         &>=/2
       )
       |> Enum.slice(0, 12)
+      |> shuffle_drinks()
       |> Enum.map(fn d ->
         %{
           name: d.name,
@@ -137,5 +138,12 @@ defmodule CsGuideWeb.DrinkController do
       {:ok, _} -> redirect(conn, to: drink_path(conn, :show, params["id"]))
       {:error, _} -> render(conn, "add_photo.html", id: params["id"], error: true)
     end
+  end
+
+  def shuffle_drinks(drinks) do
+    drinks
+    |> Enum.chunk_by(&(&1.weighting))
+    |> Enum.map(&Enum.shuffle/1)
+    |> List.flatten()
   end
 end

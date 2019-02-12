@@ -6,6 +6,7 @@ defmodule CsGuide.Images.VenueImage do
   schema "venue_images" do
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
+    field(:photo_number, :integer)
 
     belongs_to(:venue, CsGuide.Resources.Venue)
 
@@ -15,7 +16,7 @@ defmodule CsGuide.Images.VenueImage do
   @doc false
   def changeset(brand, attrs) do
     brand
-    |> cast(attrs, [:venue_id])
+    |> cast(attrs, [:venue_id, :photo_number])
   end
 
   def insert(attrs) do
