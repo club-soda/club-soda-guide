@@ -54,4 +54,5 @@
   <%= link "Discount Codes", to: discount_code_path(@conn, :index), class: "mv3 db cs-black" %>
   <%= link "Wholesalers", to: wholesaler_path(@conn, :index), class: "mv3 db cs-black" %>
   <%= link "Static Pages", to: static_page_path(@conn, :index), class: "db mv3 cs-black" %>
+  <%= link "Sponsor", to: sponsor_path(@conn, :index), class: "db mv3 cs-black" %>
 </section>

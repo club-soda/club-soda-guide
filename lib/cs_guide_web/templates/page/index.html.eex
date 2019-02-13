@@ -77,6 +77,12 @@
   </div>
 </section>
 
+<section class="db">
+  <%= if @sponsor != nil do %>
+    <%= raw @sponsor.body %>
+  <% end %>
+</section>
+
 <script>
   var useLocation = document.getElementById("use-location");
   var useLocationMobile = document.getElementById("use-location-mobile");

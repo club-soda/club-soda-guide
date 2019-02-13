@@ -72,6 +72,7 @@ defmodule CsGuideWeb.Router do
     resources("/drink_types", DrinkTypeController)
     resources("/drink_styles", DrinkStyleController)
     resources("/discount_codes", DiscountCodeController)
+    resources("/sponsor", SponsorController)
 
     get("/drinks/:id/add_photo", DrinkController, :add_photo)
     get("/brands/:slug/add_cover_photo", BrandController, :add_cover_photo)
