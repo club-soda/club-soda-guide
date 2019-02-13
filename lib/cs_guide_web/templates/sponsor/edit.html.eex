@@ -1,0 +1,9 @@
+<section class="center w-80 w-75-l mv6-ns mv5">
+  <h2 class="f4 lh4">Edit Sponsor</h2>
+
+    <%= custom_render_autoform(@conn, :update,
+    [{CsGuide.Sponsor, custom_labels: %{show: "Display on the landing page:"}}],
+    exclude: [:entry_id, :deleted], path: sponsor_path(@conn, :update, @sponsor.entry_id), assigns: [changeset: @changeset, sponsor: @sponsor], update_field: :entry_id, assoc_query: &query/1) %>
+
+  <span><%= link "Back", to: sponsor_path(@conn, :index) %></span>
+</section>

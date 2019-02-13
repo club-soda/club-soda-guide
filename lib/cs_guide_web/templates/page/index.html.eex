@@ -57,6 +57,12 @@
   </div>
 </section>
 
+<section class="db">
+  <%= if @sponsor != nil do %>
+    <%= raw @sponsor.body %>
+  <% end %>
+</section>
+
 <section class="">
   <div class="mv6 mh5-l shadow-4 bg-nominate-venue">
     <div class="black-gradient w-100 h-100 relative">

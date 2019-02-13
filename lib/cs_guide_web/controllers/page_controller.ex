@@ -2,6 +2,7 @@ defmodule CsGuideWeb.PageController do
   use CsGuideWeb, :controller
   alias CsGuide.Resources.Venue
   alias CsGuideWeb.{VenueController, SearchVenueController}
+  alias CsGuide.Sponsor
 
   def index(conn, _params) do
     venues =
@@ -17,6 +18,11 @@ defmodule CsGuideWeb.PageController do
       end)
       |> Enum.map(&SearchVenueController.selectPhotoNumber1/1)
 
-    render(conn, "index.html", venues: venues)
+    sponsor = Sponsor.getShowingSponsor() || nil
+
+    render(conn, "index.html",
+      venues: venues,
+      sponsor: sponsor
+    )
   end
 end

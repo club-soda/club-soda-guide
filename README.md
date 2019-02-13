@@ -102,6 +102,7 @@ corresponding urls:
   - Discount Codes `/admin/discount_codes`
 - Wholesalers `/admin/wholesalers`
 - Static Pages `/admin/static_pages`
+- Sponsors `/admin/sponsor`
 
 All of these links are also available by visiting `/admin`.
 
@@ -139,6 +140,33 @@ This is what you will see on the page:
 As you can see, some of these elements already have default styling for sizing.
 However if you wish to style an element in an alternative way to what you see here
 you can use [inline styling](https://www.w3schools.com/css/css_howto.asp).
+
+## Landing Page Sponsor
+
+On the landing page there is a section before the footer where an admin can add
+a sponsor. To do this they go to `admin/sponsor` and select 'New Sponsor'. The
+name field is just for the admin's reference and doesn't display anywhere on the
+site in the public view so it doesn't matter what name you give. The body is
+where the admin puts in html that they wish to display above the footer. The
+html is flexible to be whatever you wish so you can style it or put in an image
+for example. An image must be hosted however so you don't upload it in the admin
+area, you just put in the url like this:
+
+```
+<div class="db tc">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZd4vv6b9hAcNuzR2rurs5aiKQtVVy6iAp4WrF30LrVrQrI615DA" class="w-50 w-20-ns" />
+</div>
+```
+
+This is how it would look (above and below the CS image are the other parts of
+the landing page and footer):
+
+![example of sponsor image](https://user-images.githubusercontent.com/16775804/52727792-e3d8e180-2fad-11e9-8651-e6b4f619d074.png)
+
+Only one sponsor will be displayed on the landing page at a time, the sponsor
+which displays is that the one that has the 'Display on the landing page' box
+ticked. When you tick this box on one sponsor it will reset all other sponsors
+so they no longer display on the landing page.
 
 ## Brand pages
 

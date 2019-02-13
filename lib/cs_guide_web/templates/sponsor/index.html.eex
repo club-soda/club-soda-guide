@@ -1,0 +1,26 @@
+<section class="center w-80 w-75-l mv6">
+  <h2 class="f4 lh4 dib">All Sponsors</h2>
+  <span class="fr"><%= link "New Sponsor", to: sponsor_path(@conn, :new), class: "btn-primary no-underline" %></span>
+
+  <table class="mt3 mb5 w-100">
+    <thead>
+      <tr class="tl">
+        <th class="pv3 pr3 f5 lh5 b">Sponsor</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for sponsor <- @sponsors do %>
+        <%= if sponsor != nil do %>
+          <tr class="bt bb b--cs-light-gray">
+            <td class="pv3 pr3"><%= sponsor.name %></td>
+            <td class="text-right">
+              <span><%= link "Edit", to: sponsor_path(@conn, :edit, sponsor.entry_id), class: "ph3 pv3-ns cs-mid-blue" %></span>
+              <span><%= link "Delete", to: sponsor_path(@conn, :delete, sponsor.entry_id), method: :delete, data: [confirm: "Are you sure?"], class: "ph3 pv3-ns cs-mid-blue" %></span>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</section>
