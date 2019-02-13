@@ -129,12 +129,12 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div [ class "relative" ]
-        [ img [ src "images/up-chevron.svg", alt "left arrow", class "dn db-ns f1 b pointer absolute-vertical-center left-2 rotate-270 h1", onClick CarouselLeft ] []
+        [ img [ src "images/up-chevron.svg", alt "left arrow", class "z-max f1 b pointer absolute-vertical-center left-1 left-2-ns rotate-270 h1", onClick CarouselLeft ] []
         , div [ class "flex-ns flex-wrap w-90 center pv4-ns dn dib-ns" ]
             (renderDrinksCarousel model 3)
         , div [ class "flex-wrap w-90 center db dn-ns", id "carousel" ]
-            [ renderDrinksCarouselMobile model ]
-        , img [ src "images/up-chevron.svg", alt "right arrow", onClick CarouselRight, class "dn db-ns f1 b pointer absolute-vertical-center right-2 rotate-90 h1" ] []
+            (renderDrinksCarouselMobile model)
+        , img [ src "images/up-chevron.svg", alt "right arrow", onClick CarouselRight, class "z-max f1 b pointer absolute-vertical-center right-1 right-2-ns rotate-90 h1" ] []
         ]
 
 
@@ -144,11 +144,13 @@ renderDrinksCarousel model displayXDrinks =
         |> List.map (\index -> getDrinkByIndex model <| modBy 12 index)
         |> List.indexedMap drinkCard
 
-renderDrinksCarouselMobile : Model -> Html Msg
+
+renderDrinksCarouselMobile : Model -> List (Html Msg)
 renderDrinksCarouselMobile model =
-    List.head model.drinks
-        |> Maybe.withDefault (Drink "" "" "" "" 0.0 [] [] "" "")
-        |> drinkCard -1
+    [ model.carouselIndex ]
+        |> List.map (\index -> getDrinkByIndex model <| modBy 12 index)
+        |> List.indexedMap (\i c -> drinkCard (negate (i + 1)) c)
+
 
 getDrinkByIndex : Model -> Int -> Drink
 getDrinkByIndex model index =
