@@ -1,4 +1,4 @@
 <section class="center w-80 w-75-l mv6">
   <h2 class="f4 lh4">Upload a cover photo for this brand</h2>
-  <%= component("image_upload", upload_type: "cover_photo", name: @name, conn: @conn, category: "brand") %>
+  <%= component("image_upload", upload_type: "cover_photo", slug: @slug, conn: @conn, category: "brand") %>
 </section>
