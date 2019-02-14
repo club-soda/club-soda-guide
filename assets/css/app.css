@@ -681,3 +681,11 @@ i {
 .mw-1500px {
   max-width: 1500px;
 }
+
+.left-0-5 {
+  left: -0.5rem;
+}
+
+.right-0-5 {
+  right: -0.5rem;
+}
