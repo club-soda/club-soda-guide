@@ -2,57 +2,57 @@
   <h1 class="f4 lh4">Admin Dashboard</h1>
   <div class="mv3">
     <div class="w-20-ns dib-ns">
-      <%= link "Brands", to: brand_path(@conn, :index), class: "cs-black" %>
+      <%= link "Brands", to: brand_path(@conn, :index), class: "btn-primary no-underline db" %>
     </div>
-    <div class="pv4 pv0-ns db dib-ns">
-      <%= link "Download brands", to: csv_path(@conn, :export, data: "brands"), class: "btn-primary no-underline" %>
+    <div class="pv4 pv0-ns ph4-ns db dib-ns">
+      <%= link "Download brands", to: csv_path(@conn, :export, data: "brands"), class: "cs-black" %>
     </div>
-    <%= link "Download brands with drinks", to: csv_path(@conn, :export, data: "brands-drinks"), class: "btn-primary no-underline" %>
+    <%= link "Download brands with drinks", to: csv_path(@conn, :export, data: "brands-drinks"), class: "cs-black" %>
   </div>
   <div class="mt4 mt3-ns mb3">
     <div class="w-20-ns dib-ns">
-      <%= link "Drinks", to: drink_path(@conn, :index), class: "cs-black" %>
+      <%= link "Drinks", to: drink_path(@conn, :index), class: "btn-primary no-underline db" %>
     </div>
-    <div class="pv4 pv0-ns db dib-ns">
-      <%= link "Download drinks", to: csv_path(@conn, :export, data: "drinks"), class: "btn-primary no-underline" %>
-    </div>
-  </div>
-  <div class="mv3">
-    <div class="w-20-ns dib-ns">
-      <%= link "Drink Types", to: drink_type_path(@conn, :index), class: "cs-black" %>
-    </div>
-    <div class="pv4 pv0-ns db dib-ns">
-      <%= link "Download drink types", to: csv_path(@conn, :export, data: "drink-types"), class: "btn-primary no-underline" %>
+    <div class="pv4 pv0-ns ph4-ns db dib-ns">
+      <%= link "Download drinks", to: csv_path(@conn, :export, data: "drinks"), class: "cs-black" %>
     </div>
   </div>
   <div class="mv3">
     <div class="w-20-ns dib-ns">
-      <%= link "Drink Styles", to: drink_style_path(@conn, :index), class: "cs-black" %>
+      <%= link "Drink Types", to: drink_type_path(@conn, :index), class: "btn-primary no-underline db" %>
     </div>
-    <div class="pv4 pv0-ns db dib-ns">
-      <%= link "Download drink styles", to: csv_path(@conn, :export, data: "drink-styles"), class: "btn-primary no-underline" %>
+    <div class="pv4 pv0-ns ph4-ns db dib-ns">
+      <%= link "Download drink types", to: csv_path(@conn, :export, data: "drink-types"), class: "cs-black" %>
     </div>
   </div>
   <div class="mv3">
     <div class="w-20-ns dib-ns">
-      <%= link "Venues", to: venue_path(@conn, :index), class: "cs-black" %>
+      <%= link "Drink Styles", to: drink_style_path(@conn, :index), class: "btn-primary no-underline db" %>
     </div>
-    <div class="pv4 pv0-ns db dib-ns">
-      <%= link "Download venues", to: csv_path(@conn, :export, data: "venues"), class: "btn-primary no-underline" %>
+    <div class="pv4 pv0-ns ph4-ns db dib-ns">
+      <%= link "Download drink styles", to: csv_path(@conn, :export, data: "drink-styles"), class: "cs-black" %>
     </div>
-    <%= link "Download venues with drinks", to: csv_path(@conn, :export, data: "venues-drinks"), class: "btn-primary no-underline" %>
+  </div>
+  <div class="mv3">
+    <div class="w-20-ns dib-ns">
+      <%= link "Venues", to: venue_path(@conn, :index), class: "btn-primary no-underline db" %>
+    </div>
+    <div class="pv4 pv0-ns ph4-ns db dib-ns">
+      <%= link "Download venues", to: csv_path(@conn, :export, data: "venues"), class: "cs-black" %>
+    </div>
+    <%= link "Download venues with drinks", to: csv_path(@conn, :export, data: "venues-drinks"), class: "cs-black" %>
   </div>
   <div class="mt4 mt3-ns mb3">
     <div class="w-20-ns dib-ns">
-      <%= link "Venue Types", to: venue_type_path(@conn, :index), class: "cs-black" %>
+      <%= link "Venue Types", to: venue_type_path(@conn, :index), class: "btn-primary no-underline db" %>
     </div>
-    <div class="pv4 pv0-ns db dib-ns">
-      <%= link "Download venue types", to: csv_path(@conn, :export, data: "venue-types"), class: "btn-primary no-underline" %>
+    <div class="pv4 pv0-ns ph4-ns db dib-ns">
+      <%= link "Download venue types", to: csv_path(@conn, :export, data: "venue-types"), class: "cs-black" %>
     </div>
   </div>
-  <%= link "Retailers", to: retailer_path(@conn, :index), class: "mv3 db cs-black" %>
-  <%= link "Discount Codes", to: discount_code_path(@conn, :index), class: "mv3 db cs-black" %>
-  <%= link "Wholesalers", to: wholesaler_path(@conn, :index), class: "mv3 db cs-black" %>
-  <%= link "Static Pages", to: static_page_path(@conn, :index), class: "db mv3 cs-black" %>
-  <%= link "Sponsor", to: sponsor_path(@conn, :index), class: "db mv3 cs-black" %>
+  <%= link "Retailers", to: retailer_path(@conn, :index), class: "mv3 w-20-ns db btn-primary no-underline" %>
+  <%= link "Discount Codes", to: discount_code_path(@conn, :index), class: "mv3 w-20-ns db btn-primary no-underline" %>
+  <%= link "Wholesalers", to: wholesaler_path(@conn, :index), class: "mv3 w-20-ns db btn-primary no-underline" %>
+  <%= link "Static Pages", to: static_page_path(@conn, :index), class: "db w-20-ns mv3 btn-primary no-underline" %>
+  <%= link "Sponsor", to: sponsor_path(@conn, :index), class: "db w-20-ns mv3 btn-primary no-underline" %>
 </section>
