@@ -129,12 +129,12 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div [ class "relative" ]
-        [ img [ src "images/up-chevron.svg", alt "left arrow", class "z-1 f1 b pointer absolute-vertical-center left-0-5 left-2-ns rotate-270 h1", onClick CarouselLeft ] []
+        [ img [ src "images/up-chevron.svg", alt "left arrow", class "z-1 f1 b pointer absolute-vertical-center left-0-5 left-2-l rotate-270 h1", onClick CarouselLeft ] []
         , div [ class "flex-ns flex-wrap w-90 center pv4-ns dn dib-ns" ]
             (renderDrinksCarousel model 3)
         , div [ class "flex-wrap w-90 center db dn-ns", id "carousel" ]
             (renderDrinksCarouselMobile model)
-        , img [ src "images/up-chevron.svg", alt "right arrow", onClick CarouselRight, class "z-1 f1 b pointer absolute-vertical-center right-0-5 right-2-ns rotate-90 h1" ] []
+        , img [ src "images/up-chevron.svg", alt "right arrow", onClick CarouselRight, class "z-1 f1 b pointer absolute-vertical-center right-0-5 right-2-l rotate-90 h1" ] []
         ]
 
 

@@ -681,12 +681,22 @@ i {
 .mw-1500px {
   max-width: 1500px;
 }
-@media (max-width: 48em ) {
+
+.left-0-5 {
+  left: -0.5rem;
+}
+
+.right-0-5 {
+  right: -0.5rem;
+}
+
+@media (min-width: 48em ) and (max-width: 64em){
   .left-0-5 {
-    left: -0.5rem;
+    left: 0.5rem;
   }
 
   .right-0-5 {
-    right: -0.5rem;
+    right: 0.5rem;
   }
 }
+
