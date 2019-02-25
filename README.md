@@ -188,7 +188,10 @@ a link with the name of the retailer will then appear under the 'where to buy'
 title and clicking that link will take you to the appropriate site with a search
 made for the brand of that drink on that site. Admins have the ability to add a
 discount code that displays underneath links for DryDrinker and WiseBartender
-using the options available at `/admin/discount_codes`.
+using the options available at `/admin/discount_codes`. Each discount code can
+only apply to one retailer so if you wanted to give DryDrinker and WiseBartender
+the same code you would need to create the code twice (once for DD and once for
+WB).
 
 To add a retailer not included in the 'New brand' form list go to
 `/admin/retailers/new`. There you can fill in the details of your new retailer.
