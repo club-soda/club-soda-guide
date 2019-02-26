@@ -21,6 +21,18 @@ defmodule CsGuideWeb.BrandViewTest do
     ]
   }
 
+  @venues [
+    %CsGuide.Resources.Venue{
+      venue_types: [%{name: "retailer"}]
+    },
+    %CsGuide.Resources.Venue{
+      venue_types: [%{name: "wholesaler"}]
+    },
+    %CsGuide.Resources.Venue{
+      venue_types: [%{name: "type1"}]
+    }
+  ]
+
   test "No venue type retail found" do
     assert  any_type?(@brand, "retail") == false
   end
@@ -29,4 +41,11 @@ defmodule CsGuideWeb.BrandViewTest do
     assert  any_type?(@brand, "type3") == true
   end
 
+  test "retailers and wholesalers are filtered out" do
+    assert filter_retailer_wholesaler(@venues) == [
+             %CsGuide.Resources.Venue{
+               venue_types: [%{name: "type1"}]
+             }
+           ]
+  end
 end
