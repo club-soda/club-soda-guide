@@ -700,3 +700,12 @@ i {
   }
 }
 
+@media (min-width: 64em ){
+  .left-2-l {
+    left: 2rem;
+  }
+
+  .right-2-l {
+    right: 2rem;
+  }
+}
