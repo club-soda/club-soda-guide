@@ -33,7 +33,7 @@ defmodule CsGuideWeb.UserControllerTest do
   describe "new user" do
     test "renders form", %{conn: conn} do
       conn = get(conn, user_path(conn, :new))
-      assert html_response(conn, 200) =~ "Create a Profile"
+      assert html_response(conn, 200) =~ "Create a Venue Listing"
     end
   end
 
