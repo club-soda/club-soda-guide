@@ -18,7 +18,7 @@ defmodule CsGuideWeb.BrandView do
     |> sort_by_cs_score()
   end
 
-  def filter_retailers_wholesalers(venues) do
+  def filter_retailer_wholesaler(venues) do
     venues
     |> Enum.filter(fn v ->
       !Enum.any?(v.venue_types, fn t ->

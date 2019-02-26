@@ -134,11 +134,11 @@
     </div>
   </section>
 
-  <%= if get_venues(@brand) |> filter_retailers_wholesalers() != [] do %>
+  <%= if get_venues(@brand) |> filter_retailer_wholesaler() != [] do %>
     <section class="w-90 center pv5">
       <h2 class="roboto-slab f2 lh2 db tc pb4">Places that Serve <%= @brand.name %></h2>
       <div class="flex flex-wrap justify-center">
-          <%= for venue <- get_venues(@brand) |> filter_retailers_wholesalers() do %>
+          <%= for venue <- get_venues(@brand) |> filter_retailer_wholesaler() do %>
             <%= component("venue_card", venue: venue, conn: @conn) %>
           <% end %>
       </div>
