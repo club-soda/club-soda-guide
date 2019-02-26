@@ -1,7 +1,10 @@
 <section class="center w-80 w-75-l mv6-ns mv5">
-  <h3 class="f4 lh4">Create a Profile</h3>
-  <p class="mt3">You need to be part of the Club Soda community to add listings. All it
-  takes is your email and a password.</p>
+  <h3 class="f4 lh4">Create a Venue Listing</h3>
+  <p class="mt3">
+    Please only use this form if you own or manage a venue - if you are a
+    customer and want to nominate a venue you like,
+    <a href="https://clubsoda.typeform.com/to/Z5sMPA" target="_blank">click here</a>.
+  </p>
 
   <%= custom_render_autoform(@conn, :create, [
     {CsGuide.Accounts.User, exclude: [:email_hash, :password, :admin, :venues]},
