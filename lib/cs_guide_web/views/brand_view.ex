@@ -27,10 +27,10 @@ defmodule CsGuideWeb.BrandView do
     end)
   end
 
-  def get_venues_over_forty(venues) do
+  def get_venues_over_n(venues, n) do
     venues
     |> Enum.sort()
-    |> Enum.split(1)
+    |> Enum.split(n)
     |> Tuple.to_list()
     |> Enum.at(1)
   end

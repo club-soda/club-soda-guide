@@ -240,18 +240,18 @@
         <%= link "Find One Near Me", to: search_venue_path(@conn, :index), class: "bg-cs-black br2 ph4 pv2 white no-underline" %>
       </div>
       <div class="flex flex-wrap justify-center">
-        <%= for venue <- get_venues(@brand) |> filter_retailer_wholesaler() |> Enum.sort() |> Enum.take(1) do %>
+        <%= for venue <- get_venues(@brand) |> filter_retailer_wholesaler() |> Enum.sort() |> Enum.take(20) do %>
           <%= component("venue_card", venue: venue, conn: @conn) %>
         <% end %>
       </div>
 
-      <%= if length(get_venues(@brand) |> filter_retailer_wholesaler()) > 1 do %>
+      <%= if length(get_venues(@brand) |> filter_retailer_wholesaler()) > 20 do %>
         <input type="checkbox" name="see-more-venues" id="see-more-venues" class="dn">
         <div class="db tc">
           <label for="see-more-venues" class="btn-primary no-underline see-more-label">See More</label>
         </div>
         <div class="flex-wrap justify-center dn more-venues">
-          <%= for venue <- get_venues(@brand) |> filter_retailer_wholesaler() |> get_venues_over_forty() do %>
+          <%= for venue <- get_venues(@brand) |> filter_retailer_wholesaler() |> get_venues_over_n(20) do %>
             <%= component("venue_card", venue: venue, conn: @conn) %>
           <% end %>
         </div>
