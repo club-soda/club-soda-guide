@@ -9,7 +9,11 @@ defmodule CsGuideWeb.BrandViewTest do
       %{
         venues: [
           %{cs_score: 1, venue_name: "venue1", venue_types: [%{name: "type1"}, %{name: "type2"}]},
-          %{cs_score: 1, venue_name: "venue2", venue_types: [%{name: "type3"}, %{name: "type4"}]}
+          %{
+            cs_score: 1,
+            venue_name: "venue2",
+            venue_types: [%{name: "retailer"}, %{name: "type4"}]
+          }
         ]
       },
       %{
@@ -45,17 +49,12 @@ defmodule CsGuideWeb.BrandViewTest do
     assert any_type?(@brand, "retail") == false
   end
 
-  test "type3 found" do
-    assert any_type?(@brand, "type3") == true
+  test "type2 found" do
+    assert any_type?(@brand, "type2") == true
   end
 
   test "retailers and wholesalers are filtered out" do
     assert get_filtered_venues(@brand) == [
-             %{
-               cs_score: 1,
-               venue_name: "venue2",
-               venue_types: [%{name: "type3"}, %{name: "type4"}]
-             },
              %{
                cs_score: 1,
                venue_name: "venue1",
