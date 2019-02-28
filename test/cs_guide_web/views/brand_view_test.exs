@@ -9,13 +9,25 @@ defmodule CsGuideWeb.BrandViewTest do
       %{
         venues: [
           %{cs_score: 1, venue_name: "venue1", venue_types: [%{name: "type1"}, %{name: "type2"}]},
-          %{cs_score: 1, venue_name: "venue2", venue_types: [%{name: "type3"}, %{name: "type4"}]}
+          %{
+            cs_score: 1,
+            venue_name: "venue2",
+            venue_types: [%{name: "retailer"}, %{name: "type4"}]
+          }
         ]
       },
       %{
         venues: [
-          %{cs_score: 1, venue_name: "venue3", venue_types: [%{name: "type5"}, %{name: "type6"}]},
-          %{cs_score: 1, venue_name: "venue4", venue_types: [%{name: "type7"}, %{name: "type8"}]}
+          %{
+            cs_score: 1,
+            venue_name: "venue3",
+            venue_types: [%{name: "retailer"}, %{name: "type6"}]
+          },
+          %{
+            cs_score: 1,
+            venue_name: "venue4",
+            venue_types: [%{name: "wholesaler"}, %{name: "type8"}]
+          }
         ]
       }
     ]
@@ -34,17 +46,30 @@ defmodule CsGuideWeb.BrandViewTest do
   ]
 
   test "No venue type retail found" do
-    assert  any_type?(@brand, "retail") == false
+    assert any_type?(@brand, "retail") == false
   end
 
-  test "type3 found" do
-    assert  any_type?(@brand, "type3") == true
+  test "type2 found" do
+    assert any_type?(@brand, "type2") == true
   end
 
   test "retailers and wholesalers are filtered out" do
-    assert filter_retailer_wholesaler(@venues) == [
+    assert get_filtered_venues(@brand) == [
+             %{
+               cs_score: 1,
+               venue_name: "venue1",
+               venue_types: [%{name: "type1"}, %{name: "type2"}]
+             }
+           ]
+  end
+
+  test "get_venues_over_n filters correctly" do
+    assert get_venues_over_n(@venues, 1) == [
              %CsGuide.Resources.Venue{
                venue_types: [%{name: "type1"}]
+             },
+             %CsGuide.Resources.Venue{
+               venue_types: [%{name: "wholesaler"}]
              }
            ]
   end

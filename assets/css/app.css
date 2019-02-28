@@ -709,3 +709,12 @@ i {
     right: 2rem;
   }
 }
+
+/* Brands page - 'See More' Places that Serve  */
+#see-more-venues:checked ~ .more-venues {
+  display: flex;
+}
+
+#see-more-venues:checked ~ div .see-more-label {
+  display: none;
+}
