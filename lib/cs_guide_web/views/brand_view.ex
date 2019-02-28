@@ -18,8 +18,9 @@ defmodule CsGuideWeb.BrandView do
     |> sort_by_cs_score()
   end
 
-  def filter_retailer_wholesaler(venues) do
-    venues
+  def get_filtered_venues(brand) do
+    brand
+    |> get_venues()
     |> Enum.filter(fn v ->
       !Enum.any?(v.venue_types, fn t ->
         String.downcase(t.name) == "retailer" || String.downcase(t.name) == "wholesaler"
@@ -33,6 +34,19 @@ defmodule CsGuideWeb.BrandView do
     |> Enum.split(n)
     |> Tuple.to_list()
     |> Enum.at(1)
+  end
+
+  def get_initial_venues(brand) do
+    brand
+    |> get_filtered_venues()
+    |> Enum.sort()
+    |> Enum.take(20)
+  end
+
+  def get_see_more_venues(brand) do
+    brand
+    |> get_filtered_venues()
+    |> get_venues_over_n(20)
   end
 
   def any_type?(brand, type) do

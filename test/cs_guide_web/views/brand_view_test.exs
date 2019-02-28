@@ -14,8 +14,16 @@ defmodule CsGuideWeb.BrandViewTest do
       },
       %{
         venues: [
-          %{cs_score: 1, venue_name: "venue3", venue_types: [%{name: "type5"}, %{name: "type6"}]},
-          %{cs_score: 1, venue_name: "venue4", venue_types: [%{name: "type7"}, %{name: "type8"}]}
+          %{
+            cs_score: 1,
+            venue_name: "venue3",
+            venue_types: [%{name: "retailer"}, %{name: "type6"}]
+          },
+          %{
+            cs_score: 1,
+            venue_name: "venue4",
+            venue_types: [%{name: "wholesaler"}, %{name: "type8"}]
+          }
         ]
       }
     ]
@@ -42,9 +50,16 @@ defmodule CsGuideWeb.BrandViewTest do
   end
 
   test "retailers and wholesalers are filtered out" do
-    assert filter_retailer_wholesaler(@venues) == [
-             %CsGuide.Resources.Venue{
-               venue_types: [%{name: "type1"}]
+    assert get_filtered_venues(@brand) == [
+             %{
+               cs_score: 1,
+               venue_name: "venue2",
+               venue_types: [%{name: "type3"}, %{name: "type4"}]
+             },
+             %{
+               cs_score: 1,
+               venue_name: "venue1",
+               venue_types: [%{name: "type1"}, %{name: "type2"}]
              }
            ]
   end
