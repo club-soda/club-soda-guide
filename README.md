@@ -322,3 +322,30 @@ command...
 ```
 mix run priv/repo/add_lat_long_to_venue.exs
 ```
+
+### Deployment
+
+The `master` branch is automatically deployed to staging. When it's time to deploy to production follow these steps:
+
+#### Backup the current database
+
+From the heroku dashboard, go to the `Resources` tab, then click `Heroku Postgres`.
+
+<img width="707" alt="screen shot 2019-03-04 at 14 37 12" src="https://user-images.githubusercontent.com/8939909/53745911-f69d5280-3e97-11e9-8356-c6544362ea26.png">
+
+
+This will take you to the database dashboard. From here, got to the `Durability` tab, then click `Create Manual Backup`.
+
+<img width="1259" alt="screen shot 2019-03-04 at 14 37 45" src="https://user-images.githubusercontent.com/8939909/53745909-f69d5280-3e97-11e9-9e36-c1c2e6e713bf.png">
+
+#### Deploy `master` branch
+
+Back on the Heroku dashboard, go to the `Deploy` tab.
+
+<img width="720" alt="screen shot 2019-03-04 at 14 38 14" src="https://user-images.githubusercontent.com/8939909/53745910-f69d5280-3e97-11e9-9cf2-65671201055e.png">
+
+Scroll down to the bottom section: `Manual Deploy`. Make sure the branch is set to `master`, then click `Deploy Branch`.
+
+<img width="1137" alt="screen shot 2019-03-04 at 14 38 07" src="https://user-images.githubusercontent.com/8939909/53745912-f69d5280-3e97-11e9-90d2-40397d152d54.png">
+
+A few minutes later, you should be notified that the deployment is complete.
