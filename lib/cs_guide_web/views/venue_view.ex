@@ -17,7 +17,14 @@ defmodule CsGuideWeb.VenueView do
 
   def under_map_link(conn, key, str, is_authenticated) do
     venue = conn.assigns.venue
-    render("link_under_map.html", conn: conn, venue: venue, link_key: key, img_str: str, is_authenticated: is_authenticated)
+
+    render("link_under_map.html",
+      conn: conn,
+      venue: venue,
+      link_key: key,
+      img_str: str,
+      is_authenticated: is_authenticated
+    )
   end
 
   def create_google_search_url(params) do
@@ -30,7 +37,7 @@ defmodule CsGuideWeb.VenueView do
 
     query_str =
       list
-      |> Enum.reduce([], &(if &1 == nil, do: &2, else: [format_str(&1) | &2]))
+      |> Enum.reduce([], &if(&1 == nil, do: &2, else: [format_str(&1) | &2]))
       |> Enum.join("%2C+")
 
     "https://www.google.com/maps/search/?api=1&query=" <> query_str
@@ -56,5 +63,10 @@ defmodule CsGuideWeb.VenueView do
     str
     |> String.split(" ")
     |> Enum.join("+")
+  end
+
+  def order_drinks_by_type(drinks) do
+    drinks
+    |> Enum.sort_by(& &1.drink_types)
   end
 end
