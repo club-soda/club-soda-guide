@@ -4,8 +4,8 @@
       <%= link "Upload Photo", to: brand_path(@conn, :add_cover_photo, @brand.slug), class: "mt3 dn db-ns absolute top-2 right-4 btn-primary no-underline" %>
     <% end %>
     <%= if img = @brand.brand_images |> Enum.find(fn i -> i.one end) do %>
-      <div class="db bg-venue w-100"
-        style="background-image: url('https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%= img.entry_id %>');">
+      <div class="db">
+        <img alt="brand image" class="w-100 bg-venue" src="https://s3-eu-west-1.amazonaws.com/<%=Application.get_env(:ex_aws, :bucket)%>/<%= img.entry_id %>">
       </div>
     <% else %>
       <%= render("top_gradient_banner.html", drink_type: @drink_type, brand_name: @brand.name) %>
