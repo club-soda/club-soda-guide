@@ -117,12 +117,17 @@ defmodule CsGuideWeb.CsvController do
 # Drinks
 
   defp drinks_csv_content(conn) do
-    drinks = Drink.all() |> Enum.map(&drink_csv_data(&1))
-    |> CSV.encode(headers: [ :name,
+    drinks = Drink.all()
+    |> Drink.preload([:drink_types, :drink_styles])
+    |> Enum.map(&drink_csv_data(&1))
+    |> CSV.encode(headers: [ :drink_id,
+                             :name,
                              :abv,
                              :description,
                              :weighting,
                              :ingredients,
+                             :types,
+                             :styles,
                              :inserted_at,
                              :updated_at
                             ])
@@ -137,11 +142,14 @@ defmodule CsGuideWeb.CsvController do
 
   defp drink_csv_data(drink) do
     %{
+      drink_id: drink.entry_id,
       name: drink.name,
       abv: drink.abv,
       description: drink.description,
       weighting: drink.weighting,
       ingredients: drink.ingredients,
+      types: Enum.map_join(drink.drink_types, ", ", &(&1.name)),
+      styles: Enum.map_join(drink.drink_styles, ", ", &(&1.name)),
       inserted_at: drink.inserted_at,
       updated_at: drink.updated_at
      }
