@@ -236,8 +236,10 @@
   <%= if get_filtered_venues(@brand) != [] do %>
     <section class="w-90 center pv5">
       <h2 class="roboto-slab f2 lh2 db tc">Places that Serve <%= @brand.name %></h2>
-      <div class="mv4 center tc">
-        <%= link "Find One Near Me", to: search_venue_path(@conn, :index), class: "bg-cs-black br2 ph4 pv2 white no-underline" %>
+      <div class="mv4 tc">
+        <p  id="near_me" class="center bg-cs-black br2 pv2 white no-underline pointer w5">
+          Find One Near Me
+        </p>
       </div>
       <div class="flex flex-wrap justify-center">
         <%= for venue <- get_initial_venues(@brand) do %>
@@ -273,3 +275,28 @@
 
 
 </section>
+
+<script>
+  var nearMe = document.getElementById("near_me");
+
+  nearMe.addEventListener("click", getLocation)
+
+  function getLocation(e) {
+    e.target.removeEventListener("click", getLocation)
+    if (e.target.innerHTML) {
+      e.target.innerHTML = "Searching..."
+    }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        var coords = position.coords
+        var lat = coords.latitude
+        var long = coords.longitude
+        window.location.href = `/search/venues?ll=${lat},${long}`
+      });
+    } else {
+      alert("Geolocation is not supported by this browser");
+        window.location.href = "/search/venues"
+    }
+  }
+</script>
