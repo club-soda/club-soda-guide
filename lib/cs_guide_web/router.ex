@@ -59,7 +59,8 @@ defmodule CsGuideWeb.Router do
     pipe_through([:browser, :admin])
 
     resources("/", AdminController, only: [:index])
-    resources("/brands", BrandController, except: [:show], param: "slug")
+    resources("/brands", BrandController, except: [:show, :delete], param: "slug")
+    resources("/brands", BrandController, only: [:delete], param: "entry_id")
     resources("/drinks", DrinkController, except: [:show])
     resources("/wholesalers", WholesalerController, except: [:show])
     resources("/retailers", RetailerController, except: [:show])
