@@ -18,7 +18,12 @@ defmodule CsGuideWeb.BrandController do
   end
 
   def create(conn, %{"brand" => brand_params}) do
-    case %Brand{} |> Brand.changeset(brand_params) |> Brand.insert() do
+     changeset =
+      %Brand{}
+      |> Brand.changeset(brand_params)
+      |> CsGuide.ChangesetHelpers.check_existing_slug(brand_params["slug"], Brand, :name, "Brand already exists")
+
+    case Brand.insert(changeset) do
       {:ok, _brand} ->
         conn
         |> put_flash(:info, "Brand created successfully.")
@@ -169,8 +174,8 @@ defmodule CsGuideWeb.BrandController do
     end
   end
 
-  def delete(conn, %{"slug" => slug}) do
-    brand = Brand.get_by(slug: slug)
+  def delete(conn, %{"entry_id" => entry_id}) do
+    brand = Brand.get_by(entry_id: entry_id)
     {:ok, _brand} = Brand.delete(brand)
 
     conn
