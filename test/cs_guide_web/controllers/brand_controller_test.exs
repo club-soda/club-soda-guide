@@ -25,7 +25,7 @@ defmodule CsGuideWeb.BrandControllerTest do
     sold_aldi: true,
     website: "https://www.some-updated-website.com"
   }
-  @invalid_attrs %{description: nil, logo: nil, member: nil, name: nil, website: nil}
+  @invalid_attrs %{description: nil, logo: nil, member: nil, name: "", website: nil, slug: ""}
 
   def fixture(:brand) do
     {:ok, brand} =

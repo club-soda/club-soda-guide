@@ -48,7 +48,7 @@ defmodule CsGuideWeb.VenueController do
     changeset =
       %Venue{}
       |> Venue.changeset(venue_params)
-      |> Venue.check_existing_slug(slug)
+      |> CsGuide.ChangesetHelpers.check_existing_slug(slug, Venue, :venue_name, "Venue already exists")
       |> Venue.validate_postcode(postcode)
 
     case Venue.insert(changeset, venue_params) do
