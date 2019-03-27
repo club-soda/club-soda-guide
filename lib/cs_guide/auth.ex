@@ -29,4 +29,8 @@ defmodule CsGuide.Auth do
     |> Plug.Conn.put_session(:venue_id, venue_id)
     |> Plug.Conn.configure_session(renew: true)
   end
+
+  def logout(conn) do
+    Plug.Conn.configure_session(conn, drop: true)
+  end
 end
