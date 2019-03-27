@@ -31,7 +31,7 @@ defmodule CsGuideWeb.Plugs.Auth do
   end
 
   def authenticate_user(conn, opts \\ %{}) do
-    cond do            
+    cond do
       !opts[:admin] || (opts[:admin] && conn.assigns[:admin]) ->
         conn
 
@@ -49,20 +49,22 @@ defmodule CsGuideWeb.Plugs.Auth do
     end
   end
 
-  def authenticate_venue_owner(conn, opts \\ %{}) do
-    venue = if conn.params["id"] do
-      Venue.get(conn.params["id"])
-    else
-      if conn.params["slug"] do
-        Venue.get_by(slug: conn.params["slug"])
+  def authenticate_venue_owner(conn, _opts \\ %{}) do
+    venue =
+      if conn.params["id"] do
+        Venue.get(conn.params["id"])
+      else
+        if conn.params["slug"] do
+          Venue.get_by(slug: conn.params["slug"])
+        end
       end
-    end
 
-    venue_owner = if venue do
-      conn.assigns[:venue_id] == venue.entry_id
-    else
-      false
-    end
+    venue_owner =
+      if venue do
+        conn.assigns[:venue_id] == venue.entry_id
+      else
+        false
+      end
 
     cond do
       conn.assigns[:admin] || venue_owner ->
@@ -75,7 +77,7 @@ defmodule CsGuideWeb.Plugs.Auth do
     end
   end
 
-  def assign_venue_id(conn, opts \\ %{}) do
+  def assign_venue_id(conn, _opts \\ %{}) do
     conn
   end
 
