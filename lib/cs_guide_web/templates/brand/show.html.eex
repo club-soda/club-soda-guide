@@ -233,27 +233,27 @@
     </section>
   <% end %>
 
-  <%= if get_filtered_venues(@brand) != [] do %>
+  <%= if get_filtered_venues(@venues) != [] do %>
     <section class="w-90 center pv5">
       <h2 class="roboto-slab f2 lh2 db tc">Places that Serve <%= @brand.name %></h2>
       <div class="mv4 tc">
         <p  id="near_me" class="center bg-cs-black br2 pv2 white no-underline pointer w5">
-          Find One Near Me
+          Order By Nearest Me
         </p>
       </div>
       <div class="flex flex-wrap justify-center">
-        <%= for venue <- get_initial_venues(@brand) do %>
+        <%= for venue <- get_initial_venues(@venues) do %>
           <%= component("venue_card", venue: venue, conn: @conn) %>
         <% end %>
       </div>
 
-      <%= if length(get_filtered_venues(@brand)) > 20 do %>
+      <%= if length(get_filtered_venues(@venues)) > 20 do %>
         <input type="checkbox" name="see-more-venues" id="see-more-venues" class="dn">
         <div class="db tc">
           <label for="see-more-venues" class="btn-primary no-underline see-more-label">See More</label>
         </div>
         <div class="flex-wrap justify-center dn more-venues">
-          <%= for venue <- get_see_more_venues(@brand) do %>
+          <%= for venue <- get_see_more_venues(@venues) do %>
             <%= component("venue_card", venue: venue, conn: @conn) %>
           <% end %>
         </div>
@@ -286,13 +286,15 @@
     if (e.target.innerHTML) {
       e.target.innerHTML = "Searching..."
     }
-
+    brand = window.location.href.split("/").pop();
+    // Ensure you take the ?... part off if the brand is already on the location page
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         var coords = position.coords
         var lat = coords.latitude
         var long = coords.longitude
-        window.location.href = `/search/venues?ll=${lat},${long}`
+
+        window.location.href = `/brands/${brand}?ll=${lat},${long}`
       });
     } else {
       alert("Geolocation is not supported by this browser");

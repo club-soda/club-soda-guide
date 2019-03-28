@@ -18,9 +18,8 @@ defmodule CsGuideWeb.BrandView do
     |> sort_by_cs_score()
   end
 
-  def get_filtered_venues(brand) do
-    brand
-    |> get_venues()
+  def get_filtered_venues(venues) do
+    venues
     |> Enum.filter(fn v ->
       !Enum.any?(v.venue_types, fn t ->
         String.downcase(t.name) == "retailer" || String.downcase(t.name) == "wholesaler"
@@ -30,16 +29,18 @@ defmodule CsGuideWeb.BrandView do
 
   def get_venues_over_n(venues, n) do
     venues
-    |> Enum.sort()
+    # |> Enum.sort()
+    # We want this to sort without LL but not to sort with >>>>>>
     |> Enum.split(n)
     |> Tuple.to_list()
     |> Enum.at(1)
   end
 
-  def get_initial_venues(brand) do
-    brand
+  def get_initial_venues(venues) do
+    venues
     |> get_filtered_venues()
-    |> Enum.sort()
+    # |> Enum.sort()
+    # We want this to sort without LL but not to sort with >>>>>>
     |> Enum.take(20)
   end
 
