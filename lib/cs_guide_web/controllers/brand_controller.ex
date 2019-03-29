@@ -18,7 +18,7 @@ defmodule CsGuideWeb.BrandController do
   end
 
   def create(conn, %{"brand" => brand_params}) do
-    slug = Brand.put_slug(brand_params["name"])
+    slug = Brand.create_slug(brand_params["name"])
 
     changeset =
       %Brand{}
@@ -73,71 +73,73 @@ defmodule CsGuideWeb.BrandController do
   end
 
   def show(conn, %{"slug" => slug}) do
-    dd_code = get_code("DryDrinker")
-    wb_code = get_code("WiseBartender")
+    brand = Brand.get_by(slug: slug)
 
-    brand =
-      Brand.get_by(slug: slug)
-      |> Brand.preload(
-        drinks: [
+    if brand != nil do
+      dd_code = get_code("DryDrinker")
+      wb_code = get_code("WiseBartender")
+
+      brand =
+        brand
+        |> Brand.preload(
+          drinks: [
+            :drink_images,
+            :brand,
+            :drink_types,
+            :drink_styles,
+            venues: [:venue_types, :venue_images]
+          ],
+          brand_images: []
+        )
+        |> Map.update(:venues, [], fn venues ->
+          venues
+          |> Enum.map(&VenueController.sortImagesByMostRecent/1)
+        end)
+        |> Map.update(:venues, [], fn venues ->
+          venues
+          |> Enum.map(&SearchVenueController.selectPhotoNumber1/1)
+        end)
+
+      {drink_type, count} =
+        Enum.map(brand.drinks, fn d ->
+          Enum.map(d.drink_types, fn t -> t.name end)
+        end)
+        |> List.flatten()
+        |> Enum.reduce(%{}, fn drink_type, acc ->
+          Map.update(acc, drink_type, 1, fn value -> value + 1 end)
+        end)
+        # Will assign brands with no drink_type background colour of spirits banner
+        |> Enum.reduce({"Spirits", 0}, fn {drink_type, count}, acc ->
+          case acc do
+            {} ->
+              {drink_type, count}
+
+            {acc_dtype, acc_count} ->
+              if count > acc_count do
+                {drink_type, count}
+              else
+                {acc_dtype, acc_count}
+              end
+          end
+        end)
+
+      related_drinks =
+        Drink.all()
+        |> Drink.preload([
           :drink_images,
           :brand,
           :drink_types,
           :drink_styles,
           venues: [:venue_types, :venue_images]
-        ],
-        brand_images: []
-      )
-      |> Map.update(:venues, [], fn venues ->
-        venues
-        |> Enum.map(&VenueController.sortImagesByMostRecent/1)
-      end)
-      |> Map.update(:venues, [], fn venues ->
-        venues
-        |> Enum.map(&SearchVenueController.selectPhotoNumber1/1)
-      end)
-
-    {drink_type, count} =
-      Enum.map(brand.drinks, fn d ->
-        Enum.map(d.drink_types, fn t -> t.name end)
-      end)
-      |> List.flatten()
-      |> Enum.reduce(%{}, fn drink_type, acc ->
-        Map.update(acc, drink_type, 1, fn value -> value + 1 end)
-      end)
-      # Will assign brands with no drink_type background colour of spirits banner
-      |> Enum.reduce({"Spirits", 0}, fn {drink_type, count}, acc ->
-        case acc do
-          {} ->
-            {drink_type, count}
-
-          {acc_dtype, acc_count} ->
-            if count > acc_count do
-              {drink_type, count}
-            else
-              {acc_dtype, acc_count}
-            end
-        end
-      end)
-
-    related_drinks =
-      Drink.all()
-      |> Drink.preload([
-        :drink_images,
-        :brand,
-        :drink_types,
-        :drink_styles,
-        venues: [:venue_types, :venue_images]
-      ])
-      |> Enum.filter(fn d ->
-        Enum.any?(d.drink_types, fn t ->
-          t.name == drink_type
+        ])
+        |> Enum.filter(fn d ->
+          Enum.any?(d.drink_types, fn t ->
+            t.name == drink_type
+          end)
         end)
-      end)
-      |> Enum.reject(fn d -> d.brand.name == brand.name end)
-      |> Enum.take(4)
+        |> Enum.reject(fn d -> d.brand.name == brand.name end)
+        |> Enum.take(4)
 
-    if brand != nil do
       brand =
         Map.update(brand, :brand_images, [], fn images ->
           images
