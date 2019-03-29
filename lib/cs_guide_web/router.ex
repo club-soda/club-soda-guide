@@ -41,7 +41,7 @@ defmodule CsGuideWeb.Router do
     resources("/users", UserController, only: [:new, :create])
     get("/venues/:slug", VenueController, :show)
 
-    resources("/sessions", SessionController, only: [:new, :create])
+    resources("/sessions", SessionController, only: [:new, :create, :delete])
 
     get("/json_drinks", DrinkController, :json_index)
     get("/json_venue_images", VenueController, :json_index)
