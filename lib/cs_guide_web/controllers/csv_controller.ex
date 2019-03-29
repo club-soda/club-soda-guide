@@ -161,29 +161,35 @@ defmodule CsGuideWeb.CsvController do
 
 # BRANDS
   defp brands_csv_content(conn) do
-    brands = Brand.all() |> Enum.map(&brand_csv_data(&1))
-    |> CSV.encode(headers: [ :name,
-                             :description,
-                             :logo,
-                             :website,
-                             :twitter,
-                             :instagram,
-                             :facebook,
-                             :copy,
-                             :sold_aldi,
-                             :sold_amazon,
-                             :sold_asda,
-                             :sold_dd,
-                             :sold_morrisons,
-                             :sold_sainsburys,
-                             :sold_tesco,
-                             :sold_waitrose,
-                             :sold_wb,
-                             :inserted_at,
-                             :updated_at
-                            ])
-    |> Enum.to_list
-    |> to_string
+    brands =
+      Brand.all()
+      |> Enum.map(&brand_csv_data(&1))
+      |> CSV.encode(
+        headers: [
+          :name,
+          :description,
+          :logo,
+          :website,
+          :twitter,
+          :instagram,
+          :facebook,
+          :copy,
+          :sold_aldi,
+          :sold_amazon,
+          :sold_asda,
+          :sold_dd,
+          :sold_morrisons,
+          :sold_ocado,
+          :sold_sainsburys,
+          :sold_tesco,
+          :sold_waitrose,
+          :sold_wb,
+          :inserted_at,
+          :updated_at
+        ]
+      )
+      |> Enum.to_list()
+      |> to_string
 
     conn
     |> put_resp_content_type("text/csv")
@@ -206,13 +212,14 @@ defmodule CsGuideWeb.CsvController do
       sold_asda: brand.sold_asda,
       sold_dd: brand.sold_dd,
       sold_morrisons: brand.sold_morrisons,
+      sold_ocado: brand.sold_ocado,
       sold_sainsburys: brand.sold_sainsburys,
       sold_tesco: brand.sold_tesco,
       sold_waitrose: brand.sold_waitrose,
       sold_wb: brand.sold_wb,
       inserted_at: brand.inserted_at,
       updated_at: brand.updated_at
-     }
+    }
   end
 
 # BRANDS and DRINKS
