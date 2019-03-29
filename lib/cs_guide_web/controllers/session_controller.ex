@@ -22,4 +22,10 @@ defmodule CsGuideWeb.SessionController do
         render(conn, "new.html", action: session_path(conn, :create))
     end
   end
+
+  def delete(conn, _params) do
+    conn
+    |> CsGuide.Auth.logout()
+    |> redirect(to: page_path(conn, :index))
+  end
 end

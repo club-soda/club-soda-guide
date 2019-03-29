@@ -41,4 +41,24 @@ defmodule CsGuideWeb.AuthControllerTest do
       assert redirected_to(conn, 302) =~ "/admin"
     end
   end
+
+  describe "log out" do
+    setup [:create_user]
+
+    test "log out redirected user back to home page", %{conn: conn, user: user} do
+      conn = post(conn, session_path(conn, :create), email: "test@email", password: "password")
+      assert redirected_to(conn, 302) =~ "/"
+
+      conn = get(conn, page_path(conn, :index))
+      assert html_response(conn, 200) =~ "Log out"
+      assert conn.assigns.current_user != nil
+
+      conn = delete(conn, session_path(conn, :delete, user.entry_id))
+      assert redirected_to(conn, 302) =~ "/"
+
+      conn = get(conn, page_path(conn, :index))
+      assert conn.assigns.current_user == nil
+      refute html_response(conn, 200) =~ "Log out"
+    end
+  end
 end

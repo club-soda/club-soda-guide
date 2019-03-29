@@ -47,6 +47,13 @@
               <%= link page.title_in_menu, to: static_page_path(@conn, :show, change_spaces_to_dashes(page.page_title)), class: "db f5 lh5 pl3 pt2 pb3 cs-black no-underline" %>
             <% end %>
           <% end %>
+          <%= if @current_user do %>
+            <%= link "Log out",
+              to: session_path(@conn, :delete, @current_user),
+              method: "delete",
+              class: "db f5 lh5 pl3 pt2 pb3 cs-black no-underline"
+            %>
+          <% end %>
         </div>
 
         <!-- DESKTOP MENU -->
@@ -58,6 +65,13 @@
             <%= if page.display_in_menu do %>
               <%= link page.title_in_menu, to: static_page_path(@conn, :show, change_spaces_to_dashes(page.page_title)), class: "f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2" %>
             <% end %>
+          <% end %>
+          <%= if @current_user do %>
+            <%= link "Log out",
+              to: session_path(@conn, :delete, @current_user),
+              method: "delete",
+              class: "f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2"
+            %>
           <% end %>
         </div>
 
