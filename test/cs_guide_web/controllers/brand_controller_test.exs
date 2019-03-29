@@ -106,6 +106,16 @@ defmodule CsGuideWeb.BrandControllerTest do
     end
   end
 
+  describe "show brand" do
+    setup [:create_brand]
+
+    test "can visit brand with location information", %{conn: conn} do
+      conn = get(conn, "/brands/some-name?ll=51.54359770000001,-0.08807799999999999")
+
+      assert html_response(conn, 200) =~ "some name"
+    end
+  end
+
   describe "edit brand" do
     setup [:create_brand]
 
