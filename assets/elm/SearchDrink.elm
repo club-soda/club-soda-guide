@@ -22,6 +22,7 @@ import TypeAndStyle
         , FilterType
         , SubFilters(..)
         , TypesAndStyles
+        , filterParentTypes
         , getDrinkTypesAndStyles
         , getFilterById
         , getFilterId
@@ -360,8 +361,20 @@ renderPillFilter filter =
 
 filterDrinks : Model -> List (Html Msg)
 filterDrinks model =
+    let
+        selectedFitlerIds =
+            Set.toList <| Criteria.selectedIdFilters model.drinkFilters
+    in
     model.drinks
-        |> List.filter (\d -> filterByTypeAndStyle (Set.toList <| Criteria.selectedIdFilters model.drinkFilters) d model.typesAndStyles)
+        |> List.filter
+            (\d ->
+                filterByTypeAndStyle
+                    (List.filter (filterParentTypes model.typesAndStyles selectedFitlerIds)
+                        selectedFitlerIds
+                    )
+                    d
+                    model.typesAndStyles
+            )
         |> List.filter (\d -> filterByABV (Set.toList <| Criteria.selectedIdFilters model.abvFilter) d)
         |> List.filter (\d -> SharedTypes.searchDrinkByTerm model.searchTerm d)
         |> List.take model.drinksToDisplay
