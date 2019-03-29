@@ -26,7 +26,6 @@ defmodule CsGuideWeb.SignupController do
 
             conn
             |> put_flash(:info, "Venue created successfully.")
-            |> Auth.venue_owner(venue)
             |> Auth.login(user)
             |> redirect(to: venue_path(conn, :show, venue.slug))
 
@@ -34,7 +33,6 @@ defmodule CsGuideWeb.SignupController do
             # if a user is logged in then we create venue and user but do not log in new user
             conn
             |> put_flash(:info, "Venue created successfully.")
-            |> Auth.venue_owner(venue)
             |> redirect(to: venue_path(conn, :show, venue.slug))
         end
 

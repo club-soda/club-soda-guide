@@ -2,13 +2,13 @@ defmodule CsGuideWeb.Plugs.Auth do
   import Plug.Conn
 
   alias CsGuide.Accounts.User
-  alias CsGuide.Resources.Venue
+  # alias CsGuide.Resources.Venue
 
   def init(default), do: default
 
   def call(conn, _params) do
     user_id = Plug.Conn.get_session(conn, :user_id)
-    venue_id = Plug.Conn.get_session(conn, :venue_id)
+    # venue_id = Plug.Conn.get_session(conn, :venue_id)
 
     with true <- is_binary(user_id),
          %User{} = user <- User.get(user_id),
@@ -16,17 +16,17 @@ defmodule CsGuideWeb.Plugs.Auth do
       conn
       |> put_current_user(user_id)
       |> assign(:admin, true)
-      |> assign(:venue_id, venue_id)
+      # |> assign(:venue_id, venue_id)
     else
       nil ->
         conn
         |> assign(:current_user, nil)
         |> assign(:user_signed_in?, false)
-        |> assign(:venue_id, venue_id)
+        # |> assign(:venue_id, venue_id)
 
       false ->
         put_current_user(conn, user_id)
-        |> assign(:venue_id, venue_id)
+        # |> assign(:venue_id, venue_id)
     end
   end
 
@@ -49,33 +49,33 @@ defmodule CsGuideWeb.Plugs.Auth do
     end
   end
 
-  def authenticate_venue_owner(conn, _opts \\ %{}) do
-    venue =
-      if conn.params["id"] do
-        Venue.get(conn.params["id"])
-      else
-        if conn.params["slug"] do
-          Venue.get_by(slug: conn.params["slug"])
-        end
-      end
-
-    venue_owner =
-      if venue do
-        conn.assigns[:venue_id] == venue.entry_id
-      else
-        false
-      end
-
-    cond do
-      conn.assigns[:admin] || venue_owner ->
-        conn
-
-      true ->
-        conn
-        |> Phoenix.Controller.redirect(to: "/")
-        |> halt()
-    end
-  end
+  # def authenticate_venue_owner(conn, _opts \\ %{}) do
+  #   venue =
+  #     if conn.params["id"] do
+  #       Venue.get(conn.params["id"])
+  #     else
+  #       if conn.params["slug"] do
+  #         Venue.get_by(slug: conn.params["slug"])
+  #       end
+  #     end
+  #
+  #   venue_owner =
+  #     if venue do
+  #       conn.assigns[:venue_id] == venue.entry_id
+  #     else
+  #       false
+  #     end
+  #
+  #   cond do
+  #     conn.assigns[:admin] || venue_owner ->
+  #       conn
+  #
+  #     true ->
+  #       conn
+  #       |> Phoenix.Controller.redirect(to: "/")
+  #       |> halt()
+  #   end
+  # end
 
   def assign_venue_id(conn, _opts \\ %{}) do
     conn

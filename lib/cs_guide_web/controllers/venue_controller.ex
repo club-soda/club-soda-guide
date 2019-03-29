@@ -128,11 +128,9 @@ defmodule CsGuideWeb.VenueController do
       |> Enum.map(&SearchVenueController.selectPhotoNumber1/1)
 
     if venue != nil do
-      venue_owner = conn.assigns[:venue_id] == venue.id
-
       render(conn, "show.html",
         venue: venue,
-        is_authenticated: conn.assigns[:admin] || venue_owner,
+        is_authenticated: conn.assigns[:admin],
         nearby_venues: nearby_venues
       )
     else
