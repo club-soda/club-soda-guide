@@ -11,6 +11,10 @@ defmodule CsGuide.Accounts.User do
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
     field(:admin, :boolean, default: false)
+    field(:role, CsGuide.RoleEnum)
+    field(:verified, :naive_datetime)
+    field(:password_reset_token, :string)
+    field(:password_reset_token_sent_at, :naive_datetime)
 
     many_to_many(
       :venues,
@@ -26,7 +30,10 @@ defmodule CsGuide.Accounts.User do
   @doc false
   def changeset(user, attrs \\ %{}) do
     user
-    |> cast(attrs, [:email, :password, :admin])
+    |> cast(attrs, [
+      :email, :password, :admin, :role, :verified, :password_reset_token,
+      :password_reset_token_sent_at
+    ])
     |> validate_required([:email])
     |> put_email_hash()
     |> unique_constraint(:email_hash)

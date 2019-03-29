@@ -1,3 +1,3 @@
 import EctoEnum
 
-defenum CsGuide.EctoEnum.RoleEnum, :role, [:site_admin, :venue_admin]
+defenum CsGuide.RoleEnum, :role, [:site_admin, :venue_admin]
