@@ -11,10 +11,10 @@ defmodule CsGuideWeb.SearchAllController do
 
   def index(conn, params) do
     possible_postcode = params["term"] || ""
-
+    search_term = (params["term"] && String.trim(params["term"])) || ""
     # insert search log
-    if String.trim(params["term"]) != "" do
-      changeset = SearchLog.changeset(%SearchLog{}, %{search: String.trim(params["term"]) })
+    if search_term != "" do
+      changeset = SearchLog.changeset(%SearchLog{}, %{search: search_term })
       case Repo.insert(changeset) do
         {:ok, _struct}       -> Logger.info "search: \"#{params["term"]}\" logged"
         {:error, _changeset} -> Logger.info "search: \"#{params["term"]}\" couldn't be logged"
