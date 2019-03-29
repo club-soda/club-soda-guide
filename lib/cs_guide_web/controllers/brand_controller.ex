@@ -96,6 +96,11 @@ defmodule CsGuideWeb.BrandController do
     end)
     |> Enum.uniq()
     |> sort_by_cs_score()
+    |> Enum.filter(fn v ->
+      !Enum.any?(v.venue_types, fn t ->
+        String.downcase(t.name) == "retailer" || String.downcase(t.name) == "wholesaler"
+      end)
+    end)
   end
 
   defp sort_by_cs_score(venues) do
@@ -178,16 +183,16 @@ defmodule CsGuideWeb.BrandController do
         ll
         |> String.split(",")
         |> Enum.map(&String.to_float/1)
-        |> IO.inspect()
 
       brand
       |> get_venues()
       |> Enum.filter(fn v -> v.lat != nil || v.long != nil end)
       |> Enum.sort(fn v1, v2 ->
         if v1.lat != nil || v1.long != nil || v2.lat != nil || v2.long != nil do
-          # can this if statement be removed <<<<<
           calc_distance({v1.lat, v1.long}, {user_lat, user_long}) <=
             calc_distance({v2.lat, v2.long}, {user_lat, user_long})
+        else
+          get_venues(brand)
         end
       end)
     else

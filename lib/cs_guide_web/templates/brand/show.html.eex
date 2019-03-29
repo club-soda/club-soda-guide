@@ -233,7 +233,7 @@
     </section>
   <% end %>
 
-  <%= if get_filtered_venues(@venues) != [] do %>
+  <%= if @venues != [] do %>
     <section class="w-90 center pv5">
       <h2 class="roboto-slab f2 lh2 db tc">Places that Serve <%= @brand.name %></h2>
       <div class="mv4 tc">
@@ -247,7 +247,7 @@
         <% end %>
       </div>
 
-      <%= if length(get_filtered_venues(@venues)) > 20 do %>
+      <%= if length(@venues) > 20 do %>
         <input type="checkbox" name="see-more-venues" id="see-more-venues" class="dn">
         <div class="db tc">
           <label for="see-more-venues" class="btn-primary no-underline see-more-label">See More</label>
@@ -284,10 +284,9 @@
   function getLocation(e) {
     e.target.removeEventListener("click", getLocation)
     if (e.target.innerHTML) {
-      e.target.innerHTML = "Searching..."
+      e.target.innerHTML = "Sorting..."
     }
-    brand = window.location.href.split("/").pop();
-    // Ensure you take the ?... part off if the brand is already on the location page
+    brand = window.location.href.split("/").pop().split("?")[0];
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         var coords = position.coords

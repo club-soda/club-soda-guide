@@ -53,23 +53,13 @@ defmodule CsGuideWeb.BrandViewTest do
     assert any_type?(@brand, "type2") == true
   end
 
-  test "retailers and wholesalers are filtered out" do
-    assert get_filtered_venues(@brand) == [
-             %{
-               cs_score: 1,
-               venue_name: "venue1",
-               venue_types: [%{name: "type1"}, %{name: "type2"}]
-             }
-           ]
-  end
-
   test "get_venues_over_n filters correctly" do
     assert get_venues_over_n(@venues, 1) == [
              %CsGuide.Resources.Venue{
-               venue_types: [%{name: "type1"}]
+               venue_types: [%{name: "wholesaler"}]
              },
              %CsGuide.Resources.Venue{
-               venue_types: [%{name: "wholesaler"}]
+               venue_types: [%{name: "type1"}]
              }
            ]
   end
