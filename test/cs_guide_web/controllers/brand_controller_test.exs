@@ -88,11 +88,11 @@ defmodule CsGuideWeb.BrandControllerTest do
 
       conn = get(conn, brand_path(conn, :show, @another_create_attrs.slug))
       assert html_response(conn, 200) =~ "some new name"
-      # refute html_response(conn, 200) =~ "Use discount code"
-      # assert html_response(conn, 200) =~ "Aldi"
-      # refute html_response(conn, 200) =~ "Amazon"
-      # assert html_response(conn, 200) =~ "bg-spirit"
-      # refute html_response(conn, 200) =~ "bg-beer"
+      refute html_response(conn, 200) =~ "Use discount code"
+      assert html_response(conn, 200) =~ "Aldi"
+      refute html_response(conn, 200) =~ "Amazon"
+      assert html_response(conn, 200) =~ "bg-spirit"
+      refute html_response(conn, 200) =~ "bg-beer"
     end
 
     test "renders error when brand already exists", %{conn: conn} do
