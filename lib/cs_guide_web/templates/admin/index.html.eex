@@ -55,4 +55,13 @@
   <%= link "Wholesalers", to: wholesaler_path(@conn, :index), class: "mv3 w-20-ns db btn-primary no-underline" %>
   <%= link "Static Pages", to: static_page_path(@conn, :index), class: "db w-20-ns mv3 btn-primary no-underline" %>
   <%= link "Sponsor", to: sponsor_path(@conn, :index), class: "db w-20-ns mv3 btn-primary no-underline" %>
+
+  <div class="mt4 mt3-ns mb3">
+    <div class="w-20-ns dib-ns">
+      <%= link "Searches log", to: search_log_path(@conn, :index), class: "btn-primary no-underline db" %>
+    </div>
+    <div class="pv4 pv0-ns ph4-ns db dib-ns">
+      <%= link "Download searches log", to: csv_path(@conn, :export, data: "search-log"), class: "cs-black" %>
+    </div>
+  </div>
 </section>

@@ -3,6 +3,8 @@ defmodule CsGuideWeb.CsvController do
 
   alias CsGuide.Resources.{Venue, Drink, Brand}
   alias CsGuide.Categories.{DrinkType, DrinkStyle, VenueType}
+  alias CsGuide.{Repo, SearchLog}
+  import Ecto.Query
 
   def export(conn, params) do
      case params["data"] do
@@ -21,6 +23,8 @@ defmodule CsGuideWeb.CsvController do
         "drink-styles" -> drink_styles_csv_content(conn)
 
         "venue-types" -> venue_types_csv_content(conn)
+
+        "search-log" -> search_log_csv_content(conn)
 
         _ ->  conn
               |> put_status(:not_found)
@@ -295,4 +299,24 @@ defmodule CsGuideWeb.CsvController do
       |> put_resp_header("content-disposition", "attachment; filename=\"venue_types.csv\"")
       |> send_resp(200, brands)
     end
+
+  # Search Log
+  defp search_log_csv_content(conn) do
+    searches_log = SearchLog |> order_by(desc: :inserted_at) |> Repo.all() 
+    |> Enum.map(fn search ->
+      %{
+        search: search.search,
+        inserted_at: search.inserted_at,
+      }
+    end)
+    |> CSV.encode(headers: [ :search, :inserted_at])
+    |> Enum.to_list
+    |> to_string
+
+    conn
+    |> put_resp_content_type("text/csv")
+    |> put_resp_header("content-disposition", "attachment; filename=\"searches_log.csv\"")
+    |> send_resp(200, searches_log)
+  end
+
 end

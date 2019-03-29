@@ -1,12 +1,26 @@
 defmodule CsGuideWeb.SearchAllController do
   use CsGuideWeb, :controller
+  require Logger
 
   alias CsGuide.Resources.{Drink, Venue}
-  alias CsGuide.{Resources, PostcodeLatLong}
+  alias CsGuide.PostcodeLatLong
   alias CsGuideWeb.{VenueController, SearchVenueController}
+
+  alias CsGuide.SearchLog
+  alias CsGuide.Repo
 
   def index(conn, params) do
     possible_postcode = params["term"] || ""
+
+    # insert search log
+    if String.trim(params["term"]) != "" do
+      changeset = SearchLog.changeset(%SearchLog{}, %{search: String.trim(params["term"]) })
+      case Repo.insert(changeset) do
+        {:ok, _struct}       -> Logger.info "search: \"#{params["term"]}\" logged"
+        {:error, _changeset} -> Logger.info "search: \"#{params["term"]}\" couldn't be logged"
+      end
+    end
+
 
     case PostcodeLatLong.check_or_cache(possible_postcode) do
       {:ok, {lat, long}} ->
@@ -39,6 +53,8 @@ defmodule CsGuideWeb.SearchAllController do
       Drink.all()
       |> Drink.preload([:brand, :drink_types, :drink_styles, :drink_images])
       |> Enum.sort_by(fn d -> Map.get(d, :weighting, 0) end, &>=/2)
+
+
 
     drink_cards = Enum.map(drinks, fn d -> Drink.get_drink_card(d) end)
 
