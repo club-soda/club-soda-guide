@@ -18,7 +18,7 @@ defmodule CsGuideWeb.BrandController do
   end
 
   def create(conn, %{"brand" => brand_params}) do
-    slug = Brand.put_slug(brand_params["name"])
+    slug = Brand.create_slug(brand_params["name"])
 
     changeset =
       %Brand{}
@@ -113,8 +113,8 @@ defmodule CsGuideWeb.BrandController do
     |> List.flatten()
   end
 
-  defp get_brand_info(slug) do
-    Brand.get_by(slug: slug)
+  defp get_brand_info(brand) do
+    brand
     |> Brand.preload(
       drinks: [
         :drink_images,
@@ -154,7 +154,8 @@ defmodule CsGuideWeb.BrandController do
   end
 
   defp get_drink_type(brand) do
-    Enum.map(brand.drinks, fn d ->
+    brand.drinks
+    |> Enum.map(fn d ->
       Enum.map(d.drink_types, fn t -> t.name end)
     end)
     |> List.flatten()
@@ -202,21 +203,27 @@ defmodule CsGuideWeb.BrandController do
 
   def show_helper(conn, params, ll \\ "") do
     %{"slug" => slug} = params
-    brand = get_brand_info(slug)
-    {drink_type, count} = get_drink_type(brand)
+    basic_brand_info = Brand.get_by(slug: slug)
 
-    %{
-      brand: brand,
-      related_drinks: get_related_drinks(brand, drink_type),
-      dd_code: get_code("DryDrinker"),
-      wb_code: get_code("WiseBartender"),
-      drink_type: drink_type,
-      venues: get_sorted_venues(ll, brand)
-    }
+    if basic_brand_info != nil do
+      brand = get_brand_info(basic_brand_info)
+      {drink_type, count} = get_drink_type(brand)
+
+      %{
+        brand: brand,
+        related_drinks: get_related_drinks(brand, drink_type),
+        dd_code: get_code("DryDrinker"),
+        wb_code: get_code("WiseBartender"),
+        drink_type: drink_type,
+        venues: get_sorted_venues(ll, brand)
+      }
+    else
+      nil
+    end
   end
 
   defp render_brands(conn, assigns) do
-    if assigns.brand != nil do
+    if assigns != nil do
       brand =
         Map.update(assigns.brand, :brand_images, [], fn images ->
           images
