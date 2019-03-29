@@ -53,7 +53,8 @@ defmodule CsGuide.Mixfile do
       {:earmark, "~> 1.3.0"},
       {:csv, "~> 2.1"},
       {:bamboo, "~> 1.2"},
-      {:bamboo_smtp, "~> 1.6.0"}
+      {:bamboo_smtp, "~> 1.6.0"},
+      {:ecto_enum, "~> 1.2"}
     ]
   end
 
