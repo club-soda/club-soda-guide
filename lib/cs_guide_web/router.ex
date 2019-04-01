@@ -81,10 +81,7 @@ defmodule CsGuideWeb.Router do
   end
 
   scope "/admin", CsGuideWeb do
-    # Leaving this with just the :browser pipeline for the moment. Going to make
-    # a new venue_owner pipeline
-    pipe_through([:browser])
-    # pipe_through([:browser, :venue_owner])
+    pipe_through([:browser, :venue_owner])
     get("/retailers/:id/add_drinks", RetailerController, :add_drinks)
     get("/venues/:slug/add_drinks", VenueController, :add_drinks, param: "slug")
     get("/venues/:slug/add_photo", VenueController, :add_photo)

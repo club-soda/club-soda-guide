@@ -12,17 +12,17 @@ defmodule CsGuideWeb.Plugs.Auth do
   end
 
   def authenticate_site_admin(conn, _opts) do
-    authenticate_user_type(conn, :site_admin)
+    authenticate_user_type(conn, [:site_admin])
   end
 
   def authenticate_venue_owner(conn, _opts) do
-    authenticate_user_type(conn, :venue_admin)
+    authenticate_user_type(conn, [:venue_admin, :site_admin])
   end
 
-  defp authenticate_user_type(conn, user_type) do
+  defp authenticate_user_type(conn, user_types) do
     user = conn.assigns.current_user
     cond do
-      user && user.role == user_type ->
+      user && Enum.any?(user_types, &(&1 == user.role)) ->
         conn
 
       user == nil ->
