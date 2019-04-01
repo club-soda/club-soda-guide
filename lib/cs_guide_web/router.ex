@@ -18,7 +18,7 @@ defmodule CsGuideWeb.Router do
   end
 
   pipeline :admin do
-    plug(:authenticate_user, admin: true)
+    plug(:authenticate_site_admin)
   end
 
   # pipeline :venue_owner do

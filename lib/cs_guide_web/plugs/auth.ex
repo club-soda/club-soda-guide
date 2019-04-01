@@ -12,17 +12,22 @@ defmodule CsGuideWeb.Plugs.Auth do
     assign(conn, :current_user, user)
   end
 
+  def authenticate_site_admin(conn, _opts) do
+    authenticate_user_type(conn, :site_admin)
+  end
 
   end
 
-  def authenticate_user(conn, opts \\ %{}) do
+  defp authenticate_user_type(conn, user_type) do
+    user = conn.assigns.current_user
     cond do
-      !opts[:admin] || (opts[:admin] && conn.assigns[:admin]) ->
+      user && user.role == user_type ->
         conn
 
-      !conn.assigns[:current_user] ->
+      user == nil ->
         conn
-        |> Plug.Conn.put_session(:redirect_url, conn.request_path)
+        # Not sure what this line is for. I think that it can be removed
+        # |> Plug.Conn.put_session(:redirect_url, conn.request_path)
         |> Phoenix.Controller.put_flash(:error, "You must be logged in to access that page")
         |> Phoenix.Controller.redirect(to: CsGuideWeb.Router.Helpers.session_path(conn, :new))
         |> halt()
