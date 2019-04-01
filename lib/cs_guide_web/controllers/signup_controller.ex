@@ -3,10 +3,13 @@ defmodule CsGuideWeb.SignupController do
 
   alias CsGuide.{Resources.Venue, Auth}
 
-  def create(conn, %{"venue" => %{"users" => users} = venue}) do
-    postcode = venue["postcode"]
-    slug = Venue.create_slug(venue["venue_name"], postcode)
-    venue_params = Map.put(venue, "slug", slug)
+  def create(conn, %{"venue" => %{"users" => users} = venue_params}) do
+    postcode = venue_params["postcode"]
+    slug = Venue.create_slug(venue_params["venue_name"], postcode)
+    venue_params =
+      venue_params
+      |> Map.put("slug", slug)
+      |> put_in(["users", "0", "role"], "venue_admin")
 
     # capturing the email value so that we can email the user a password link
     %{"0" => %{"email" => _email}} = users
