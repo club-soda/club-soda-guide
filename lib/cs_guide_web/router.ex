@@ -59,7 +59,8 @@ defmodule CsGuideWeb.Router do
     pipe_through([:browser, :admin])
 
     resources("/", AdminController, only: [:index])
-    resources("/brands", BrandController, except: [:show], param: "slug")
+    resources("/brands", BrandController, except: [:show, :delete], param: "slug")
+    resources("/brands", BrandController, only: [:delete], param: "entry_id")
     resources("/drinks", DrinkController, except: [:show])
     resources("/wholesalers", WholesalerController, except: [:show])
     resources("/retailers", RetailerController, except: [:show])
@@ -73,6 +74,7 @@ defmodule CsGuideWeb.Router do
     resources("/drink_styles", DrinkStyleController)
     resources("/discount_codes", DiscountCodeController)
     resources("/sponsor", SponsorController)
+    resources("/searchlog", SearchLogController, only: [:index])
 
     get("/drinks/:id/add_photo", DrinkController, :add_photo)
     get("/brands/:slug/add_cover_photo", BrandController, :add_cover_photo)

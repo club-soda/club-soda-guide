@@ -4,6 +4,7 @@ module TypeAndStyle exposing
     , FilterType(..)
     , SubFilters(..)
     , TypesAndStyles
+    , filterParentTypes
     , getDrinkTypesAndStyles
     , getFilterById
     , getFilterId
@@ -102,3 +103,33 @@ getFilterById filterId filters =
 getFilterType : Filter -> FilterType
 getFilterType ( typeFilter, _, _ ) =
     typeFilter
+
+
+getSubFiltersList : Filter -> List Filter
+getSubFiltersList ( _, _, SubFilters filters ) =
+    filters
+
+
+filterParentTypes : List Filter -> List FilterId -> FilterId -> Bool
+filterParentTypes filters selectedFitlerIds filterId =
+    let
+        filterParent =
+            getFilterById filterId filters
+
+        subFilters =
+            case filterParent of
+                Nothing ->
+                    []
+
+                Just f ->
+                    List.map getFilterId (getSubFiltersList f)
+    in
+    not <| anyMember subFilters selectedFitlerIds
+
+
+anyMember : List a -> List a -> Bool
+anyMember aList aList2 =
+    aList
+        |> List.filter (\e -> List.member e aList2)
+        |> List.isEmpty
+        |> not

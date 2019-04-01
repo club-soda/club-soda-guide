@@ -44,6 +44,11 @@ defmodule CsGuideWeb.CsvControllerTest do
       assert response(conn, 200)
     end
 
+    test "GET /csv?data=search-log", %{conn: conn} do
+      conn = get(conn, "/csv?data=search-log")
+      assert response(conn, 200)
+    end
+
     test "GET /csv?data=wrong-data", %{conn: conn} do
       conn = get(conn, "/csv?data=wrong-data")
       assert response(conn, 404)

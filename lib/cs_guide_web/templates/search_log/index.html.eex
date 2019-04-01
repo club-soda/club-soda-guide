@@ -1,0 +1,21 @@
+<section class="center w-80 w-75-l mv6">
+  <h2 class="f4 lh4 dib">All Searches log</h2>
+
+  <table class="mt3 mb5 w-100">
+    <thead>
+      <tr class="tl">
+        <th class="pv3 pr3 f5 lh5 b">Search</th>
+        <th class="pa3 f5 lh5 b">Inserted at</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="">
+      <%= for search_log <- @searches_log do %>
+        <tr class="bt bb b--cs-light-gray">
+          <td class="pv3 pr3"><%= search_log.search %></td>
+          <td class="pa3"><%= search_log.inserted_at %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

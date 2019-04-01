@@ -246,27 +246,6 @@ defmodule CsGuide.Resources.Venue do
     |> CsGuide.Repo.all()
   end
 
-  def check_existing_slug(changeset, slug) do
-    existing_venue_slug =
-      case __MODULE__.get_by(slug: slug) do
-        nil -> ""
-        venue -> venue.slug
-      end
-
-    if slug == existing_venue_slug do
-      {_, changeset_with_error} =
-        Ecto.Changeset.add_error(changeset, :venue_name, "Venue already exists",
-          type: :string,
-          validation: :cast
-        )
-        |> Ecto.Changeset.apply_action(:insert)
-
-      changeset_with_error
-    else
-      changeset
-    end
-  end
-
   def validate_postcode(%{valid?: true} = changeset, postcode) do
     case PostcodeLatLong.check_or_cache(postcode) do
       {:error, _} ->

@@ -15,6 +15,16 @@ defmodule CsGuideWeb.BrandControllerTest do
     sold_aldi: true,
     website: "https://www.some-website.com"
   }
+  @another_create_attrs %{
+    description: "some description",
+    logo: "some logo",
+    member: true,
+    name: "some new name",
+    slug: "some-new-name",
+    sold_amazon: false,
+    sold_aldi: true,
+    website: "https://www.some-website.com"
+  }
   @update_attrs %{
     description: "some updated description",
     logo: "some updated logo",
@@ -25,7 +35,7 @@ defmodule CsGuideWeb.BrandControllerTest do
     sold_aldi: true,
     website: "https://www.some-updated-website.com"
   }
-  @invalid_attrs %{description: nil, logo: nil, member: nil, name: nil, website: nil}
+  @invalid_attrs %{description: nil, logo: nil, member: nil, name: "", website: nil, slug: ""}
 
   def fixture(:brand) do
     {:ok, brand} =
@@ -69,15 +79,15 @@ defmodule CsGuideWeb.BrandControllerTest do
   end
 
   describe "create brand" do
-    setup [:admin_login]
+    setup [:create_brand, :admin_login]
 
     test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, brand_path(conn, :create), brand: @create_attrs)
+      conn = post(conn, brand_path(conn, :create), brand: @another_create_attrs)
 
       assert redirected_to(conn) == brand_path(conn, :index)
 
-      conn = get(conn, brand_path(conn, :show, @create_attrs.slug))
-      assert html_response(conn, 200) =~ "some name"
+      conn = get(conn, brand_path(conn, :show, @another_create_attrs.slug))
+      assert html_response(conn, 200) =~ "some new name"
       refute html_response(conn, 200) =~ "Use discount code"
       assert html_response(conn, 200) =~ "Aldi"
       refute html_response(conn, 200) =~ "Amazon"
@@ -85,9 +95,24 @@ defmodule CsGuideWeb.BrandControllerTest do
       refute html_response(conn, 200) =~ "bg-beer"
     end
 
+    test "renders error when brand already exists", %{conn: conn} do
+      conn = post(conn, brand_path(conn, :create), brand: @create_attrs)
+      assert html_response(conn, 200) =~ "Brand already exists"
+    end
+
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, brand_path(conn, :create), brand: @invalid_attrs)
       assert html_response(conn, 200) =~ "New Brand"
+    end
+  end
+
+  describe "show brand" do
+    setup [:create_brand]
+
+    test "can visit brand with location information", %{conn: conn} do
+      conn = get(conn, "/brands/some-name?ll=51.54359770000001,-0.08807799999999999")
+
+      assert html_response(conn, 200) =~ "some name"
     end
   end
 
@@ -133,18 +158,17 @@ defmodule CsGuideWeb.BrandControllerTest do
     end
   end
 
-  # describe "delete brand" do
-  #   setup [:create_brand]
-  #
-  #   test "deletes chosen brand", %{conn: conn, brand: brand} do
-  #     conn = delete(conn, brand_path(conn, :delete, brand))
-  #     assert redirected_to(conn) == brand_path(conn, :index)
-  #
-  #     assert_error_sent(404, fn ->
-  #       get(conn, brand_path(conn, :show, brand))
-  #     end)
-  #   end
-  # end
+  describe "delete brand" do
+    setup [:create_brand, :admin_login]
+
+    test "deletes chosen brand", %{conn: conn, brand: brand} do
+      conn = delete(conn, brand_path(conn, :delete, brand.entry_id))
+      assert redirected_to(conn) == brand_path(conn, :index)
+
+      conn = get(conn, brand_path(conn, :show, brand.slug))
+      assert html_response(conn, 200) =~ "Oops! That page could not be found."
+    end
+  end
 
   defp create_brand(_) do
     brand = fixture(:brand)

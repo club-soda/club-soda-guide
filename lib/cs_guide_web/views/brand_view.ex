@@ -15,38 +15,23 @@ defmodule CsGuideWeb.BrandView do
         String.downcase(v.venue_name) != "wisebartender"
     end)
     |> Enum.uniq()
-    |> sort_by_cs_score()
   end
 
-  def get_filtered_venues(brand) do
-    brand
-    |> get_venues()
-    |> Enum.filter(fn v ->
-      !Enum.any?(v.venue_types, fn t ->
-        String.downcase(t.name) == "retailer" || String.downcase(t.name) == "wholesaler"
-      end)
-    end)
+  def get_initial_venues(venues) do
+    venues
+    |> Enum.take(20)
+  end
+
+  def get_see_more_venues(venues) do
+    venues
+    |> get_venues_over_n(20)
   end
 
   def get_venues_over_n(venues, n) do
     venues
-    |> Enum.sort()
     |> Enum.split(n)
     |> Tuple.to_list()
     |> Enum.at(1)
-  end
-
-  def get_initial_venues(brand) do
-    brand
-    |> get_filtered_venues()
-    |> Enum.sort()
-    |> Enum.take(20)
-  end
-
-  def get_see_more_venues(brand) do
-    brand
-    |> get_filtered_venues()
-    |> get_venues_over_n(20)
   end
 
   def any_type?(brand, type) do
@@ -64,16 +49,6 @@ defmodule CsGuideWeb.BrandView do
     brand.sold_aldi || brand.sold_asda || brand.sold_dd || brand.sold_morrisons ||
       brand.sold_sainsburys || brand.sold_tesco || brand.sold_waitrose || brand.sold_wb ||
       brand.sold_amazon
-  end
-
-  defp sort_by_cs_score(venues) do
-    venues
-    |> Enum.sort(fn v1, v2 -> v1.cs_score >= v2.cs_score end)
-    |> Enum.chunk_by(fn v ->
-      v.cs_score
-    end)
-    |> Enum.map(fn list -> Enum.shuffle(list) end)
-    |> List.flatten()
   end
 
   def query(sch) do
