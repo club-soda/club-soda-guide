@@ -42,6 +42,15 @@ config :fields, Fields.AES,
 
 config :fields, Fields,
   secret_key_base: "4hf8JJmuXBYA1qDB1RpA6wePqW9EHkF6DxqXMshLZcSdTu3yLmoy2OR0Dhq2CYmE"
+config :cs_guide, CsGuide.Mailer,
+  adapter: Bamboo.SMTPAdapter,
+  server: System.get_env("SES_SERVER"),
+  port: System.get_env("SES_PORT"),
+  username: System.get_env("SMTP_USERNAME"),
+  password: System.get_env("SMTP_PASSWORD"),
+  tls: :always,
+  ssl: false,
+  retries: 1
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
