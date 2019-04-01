@@ -150,7 +150,7 @@ defmodule CsGuideWeb.WholesalerControllerTest do
   end
 
   describe "add drinks to wholesaler - admin" do
-    setup [:create_wholesaler, :admin_login]
+    setup [:create_wholesaler, :venue_admin_login]
 
     test "renders form for adding drinks to chosen wholesaler", %{
       conn: conn,

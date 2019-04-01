@@ -15,7 +15,7 @@ defmodule CsGuideWeb.AuthControllerTest do
   def create_admin(_) do
     {:ok, user} =
       %User{}
-      |> User.changeset(%{email: "admin@email", password: "password", admin: true})
+      |> User.changeset(%{email: "admin@email", password: "password", role: :site_admin})
       |> User.insert()
 
     {:ok, user: user}

@@ -96,7 +96,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "Image uploading" do
-    setup [:create_venues, :admin_login]
+    setup [:create_venues, :venue_admin_login]
 
     test "POST /add_photo with bad s3 upload", %{conn: conn} do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
@@ -164,7 +164,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "new venue - admin" do
-    setup [:admin_login]
+    setup [:venue_admin_login]
 
     test "renders form", %{conn: conn} do
       conn = get(conn, venue_path(conn, :new))
@@ -173,7 +173,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "create venue" do
-    setup [:create_venues, :admin_login]
+    setup [:create_venues, :venue_admin_login]
 
     test "redirects to show when data is valid, doesn't allow venue duplication", %{conn: conn} do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
@@ -201,7 +201,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "Calculates correct CS Score:" do
-    setup [:drink_setup, :create_venues, :admin_login]
+    setup [:drink_setup, :create_venues, :venue_admin_login]
 
     test "When no drinks are added the score is 0", %{conn: conn} do
       conn = post(conn, venue_path(conn, :create), venue: @create_attrs)
@@ -471,7 +471,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "edit venue - admin" do
-    setup [:create_venues, :admin_login]
+    setup [:create_venues, :venue_admin_login]
 
     test "renders form for editing chosen venue", %{conn: conn, venues: venues} do
       venue = Enum.at(venues, 0)
@@ -481,7 +481,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "update venue" do
-    setup [:create_venues, :admin_login]
+    setup [:create_venues, :venue_admin_login]
 
     test "renders errors when data is invalid", %{conn: conn, venues: venues} do
       venue = Enum.at(venues, 0)
