@@ -21,9 +21,9 @@ defmodule CsGuideWeb.Router do
     plug(:authenticate_site_admin)
   end
 
-  # pipeline :venue_owner do
-  #   plug(:authenticate_venue_owner)
-  # end
+  pipeline :venue_owner do
+    plug(:authenticate_venue_owner)
+  end
 
   scope "/", CsGuideWeb do
     # Use the default browser stack
@@ -82,7 +82,7 @@ defmodule CsGuideWeb.Router do
 
   scope "/admin", CsGuideWeb do
     # Leaving this with just the :browser pipeline for the moment. Going to make
-    # a new venue_owner pipeline 
+    # a new venue_owner pipeline
     pipe_through([:browser])
     # pipe_through([:browser, :venue_owner])
     get("/retailers/:id/add_drinks", RetailerController, :add_drinks)

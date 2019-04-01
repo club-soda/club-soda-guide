@@ -12,9 +12,9 @@ defmodule CsGuideWeb.SessionController do
         conn
         |> Auth.login(user)
         |> (fn c ->
-              case user.admin do
-                true -> redirect(c, to: "/admin")
-                false -> redirect(c, to: "/")
+              case user.role do
+                :site_admin -> redirect(c, to: "/admin")
+                _ -> redirect(c, to: "/")
               end
             end).()
 
