@@ -2,7 +2,6 @@ defmodule CsGuideWeb.Plugs.Auth do
   import Plug.Conn
 
   alias CsGuide.Accounts.User
-  # alias CsGuide.Resources.Venue
 
   def init(default), do: default
 
@@ -16,6 +15,8 @@ defmodule CsGuideWeb.Plugs.Auth do
     authenticate_user_type(conn, :site_admin)
   end
 
+  def authenticate_venue_owner(conn, _opts) do
+    authenticate_user_type(conn, :venue_admin)
   end
 
   defp authenticate_user_type(conn, user_type) do
@@ -37,39 +38,5 @@ defmodule CsGuideWeb.Plugs.Auth do
         |> Phoenix.Controller.redirect(to: "/")
         |> halt()
     end
-  end
-
-  # def authenticate_venue_owner(conn, _opts \\ %{}) do
-  #   venue =
-  #     if conn.params["id"] do
-  #       Venue.get(conn.params["id"])
-  #     else
-  #       if conn.params["slug"] do
-  #         Venue.get_by(slug: conn.params["slug"])
-  #       end
-  #     end
-  #
-  #   venue_owner =
-  #     if venue do
-  #       conn.assigns[:venue_id] == venue.entry_id
-  #     else
-  #       false
-  #     end
-  #
-  #   cond do
-  #     conn.assigns[:admin] || venue_owner ->
-  #       conn
-  #
-  #     true ->
-  #       conn
-  #       |> Phoenix.Controller.redirect(to: "/")
-  #       |> halt()
-  #   end
-  # end
-
-  defp put_current_user(conn, user_id) do
-    conn
-    |> assign(:current_user, user_id)
-    |> assign(:user_signed_in?, true)
   end
 end
