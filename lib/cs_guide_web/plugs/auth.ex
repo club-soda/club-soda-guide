@@ -8,7 +8,6 @@ defmodule CsGuideWeb.Plugs.Auth do
 
   def call(conn, _params) do
     user_id = Plug.Conn.get_session(conn, :user_id)
-    # venue_id = Plug.Conn.get_session(conn, :venue_id)
 
     with true <- is_binary(user_id),
          %User{} = user <- User.get(user_id),
@@ -16,17 +15,14 @@ defmodule CsGuideWeb.Plugs.Auth do
       conn
       |> put_current_user(user_id)
       |> assign(:admin, true)
-      # |> assign(:venue_id, venue_id)
     else
       nil ->
         conn
         |> assign(:current_user, nil)
         |> assign(:user_signed_in?, false)
-        # |> assign(:venue_id, venue_id)
 
       false ->
         put_current_user(conn, user_id)
-        # |> assign(:venue_id, venue_id)
     end
   end
 

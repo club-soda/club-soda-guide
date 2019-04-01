@@ -30,8 +30,14 @@ defmodule CsGuide.Repo.Migrations.AddRolesToUsers do
         end
 
       user
-      |> User.changeset(params)
-      |> User.update()
+      |> Ecto.Changeset.cast(params, [:role, :verified])
+      # |> User.update()
+      # Having to use Repo update to update the current users in the database
+      # as the User.update function was causing the existing users to no longer
+      # be able to log in
+      # Have opened an issue relating to this here...
+      # https://github.com/dwyl/alog/issues/56
+      |> CsGuide.Repo.update()
     end)
   end
 
