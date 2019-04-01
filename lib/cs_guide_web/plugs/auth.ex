@@ -7,23 +7,12 @@ defmodule CsGuideWeb.Plugs.Auth do
   def init(default), do: default
 
   def call(conn, _params) do
-    user_id = Plug.Conn.get_session(conn, :user_id)
+    user_id = get_session(conn, :user_id)
+    user = user_id && is_binary(user_id) && User.get(user_id)
+    assign(conn, :current_user, user)
+  end
 
-    with true <- is_binary(user_id),
-         %User{} = user <- User.get(user_id),
-         true <- user.admin do
-      conn
-      |> put_current_user(user_id)
-      |> assign(:admin, true)
-    else
-      nil ->
-        conn
-        |> assign(:current_user, nil)
-        |> assign(:user_signed_in?, false)
 
-      false ->
-        put_current_user(conn, user_id)
-    end
   end
 
   def authenticate_user(conn, opts \\ %{}) do
