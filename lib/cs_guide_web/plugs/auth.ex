@@ -73,10 +73,6 @@ defmodule CsGuideWeb.Plugs.Auth do
   #   end
   # end
 
-  def assign_venue_id(conn, _opts \\ %{}) do
-    conn
-  end
-
   defp put_current_user(conn, user_id) do
     conn
     |> assign(:current_user, user_id)

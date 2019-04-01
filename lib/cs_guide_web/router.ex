@@ -21,17 +21,13 @@ defmodule CsGuideWeb.Router do
     plug(:authenticate_user, admin: true)
   end
 
-  pipeline :venue_id do
-    plug(:assign_venue_id)
-  end
-
   # pipeline :venue_owner do
   #   plug(:authenticate_venue_owner)
   # end
 
   scope "/", CsGuideWeb do
     # Use the default browser stack
-    pipe_through([:browser, :venue_id])
+    pipe_through([:browser])
 
     get("/", PageController, :index)
     post("/signup", SignupController, :create)
