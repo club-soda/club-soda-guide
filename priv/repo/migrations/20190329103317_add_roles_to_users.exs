@@ -8,7 +8,7 @@ defmodule CsGuide.Repo.Migrations.AddRolesToUsers do
       add(:role, :string)
       add(:verified, :naive_datetime)
       add(:password_reset_token, :string)
-      add(:password_reset_token_sent_at, :naive_datetime)
+      add(:password_reset_token_expiry, :naive_datetime)
     end
 
     # ensures that role column is added to the users table before attempting the
@@ -46,7 +46,7 @@ defmodule CsGuide.Repo.Migrations.AddRolesToUsers do
       remove(:role)
       remove(:verified)
       remove(:password_reset_token)
-      remove(:password_reset_token_sent_at)
+      remove(:password_reset_token_expiry)
     end
   end
 end

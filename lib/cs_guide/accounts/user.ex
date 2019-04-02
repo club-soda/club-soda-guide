@@ -14,7 +14,7 @@ defmodule CsGuide.Accounts.User do
     field(:role, CsGuide.RoleEnum)
     field(:verified, :naive_datetime)
     field(:password_reset_token, :string)
-    field(:password_reset_token_sent_at, :naive_datetime)
+    field(:password_reset_token_expiry, :naive_datetime)
 
     many_to_many(
       :venues,
@@ -32,7 +32,7 @@ defmodule CsGuide.Accounts.User do
     user
     |> cast(attrs, [
       :email, :password, :admin, :role, :verified, :password_reset_token,
-      :password_reset_token_sent_at
+      :password_reset_token_expiry
     ])
     |> validate_required([:email])
     |> put_email_hash()

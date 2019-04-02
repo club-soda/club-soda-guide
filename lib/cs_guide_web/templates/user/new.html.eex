@@ -7,7 +7,7 @@
   </p>
 
   <%= custom_render_autoform(@conn, :create, [
-    {CsGuide.Accounts.User, exclude: [:email_hash, :password, :admin, :venues, :role, :verified, :password_reset_token, :password_reset_token_sent_at]},
+    {CsGuide.Accounts.User, exclude: [:email_hash, :password, :admin, :venues, :role, :verified, :password_reset_token, :password_reset_token_expiry]},
     "<h3 class=\"f4 lh4 mt3\">Set Up a Venue</h3>",
     "<h2 class=\"f5 lh5 mt3 mb2\">Basic Information</h2>",
     "<p class=\"f6 lh6 cs-pink mb3\">* - required field</p>",
