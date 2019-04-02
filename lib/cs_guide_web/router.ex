@@ -41,6 +41,8 @@ defmodule CsGuideWeb.Router do
 
     get("/json_drinks", DrinkController, :json_index)
     get("/json_venue_images", VenueController, :json_index)
+    resources("/password", PasswordController, only: [:new, :create, :update])
+    resources("/password", PasswordController, only: [:edit], param: "token")
   end
 
   scope "/search", CsGuideWeb do

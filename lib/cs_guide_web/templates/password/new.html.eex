@@ -1,0 +1,21 @@
+<section class="center w-80 w-75-l mv6-ns mv5">
+  <h3 class="f4 lh4">Add password</h3>
+
+  <%= custom_render_autoform(
+    @conn,
+    :create,
+    [CsGuide.Accounts.User],
+    exclude: [
+      :deleted,
+      :entry_id,
+      :email_hash,
+      :password,
+      :admin,
+      :venues,
+      :role,
+      :verified,
+      :password_reset_token,
+      :password_reset_token_expiry
+    ],
+    assigns: [changeset: @changeset]) %>
+</section>
