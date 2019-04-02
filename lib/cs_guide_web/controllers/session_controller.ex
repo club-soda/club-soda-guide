@@ -12,9 +12,15 @@ defmodule CsGuideWeb.SessionController do
         conn
         |> Auth.login(user)
         |> (fn c ->
-              case user.admin do
-                true -> redirect(c, to: "/admin")
-                false -> redirect(c, to: "/")
+              case user.role do
+                :site_admin ->
+                  redirect(c, to: "/admin")
+
+                :venue_admin ->
+                  redirect(c, to: "/")
+
+                _ ->
+                  redirect(c, to: "/")
               end
             end).()
 
@@ -25,7 +31,7 @@ defmodule CsGuideWeb.SessionController do
 
   def delete(conn, _params) do
     conn
-    |> CsGuide.Auth.logout()
+    |> Auth.logout()
     |> redirect(to: page_path(conn, :index))
   end
 end

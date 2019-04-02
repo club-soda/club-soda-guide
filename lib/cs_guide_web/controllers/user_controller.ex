@@ -13,13 +13,13 @@ defmodule CsGuideWeb.UserController do
     user_changeset = User.changeset(%User{}, %{})
     venue_changeset = Venue.changeset(%Venue{users: [user_changeset]}, %{})
 
-    render(conn, "new.html",
-      user_changeset: user_changeset,
-      venue_changeset: venue_changeset,
-      changeset: venue_changeset
-    )
+    render(conn, "new.html", changeset: venue_changeset)
   end
 
+  # Doesn't look like this route is ever used. There is a test for it but that
+  # all I can find.
+  # The new action above takes a user to a form that has a post request that
+  # takes users to # /signup create
   def create(conn, %{"user" => user_params}) do
     case %User{} |> User.changeset(user_params) |> User.insert() do
       {:ok, user} ->

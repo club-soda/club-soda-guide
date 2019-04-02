@@ -1,5 +1,6 @@
 defmodule CsGuideWeb.Plugs.Auth do
   import Plug.Conn
+  import Ecto.Query, only: [from: 2]
 
   alias CsGuide.Accounts.User
   alias CsGuide.Resources.Venue
@@ -7,83 +8,44 @@ defmodule CsGuideWeb.Plugs.Auth do
   def init(default), do: default
 
   def call(conn, _params) do
-    user_id = Plug.Conn.get_session(conn, :user_id)
-    venue_id = Plug.Conn.get_session(conn, :venue_id)
+    user_id = get_session(conn, :user_id)
+    user = user_id && is_binary(user_id) && User.get(user_id)
+    user = user_id && add_editable_venues(user)
+    assign(conn, :current_user, user)
+  end
 
-    with true <- is_binary(user_id),
-         %User{} = user <- User.get(user_id),
-         true <- user.admin do
+  def authenticate_site_admin(conn, _opts) do
+    authenticate_user_type(conn, [:site_admin])
+  end
+
+  def authenticate_venue_owner(conn, _opts) do
+    authenticate_user_type(conn, [:site_admin, :venue_admin])
+  end
+
+  defp authenticate_user_type(conn, user_types) do
+    user = conn.assigns.current_user
+    if user && Enum.any?(user_types, &(&1 == user.role)) do
       conn
-      |> put_current_user(user_id)
-      |> assign(:admin, true)
-      |> assign(:venue_id, venue_id)
     else
-      nil ->
-        conn
-        |> assign(:current_user, nil)
-        |> assign(:user_signed_in?, false)
-        |> assign(:venue_id, venue_id)
-
-      false ->
-        put_current_user(conn, user_id)
-        |> assign(:venue_id, venue_id)
+      conn
+      |> Phoenix.Controller.redirect(to: CsGuideWeb.Router.Helpers.session_path(conn, :new))
+      |> halt()
     end
   end
 
-  def authenticate_user(conn, opts \\ %{}) do
-    cond do
-      !opts[:admin] || (opts[:admin] && conn.assigns[:admin]) ->
-        conn
+  defp add_editable_venues(user) do
+    if user.role == :venue_admin do
+      query =
+        from(v in Venue,
+        join: vu in "venues_users",
+        on: v.id == vu.venue_id,
+        where: vu.user_id == ^user.id,
+        select: v.entry_id)
 
-      !conn.assigns[:current_user] ->
-        conn
-        |> Plug.Conn.put_session(:redirect_url, conn.request_path)
-        |> Phoenix.Controller.put_flash(:error, "You must be logged in to access that page")
-        |> Phoenix.Controller.redirect(to: CsGuideWeb.Router.Helpers.session_path(conn, :new))
-        |> halt()
-
-      true ->
-        conn
-        |> Phoenix.Controller.redirect(to: "/")
-        |> halt()
+      current_users_venues = CsGuide.Repo.all(query)
+      Map.put(user, :current_users_venues, current_users_venues)
+    else
+      user
     end
-  end
-
-  def authenticate_venue_owner(conn, _opts \\ %{}) do
-    venue =
-      if conn.params["id"] do
-        Venue.get(conn.params["id"])
-      else
-        if conn.params["slug"] do
-          Venue.get_by(slug: conn.params["slug"])
-        end
-      end
-
-    venue_owner =
-      if venue do
-        conn.assigns[:venue_id] == venue.entry_id
-      else
-        false
-      end
-
-    cond do
-      conn.assigns[:admin] || venue_owner ->
-        conn
-
-      true ->
-        conn
-        |> Phoenix.Controller.redirect(to: "/")
-        |> halt()
-    end
-  end
-
-  def assign_venue_id(conn, _opts \\ %{}) do
-    conn
-  end
-
-  defp put_current_user(conn, user_id) do
-    conn
-    |> assign(:current_user, user_id)
-    |> assign(:user_signed_in?, true)
   end
 end

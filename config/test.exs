@@ -30,3 +30,6 @@ end
 
 config :ex_aws,
   ex_aws_request: CsGuide.Mock.ExAws
+
+config :cs_guide,
+  mailer: CsGuide.MockMailer

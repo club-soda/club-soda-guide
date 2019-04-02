@@ -18,11 +18,7 @@ defmodule CsGuideWeb.Router do
   end
 
   pipeline :admin do
-    plug(:authenticate_user, admin: true)
-  end
-
-  pipeline :venue_id do
-    plug(:assign_venue_id)
+    plug(:authenticate_site_admin)
   end
 
   pipeline :venue_owner do
@@ -31,7 +27,7 @@ defmodule CsGuideWeb.Router do
 
   scope "/", CsGuideWeb do
     # Use the default browser stack
-    pipe_through([:browser, :venue_id])
+    pipe_through([:browser])
 
     get("/", PageController, :index)
     post("/signup", SignupController, :create)
@@ -45,6 +41,8 @@ defmodule CsGuideWeb.Router do
 
     get("/json_drinks", DrinkController, :json_index)
     get("/json_venue_images", VenueController, :json_index)
+    resources("/password", PasswordController, only: [:new, :create])
+    resources("/password", PasswordController, only: [:edit, :update], param: "token")
   end
 
   scope "/search", CsGuideWeb do
@@ -106,9 +104,4 @@ defmodule CsGuideWeb.Router do
     get("/:page_title", StaticPageController, :show)
     get("/*page_not_found", StaticPageController, :show)
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", CsGuideWeb do
-  #   pipe_through :api
-  # end
 end
