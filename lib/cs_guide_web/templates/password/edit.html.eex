@@ -1,7 +1,7 @@
 <section class="center w-80 w-75-l mv6-ns mv5">
   <h3 class="f4 lh4">Set password</h3>
 
-  <%= form_for @changeset, password_path(@conn, :update, "test"), [method: :put], fn f -> %>
+  <%= form_for @changeset, password_path(@conn, :update, @token), [method: :put], fn f -> %>
     <%= label f, :password, "Password", class: "control-label" %>
     <%= text_input f, :password, class: "form-control", type: "password" %>
     <%= error_tag f, :password %>
@@ -10,7 +10,6 @@
     <%= text_input f, :password_confirmation, class: "form-control", type: "password" %>
     <%= error_tag f, :password_confirmation %>
 
-    <%= hidden_input f, :token, value: @token %>
     <%= submit "Submit", class: "btn btn-primary db" %>
   <% end %>
 </section>

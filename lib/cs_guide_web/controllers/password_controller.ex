@@ -35,7 +35,6 @@ defmodule CsGuideWeb.PasswordController do
   end
 
   def edit(conn, %{"token" => token}) do
-    # one_day = 86400 # number of seconds in one day
     user = User.get_by(password_reset_token: token)
 
     case user do
@@ -59,12 +58,12 @@ defmodule CsGuideWeb.PasswordController do
         else
           conn
           |> put_flash(:error, "Password reset token has expired")
-          |> redirect(password_path(conn, :new))
+          |> redirect(to: password_path(conn, :new))
         end
     end
   end
 
-  def update(conn, %{"user" => %{"token" => token} = params}) do
+  def update(conn, %{"user" => params, "token" => token}) do
     user = User.get_by(password_reset_token: token)
     now = NaiveDateTime.utc_now()
     user_token = user.password_reset_token
@@ -89,6 +88,7 @@ defmodule CsGuideWeb.PasswordController do
               conn
               |> put_flash(:info, "Password updated")
               |> redirect(to: page_path(conn, :index))
+
             # logs in a user after they have updated their password
             else
               conn
@@ -106,7 +106,7 @@ defmodule CsGuideWeb.PasswordController do
       # if token is expired
       conn
       |> put_flash(:error, "Password reset token has expired")
-      |> redirect(password_path(conn, :new))
+      |> redirect(to: password_path(conn, :new))
     end
   end
 

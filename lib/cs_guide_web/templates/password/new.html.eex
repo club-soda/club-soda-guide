@@ -1,5 +1,9 @@
 <section class="center w-80 w-75-l mv6-ns mv5">
-  <h3 class="f4 lh4">Add password</h3>
+  <h3 class="f4 lh4">Forgotten Password</h3>
+  <p>
+    Please enter your email address into the input below and
+    submit the form.
+  </p>
 
   <%= custom_render_autoform(
     @conn,
@@ -17,5 +21,7 @@
       :password_reset_token,
       :password_reset_token_expiry
     ],
+    btn_txt: "Submit",
+
     assigns: [changeset: @changeset]) %>
 </section>
