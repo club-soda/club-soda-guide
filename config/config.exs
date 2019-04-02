@@ -8,7 +8,6 @@ use Mix.Config
 # General application configuration
 config :cs_guide,
   ecto_repos: [CsGuide.Repo],
-  google_maps_api_key: Map.fetch!(System.get_env(), "GOOGLE_MAPS_API_KEY")
   google_maps_api_key: Map.fetch!(System.get_env(), "GOOGLE_MAPS_API_KEY"),
   site_url: System.get_env("SITE_URL")
 

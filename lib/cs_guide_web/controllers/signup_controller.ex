@@ -4,6 +4,7 @@ defmodule CsGuideWeb.SignupController do
   alias CsGuide.{Resources.Venue, Auth}
 
   @site_url Application.get_env(:cs_guide, :site_url)
+  @mailer Application.get_env(:cs_guide, :mailer) || CsGuide.Mailer
 
   def create(conn, %{"venue" => %{"users" => users} = venue_params}) do
     postcode = venue_params["postcode"]
