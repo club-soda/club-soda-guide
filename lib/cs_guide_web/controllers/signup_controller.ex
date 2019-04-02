@@ -26,10 +26,13 @@ defmodule CsGuideWeb.SignupController do
 
     case Venue.insert(changeset, venue_params) do
       {:ok, venue} ->
+        one_day = 86400 # number of seconds in one day
+        five_days = one_day * 5
+        
         user =
           venue.users
           |> Enum.at(0)
-          |> reset_password_token()
+          |> CsGuide.Accounts.User.reset_password_token(five_days)
 
         CsGuide.Email.send_email(email, subject, get_message(user))
         |> @mailer.deliver_now()
@@ -60,17 +63,7 @@ defmodule CsGuideWeb.SignupController do
     end
   end
 
-  defp reset_password_token(user) do
-    token = 48 |> :crypto.strong_rand_bytes |> Base.url_encode64
-    sent_at = NaiveDateTime.utc_now()
-    params = %{password_reset_token: token, password_reset_token_sent_at: sent_at}
-
-    user
-    |> Ecto.Changeset.cast(params, [:password_reset_token, :password_reset_token_sent_at])
-    |> CsGuide.Repo.update!()
-  end
-
-  def get_message(user) do
+  defp get_message(user) do
     """
     Please click the following link to verify your account and set a password.
     #{@site_url}/password/#{user.password_reset_token}/edit

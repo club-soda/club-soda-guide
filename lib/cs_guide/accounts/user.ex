@@ -53,4 +53,17 @@ defmodule CsGuide.Accounts.User do
       email -> put_change(user, :email_hash, email)
     end
   end
+
+  def reset_password_token(user, duration) do
+    token = 48 |> :crypto.strong_rand_bytes |> Base.url_encode64
+    expiry_time =
+      NaiveDateTime.utc_now()
+      |> NaiveDateTime.add(duration)
+
+    params = %{password_reset_token: token, password_reset_token_expiry: expiry_time}
+
+    user
+    |> cast(params, [:password_reset_token, :password_reset_token_expiry])
+    |> CsGuide.Repo.update!()
+  end
 end
