@@ -8,6 +8,7 @@ defmodule CsGuide.Accounts.User do
     field(:email_hash, Fields.EmailHash)
     field(:email_plaintext, Fields.EmailPlaintext, virtual: true)
     field(:password, Fields.Password)
+    field(:password_confirmation, Fields.Password, virtual: true)
     field(:entry_id, :string)
     field(:deleted, :boolean, default: false)
     field(:admin, :boolean, default: false)
@@ -37,6 +38,13 @@ defmodule CsGuide.Accounts.User do
     |> validate_required([:email])
     |> put_email_hash()
     |> unique_constraint(:email_hash)
+  end
+
+  def set_password_changeset(user, attrs) do
+    user
+    |> cast(attrs, ~w(password password_confirmation)a)
+    |> validate_required(~w(password password_confirmation)a)
+    |> validate_confirmation(:password)
   end
 
   def put_email_hash(user) do
