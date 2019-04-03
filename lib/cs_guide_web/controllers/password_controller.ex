@@ -3,7 +3,6 @@ defmodule CsGuideWeb.PasswordController do
 
   alias CsGuide.Accounts.User
 
-  @site_url Application.get_env(:cs_guide, :site_url)
   @mailer Application.get_env(:cs_guide, :mailer) || CsGuide.Mailer
 
   def new(conn, _params) do
@@ -113,7 +112,7 @@ defmodule CsGuideWeb.PasswordController do
   defp get_message(user) do
     """
     Please click the following link to reset the password on your account.
-    #{@site_url}/password/#{user.password_reset_token}/edit
+    #{Application.get_env(:cs_guide, :site_url)}/password/#{user.password_reset_token}/edit
     """
   end
 end

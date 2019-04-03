@@ -3,7 +3,6 @@ defmodule CsGuideWeb.SignupController do
 
   alias CsGuide.{Resources.Venue, Auth}
 
-  @site_url Application.get_env(:cs_guide, :site_url)
   @mailer Application.get_env(:cs_guide, :mailer) || CsGuide.Mailer
 
   def create(conn, %{"venue" => %{"users" => users} = venue_params}) do
@@ -28,7 +27,7 @@ defmodule CsGuideWeb.SignupController do
       {:ok, venue} ->
         one_day = 86400 # number of seconds in one day
         five_days = one_day * 5
-        
+
         user =
           venue.users
           |> Enum.at(0)
@@ -66,7 +65,7 @@ defmodule CsGuideWeb.SignupController do
   defp get_message(user) do
     """
     Please click the following link to verify your account and set a password.
-    #{@site_url}/password/#{user.password_reset_token}/edit
+    #{Application.get_env(:cs_guide, :site_url)}/password/#{user.password_reset_token}/edit
     """
   end
 end
