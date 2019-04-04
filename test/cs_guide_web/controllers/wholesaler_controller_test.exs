@@ -15,17 +15,13 @@ defmodule CsGuideWeb.WholesalerControllerTest do
     website: "http://www.test.com",
     venue_types: %{"Wholesaler" => "on"}
   }
-  @update_attrs %{
-    venue_name: "Amazon",
-    website: "http://www.updatedtest.com",
-    venue_types: %{"Wholesaler" => "on"}
-  }
+
   @invalid_attrs %{venue_types: nil, website: nil, venue_name: nil}
 
   def fixture(:wholesaler) do
     @create_venue_types
     |> Enum.map(fn vt ->
-      {:ok, venue_type} =
+      {:ok, _venue_type} =
         %Categories.VenueType{}
         |> Categories.VenueType.changeset(vt)
         |> Categories.VenueType.insert()
@@ -150,7 +146,7 @@ defmodule CsGuideWeb.WholesalerControllerTest do
   end
 
   describe "add drinks to wholesaler - admin" do
-    setup [:create_wholesaler, :venue_admin_login]
+    setup [:create_wholesaler, :admin_login]
 
     test "renders form for adding drinks to chosen wholesaler", %{
       conn: conn,
