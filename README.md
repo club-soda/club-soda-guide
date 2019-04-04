@@ -287,6 +287,10 @@ to a csv file:
 
 ![image](https://user-images.githubusercontent.com/6057298/51193623-2b058100-18e1-11e9-91bd-1c3c722eb7db.png)
 
+
+
+
+
 ## Dev Guide
 
 ### Importing Data
@@ -310,6 +314,10 @@ From here do:
 ```
 iex> %CsGuide.Accounts.User{} |> CsGuide.Accounts.User.changeset(%{email: "", password: "", verified: NaiveDateTime.utc_now(), role: "site_admin"}) |> CsGuide.Accounts.User.insert()
 ```
+remember to define the email address and password, e.g:
+```elixir
+%CsGuide.Accounts.User{} |> CsGuide.Accounts.User.changeset(%{email: "nelson@dwyl.io", password: "BeExcellentToEachOther", admin: true}) |> CsGuide.Accounts.User.insert()
+```
 
 Filling in the empty strings as necessary.
 
@@ -325,11 +333,13 @@ mix run priv/repo/add_lat_long_to_venue.exs
 
 ### Deployment
 
-The `master` branch is automatically deployed to staging. When it's time to deploy to production follow these steps:
+The `master` branch is automatically deployed to staging.
+When it's time to deploy to production follow these steps:
 
 #### Backup the current database
 
-From the heroku dashboard, go to the `Resources` tab, then click `Heroku Postgres`.
+From the heroku dashboard, go to the `Resources` tab,
+then click `Heroku Postgres`.
 
 <img width="707" alt="heroku resources tab" src="https://user-images.githubusercontent.com/8939909/53745911-f69d5280-3e97-11e9-8356-c6544362ea26.png">
 
