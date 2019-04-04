@@ -90,7 +90,7 @@ defmodule CsGuideWeb.Router do
     get("/wholesalers/:id/add_drinks", WholesalerController, :add_drinks)
 
     post("/venues/:id/", VenueController, :upload_photo)
-    resources("/venues", VenueController, except: [:delete, :index], param: "slug")
+    resources("/venues", VenueController, except: [:delete, :index, :show], param: "slug")
   end
 
   scope "/csv", CsGuideWeb do
