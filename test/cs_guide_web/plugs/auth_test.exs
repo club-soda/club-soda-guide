@@ -90,4 +90,14 @@ defmodule CsGuideWeb.Plugs.AuthTest do
       assert html_response(conn, 200) =~ "Add products to your stocklist"
     end
   end
+
+  describe "No one logged in" do
+    setup [:create_venues]
+
+    test "gets redirected to login screen", %{conn: conn} do
+      conn = get(conn, venue_path(conn, :add_drinks, "venue-a-ec1a-7aa"))
+      assert redirected_to(conn) == session_path(conn, :new)
+      assert get_flash(conn, :error) == "You must be logged in to view this page"
+    end
+  end
 end
