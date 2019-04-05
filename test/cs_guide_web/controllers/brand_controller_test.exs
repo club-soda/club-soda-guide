@@ -24,6 +24,7 @@ defmodule CsGuideWeb.BrandControllerTest do
     slug: "some-new-name",
     sold_amazon: false,
     sold_aldi: true,
+    sold_ocado: true,
     website: "https://www.some-website.com"
   }
   @update_attrs %{
