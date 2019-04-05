@@ -86,6 +86,39 @@ defmodule CsGuideWeb.UserControllerTest do
     end
   end
 
+  describe "create site admin" do
+    setup [:create_user, :admin_login]
+
+    test "get admin/users/new-site-admin", %{conn: conn} do
+      conn = get(conn, user_path(conn, :new_site_admin))
+      assert html_response(conn, 200) =~ "Create new site admin"
+    end
+
+    test "post admin/users/create-site-admin", %{conn: conn} do
+      conn = post(conn, user_path(conn, :create_site_admin, %{"user" => %{"email" => "newadmin@email"}}))
+
+      new_admin = User.get_by(email_hash: "newadmin@email")
+      refute new_admin == nil
+      assert new_admin.role == :site_admin
+      assert redirected_to(conn) == admin_path(conn, :index)
+      assert get_flash(conn, :info) =~ "Site Amdin created successfully"
+    end
+
+    test "post admin/users/create-site-admin with invalid email", %{conn: conn} do
+      conn = post(conn, user_path(conn, :create_site_admin, %{"user" => %{"email" => "invalid"}}))
+
+      assert html_response(conn, 200) =~ "Create new site admin"
+      assert html_response(conn, 200) =~ "is invalid"
+    end
+
+    test "post admin/users/create-site-admin with email that is already used", %{conn: conn} do
+      conn = post(conn, user_path(conn, :create_site_admin, %{"user" => %{"email" => "some@email"}}))
+
+      assert html_response(conn, 200) =~ "Create new site admin"
+      assert html_response(conn, 200) =~ "has already been taken"
+    end
+  end
+
   # describe "delete user" do
   #   setup [:create_user]
   #

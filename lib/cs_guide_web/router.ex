@@ -63,6 +63,8 @@ defmodule CsGuideWeb.Router do
     resources("/wholesalers", WholesalerController, except: [:show])
     resources("/retailers", RetailerController, except: [:show])
     resources("/static_pages", StaticPageController, except: [:show], param: "page_title")
+    get("/users/new-site-admin", UserController, :new_site_admin)
+    post("/users/create-site-admin", UserController, :create_site_admin)
     resources("/users", UserController, except: [:new, :create])
     resources("/venues", VenueController, only: [:delete, :index])
     resources("/wholesalers", WholesalerController, except: [:show])
