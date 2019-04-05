@@ -15,17 +15,13 @@ defmodule CsGuideWeb.WholesalerControllerTest do
     website: "http://www.test.com",
     venue_types: %{"Wholesaler" => "on"}
   }
-  @update_attrs %{
-    venue_name: "Amazon",
-    website: "http://www.updatedtest.com",
-    venue_types: %{"Wholesaler" => "on"}
-  }
+
   @invalid_attrs %{venue_types: nil, website: nil, venue_name: nil}
 
   def fixture(:wholesaler) do
     @create_venue_types
     |> Enum.map(fn vt ->
-      {:ok, venue_type} =
+      {:ok, _venue_type} =
         %Categories.VenueType{}
         |> Categories.VenueType.changeset(vt)
         |> Categories.VenueType.insert()

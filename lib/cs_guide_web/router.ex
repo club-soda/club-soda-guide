@@ -18,11 +18,7 @@ defmodule CsGuideWeb.Router do
   end
 
   pipeline :admin do
-    plug(:authenticate_user, admin: true)
-  end
-
-  pipeline :venue_id do
-    plug(:assign_venue_id)
+    plug(:authenticate_site_admin)
   end
 
   pipeline :venue_owner do
@@ -31,7 +27,7 @@ defmodule CsGuideWeb.Router do
 
   scope "/", CsGuideWeb do
     # Use the default browser stack
-    pipe_through([:browser, :venue_id])
+    pipe_through([:browser])
 
     get("/", PageController, :index)
     post("/signup", SignupController, :create)
@@ -45,6 +41,8 @@ defmodule CsGuideWeb.Router do
 
     get("/json_drinks", DrinkController, :json_index)
     get("/json_venue_images", VenueController, :json_index)
+    resources("/password", PasswordController, only: [:new, :create])
+    resources("/password", PasswordController, only: [:edit, :update], param: "token")
   end
 
   scope "/search", CsGuideWeb do
@@ -59,11 +57,14 @@ defmodule CsGuideWeb.Router do
     pipe_through([:browser, :admin])
 
     resources("/", AdminController, only: [:index])
-    resources("/brands", BrandController, except: [:show], param: "slug")
+    resources("/brands", BrandController, except: [:show, :delete], param: "slug")
+    resources("/brands", BrandController, only: [:delete], param: "entry_id")
     resources("/drinks", DrinkController, except: [:show])
     resources("/wholesalers", WholesalerController, except: [:show])
     resources("/retailers", RetailerController, except: [:show])
     resources("/static_pages", StaticPageController, except: [:show], param: "page_title")
+    get("/users/new-site-admin", UserController, :new_site_admin)
+    post("/users/create-site-admin", UserController, :create_site_admin)
     resources("/users", UserController, except: [:new, :create])
     resources("/venues", VenueController, only: [:delete, :index])
     resources("/wholesalers", WholesalerController, except: [:show])
@@ -91,7 +92,7 @@ defmodule CsGuideWeb.Router do
     get("/wholesalers/:id/add_drinks", WholesalerController, :add_drinks)
 
     post("/venues/:id/", VenueController, :upload_photo)
-    resources("/venues", VenueController, except: [:delete, :index], param: "slug")
+    resources("/venues", VenueController, except: [:delete, :index, :show], param: "slug")
   end
 
   scope "/csv", CsGuideWeb do
@@ -105,9 +106,4 @@ defmodule CsGuideWeb.Router do
     get("/:page_title", StaticPageController, :show)
     get("/*page_not_found", StaticPageController, :show)
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", CsGuideWeb do
-  #   pipe_through :api
-  # end
 end

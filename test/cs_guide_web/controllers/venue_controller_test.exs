@@ -156,6 +156,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "new venue" do
+    # failing atm
     test "does not render form if not logged in", %{conn: conn} do
       conn = get(conn, venue_path(conn, :new))
       assert html_response(conn, 302)
@@ -163,7 +164,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   end
 
   describe "new venue - admin" do
-    setup [:admin_login]
+    setup [:venue_admin_login]
 
     test "renders form", %{conn: conn} do
       conn = get(conn, venue_path(conn, :new))
@@ -461,6 +462,7 @@ defmodule CsGuideWeb.VenueControllerTest do
   describe "edit venue" do
     setup [:create_venues]
 
+    # failing atm
     test "does not render form when not logged in", %{conn: conn, venues: venues} do
       venue = Enum.at(venues, 0)
       conn = get(conn, venue_path(conn, :edit, venue.slug))

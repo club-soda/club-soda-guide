@@ -48,7 +48,7 @@ defmodule CsGuideWeb.VenueController do
     changeset =
       %Venue{}
       |> Venue.changeset(venue_params)
-      |> Venue.check_existing_slug(slug)
+      |> CsGuide.ChangesetHelpers.check_existing_slug(slug, Venue, :venue_name, "Venue already exists")
       |> Venue.validate_postcode(postcode)
 
     case Venue.insert(changeset, venue_params) do
@@ -127,12 +127,12 @@ defmodule CsGuideWeb.VenueController do
       |> Enum.map(&sortImagesByMostRecent/1)
       |> Enum.map(&SearchVenueController.selectPhotoNumber1/1)
 
-    if venue != nil do
-      venue_owner = conn.assigns[:venue_id] == venue.id
+    current_user_able_to_edit_venue = can_current_user_edit_venue?(conn, venue)
 
+    if venue != nil do
       render(conn, "show.html",
         venue: venue,
-        is_authenticated: conn.assigns[:admin] || venue_owner,
+        is_authenticated: current_user_able_to_edit_venue,
         nearby_venues: nearby_venues
       )
     else
@@ -353,5 +353,26 @@ defmodule CsGuideWeb.VenueController do
     |> Enum.find(false, fn i ->
       i.photo_number == photo_number
     end)
+  end
+
+  defp can_current_user_edit_venue?(conn, venue) do
+    case conn.assigns.current_user do
+      nil ->
+        false
+
+      user ->
+        case user.role do
+          :site_admin ->
+            true
+
+          :venue_admin ->
+            # this clause checks to see if the current venue being viewed is
+            # in the list of venues the users is allowed to edit
+            Enum.any?(user.current_users_venues, &(&1 == venue.entry_id))
+
+          _ ->
+            false
+        end
+    end
   end
 end

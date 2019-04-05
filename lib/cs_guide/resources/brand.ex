@@ -64,7 +64,7 @@ defmodule CsGuide.Resources.Brand do
     |> put_slug()
   end
 
-  defp put_slug(changeset) do
+  def put_slug(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{name: name}} ->
         put_change(changeset, :slug, create_slug(name))
