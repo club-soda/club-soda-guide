@@ -1,0 +1,15 @@
+<section class="center w-80 w-75-l mv6-ns mv5">
+  <h3 class="f4 lh4">Create new site admin</h3>
+  <p>
+    Please enter the email address of the person you wish
+    to make a site admin into the input below and submit the form.
+  </p>
+
+  <%= form_for @changeset, user_path(@conn, :create_site_admin), fn f -> %>
+    <%= label f, :email, "Email", class: "control-label" %>
+    <%= text_input f, :email, class: "form-control" %>
+    <%= error_tag f, :email %>
+
+    <%= submit "Submit", class: "btn btn-primary db" %>
+  <% end %>
+</section>
