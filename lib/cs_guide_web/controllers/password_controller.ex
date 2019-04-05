@@ -109,6 +109,53 @@ defmodule CsGuideWeb.PasswordController do
     end
   end
 
+  def admin_reset(conn, %{"user_id" => "all_users"}) do
+    Enum.each(User.all(), &send_admin_reset_email/1)
+
+    conn
+    |> put_flash(:info, "Email sent to all users")
+    |> redirect(to: user_path(conn, :index))
+  end
+
+  def admin_reset(conn, %{"user_id" => user_id}) do
+    user = User.get(user_id)
+    send_admin_reset_email(user)
+
+    conn
+    |> put_flash(:info, "Email sent to #{user.email}")
+    |> redirect(to: user_path(conn, :index))
+  end
+
+  defp send_admin_reset_email(user) do
+    one_day = 86400 # one day in seconds
+    user = User.reset_password_token(user, one_day * 10)
+    {subject, msg} = admin_reset_msg(user)
+
+    CsGuide.Email.send_email(user.email, subject, msg)
+    |> @mailer.deliver_now()
+  end
+
+  defp admin_reset_msg(user) do
+    if user.verified do
+      {
+        "Please reset your password",
+        """
+        Please click the following link to reset the password on your account.
+        #{Application.get_env(:cs_guide, :site_url)}/password/#{user.password_reset_token}/edit.
+        This email request was sent by a site administrator.
+        """
+      }
+    else
+      {
+        "Please verify your account",
+        """
+        Please click the following link to verify your account.
+        #{Application.get_env(:cs_guide, :site_url)}/password/#{user.password_reset_token}/edit.
+        """
+      }
+    end
+  end
+
   defp get_message(user) do
     """
     Please click the following link to reset the password on your account.
