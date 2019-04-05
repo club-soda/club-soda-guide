@@ -2,15 +2,16 @@ defmodule CsGuideWeb.PasswordControllerTest do
   use CsGuideWeb.ConnCase
 
   alias CsGuide.Accounts.User
+  import CsGuide.SetupHelpers
 
-  @valid_user_email %{user: %{email: "admin@email"}}
+  @valid_user_email %{user: %{email: "good@user"}}
   @invalid_user_email %{user: %{email: "bad@user"}}
 
   # inserts an admin user into the testing db
   def user_with_valid_token(_) do
     {:ok, user} =
       %User{}
-      |> User.changeset(%{email: "admin@email", password: "password", role: :site_admin})
+      |> User.changeset(%{email: "good@user", password: "password", role: :site_admin})
       |> User.insert()
 
     user = User.reset_password_token(user, 86400)
@@ -109,6 +110,30 @@ defmodule CsGuideWeb.PasswordControllerTest do
       conn = put(conn, password_path(conn, :update, user.password_reset_token), user: user_params)
       assert get_flash(conn, :error) == "Password reset token has expired"
       assert redirected_to(conn) == password_path(conn, :new)
+    end
+  end
+
+  describe "testing admin_reset " do
+    setup [:admin_login, :user_with_valid_token]
+
+    test "post /user-password-reset/:user_id with single user id", %{conn: conn, user: user} do
+      post(conn, password_path(conn, :admin_reset, user.entry_id))
+      updated_user = User.get(user.entry_id)
+      refute updated_user.password_reset_token == user.password_reset_token
+    end
+
+    test "post /user-password-reset/:user_id for all users", %{conn: conn, user: user} do
+      admin = User.get_by(email_hash: "admin@email")
+      assert admin.password_reset_token == :nil
+
+      post(conn, password_path(conn, :admin_reset, "all_users"))
+
+      updated_admin = User.get(user.entry_id)
+      updated_user = User.get(user.entry_id)
+
+      refute admin.password_reset_token == updated_admin.password_reset_token
+      refute updated_admin.password_reset_token == :nil
+      refute updated_user.password_reset_token == user.password_reset_token
     end
   end
 end
