@@ -67,14 +67,21 @@ defmodule CsGuideWeb.PasswordController do
     now = NaiveDateTime.utc_now()
     user_token = user.password_reset_token
     user_token_expiry = user.password_reset_token_expiry
-    params = Map.put(params, "verified", now)
-
     pw_changeset = User.set_password_changeset(user, params)
 
-    reset_token_params = %{
-      password_reset_token: nil,
-      password_reset_token_expiry: nil,
-    }
+    reset_token_params =
+      if user.verified do
+        %{
+          password_reset_token: nil,
+          password_reset_token_expiry: nil
+        }
+      else
+        %{
+          password_reset_token: nil,
+          password_reset_token_expiry: nil,
+          verified: now
+        }
+      end
 
     if user_token && NaiveDateTime.compare(now, user_token_expiry) == :lt do
       # if token is valid
