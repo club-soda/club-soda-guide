@@ -48,7 +48,7 @@ defmodule CsGuideWeb.BrandView do
   def brand_sold?(brand) do
     brand.sold_aldi || brand.sold_asda || brand.sold_dd || brand.sold_morrisons ||
       brand.sold_sainsburys || brand.sold_tesco || brand.sold_waitrose || brand.sold_wb ||
-      brand.sold_amazon
+      brand.sold_amazon || brand.sold_ocado
   end
 
   def query(sch) do

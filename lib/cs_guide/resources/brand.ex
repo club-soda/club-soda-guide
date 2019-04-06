@@ -23,6 +23,7 @@ defmodule CsGuide.Resources.Brand do
     field(:sold_asda, :boolean, default: false)
     field(:sold_dd, :boolean, default: false)
     field(:sold_morrisons, :boolean, default: false)
+    field(:sold_ocado, :boolean, default: false)
     field(:sold_sainsburys, :boolean, default: false)
     field(:sold_tesco, :boolean, default: false)
     field(:sold_waitrose, :boolean, default: false)
@@ -53,6 +54,7 @@ defmodule CsGuide.Resources.Brand do
       :sold_asda,
       :sold_dd,
       :sold_morrisons,
+      :sold_ocado,
       :sold_sainsburys,
       :sold_tesco,
       :sold_waitrose,

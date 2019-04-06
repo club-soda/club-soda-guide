@@ -13,6 +13,7 @@ defmodule CsGuideWeb.BrandControllerTest do
     slug: "some-name",
     sold_amazon: false,
     sold_aldi: true,
+    sold_ocado: true,
     website: "https://www.some-website.com"
   }
   @another_create_attrs %{
@@ -23,6 +24,7 @@ defmodule CsGuideWeb.BrandControllerTest do
     slug: "some-new-name",
     sold_amazon: false,
     sold_aldi: true,
+    sold_ocado: true,
     website: "https://www.some-website.com"
   }
   @update_attrs %{
@@ -33,6 +35,7 @@ defmodule CsGuideWeb.BrandControllerTest do
     slug: "some-updated-name",
     sold_amazon: true,
     sold_aldi: true,
+    sold_ocado: false,
     website: "https://www.some-updated-website.com"
   }
   @invalid_attrs %{description: nil, logo: nil, member: nil, name: "", website: nil, slug: ""}
@@ -91,6 +94,7 @@ defmodule CsGuideWeb.BrandControllerTest do
       refute html_response(conn, 200) =~ "Use discount code"
       assert html_response(conn, 200) =~ "Aldi"
       refute html_response(conn, 200) =~ "Amazon"
+      assert html_response(conn, 200) =~ "Ocado"
       assert html_response(conn, 200) =~ "bg-spirit"
       refute html_response(conn, 200) =~ "bg-beer"
     end
@@ -150,6 +154,7 @@ defmodule CsGuideWeb.BrandControllerTest do
                "https://www.aldi.co.uk/search?text=some updated name&category=ALL"
 
       assert html_response(conn, 200) =~ "some updated description"
+      refute html_response(conn, 200) =~ "Ocado"
     end
 
     test "renders errors when data is invalid", %{conn: conn, brand: brand} do

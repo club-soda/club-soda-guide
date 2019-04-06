@@ -177,6 +177,11 @@
             Morrisons
           </a>
         <% end %>
+        <%= if @brand.sold_ocado do %>
+          <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" target="_blank" href="https://www.ocado.com/search?entry=<%= @brand.name %>">
+            Ocado
+          </a>
+        <% end %>
         <%= if @brand.sold_sainsburys do %>
           <a class="f4 lh4 cs-mid-blue underline dib v-top w-50 w-20-ns tc pv1" target="_blank" href="https://www.sainsburys.co.uk/webapp/wcs/stores/servlet/SearchDisplayView?catalogId=10123&langId=44&storeId=10151&krypto=%2F%2FSe%2BFyC9ydXJFwUHhYrJMgG%2BX4%2BcECj3jBuezEUXOvXqA0%2B%2FQ5J3nFLvxpQgt8AwhaU1iSNB1MH%2Fy4xzXAbMg0xx2zC2vWqBZHya7XaF4cdq8dL9lnShVHz5ds8SiLstQbMaCavY4JNTbwFNt6i8qyyXzHrPHOZPKLr6JXMDwwTSuWKvh%2FnQ4nPH6l4cqBv2HGG6tma4Sw6Sx7yukd2bpkVzZky1AdkXwifnPCnnVU%3D#langId=44&storeId=10151&catalogId=10123&categoryId=&parent_category_rn=&top_category=&pageSize=36&orderBy=&searchTerm=<%= @brand.name %>&beginIndex=0&hideFilters=true&categoryFacetId1=">
             Sainsburys
