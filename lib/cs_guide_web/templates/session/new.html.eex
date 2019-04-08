@@ -1,5 +1,7 @@
 <section class="center w-80 w-75-l mv6-ns mv5">
-  <h3>Admin Login</h3>
+  <h1 class="f4 lh4">Admin Login</h1>
+  <p>If you manage a venue listed on the Guide, please login here</p>
+
   <%= form_for @conn, @action, fn f -> %>
     <div class="form-group">
       <%= label f, :email, class: "control-label" %>
@@ -12,6 +14,7 @@
       <%= password_input f, :password, class: "form-control" %>
       <%= error_tag f, :password %>
     </div>
+    <%= link "Forgot Password?", to: password_path(@conn, :new), class: "cs-black" %>
 
     <div class="form-group">
       <%= submit "Submit", class: "btn btn-primary" %>
