@@ -53,6 +53,11 @@
               method: "delete",
               class: "db f5 lh5 pl3 pt2 pb3 cs-black no-underline"
             %>
+          <% else %>
+            <%= link "Log in",
+              to: session_path(@conn, :new),
+              class: "db f5 lh5 pl3 pt2 pb3 cs-black no-underline"
+            %>
           <% end %>
         </div>
 
@@ -70,6 +75,11 @@
             <%= link "Log out",
               to: session_path(@conn, :delete, @current_user),
               method: "delete",
+              class: "f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2"
+            %>
+          <%= else %>
+            <%= link "Log in",
+              to: session_path(@conn, :new),
               class: "f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2"
             %>
           <% end %>
