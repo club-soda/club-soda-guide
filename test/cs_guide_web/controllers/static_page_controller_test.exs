@@ -122,7 +122,8 @@ defmodule CsGuideWeb.StaticPageControllerTest do
           static_page: @update_attrs
         )
 
-      assert redirected_to(conn) == static_page_path(conn, :show, @update_attrs.page_title)
+      page_title = String.replace(@update_attrs.page_title, " ", "-")
+      assert redirected_to(conn) == static_page_path(conn, :show, page_title)
 
       conn = get(conn, static_page_path(conn, :show, @update_attrs.page_title))
       assert html_response(conn, 200) =~ "some updated body"
