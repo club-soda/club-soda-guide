@@ -64,4 +64,5 @@
     ]
   %>
 
+  <%= render "links_helper.html", conn: @conn, text: "Create Site Admin", path: user_path(@conn, :new_site_admin), dl_links: [] %>
 </section>

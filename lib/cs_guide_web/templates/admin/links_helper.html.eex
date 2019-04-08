@@ -1,6 +1,6 @@
 <div class="mv3">
   <!-- btn link -->
-  <%= link @text, to: search_log_path(@conn, :index), class: "w-20-ns db dib-ns btn-primary no-underline" %>
+  <%= link @text, to: @path, class: "w-20-ns db dib-ns btn-primary no-underline" %>
 
   <!-- download links -->
   <%= for {text, path} <- @dl_links do %>
