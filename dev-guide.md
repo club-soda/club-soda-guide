@@ -86,8 +86,8 @@ for (var i = 0; i < keys.length - 1; i++) {
 console.log(vars);
 ```
 
-> More detail/insight on the history of this script,
-see: https://github.com/dwyl/learn-heroku/issues/35
+> More detail/insight on the history of this script, see:
+[github.com/club-soda/club-soda-guide/issues/512](https://github.com/club-soda/club-soda-guide/issues/512#issuecomment-480071684)
 
 You should see something like this:
 
@@ -115,8 +115,130 @@ export SMTP_USERNAME=AKIA****************
 export URL=your-app.herokuapp.com
 ```
 
+_Obviously_ the _real_ environment variables
+don't contain any `****` characters ... this is just a sanitised example.
+
+Once you have _saved_ the **`.env`** file,
+run the following command in your terminal:
+
+```sh
+source .env
+```
+
+## Start the App
+
+Run the application on your `localhost`:
+
+```sh
+mix phx.server
+```
+
+Visit http://localhost:4000 in your web browser. You should expect to see:
+
+![club-soda-homepage](https://user-images.githubusercontent.com/194400/55151100-658f6380-5145-11e9-93c4-dd2c8627cb2e.png)
+
+
+You will notice that the app looks quite "bare" ...
+this is because it's a "content" web app
+so without _content_ it will look _empty_.
+
+You have _two_ options for getting content:
+1. Get the latest data from Heroku (_real content data is good for testing UI_).
+2. Run the migration scripts to insert "seed" data (_much less data_).
+
 
 ## Using _Real_ Data
+
+There are many instances where having "real" data on `localhost`
+is useful for UI/UX debugging.
+For those cases the _easiest/fastest_ thing to do
+is grab a fresh backup from Heroku
+and "restore" it to your local Postgres.
+
+These are the steps you will need to follow:
+
+1. Visit: https://dashboard.heroku.com/apps/club-soda-guide/resources
+
+![club-soda-guide-resources](https://user-images.githubusercontent.com/194400/55612766-e8856f00-5780-11e9-9423-b9dddace3d36.png)
+
+
+Click on the "Heroku Postgres" link:
+![image](https://user-images.githubusercontent.com/194400/55612833-12d72c80-5781-11e9-85f4-655f24762fba.png)
+
+That will take you to the Datastores page:
+https://data.heroku.com/datastores/a870534e-1277-4b9a-a487-0f10d551b7f3
+
+![image](https://user-images.githubusercontent.com/194400/55612926-503bba00-5781-11e9-957a-12fb6180e98a.png)
+
+Click on the "**Durability**" menu item:
+
+![image](https://user-images.githubusercontent.com/194400/55612964-63e72080-5781-11e9-85c7-91b542eb5e04.png)
+
+Scroll to the bottom of the page until you see the list of backups:
+
+![image](https://user-images.githubusercontent.com/194400/55613010-837e4900-5781-11e9-87e5-a498f254613e.png)
+
+Click on the "**Create Manual Backup**" button:
+![image](https://user-images.githubusercontent.com/194400/55613125-cfc98900-5781-11e9-8982-325201bf46f8.png)
+
+You will see a "***processing***" message:
+
+![image](https://user-images.githubusercontent.com/194400/55613147-df48d200-5781-11e9-9aaf-f5588c6c33ac.png)
+
+When the "**created**" column changes to "a minute ago":
+
+![image](https://user-images.githubusercontent.com/194400/55613204-06070880-5782-11e9-8bf6-90caf5d24414.png)
+
+Click the "**Download**" button:
+
+![image](https://user-images.githubusercontent.com/194400/55613220-10c19d80-5782-11e9-94b8-d375882723f0.png)
+
+Get the download link from your browser downloads e.g: chrome://downloads/
+
+![image](https://user-images.githubusercontent.com/194400/55616545-f55a9080-5789-11e9-9998-bebb04059583.png)
+
+The link is _super_ long because it contains auth token/credentials:
+
+https://xfrtu.s3.amazonaws.com/7562f7d3-503a-4d40-a450-42dffc34f523/2019-04-05T08%3A04%3A29Z/8b390ead-83d7-4ed8-9161-97bc50263842?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJ5HNUZMBKBNNOSYQ%2F20190405%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190405T090047Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=54ac21e88e3219f93c64efc8
+
+> **Data Privacy/Security Note**: For you infosec conscious people out there,
+in addition to changing the signature on this link so it's invalid,
+all Heroku database backup download links have a 10 min expiry,
+so even if the link was valid, it has _long_ since expired. 🤓
+
+Using the command format:
+`curl "http://[url]" > production.dump`
+construct your curl command, e.g:
+
+Run the command in your terminal:
+
+```sh
+curl "https://xfrtu.s3.amazonaws.com/7562f7d3-503a-4d40-a450-42dffc34f523/2019-04-05T08%3A04%3A29Z/8b390ead-83d7-4ed8-9161-97bc50263842?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJ5HNUZMBKBNNOSYQ%2F20190405%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190405T090047Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=54ac21e88e3219f93c64efc8" > production.dump
+```
+
+You should output similar to the following:
+
+![image](https://user-images.githubusercontent.com/194400/55616696-49657500-578a-11e9-9b18-a27023f41e99.png)
+
+Now run the `pg_restore` command:
+
+```sh
+pg_restore --verbose --clean --no-acl --no-owner -h localhost -d cs_guide_dev production.dump
+```
+Given that the `--verbose` flag was used, you should see a bunch of output in terminal:
+
+![image](https://user-images.githubusercontent.com/194400/55616777-7f0a5e00-578a-11e9-893d-0bc681ae97a7.png)
+
+That's a good sign it worked ... Open the database in your chosen GUI/CLI and you should see:
+Postico:
+![image](https://user-images.githubusercontent.com/194400/55616832-a103e080-578a-11e9-89c2-75606c93dbd0.png)
+
+DBeaver:
+![image](https://user-images.githubusercontent.com/194400/55616875-bbd65500-578a-11e9-9777-b6e4e2bf2f23.png)
+
+
+> Thanks to @wrburgess for his helpful gist:
+https://gist.github.com/wrburgess/5528649 ❤️ 
 
 
 ## Importing Data
