@@ -1,6 +1,125 @@
-## Dev Guide
+# Dev Guide
 
-### Importing Data
+The purpose of this guide is to walk you through running the App
+both on `localhost` and deployment to `staging` (_test environment_)
+and `production`.
+Our aim is to _pre-empt_ any _obvious_ questions as much as possible,
+but if we have skipped a step or you are scratching your head
+wondering how to do/run something, please open an issue
+and we will gladly/promptly answer and improve this guide:
+https://github.com/club-soda/club-soda-guide/issues
+
+
+## Setup on `localhost`
+
+In order to get the project setup and running on your `localhost`
+you will need to have the following installed:
+
++ [x] **`Elixir`** and **`Phoenix`** see:
+[github.com/dwyl/**learn-phoenix-framework**](https://github.com/dwyl/learn-phoenix-framework#installation)
++ [x] **`PostgreSQL`** see:
+[github.com/dwyl/**learn-postgresql**](https://github.com/dwyl/learn-postgresql)
++ [x] **`Node.js`** and **`Elm`** see:
+[github.com/dwyl/**learn-elm**#how](https://github.com/dwyl/learn-elm#how)
+
+### Run the Following Commands
+
+Clone the `git` repository:
+```sh
+git clone git@github.com:club-soda/club-soda-guide.git && cd club-soda-guide
+```
+
+Install the **`Elixir`** dependencies:
+```sh
+mix deps.get
+```
+
+Create the database:
+```sh
+mix ecto.create
+```
+
+Create the database _schema_ (_tables_):
+```sh
+mix ecto.migrate
+```
+
+## Environment Variables
+
+In order to run the application on your `localhost` you will need to have a
+a few environment variables defined.
+
+Rather than listing them here in the docs,
+we use **Heroku** as our "single source of truth" for Environment Variables.
+
+> Note: if you are **`new`** to (_or "rusty" on_) Environment Variables
+please see:
+[github.com/dwyl/**learn-environment-variables**](https://github.com/dwyl/learn-environment-variables)
+> And/or if you need a primer on Heroku,
+please see:
+[github.com/dwyl/**learn-heroku**](https://github.com/dwyl/learn-heroku)
+
+To get the latest environment variables you will need access to
+the **`club-soda-guide-staging`** Heroku app.
+
+First visit the "Settings" tab for your Heroku App:
+https://dashboard.heroku.com/apps/club-soda-guide-staging/settings
+
+Click on the "**Reveal Config Vars**" button:
+
+![reveal-config-vars](https://user-images.githubusercontent.com/194400/55563188-5e3ffb00-56ed-11e9-8202-2e831eee536a.png)
+
+
+Then Run this script in your web browser's developer console:
+
+```js
+var keys = document.getElementsByClassName('config-var-key');
+var vals = document.getElementsByClassName('config-var-value');
+var vars = '';
+for (var i = 0; i < keys.length - 1; i++) {
+  var key = keys[i].value
+  if (key && key !== 'DATABASE_URL' && key !== 'HEROKU_POSTGRESQL') {
+    var index = (i == 0) ? 0 : i * 2; // cause there are two values for every key ... 🙄
+    vars = vars + 'export ' + keys[i].value + '=' + vals[index].value + '\n';
+  }
+}
+console.log(vars);
+```
+
+> More detail/insight on the history of this script,
+see: https://github.com/dwyl/learn-heroku/issues/35
+
+You should see something like this:
+
+![export-heroku-config-vars-script-output](https://user-images.githubusercontent.com/194400/55563638-369d6280-56ee-11e9-8e84-c3131e8b0a8a.png)
+
+Copy the output from the browser console and paste it into your **`.env`** file.
+
+```sh
+export AWS_ACCESS_KEY_ID=AKIA****************
+export AWS_S3_BUCKET=bucket-name
+export AWS_S3_REGION=eu-west-1
+export AWS_SECRET_ACCESS_KEY=****************
+export DATABASE_URL=postgres://databasename@compute.amazonaws.com:5432/password
+export ENCRYPTION_KEYS='****************='
+export GOOGLE_MAPS_API_KEY=****************
+export HEROKU_POSTGRESQL=postgres://databasename@compute.amazonaws.com:5432/password
+export IMPORT_FILES_DIR=temp
+export SECRET_KEY_BASE=****************
+export SENDERS_EMAIL=hello@example.com
+export SES_PORT=25
+export SES_SERVER=email-smtp.eu-west-1.amazonaws.com
+export SITE_URL=https://www.example.com
+export SMTP_PASSWORD=****************
+export SMTP_USERNAME=AKIA****************
+export URL=your-app.herokuapp.com
+```
+
+
+## Using _Real_ Data
+
+
+## Importing Data
 
 The existing data is imported through our [seeds file](priv/repo/seeds.exs).
 
@@ -12,7 +131,9 @@ If you do need to import more venues, use this script as a guide, but you will m
 
 After new venues have been imported, you may have to run `mix run priv/repo/update_cs_score.exs` if any drinks were attached to venues as part of the upload process.
 
-### Creating Admin Users
+
+
+## Creating Admin Users
 
 To create an admin user, open iex with `iex -S mix`.
 

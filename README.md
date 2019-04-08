@@ -286,3 +286,9 @@ On the admin page the "download" links allow the admin to download the current d
 to a csv file:
 
 ![image](https://user-images.githubusercontent.com/6057298/51193623-2b058100-18e1-11e9-91bd-1c3c722eb7db.png)
+
+<hr />
+
+# Developer?
+
+GOTO: [dev-guide.md](https://github.com/club-soda/club-soda-guide/blob/master/dev-guide.md)
