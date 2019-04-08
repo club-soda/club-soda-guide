@@ -66,6 +66,7 @@ defmodule CsGuideWeb.Router do
     get("/users/new-site-admin", UserController, :new_site_admin)
     post("/users/create-site-admin", UserController, :create_site_admin)
     resources("/users", UserController, except: [:new, :create])
+    post("user-password-reset/:user_id", PasswordController, :admin_reset)
     resources("/venues", VenueController, only: [:delete, :index])
     resources("/wholesalers", WholesalerController, except: [:show])
 

@@ -67,14 +67,21 @@ defmodule CsGuideWeb.PasswordController do
     now = NaiveDateTime.utc_now()
     user_token = user.password_reset_token
     user_token_expiry = user.password_reset_token_expiry
-    params = Map.put(params, "verified", now)
-
     pw_changeset = User.set_password_changeset(user, params)
 
-    reset_token_params = %{
-      password_reset_token: nil,
-      password_reset_token_expiry: nil,
-    }
+    reset_token_params =
+      if user.verified do
+        %{
+          password_reset_token: nil,
+          password_reset_token_expiry: nil
+        }
+      else
+        %{
+          password_reset_token: nil,
+          password_reset_token_expiry: nil,
+          verified: now
+        }
+      end
 
     if user_token && NaiveDateTime.compare(now, user_token_expiry) == :lt do
       # if token is valid
@@ -106,6 +113,53 @@ defmodule CsGuideWeb.PasswordController do
       conn
       |> put_flash(:error, "Password reset token has expired")
       |> redirect(to: password_path(conn, :new))
+    end
+  end
+
+  def admin_reset(conn, %{"user_id" => "all_users"}) do
+    Enum.each(User.all(), &send_admin_reset_email/1)
+
+    conn
+    |> put_flash(:info, "Email sent to all users")
+    |> redirect(to: user_path(conn, :index))
+  end
+
+  def admin_reset(conn, %{"user_id" => user_id}) do
+    user = User.get(user_id)
+    send_admin_reset_email(user)
+
+    conn
+    |> put_flash(:info, "Email sent to #{user.email}")
+    |> redirect(to: user_path(conn, :index))
+  end
+
+  defp send_admin_reset_email(user) do
+    one_day = 86400 # one day in seconds
+    user = User.reset_password_token(user, one_day * 10)
+    {subject, msg} = admin_reset_msg(user)
+
+    CsGuide.Email.send_email(user.email, subject, msg)
+    |> @mailer.deliver_now()
+  end
+
+  defp admin_reset_msg(user) do
+    if user.verified do
+      {
+        "Please reset your password",
+        """
+        Please click the following link to reset the password on your account.
+        #{Application.get_env(:cs_guide, :site_url)}/password/#{user.password_reset_token}/edit.
+        This email request was sent by a site administrator.
+        """
+      }
+    else
+      {
+        "Please verify your account",
+        """
+        Please click the following link to verify your account.
+        #{Application.get_env(:cs_guide, :site_url)}/password/#{user.password_reset_token}/edit.
+        """
+      }
     end
   end
 

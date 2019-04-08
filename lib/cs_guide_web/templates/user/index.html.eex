@@ -1,26 +1,42 @@
 <section class="center w-80 w-75-l mv6">
-  <h2 class="f4 lh4 dib">Listing Users</h2>
+  <h2 class="f4 lh4 dib mb4">Listing Users</h2>
   <span class="fr"><%= link "New User", to: user_path(@conn, :new) %></span>
-  <table class="table">
+  <table class="table mb5">
     <thead>
       <tr>
         <th>Email</th>
-
-        <th></th>
       </tr>
     </thead>
     <tbody>
   <%= for user <- @users do %>
       <tr>
         <td><%= user.email %></td>
-
-        <td class="text-right">
-          <span><%= link "Show", to: user_path(@conn, :show, user.entry_id), class: "btn btn-default btn-xs" %></span>
-          <span><%= link "Edit", to: user_path(@conn, :edit, user.entry_id), class: "btn btn-default btn-xs" %></span>
-          <span><%= link "Delete", to: user_path(@conn, :delete, user.entry_id), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+        <td class="pl3 pt3 text-right">
+          <span><%= link "Show", to: user_path(@conn, :show, user.entry_id), class: "btn btn-default btn-xs pl2" %></span>
+          <span><%= link "Edit", to: user_path(@conn, :edit, user.entry_id), class: "btn btn-default btn-xs pl2" %></span>
+          <span>
+            <%= link "Reset password",
+              to: password_path(@conn, :admin_reset, user.entry_id),
+              data: [confirm: "Are you sure you want to send #{user.email} a password reset email?"],
+              method: :post,
+              class: "btn btn-danger btn-xs pl2"
+            %>
+          </span>
+          <!-- Delete temp disabled until requirement finalised -->
+          <!-- <span><%= link "Delete", to: user_path(@conn, :delete, user.entry_id), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span> -->
         </td>
       </tr>
   <% end %>
     </tbody>
   </table>
+
+  <div class="bg-red tc white f5 lh5 ph3 ph2-m pv2 w-20 br2 ba b--cs-pink pointer">
+    <%= link "Reset all passwords",
+      to: password_path(@conn, :admin_reset, :all_users),
+      data: [confirm: "Are you sure you want to send a password reset email to all users? This cannot be undone."],
+      method: :post,
+      class: "white"
+    %>
+  </div>
+
 </section>
