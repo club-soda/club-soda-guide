@@ -36,7 +36,7 @@ defmodule CsGuideWeb.StaticPageController do
     end
   end
 
-  def show(conn, %{"page_not_found" => url}) do
+  def show(conn, %{"page_not_found" => _url}) do
     render(conn, "404.html")
   end
 
@@ -52,15 +52,16 @@ defmodule CsGuideWeb.StaticPageController do
   def update(conn, %{"page_title" => page_title, "static_page" => static_page_params}) do
     new_page_title =
       if static_page_params["page_title"] do
-        String.replace(static_page_params["page_title"], "-", " ")
+        String.replace(static_page_params["page_title"], " ", "-")
       else
         page_title
       end
 
-    static_page = StaticPage.get_by([page_title: page_title], case_insensitive: true)
+    p_title = String.replace(page_title, "-", " ")
+    static_page = StaticPage.get_by([page_title: p_title], case_insensitive: true)
 
     case static_page |> StaticPage.changeset(static_page_params) |> StaticPage.update() do
-      {:ok, static_page} ->
+      {:ok, _static_page} ->
         conn
         |> put_flash(:info, "Static Page updated successfully.")
         |> redirect(to: static_page_path(conn, :show, new_page_title))
