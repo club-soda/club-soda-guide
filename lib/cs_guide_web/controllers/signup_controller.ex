@@ -15,7 +15,7 @@ defmodule CsGuideWeb.SignupController do
       |> put_in(["users", "0", "role"], "venue_admin")
 
     %{"0" => %{"email" => email}} = users
-    subject = "Club Soda account verification"
+    subject = "Venue Created!"
 
     changeset =
       %Venue{}
@@ -64,7 +64,8 @@ defmodule CsGuideWeb.SignupController do
 
   defp get_message(user) do
     """
-    Please click the following link to verify your account and set a password.
+    Your venue has been set up successfully!
+    Now all you need to do is use the link below to verify your account and set up your password.
     #{Application.get_env(:cs_guide, :site_url)}/password/#{user.password_reset_token}/edit
     """
   end
