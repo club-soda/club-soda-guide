@@ -1,0 +1,9 @@
+<div class="mv3">
+  <!-- btn link -->
+  <%= link @text, to: @path, class: "w-20-ns db dib-ns btn-primary no-underline" %>
+
+  <!-- download links -->
+  <%= for {text, path} <- @dl_links do %>
+    <%= link text, to: path, class: "cs-black pl4-ns db dib-ns mv4 mv3-ns" %>
+  <% end %>
+</div>
