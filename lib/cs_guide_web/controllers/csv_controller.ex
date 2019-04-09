@@ -37,28 +37,35 @@ defmodule CsGuideWeb.CsvController do
 # VENUES
 
   defp venues_csv_content(conn) do
-    venues = Venue.all() |> Enum.map(&venue_csv_data(&1))
-    |> CSV.encode(headers: [ :venue_name,
-                            :postcode,
-                            :phone_number,
-                            :cs_score,
-                            :description,
-                            :num_cocktails,
-                            :website,
-                            :address,
-                            :city,
-                            :twitter,
-                            :instagram,
-                            :facebook,
-                            :favourite,
-                            :lat,
-                            :long,
-                            :slug,
-                            :inserted_at,
-                            :updated_at
-                            ])
-    |> Enum.to_list
-    |> to_string
+
+    venues = Venue.all()
+      |> Venue.preload([:venue_types])
+      |> Enum.map(&venue_csv_data(&1))
+      |> CSV.encode(headers: [
+        :venue_id,
+        :venue_name,
+        :postcode,
+        :phone_number,
+        :cs_score,
+        :description,
+        :num_cocktails,
+        :website,
+        :address,
+        :city,
+        :twitter,
+        :instagram,
+        :facebook,
+        :favourite,
+        :lat,
+        :long,
+        :slug,
+        :inserted_at,
+        :updated_at,
+        :parent_company,
+        :venue_types
+      ])
+      |> Enum.to_list
+      |> to_string
     conn
 
     |> put_resp_content_type("text/csv")
@@ -68,6 +75,7 @@ defmodule CsGuideWeb.CsvController do
 
   defp venue_csv_data(venue) do
     %{
+      venue_id: venue.id,
       venue_name: venue.venue_name,
       postcode: venue.postcode,
       phone_number: venue.phone_number,
@@ -85,7 +93,9 @@ defmodule CsGuideWeb.CsvController do
       long: venue.long,
       slug: venue.slug,
       inserted_at: venue.inserted_at,
-      updated_at: venue.updated_at
+      updated_at: venue.updated_at,
+      parent_company: venue.parent_company,
+      venue_types: Enum.map_join(venue.venue_types, ", ", &(&1.name))
      }
   end
 
@@ -309,7 +319,7 @@ defmodule CsGuideWeb.CsvController do
 
   # Search Log
   defp search_log_csv_content(conn) do
-    searches_log = SearchLog |> order_by(desc: :inserted_at) |> Repo.all() 
+    searches_log = SearchLog |> order_by(desc: :inserted_at) |> Repo.all()
     |> Enum.map(fn search ->
       %{
         search: search.search,
