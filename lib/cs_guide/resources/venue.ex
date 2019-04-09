@@ -208,8 +208,6 @@ defmodule CsGuide.Resources.Venue do
 
   defp venues_within_distance(distance, lat, long) do
     __MODULE__
-    |> where([venue], venue.deleted == false)
-    # filters deleted venues
     |> where(
       [venue],
       fragment(
@@ -244,6 +242,7 @@ defmodule CsGuide.Resources.Venue do
     # combination of distance and entry_id. The reason for the combination is to
     # account for cases where distances could be the same to different venues.
     |> CsGuide.Repo.all()
+    |> Enum.filter(&(&1.deleted == false))
   end
 
   def validate_postcode(%{valid?: true} = changeset, postcode) do
