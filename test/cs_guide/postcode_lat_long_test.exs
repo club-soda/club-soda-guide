@@ -58,6 +58,17 @@ defmodule CsGuide.PostcodeLatLongTest do
       venues = Venue.nearest_venues(lat, long)
       assert length(venues) == 2
     end
+
+    test "deleted venues do not display" do
+      lat = 51.54359770000001
+      long = -0.08807799999999999
+
+      Venue.get_by(venue_name: "The Not Favourite Pub")
+      |> Venue.delete()
+
+      venues = Venue.nearest_venues(lat, long)
+      assert length(venues) == 1
+    end
   end
 
   def count_no_times_venue_occurs(venues, name) do

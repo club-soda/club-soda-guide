@@ -42,18 +42,17 @@ defmodule CsGuideWeb.SearchVenueController do
   end
 
   defp getAllVenueCards do
-    venues =
-      Venue.all()
-      |> Venue.preload([:venue_types, :venue_images])
-      |> Enum.filter(fn v ->
-        !Enum.find(v.venue_types, fn type ->
-          String.downcase(type.name) == "retailer" || String.downcase(type.name) == "wholesaler"
-        end)
+    Venue.all()
+    |> Venue.preload([:venue_types, :venue_images])
+    |> Enum.filter(fn v ->
+      !Enum.find(v.venue_types, fn type ->
+        String.downcase(type.name) == "retailer" || String.downcase(type.name) == "wholesaler"
       end)
-      |> Enum.sort_by(&{5 - &1.cs_score, &1.venue_name})
-      |> Enum.map(&VenueController.sortImagesByMostRecent/1)
-      |> Enum.map(&selectPhotoNumber1/1)
-      |> Enum.map(&Venue.get_venue_card/1)
+    end)
+    |> Enum.sort_by(&{5 - &1.cs_score, &1.venue_name})
+    |> Enum.map(&VenueController.sortImagesByMostRecent/1)
+    |> Enum.map(&selectPhotoNumber1/1)
+    |> Enum.map(&Venue.get_venue_card/1)
   end
 
   def selectPhotoNumber1(venue) do
