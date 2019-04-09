@@ -2,7 +2,8 @@ defmodule CsGuide.Auth do
   alias CsGuide.Accounts.User
 
   def validate_user(email, password) do
-    with %User{} = user <- User.get_by(email_hash: email),
+    with true <- email != "",
+         %User{} = user <- User.get_by(email_hash: email),
          true <- Argon2.verify_pass(password, user.password) do
       {:ok, user}
     else
