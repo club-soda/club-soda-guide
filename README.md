@@ -132,10 +132,33 @@ The relations between types and styles will then be automatically displayed in t
 When you create a static page, you have the ability to write HTML or markdown in
 the body field:
 
-![body with html example](https://user-images.githubusercontent.com/16775804/50228996-2d87c000-03a1-11e9-8322-d3b5401123fd.png)
+```
+<h1> h1 text </h1>
+<h2> h2 text </h2>
+<h3> h3 text </h3>
+<p> p text </p>
+<strong> strong text </strong>
+<i> italic text </i>
+
+<ul>
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ul>
+
+<ol>
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ol>
+
+# h1 markdown
+## h2 markdown
+### h3 markdown
+```
 
 This is what you will see on the page:
-![rendered html from body example](https://user-images.githubusercontent.com/16775804/50229141-87888580-03a1-11e9-859f-8cb42737ac32.png)
+![rendered html from body example](https://user-images.githubusercontent.com/15571853/55817371-510b7d80-5aec-11e9-9bc2-f2c4b5dc1b53.png)
 
 As you can see, some of these elements already have default styling for sizing.
 However if you wish to style an element in an alternative way to what you see here

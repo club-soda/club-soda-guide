@@ -1,6 +1,6 @@
 <section class="center w-80 w-75-l mv6">
   <h2 class="f4 lh4">Show Discount Code</h2>
-  <ul class="pv3">
+  <ul class="pv3 list">
     <li>
       <strong>Discount code:</strong>
       <%= @discount_code.code %>
