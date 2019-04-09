@@ -1,6 +1,6 @@
 <section class="center w-80 w-75-l mv6">
   <h2 class="f4 lh4">Show User</h2>
-  <ul class="pv3">
+  <ul class="pv3 list">
     <li>
       <strong>Email:</strong>
       <%= @user.email %>
