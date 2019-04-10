@@ -43,3 +43,7 @@ seeds
 ukpostcodes.csv
 
 priv/repo/admin.exs
+
+# Ignore Heroku Postgres Database Dump
+# See: github.com/club-soda/club-soda-guide/blob/master/dev-guide.md#using-real-data
+production.dump
