@@ -29,21 +29,6 @@ Clone the `git` repository:
 git clone git@github.com:club-soda/club-soda-guide.git && cd club-soda-guide
 ```
 
-Install the **`Elixir`** dependencies:
-```sh
-mix deps.get
-```
-
-Create the database:
-```sh
-mix ecto.create
-```
-
-Create the database _schema_ (_tables_):
-```sh
-mix ecto.migrate
-```
-
 ## Environment Variables
 
 In order to run the application on your `localhost` you will need to have a
@@ -124,6 +109,24 @@ run the following command in your terminal:
 ```sh
 source .env
 ```
+
+## Install Dependencies
+
+Install the **`Elixir`** dependencies:
+```sh
+mix deps.get
+```
+
+Create the database:
+```sh
+mix ecto.create
+```
+
+Create the database _schema_ (_tables_):
+```sh
+mix ecto.migrate
+```
+
 
 ## Start the App
 
@@ -238,7 +241,7 @@ DBeaver:
 
 
 > Thanks to @wrburgess for his helpful gist:
-https://gist.github.com/wrburgess/5528649 ❤️ 
+https://gist.github.com/wrburgess/5528649 ❤️
 
 
 ## Importing Data
