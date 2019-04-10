@@ -78,7 +78,7 @@ defmodule CsGuideWeb.UserController do
         |> @mailer.deliver_now()
 
         conn
-        |> put_flash(:info, "Site Amdin created successfully. User will receive an email with instructions on setting a password")
+        |> put_flash(:info, "Site admin created successfully. User will receive an email with instructions on setting a password")
         |> redirect(to: admin_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->

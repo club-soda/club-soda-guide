@@ -101,7 +101,7 @@ defmodule CsGuideWeb.UserControllerTest do
       refute new_admin == nil
       assert new_admin.role == :site_admin
       assert redirected_to(conn) == admin_path(conn, :index)
-      assert get_flash(conn, :info) =~ "Site Amdin created successfully"
+      assert get_flash(conn, :info) =~ "Site admin created successfully"
     end
 
     test "post admin/users/create-site-admin with invalid email", %{conn: conn} do
