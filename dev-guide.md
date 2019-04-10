@@ -274,7 +274,7 @@ remember to define the email address and password, e.g:
 
 Filling in the empty strings as necessary.
 
-### Adding latitude and longitude values to the database
+## Adding latitude and longitude values to the database
 
 Latitude and longitude values are being used to calculate the distance from a
 user to a venue. To add these values to your venues in the database run the
@@ -284,12 +284,27 @@ command...
 mix run priv/repo/add_lat_long_to_venue.exs
 ```
 
-### Deployment
+## Deployment
 
 The `master` branch is automatically deployed to staging.
 When it's time to deploy to production follow these steps:
 
-#### Backup the current database
+### Adding environment variables
+
+If you have added any environment variables to the project since it was last
+deployed that are needed for the it to work you will need to add them to heroku
+as well. To do this click the `Settings` tab on the heroku dashboard.
+
+Once here, click the `Reveal Config Vars`...
+
+![reveal-config-vars](https://user-images.githubusercontent.com/194400/55563188-5e3ffb00-56ed-11e9-8202-2e831eee536a.png)
+
+and enter the `key`, `value` pairs into the input boxes provided...
+![env-key-value](https://user-images.githubusercontent.com/15571853/55892119-a0fe4900-5bad-11e9-81ce-57bcbb343937.png)
+
+After entering the info, click `Add` to add the variable to heroku.
+
+### Backup the current database
 
 From the heroku dashboard, go to the `Resources` tab,
 then click `Heroku Postgres`.
@@ -301,7 +316,7 @@ This will take you to the database dashboard. From here, got to the `Durability`
 
 <img width="1259" alt="heroku postgres dashboard" src="https://user-images.githubusercontent.com/8939909/53745909-f69d5280-3e97-11e9-9e36-c1c2e6e713bf.png">
 
-#### Deploy `master` branch
+### Deploy `master` branch
 
 Back on the Heroku dashboard, go to the `Deploy` tab.
 
