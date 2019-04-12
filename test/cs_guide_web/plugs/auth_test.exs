@@ -45,33 +45,33 @@ defmodule CsGuideWeb.Plugs.AuthTest do
       venue = Venue.get_by(slug: "venue-a-ec1a-7aa")
       conn = get(conn, retailer_path(conn, :add_drinks, venue.entry_id))
       assert redirected_to(conn) == page_path(conn, :index)
-      assert get_flash(conn, :error) == "You need to be an this venues admin to access this page"
+      assert get_flash(conn, :error) == "You need to be this venues admin to access this page"
     end
 
     test "get /venues/:slug/add_drinks", %{conn: conn} do
       conn = get(conn, venue_path(conn, :add_drinks, "venue-a-ec1a-7aa"))
       assert redirected_to(conn) == page_path(conn, :index)
-      assert get_flash(conn, :error) == "You need to be an this venues admin to access this page"
+      assert get_flash(conn, :error) == "You need to be this venues admin to access this page"
     end
 
     test "get /venues/:slug/add_photo", %{conn: conn} do
       conn = get(conn, venue_path(conn, :add_photo, "venue-a-ec1a-7aa"))
       assert redirected_to(conn) == page_path(conn, :index)
-      assert get_flash(conn, :error) == "You need to be an this venues admin to access this page"
+      assert get_flash(conn, :error) == "You need to be this venues admin to access this page"
     end
 
     test "get /wholesalers/:id/add_drinks", %{conn: conn} do
       venue = Venue.get_by(slug: "venue-a-ec1a-7aa")
       conn = get(conn, wholesaler_path(conn, :add_drinks, venue.entry_id))
       assert redirected_to(conn) == page_path(conn, :index)
-      assert get_flash(conn, :error) == "You need to be an this venues admin to access this page"
+      assert get_flash(conn, :error) == "You need to be this venues admin to access this page"
     end
 
     test "post /venues/:id/", %{conn: conn} do
       venue = Venue.get_by(slug: "venue-a-ec1a-7aa")
       conn = post(conn, venue_path(conn, :upload_photo, venue.entry_id), %{})
       assert redirected_to(conn) == page_path(conn, :index)
-      assert get_flash(conn, :error) == "You need to be an this venues admin to access this page"
+      assert get_flash(conn, :error) == "You need to be this venues admin to access this page"
     end
   end
 

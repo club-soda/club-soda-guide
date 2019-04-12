@@ -54,7 +54,7 @@ defmodule CsGuideWeb.Plugs.Auth do
               conn
             else
               conn
-              |> Phoenix.Controller.put_flash(:error, "You need to be an this venues admin to access this page")
+              |> Phoenix.Controller.put_flash(:error, "You need to be this venues admin to access this page")
               |> Phoenix.Controller.redirect(to: CsGuideWeb.Router.Helpers.page_path(conn, :index))
               |> halt()
             end
@@ -67,7 +67,7 @@ defmodule CsGuideWeb.Plugs.Auth do
               conn
             else
               conn
-              |> Phoenix.Controller.put_flash(:error, "You need to be an this venues admin to access this page")
+              |> Phoenix.Controller.put_flash(:error, "You need to be this venues admin to access this page")
               |> Phoenix.Controller.redirect(to: CsGuideWeb.Router.Helpers.page_path(conn, :index))
               |> halt()
             end
