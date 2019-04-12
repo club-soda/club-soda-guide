@@ -4,6 +4,7 @@ defmodule CsGuideWeb.VenueController do
   alias CsGuide.Resources.{Venue, Drink, Brand}
   alias CsGuide.Images.VenueImage
   alias CsGuideWeb.SearchVenueController
+  alias CsGuide.Repo
 
   import Ecto.Query, only: [from: 2, subquery: 1]
 
@@ -268,8 +269,23 @@ defmodule CsGuideWeb.VenueController do
     end
   end
 
+  def view_admins(conn, %{"slug" => slug}) do
+    venue = Venue.get_by(slug: slug)
+    venue_owners = get_venue_owners(venue)
+    render(conn, "view_owners.html", venue: venue, owners: venue_owners)
+  end
+
   # HELPERS
 
+  defp get_venue_owners(venue) do
+    query =
+      from u in CsGuide.Accounts.User,
+      join: vu in "venues_users",
+      on: u.id == vu.user_id,
+      where: vu.venue_id == ^venue.id
+
+    Repo.all(query)
+  end
   defp do_update(conn, venue, venue_params) do
     query = fn s, m ->
       sub =

@@ -83,6 +83,7 @@ defmodule CsGuideWeb.Router do
 
     post("/drinks/:id/", DrinkController, :upload_photo)
     post("/brands/:slug/", BrandController, :upload_photo)
+    get("/venues/:slug/view_admins", VenueController, :view_admins)
   end
 
   scope "/admin", CsGuideWeb do
