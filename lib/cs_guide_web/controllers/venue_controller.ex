@@ -192,41 +192,6 @@ defmodule CsGuideWeb.VenueController do
     end
   end
 
-  defp do_update(conn, venue, venue_params) do
-    query = fn s, m ->
-      sub =
-        from(mod in Map.get(m.__schema__(:association, s), :queryable),
-          distinct: mod.entry_id,
-          order_by: [desc: :updated_at],
-          select: mod
-        )
-
-      from(m in subquery(sub), where: not m.deleted, select: m)
-    end
-
-    with {:ok, venue} <- Venue.update(venue, venue_params),
-         {:ok, venue} <-
-           Venue.update(
-             venue,
-             Map.put(
-               venue_params,
-               :cs_score,
-               CsGuide.Resources.CsScore.calculateScore(
-                 venue.drinks
-                 |> CsGuide.Repo.preload(drink_types: query.(:drink_types, Drink)),
-                 venue.num_cocktails
-               )
-             )
-           ) do
-      conn
-      |> put_flash(:info, "Venue updated successfully.")
-      |> redirect(to: venue_path(conn, :show, venue.slug))
-    else
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", venue: venue, changeset: changeset)
-    end
-  end
-
   def add_drinks(conn, %{"slug" => slug}) do
     venue =
       Venue.get_by(slug: slug)
@@ -302,6 +267,44 @@ defmodule CsGuideWeb.VenueController do
         )
     end
   end
+
+  # HELPERS
+
+  defp do_update(conn, venue, venue_params) do
+    query = fn s, m ->
+      sub =
+        from(mod in Map.get(m.__schema__(:association, s), :queryable),
+          distinct: mod.entry_id,
+          order_by: [desc: :updated_at],
+          select: mod
+        )
+
+      from(m in subquery(sub), where: not m.deleted, select: m)
+    end
+
+    with {:ok, venue} <- Venue.update(venue, venue_params),
+         {:ok, venue} <-
+           Venue.update(
+             venue,
+             Map.put(
+               venue_params,
+               :cs_score,
+               CsGuide.Resources.CsScore.calculateScore(
+                 venue.drinks
+                 |> CsGuide.Repo.preload(drink_types: query.(:drink_types, Drink)),
+                 venue.num_cocktails
+               )
+             )
+           ) do
+      conn
+      |> put_flash(:info, "Venue updated successfully.")
+      |> redirect(to: venue_path(conn, :show, venue.slug))
+    else
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, "edit.html", venue: venue, changeset: changeset)
+    end
+  end
+
 
   defp compareDates(date1, date2) do
     case NaiveDateTime.compare(date1, date2) do
