@@ -84,6 +84,7 @@ defmodule CsGuideWeb.Router do
     post("/drinks/:id/", DrinkController, :upload_photo)
     post("/brands/:slug/", BrandController, :upload_photo)
     get("/venues/:slug/view_admins", VenueController, :view_admins)
+    delete("/venues/:v_id/view_admins/:u_id", VenueController, :delete_venue_admin)
   end
 
   scope "/admin", CsGuideWeb do

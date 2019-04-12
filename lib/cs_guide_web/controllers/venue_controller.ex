@@ -275,6 +275,25 @@ defmodule CsGuideWeb.VenueController do
     render(conn, "view_owners.html", venue: venue, owners: venue_owners)
   end
 
+  def delete_venue_admin(conn, %{"v_id" => venue_id, "u_id" => user_id}) do
+    query = from vu in CsGuide.Accounts.VenueUser, where: vu.venue_id == ^venue_id and vu.user_id == ^user_id
+    venue_user = Repo.one(query)
+    venue = Repo.get(Venue, venue_id)
+
+    if venue_user do
+      Repo.delete_all(query)
+
+      conn
+      |> put_flash(:info, "User removed as owner of this venue")
+      |> redirect(to: venue_path(conn, :view_admins, venue.slug))
+    else
+
+      conn
+      |> put_flash(:info, "User or venue given were incorrect")
+      |> redirect(to: venue_path(conn, :view_admins, venue.slug))
+    end
+  end
+
   # HELPERS
 
   defp get_venue_owners(venue) do
@@ -286,6 +305,7 @@ defmodule CsGuideWeb.VenueController do
 
     Repo.all(query)
   end
+
   defp do_update(conn, venue, venue_params) do
     query = fn s, m ->
       sub =
