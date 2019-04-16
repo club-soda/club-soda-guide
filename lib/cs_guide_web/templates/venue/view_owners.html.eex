@@ -1,6 +1,6 @@
 <section class="center w-80 w-75-l mv6">
   <h2 class="f4 lh4 dib">Venue Owners</h2>
-  <span class="fr"><%= link "Add Venue owner", to: venue_path(@conn, :new), class: "btn-primary no-underline" %></span>
+  <span class="fr"><%= link "Add Venue owner", to: venue_path(@conn, :new_venue_user, @venue.id), class: "btn-primary no-underline" %></span>
 
   <table class="mt3 mb5 w-100">
     <thead>

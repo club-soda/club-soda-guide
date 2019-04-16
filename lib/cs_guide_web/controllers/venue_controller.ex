@@ -275,6 +275,12 @@ defmodule CsGuideWeb.VenueController do
     render(conn, "view_owners.html", venue: venue, owners: venue_owners)
   end
 
+  def new_venue_user(conn, %{"v_id" => venue_id}) do
+    venue = Repo.get(Venue, venue_id)
+    changeset = User.changeset(%User{}, %{})
+    render(conn, "add_admin_to_venue.html", venue: venue, changeset: changeset)
+  end
+
   def delete_venue_admin(conn, %{"v_id" => venue_id, "u_id" => user_id}) do
     query = from vu in CsGuide.Accounts.VenueUser, where: vu.venue_id == ^venue_id and vu.user_id == ^user_id
     venue_user = Repo.one(query)
