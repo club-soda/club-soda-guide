@@ -480,12 +480,13 @@ defmodule CsGuideWeb.VenueController do
   defp send_email(user, new_user?, venue) do
     subject = "You have been made a venue admin"
     if new_user? do
+      user = User.reset_password_token(user, @ten_days)
+
       user.email
       |> CsGuide.Email.send_email(subject, new_user_email_msg(user, venue))
       |> @mailer.deliver_now()
-    else
-      User.reset_password_token(user, @ten_days)
 
+    else
       user.email
       |> CsGuide.Email.send_email(subject, existing_user_email_msg(venue))
       |> @mailer.deliver_now()
