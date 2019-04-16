@@ -5,6 +5,10 @@ defmodule CsGuideWeb.VenueController do
   alias CsGuide.Images.VenueImage
   alias CsGuideWeb.SearchVenueController
   alias CsGuide.Repo
+  alias CsGuide.Accounts.{User, VenueUser}
+
+  @mailer Application.get_env(:cs_guide, :mailer) || CsGuide.Mailer
+  @ten_days 864000 # ten days in seconds
 
   import Ecto.Query, only: [from: 2, subquery: 1]
 
@@ -281,8 +285,60 @@ defmodule CsGuideWeb.VenueController do
     render(conn, "add_admin_to_venue.html", venue: venue, changeset: changeset)
   end
 
+  def create_venue_user(conn, %{"v_id" => venue_id, "user" => params}) do
+    changeset = User.changeset(%User{}, params)
+    venue = Repo.get(Venue, venue_id)
+
+    case changeset.valid? do
+      true ->
+        # valid email format
+        case User.get_by(email_hash: params["email"]) do
+          nil ->
+            # user does not exist, create them
+            params = Map.put(params, "role", "venue_admin")
+            {:ok, user} = %User{} |> User.changeset(params) |> User.insert()
+            send_email(user, true, venue)
+
+            # associate the user with the venue (add them to venues_users table)
+            Repo.insert!(%VenueUser{venue_id: venue.id, user_id: user.id})
+
+            # redirect back to view admins
+            conn
+            |> put_flash(:info, "New user created. They have been made an admin for this venue")
+            |> redirect(to: venue_path(conn, :view_admins, venue.slug))
+
+          user ->
+            # user already exists. check if they are already associated with the venue
+            is_user_already_this_venues_admin? =
+              venue
+              |> get_venue_owners()
+              |> Enum.map(&(&1.id))
+              |> Enum.any?(&(&1 == user.id))
+
+            case is_user_already_this_venues_admin? do
+              true ->
+                conn
+                |> put_flash(:error, "User is already an admin for this venue")
+                |> redirect(to: venue_path(conn, :view_admins, venue.slug))
+
+              false ->
+                Repo.insert!(%VenueUser{venue_id: venue.id, user_id: user.id})
+                send_email(user, false, venue)
+
+                conn
+                |> put_flash(:info, "User has been made an admin for this venue")
+                |> redirect(to: venue_path(conn, :view_admins, venue.slug))
+            end
+        end
+
+      false ->
+        # invalid email
+        render(conn, "add_admin_to_venue.html", venue: venue, changeset: changeset)
+    end
+  end
+
   def delete_venue_admin(conn, %{"v_id" => venue_id, "u_id" => user_id}) do
-    query = from vu in CsGuide.Accounts.VenueUser, where: vu.venue_id == ^venue_id and vu.user_id == ^user_id
+    query = from vu in VenueUser, where: vu.venue_id == ^venue_id and vu.user_id == ^user_id
     venue_user = Repo.one(query)
     venue = Repo.get(Venue, venue_id)
 
@@ -304,7 +360,7 @@ defmodule CsGuideWeb.VenueController do
 
   defp get_venue_owners(venue) do
     query =
-      from u in CsGuide.Accounts.User,
+      from u in User,
       join: vu in "venues_users",
       on: u.id == vu.user_id,
       where: vu.venue_id == ^venue.id
@@ -419,5 +475,34 @@ defmodule CsGuideWeb.VenueController do
             false
         end
     end
+  end
+
+  defp send_email(user, new_user?, venue) do
+    subject = "You have been made a venue admin"
+    if new_user? do
+      user.email
+      |> CsGuide.Email.send_email(subject, new_user_email_msg(user, venue))
+      |> @mailer.deliver_now()
+    else
+      User.reset_password_token(user, @ten_days)
+
+      user.email
+      |> CsGuide.Email.send_email(subject, existing_user_email_msg(venue))
+      |> @mailer.deliver_now()
+    end
+  end
+
+  defp new_user_email_msg(user, venue) do
+    """
+    You have been made an admin of the venue #{venue.venue_name}
+    Please click the following link to set the password on your account.
+    #{Application.get_env(:cs_guide, :site_url)}/password/#{user.password_reset_token}/edit
+    """
+  end
+
+  defp existing_user_email_msg(venue) do
+    """
+    You have been made an admin of the venue #{venue.venue_name}
+    """
   end
 end
