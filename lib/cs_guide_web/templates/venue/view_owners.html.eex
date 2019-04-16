@@ -1,0 +1,27 @@
+<section class="center w-80 w-75-l mv6">
+  <h2 class="f4 lh4 dib">Venue Owners</h2>
+  <span class="fr"><%= link "Add Venue owner", to: venue_path(@conn, :new_venue_user, @venue.id), class: "btn-primary no-underline" %></span>
+
+  <table class="mt3 mb5 w-100">
+    <thead>
+      <tr class="tl">
+        <th class="pv3 pr3 f5 lh5 b">Email</th>
+      </tr>
+    </thead>
+    <tbody class="">
+      <%= for owner <- @owners do %>
+        <tr class="bt bb b--cs-light-gray">
+          <td class="pv3 pr3"><%= owner.email %></td>
+
+          <td class="pv3 pa3-ns">
+            <span>
+              <%= link "Remove Venue owner", to: venue_path(@conn, :delete_venue_admin, @venue.id, owner.id),
+              method: :delete, data: [confirm: "Are you sure you'd like to remove user as owner of this venue?"],
+              class: "cs-mid-blue ph3 pv3-ns" %>
+            </span>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

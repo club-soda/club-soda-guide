@@ -1,9 +1,12 @@
 defmodule CsGuideWeb.VenueControllerTest do
   use CsGuideWeb.ConnCase
-  alias CsGuide.Fixtures
-  alias CsGuide.{Resources, Categories}
-  alias CsGuide.Resources.Venue
   import CsGuide.SetupHelpers
+  import Ecto.Query
+
+  alias CsGuide.Fixtures
+  alias CsGuide.{Resources, Categories, Repo}
+  alias CsGuide.Resources.Venue
+  alias CsGuide.Accounts.{User, VenueUser}
 
   @upload %Plug.Upload{path: "test/support/good-file.jpg", filename: "good-file.jpg"}
   @bad_upload %Plug.Upload{path: "test/support/bad-file.jpg", filename: "bad-file.jpg"}
@@ -477,6 +480,7 @@ defmodule CsGuideWeb.VenueControllerTest do
       venue = Enum.at(venues, 0)
       conn = get(conn, venue_path(conn, :edit, venue.slug))
       assert html_response(conn, 200) =~ "Edit Venue"
+      assert html_response(conn, 200) =~ "Edit Venue Owners"
     end
   end
 
@@ -497,6 +501,98 @@ defmodule CsGuideWeb.VenueControllerTest do
       venue = Enum.at(venues, 0)
       conn = delete(conn, venue_path(conn, :delete, venue.entry_id))
       assert redirected_to(conn) == venue_path(conn, :index)
+    end
+  end
+
+  describe "add admins to venue get request routes" do
+    setup [:create_venues, :admin_login]
+
+    test "view admins", %{conn: conn, venues: venues} do
+      venue = Enum.at(venues, 0)
+      conn = get(conn, venue_path(conn, :view_admins, venue.slug))
+      assert html_response(conn, 200) =~ "Venue Owners"
+    end
+
+    test "new venue user", %{conn: conn, venues: venues} do
+      venue = Enum.at(venues, 0)
+      conn = get(conn, venue_path(conn, :new_venue_user, venue.id))
+      assert html_response(conn, 200) =~ "Add Venue Owner"
+    end
+  end
+
+  describe "create venue user" do
+    setup [:create_venues, :admin_login]
+
+    test "test post request with invalid email format", %{conn: conn, venues: venues} do
+      venue = Enum.at(venues, 0)
+      conn = post(conn, venue_path(conn, :create_venue_user, venue.id), user: %{email: "badbadbad"})
+      assert html_response(conn, 200) =~ "Add Venue Owner"
+    end
+
+    test "test post request with valid new email create user", %{conn: conn, venues: venues} do
+      venue = Enum.at(venues, 0)
+      conn = post(conn, venue_path(conn, :create_venue_user, venue.id), user: %{email: "new_user@email.com"})
+      user = User.get_by(email_hash: "new_user@email.com")
+      venue_user = Repo.one(from vu in VenueUser, where: vu.user_id == ^user.id)
+
+      refute user == nil
+      refute user.password_reset_token == nil
+      assert user.role == :venue_admin
+      refute venue_user == nil
+      assert venue_user.venue_id == venue.id
+      assert redirected_to(conn) == venue_path(conn, :view_admins, venue.slug)
+    end
+
+    test "test with email of existing user who is NOT associated to venue", %{conn: conn, venues: venues} do
+      {:ok, user} =
+        %User{}
+        |> User.changeset(%{email: "existing@user", password: "password", role: :venue_admin})
+        |> User.insert()
+
+      venue = Enum.at(venues, 0)
+      conn = post(conn, venue_path(conn, :create_venue_user, venue.id), user: %{email: "existing@user"})
+      venue_user = Repo.one(from vu in VenueUser, where: vu.user_id == ^user.id)
+
+      refute venue_user == nil
+      assert venue_user.venue_id == venue.id
+      assert user.password_reset_token == nil
+      assert redirected_to(conn) == venue_path(conn, :view_admins, venue.slug)
+    end
+
+    test "test with email of user who is aleady associated to venue", %{conn: conn, venues: venues} do
+      venue = Enum.at(venues, 0)
+      {:ok, user} =
+        %User{}
+        |> User.changeset(%{email: "associated@user", password: "password", role: :venue_admin})
+        |> User.insert()
+
+      Repo.insert!(%VenueUser{venue_id: venue.id, user_id: user.id})
+
+      conn = post(conn, venue_path(conn, :create_venue_user, venue.id), user: %{email: "associated@user"})
+
+      assert redirected_to(conn) == venue_path(conn, :view_admins, venue.slug)
+      assert get_flash(conn, :error) =~ "already an admin"
+    end
+  end
+
+  describe "delete venue admin" do
+    setup [:create_venues, :admin_login]
+
+    test "removes a user from being a venue admin", %{conn: conn, venues: venues} do
+      venue = Enum.at(venues, 0)
+      {:ok, user} =
+        %User{}
+        |> User.changeset(%{email: "associated@user", password: "password", role: :venue_admin})
+        |> User.insert()
+
+      Repo.insert!(%VenueUser{venue_id: venue.id, user_id: user.id})
+
+      conn = get(conn, venue_path(conn, :view_admins, venue.slug))
+      assert html_response(conn, 200) =~ "associated@user"
+
+      conn = delete(conn, venue_path(conn, :delete_venue_admin, venue.id, user.id))
+      assert get_flash(conn, :info) =~ "User removed"
+      assert redirected_to(conn) == venue_path(conn, :view_admins, venue.slug)
     end
   end
 

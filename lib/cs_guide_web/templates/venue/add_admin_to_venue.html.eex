@@ -1,0 +1,14 @@
+<section class="center w-80 w-75-l mv6">
+  <h2 class="f4 lh4 dib">Add Venue Owner</h2>
+  <%= form_for @changeset, venue_path(@conn, :create_venue_user, @venue.id), fn f -> %>
+    <div class="form-group">
+      <%= label f, :email, class: "control-label" %>
+      <%= text_input f, :email, class: "form-control" %>
+      <%= error_tag f, :email %>
+    </div>
+
+    <div class="form-group">
+      <%= submit "Submit", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</section>

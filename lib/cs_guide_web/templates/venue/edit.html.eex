@@ -1,5 +1,10 @@
 <section class="center w-80 w-75-l mv6-ns mv5">
-  <h2 class="f4 lh4">Edit Venue</h2>
+  <h2 class="f4 lh4 mv3">Edit Venue</h2>
+
+  <%= if @conn.assigns.current_user.role == :site_admin do %>
+    <!-- if site admin, show link to edit venue owners -->
+    <%= link "Edit Venue Owners", to: venue_path(@conn, :view_admins, @venue.slug), class: "w-20-ns db dib-ns btn-primary no-underline mv3" %>
+  <% end %>
 
   <%= custom_render_autoform(@conn, :update, [
     {CsGuide.Resources.Venue, custom_labels: %{parent_company: "Parent company/chain"}, exclude: [:parent_company, :description, :address, :city, :postcode, :website, :phone_number, :twitter, :facebook, :instagram, :favourite, :venue_types]},
