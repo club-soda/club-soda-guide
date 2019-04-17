@@ -11,7 +11,9 @@ defmodule CsGuideWeb.SignupControllerTest do
     postcode: "EC1M 5AD",
     venue_name: "The Example Pub",
     venue_types: %{"Bar" => "on"},
-    users: %{"0" => %{"email" => "bob@dwyl.com"}}
+    users: %{"0" => %{"email" => "bob@dwyl.com"}},
+    t_and_c: true,
+    cookies: true
   }
 
   describe "List new venue with signup endpoint" do
@@ -24,6 +26,13 @@ defmodule CsGuideWeb.SignupControllerTest do
 
       conn = get(conn, venue_path(conn, :show, slug))
       assert html_response(conn, 200) =~ "The Example Pub"
+    end
+
+    test "create venue with a user who has not agreed to cookies or ts and cs", %{conn: conn} do
+      create_attrs = Map.put(@create_attrs, :t_and_c, nil)
+      conn = post(conn, signup_path(conn, :create), venue: create_attrs)
+
+      assert html_response(conn, 200) =~ "Create a Venue Listing"
     end
   end
 
