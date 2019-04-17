@@ -11,6 +11,7 @@ defmodule CsGuideWeb.Router do
     plug(:put_secure_browser_headers)
     plug(CsGuideWeb.Plugs.Auth)
     plug(CsGuideWeb.Plugs.StaticPages)
+    plug(CsGuideWeb.Plugs.Cookie)
   end
 
   pipeline :api do
