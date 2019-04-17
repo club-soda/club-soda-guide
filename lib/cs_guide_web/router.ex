@@ -43,6 +43,7 @@ defmodule CsGuideWeb.Router do
     get("/json_venue_images", VenueController, :json_index)
     resources("/password", PasswordController, only: [:new, :create])
     resources("/password", PasswordController, only: [:edit, :update], param: "token")
+    post("/accept_cookies/:path", CookieController, :accept_cookies)
   end
 
   scope "/search", CsGuideWeb do
