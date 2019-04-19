@@ -46,9 +46,6 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def create(conn, %{"venue" => venue_params}) do
-    slug = Venue.create_slug(venue_params["venue_name"], venue_params["postcode"])
-    venue_params = Map.put(venue_params, "slug", slug)
-
     changeset =
       %Venue{}
       |> Venue.changeset(venue_params)
@@ -171,18 +168,11 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def update(conn, %{"slug" => slug, "venue" => venue_params}) do
-    v_name = venue_params["venue_name"]
-    v_postcode = venue_params["postcode"]
-    new_slug = Venue.create_slug(v_name, v_postcode)
-
     venue =
       Venue.get_by(slug: slug)
       |> Venue.preload([:venue_types, :venue_images, :discount_codes, :drinks, :users])
 
-    venue_params =
-      venue_params
-      |> Map.put("slug", new_slug)
-      |> Map.put("drinks", venue.drinks)
+    venue_params = Map.put(venue_params, "drinks", venue.drinks)
 
     case Venue.update(venue, venue_params) do
       {:ok, _venue} ->

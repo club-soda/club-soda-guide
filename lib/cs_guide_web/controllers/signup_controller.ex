@@ -6,13 +6,7 @@ defmodule CsGuideWeb.SignupController do
   @mailer Application.get_env(:cs_guide, :mailer) || CsGuide.Mailer
 
   def create(conn, %{"venue" => %{"users" => users} = venue_params}) do
-    postcode = venue_params["postcode"]
-    slug = Venue.create_slug(venue_params["venue_name"], postcode)
-
-    venue_params =
-      venue_params
-      |> Map.put("slug", slug)
-      |> put_in(["users", "0", "role"], "venue_admin")
+    venue_params = put_in(venue_params, ["users", "0", "role"], "venue_admin")
 
     %{"0" => %{"email" => email}} = users
     subject = "Venue Created!"

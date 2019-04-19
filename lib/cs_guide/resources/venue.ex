@@ -82,7 +82,8 @@ defmodule CsGuide.Resources.Venue do
       :slug
     ])
     |> cast_assoc(:users)
-    |> validate_required([:venue_name, :parent_company, :postcode, :venue_types, :slug])
+    |> validate_required([:venue_name, :parent_company, :postcode, :venue_types])
+    |> create_slug()
   end
 
   def retailer_changeset(venue, attrs \\ %{}) do
@@ -170,15 +171,6 @@ defmodule CsGuide.Resources.Venue do
     |> Repo.insert()
   end
 
-  def create_slug(name, postcode) do
-    Enum.join([name, "-", postcode])
-    |> change_spaces_to_dashes()
-    |> String.replace(~r/(,|')/, "")
-    |> String.replace(~r/(-{3})/, "-")
-    |> String.replace(~r/(&|\+)/, "and")
-    |> String.downcase()
-  end
-
   defp change_spaces_to_dashes(str) do
     str
     |> String.split(" ")
@@ -259,4 +251,20 @@ defmodule CsGuide.Resources.Venue do
   end
 
   def validate_postcode(changeset), do: changeset
+
+  defp create_slug(%Ecto.Changeset{changes: %{postcode: postcode, venue_name: venue_name}} = changeset) do
+    slug = create_slug(venue_name, postcode)
+    put_change(changeset, :slug, slug)
+  end
+
+  defp create_slug(changeset), do: changeset
+
+  defp create_slug(name, postcode) do
+    Enum.join([name, "-", postcode])
+    |> change_spaces_to_dashes()
+    |> String.replace(~r/(,|')/, "")
+    |> String.replace(~r/(-{3})/, "-")
+    |> String.replace(~r/(&|\+)/, "and")
+    |> String.downcase()
+  end
 end
