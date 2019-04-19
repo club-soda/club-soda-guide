@@ -113,6 +113,7 @@ defmodule CsGuide.Resources.Venue do
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
     |> Resources.require_assocs([:venue_types])
     |> validate_postcode()
+    |> CsGuide.ChangesetHelpers.check_existing_slug(__MODULE__, :venue_name, "Venue already exists")
     |> Repo.insert()
   end
 

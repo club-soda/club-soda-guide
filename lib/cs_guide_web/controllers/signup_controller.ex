@@ -1,33 +1,26 @@
 defmodule CsGuideWeb.SignupController do
   use CsGuideWeb, :controller
 
-  alias CsGuide.{Resources.Venue, Auth}
+  alias CsGuide.Accounts.User
+  alias CsGuide.Resources.Venue
+  alias CsGuide.{Auth, Mailer}
 
-  @mailer Application.get_env(:cs_guide, :mailer) || CsGuide.Mailer
+  @mailer Application.get_env(:cs_guide, :mailer) || Mailer
+  @one_day 86400 # number of seconds in one day
+  @five_days @one_day * 5
 
-  def create(conn, %{"venue" => %{"users" => users} = venue_params}) do
+  def create(conn, %{"venue" => venue_params}) do
     venue_params = put_in(venue_params, ["users", "0", "role"], "venue_admin")
-
-    %{"0" => %{"email" => email}} = users
-    subject = "Venue Created!"
-
-    changeset =
-      %Venue{}
-      |> Venue.changeset(venue_params)
-      |> CsGuide.ChangesetHelpers.check_existing_slug(Venue, :venue_name, "Venue already exists")
+    changeset = Venue.changeset(%Venue{}, venue_params)
 
     case Venue.insert(changeset, venue_params) do
       {:ok, venue} ->
-        one_day = 86400 # number of seconds in one day
-        five_days = one_day * 5
-
         user =
           venue.users
           |> Enum.at(0)
-          |> CsGuide.Accounts.User.reset_password_token(five_days)
+          |> User.reset_password_token(@five_days)
 
-        CsGuide.Email.send_email(email, subject, get_message(user))
-        |> @mailer.deliver_now()
+        send_email(user)
 
         case conn.assigns.current_user do
           nil ->
@@ -53,6 +46,13 @@ defmodule CsGuideWeb.SignupController do
           changeset: changeset
         )
     end
+  end
+
+  defp send_email(user) do
+    subject = "Venue Created!"
+
+    CsGuide.Email.send_email(user.email, subject, get_message(user))
+    |> @mailer.deliver_now()
   end
 
   defp get_message(user) do

@@ -46,10 +46,7 @@ defmodule CsGuideWeb.VenueController do
   end
 
   def create(conn, %{"venue" => venue_params}) do
-    changeset =
-      %Venue{}
-      |> Venue.changeset(venue_params)
-      |> CsGuide.ChangesetHelpers.check_existing_slug(Venue, :venue_name, "Venue already exists")
+    changeset = Venue.changeset(%Venue{}, venue_params)
 
     case Venue.insert(changeset, venue_params) do
       {:ok, venue} ->
