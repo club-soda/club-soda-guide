@@ -91,7 +91,6 @@ defmodule CsGuide.NewVenues do
           |> Map.update!(:phone_number, fn s -> String.replace(s, " ", "") |> String.trim() end)
           |> Map.put(:postcode, postcode)
           |> Map.put(:address, String.trim(address))
-          |> Map.put(:slug, Venue.create_slug(venue.venue_name, postcode))
           |> Map.put(
             :drinks,
             Map.new(

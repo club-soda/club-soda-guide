@@ -11,6 +11,7 @@ defmodule CsGuideWeb.Router do
     plug(:put_secure_browser_headers)
     plug(CsGuideWeb.Plugs.Auth)
     plug(CsGuideWeb.Plugs.StaticPages)
+    plug(CsGuideWeb.Plugs.Cookie)
   end
 
   pipeline :api do
@@ -43,6 +44,7 @@ defmodule CsGuideWeb.Router do
     get("/json_venue_images", VenueController, :json_index)
     resources("/password", PasswordController, only: [:new, :create])
     resources("/password", PasswordController, only: [:edit, :update], param: "token")
+    post("/accept_cookies/:path", CookieController, :accept_cookies)
   end
 
   scope "/search", CsGuideWeb do

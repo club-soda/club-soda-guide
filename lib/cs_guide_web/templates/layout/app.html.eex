@@ -92,6 +92,23 @@
     <main role="main" class="body-container relative">
       <p class="pl3 lh4 b alert alert-info absolute top-0 left-0 right-0 z-1" role="alert"><%= get_flash(@conn, :info)%></p>
       <p class="pl3 lh4 b alert alert-info absolute top-0 left-0 right-0 z-1" role="alert"><%= get_flash(@conn, :error)%></p>
+
+      <%= if @conn.assigns.cookies_accepted == nil do %>
+        <div class="w-100 ph3 fixed bottom-0 z-max">
+          <div class="bg-cs-pink w-100 mw6-l mb3 pa3 pa4-l white br2">
+            <p class="mb2 lh-title">This website uses cookies to ensure you get the best experience on our website.</p>
+            <a href="/Terms-and-Conditions" class="db mb3 white">Learn more</a>
+            <div class="tc">
+              <%= link "Got it!",
+                to: cookie_path(@conn, :accept_cookies, assigns.conn.request_path),
+                class: "btn-accept-cookie no-underline bg-white",
+                method: :post
+              %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
       <%= render @view_module, @view_template, assigns %>
     </main>
     <footer class="mt6 pv5 pv-6rem-ns bg-footer">

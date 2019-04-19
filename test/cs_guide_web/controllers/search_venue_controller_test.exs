@@ -38,7 +38,7 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
       parent_company: "Parent Co",
       favourite: false,
       venue_types: %{"Retailer" => "on"},
-      postcode: "SW1 4RV",
+      postcode: "SW1P 4DF",
       lat: "51.468175746794700",
       long: "-0.363049000000000",
       slug: "retailer"

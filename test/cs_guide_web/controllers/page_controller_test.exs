@@ -8,16 +8,16 @@ defmodule CsGuideWeb.PageControllerTest do
       parent_company: "Parent Co",
       favourite: true,
       venue_types: %{"Pubs" => "on"},
-      postcode: "TW3 5FG",
-      slug: "the-favourite-pub-tw3-5fg"
+      postcode: "TW3 4DF",
+      slug: "the-favourite-pub-tw3-4df"
     },
     %{
       venue_name: "The Not Favourite Pub",
       parent_company: "Parent Co",
       favourite: false,
       venue_types: %{"Pubs" => "on"},
-      postcode: "SW1 4RV",
-      slug: "the-not-favourite-pub-sw1-4rv"
+      postcode: "SW1P 4DF",
+      slug: "the-not-favourite-pub-sw1-4df"
     }
   ]
   describe "renders landing page as expected" do

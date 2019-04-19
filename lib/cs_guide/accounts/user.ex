@@ -66,4 +66,10 @@ defmodule CsGuide.Accounts.User do
     |> cast(params, [:password_reset_token, :password_reset_token_expiry])
     |> CsGuide.Repo.update!()
   end
+
+  def verify_user(user) do
+    user
+    |> cast(%{verified: NaiveDateTime.utc_now()}, [:verified])
+    |> CsGuide.Repo.update!()
+  end
 end

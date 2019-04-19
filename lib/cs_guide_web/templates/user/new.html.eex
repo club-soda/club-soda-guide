@@ -1,22 +1,49 @@
 <section class="center w-80 w-75-l mv6-ns mv5">
   <h3 class="f4 lh4">Create a Venue Listing</h3>
-  <p class="mt3">
-    Please only use this form if you own or manage a venue - if you are a
-    customer and want to nominate a venue you like,
-    <a href="https://clubsoda.typeform.com/to/Z5sMPA" target="_blank">click here</a>.
-  </p>
+  <%= if is_nil(@conn.assigns.current_user) do %>
+    <p class="mt3">
+      Please only use this form if you own or manage a venue - if you are a
+      customer and want to nominate a venue you like,
+      <a href="https://clubsoda.typeform.com/to/Z5sMPA" target="_blank">click here</a>.
+    </p>
+  <% end %>
 
-  <%= custom_render_autoform(@conn, :create, [
-    {CsGuide.Accounts.User, exclude: [:email_hash, :password, :admin, :venues, :role, :verified, :password_reset_token, :password_reset_token_expiry]},
-    "<h3 class=\"f4 lh4 mt3\">Set Up a Venue</h3>",
-    "<h2 class=\"f5 lh5 mt3 mb2\">Basic Information</h2>",
-    "<p class=\"f6 lh6 cs-pink mb3\">* - required field</p>",
-    {CsGuide.Resources.Venue, exclude: [:parent_company, :address, :city, :postcode, :drinks, :phone_number, :venue_types, :cs_score, :num_cocktails, :website, :description, :twitter, :instagram, :facebook, :favourite, :venue_images, :users, :lat, :long, :slug, :discount_codes], custom_labels: %{parent_company: "Parent company/chain"}},
-    "<div class=\"form-group\">
-      <label class=\"control-label required\" for=\"venue_parent_company\">Parent company/chain</label>
-      <p class=\"f6 lh6 i mb2\">Please write 'independent' if your venue is not part of any parent company or chain.</p>
-      <input class=\"form-control\" id=\"venue_parent_company\" name=\"venue[parent_company]\" type=\"text\" required=\"\">
-    </div>",
-    {CsGuide.Resources.Venue, exclude: [:parent_company, :drinks, :venue_name, :cs_score, :num_cocktails, :website, :description, :twitter, :instagram, :facebook, :favourite, :venue_images, :users, :lat, :long, :slug, :discount_codes], custom_labels: %{venue_types: "Venue Type"}}
-  ], exclude: [:deleted, :entry_id], path: "/signup", assoc_query: &query/1, assigns: [changeset: @changeset]) %>
+  <%= if @conn.assigns.current_user do %>
+    <%= custom_render_autoform(@conn, :create, [
+      "<h3 class=\"f4 lh4 mt3\">Set Up a Venue</h3>",
+      "<h2 class=\"f5 lh5 mt3 mb2\">Basic Information</h2>",
+      "<p class=\"f6 lh6 cs-pink mb3\">* - required field</p>",
+      {CsGuide.Resources.Venue, exclude: [:parent_company, :address, :city, :postcode, :drinks, :phone_number, :venue_types, :cs_score, :num_cocktails, :website, :description, :twitter, :instagram, :facebook, :favourite, :venue_images, :users, :lat, :long, :slug, :discount_codes], custom_labels: %{parent_company: "Parent company/chain"}},
+      "<div class=\"form-group\">
+        <label class=\"control-label required\" for=\"venue_parent_company\">Parent company/chain</label>
+        <p class=\"f6 lh6 i mb2\">Please write 'independent' if your venue is not part of any parent company or chain.</p>
+        <input class=\"form-control\" id=\"venue_parent_company\" name=\"venue[parent_company]\" type=\"text\" required=\"\">
+      </div>",
+      {CsGuide.Resources.Venue, exclude: [:parent_company, :drinks, :venue_name, :cs_score, :num_cocktails, :website, :description, :twitter, :instagram, :facebook, :favourite, :venue_images, :users, :lat, :long, :slug, :discount_codes], custom_labels: %{venue_types: "Venue Type"}}
+    ], exclude: [:deleted, :entry_id], path: "/signup", assoc_query: &query/1, assigns: [changeset: @changeset]) %>
+  <% else %>
+    <%= custom_render_autoform(@conn, :create, [
+      "<p class=\"f6 lh6 cs-pink mb3\">* - required field</p>",
+      {CsGuide.Accounts.User, exclude: [:email_hash, :password, :admin, :venues, :role, :verified, :password_reset_token, :password_reset_token_expiry]},
+      "<div class=\"form-group mb3\">
+        <p class=\"control-label required\">Ts & Cs</p>
+        <input class=\"form-control\" id=\"t_and_c\" name=\"venue[t_and_c]\" type=\"checkbox\" required=\"\">
+        <label class=\"i\" for=\"t_and_c\">I agree with the terms and conditions.</label>
+      </div>",
+      "<div class=\"form-group\">
+        <p class=\"control-label required\">Cookies</p>
+        <input class=\"form-control\" id=\"cookies\" name=\"venue[cookies]\" type=\"checkbox\" required=\"\">
+        <label class=\"i\" for=\"cookies\">I agree with the privacy and cookie policy.</label>
+      </div>",
+      "<h3 class=\"f4 lh4 mt3\">Set Up a Venue</h3>",
+      "<h2 class=\"f5 lh5 mt3 mb2\">Basic Information</h2>",
+      {CsGuide.Resources.Venue, exclude: [:parent_company, :address, :city, :postcode, :drinks, :phone_number, :venue_types, :cs_score, :num_cocktails, :website, :description, :twitter, :instagram, :facebook, :favourite, :venue_images, :users, :lat, :long, :slug, :discount_codes], custom_labels: %{parent_company: "Parent company/chain"}},
+      "<div class=\"form-group\">
+        <label class=\"control-label required\" for=\"venue_parent_company\">Parent company/chain</label>
+        <p class=\"f6 lh6 i mb2\">Please write 'independent' if your venue is not part of any parent company or chain.</p>
+        <input class=\"form-control\" id=\"venue_parent_company\" name=\"venue[parent_company]\" type=\"text\" required=\"\">
+      </div>",
+      {CsGuide.Resources.Venue, exclude: [:parent_company, :drinks, :venue_name, :cs_score, :num_cocktails, :website, :description, :twitter, :instagram, :facebook, :favourite, :venue_images, :users, :lat, :long, :slug, :discount_codes], custom_labels: %{venue_types: "Venue Type"}}
+    ], exclude: [:deleted, :entry_id], path: "/signup", assoc_query: &query/1, assigns: [changeset: @changeset]) %>
+  <% end %>
 </section>
