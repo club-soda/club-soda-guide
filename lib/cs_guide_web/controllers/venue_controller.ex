@@ -48,13 +48,11 @@ defmodule CsGuideWeb.VenueController do
   def create(conn, %{"venue" => venue_params}) do
     slug = Venue.create_slug(venue_params["venue_name"], venue_params["postcode"])
     venue_params = Map.put(venue_params, "slug", slug)
-    postcode = venue_params["postcode"]
 
     changeset =
       %Venue{}
       |> Venue.changeset(venue_params)
       |> CsGuide.ChangesetHelpers.check_existing_slug(slug, Venue, :venue_name, "Venue already exists")
-      |> Venue.validate_postcode(postcode)
 
     case Venue.insert(changeset, venue_params) do
       {:ok, venue} ->
@@ -186,7 +184,7 @@ defmodule CsGuideWeb.VenueController do
       |> Map.put("slug", new_slug)
       |> Map.put("drinks", venue.drinks)
 
-    case Venue.update(venue, venue_params, v_postcode) do
+    case Venue.update(venue, venue_params) do
       {:ok, _venue} ->
         conn
         |> put_flash(:info, "Venue updated successfully.")

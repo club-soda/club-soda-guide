@@ -111,6 +111,7 @@ defmodule CsGuide.Resources.Venue do
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
     |> Resources.require_assocs([:venue_types])
+    |> validate_postcode()
     |> Repo.insert()
   end
 
@@ -134,18 +135,7 @@ defmodule CsGuide.Resources.Venue do
     |> __MODULE__.changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
     |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
-    |> Repo.insert()
-  end
-
-  def update(%__MODULE__{} = item, attrs, postcode) do
-    item
-    |> __MODULE__.preload(__MODULE__.__schema__(:associations))
-    |> Map.put(:id, nil)
-    |> Map.put(:updated_at, nil)
-    |> __MODULE__.changeset(attrs)
-    |> Resources.put_many_to_many_assoc(attrs, :venue_types, CsGuide.Categories.VenueType, :name)
-    |> Resources.put_many_to_many_assoc(attrs, :drinks, CsGuide.Resources.Drink, :entry_id)
-    |> validate_postcode(postcode)
+    |> validate_postcode()
     |> Repo.insert()
   end
 
@@ -245,8 +235,19 @@ defmodule CsGuide.Resources.Venue do
     |> Enum.filter(&(&1.deleted == false))
   end
 
-  def validate_postcode(%{valid?: true} = changeset, postcode) do
-    case PostcodeLatLong.check_or_cache(postcode) do
+  def validate_postcode(%{valid?: true} = changeset) do
+    with(
+      true <- Map.has_key?(changeset.changes, :postcode),
+      {:ok, {lat, long}} <- PostcodeLatLong.check_or_cache(changeset.changes.postcode)
+    ) do
+      {lat, _} = Float.parse(lat)
+      {long, _} = Float.parse(long)
+
+      change(changeset, %{lat: lat, long: long})
+    else
+      false ->
+        changeset
+
       {:error, _} ->
         {_, changeset} =
           changeset
@@ -254,14 +255,8 @@ defmodule CsGuide.Resources.Venue do
           |> apply_action(:insert)
 
         changeset
-
-      {:ok, {lat, long}} ->
-        {lat, _} = Float.parse(lat)
-        {long, _} = Float.parse(long)
-
-        change(changeset, %{lat: lat, long: long})
     end
   end
 
-  def validate_postcode(changeset, _postcode), do: changeset
+  def validate_postcode(changeset), do: changeset
 end

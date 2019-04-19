@@ -13,7 +13,7 @@ defmodule CsGuide.ResourcesTest do
     @venue_type_name "Bars"
     @valid_attrs %{
       phone_number: "01234567890",
-      postcode: "EC1 5AD",
+      postcode: "EC1M 5AD",
       venue_name: "some venue_name",
       parent_company: "Parent Co",
       venue_types: %{@venue_type_name => "on"},
@@ -21,11 +21,11 @@ defmodule CsGuide.ResourcesTest do
     }
     @update_attrs %{
       phone_number: "09876543210",
-      postcode: "EC2 6FV",
+      postcode: "E8 4ED",
       venue_name: "some updated venue_name",
       parent_company: "updated Parent Co",
       venue_types: %{@venue_type_name => "on"},
-      slug: "some-venue_name-ec1-5ad"
+      slug: "some-venue_name-e8-4ed"
     }
     @invalid_attrs %{
       phone_number: nil,
@@ -70,7 +70,7 @@ defmodule CsGuide.ResourcesTest do
 
       assert {:ok, %Venue{} = venue} = Venue.insert(@valid_attrs)
       assert venue.phone_number == "01234567890"
-      assert venue.postcode == "EC1 5AD"
+      assert venue.postcode == "EC1M 5AD"
       assert venue.venue_name == "some venue_name"
       assert venue.parent_company == "Parent Co"
     end
@@ -84,7 +84,7 @@ defmodule CsGuide.ResourcesTest do
       assert {:ok, venue} = Venue.update(venue, @update_attrs)
       assert %Venue{} = venue
       assert venue.phone_number == "09876543210"
-      assert venue.postcode == "EC2 6FV"
+      assert venue.postcode == "E8 4ED"
       assert venue.venue_name == "some updated venue_name"
       assert venue.parent_company == "updated Parent Co"
     end
