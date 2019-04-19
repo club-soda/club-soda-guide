@@ -18,17 +18,10 @@ defmodule CsGuideWeb.BrandController do
   end
 
   def create(conn, %{"brand" => brand_params}) do
-    slug = Brand.create_slug(brand_params["name"])
-
     changeset =
       %Brand{}
       |> Brand.changeset(brand_params)
-      |> CsGuide.ChangesetHelpers.check_existing_slug(
-        slug,
-        Brand,
-        :name,
-        "Brand already exists"
-      )
+      |> CsGuide.ChangesetHelpers.check_existing_slug(Brand, :name, "Brand already exists")
 
     case Brand.insert(changeset) do
       {:ok, _brand} ->

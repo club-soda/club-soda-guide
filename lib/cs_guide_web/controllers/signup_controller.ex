@@ -20,8 +20,7 @@ defmodule CsGuideWeb.SignupController do
     changeset =
       %Venue{}
       |> Venue.changeset(venue_params)
-      |> CsGuide.ChangesetHelpers.check_existing_slug(slug, Venue, :venue_name, "Venue already exists")
-      |> Venue.validate_postcode(postcode)
+      |> CsGuide.ChangesetHelpers.check_existing_slug(Venue, :venue_name, "Venue already exists")
 
     case Venue.insert(changeset, venue_params) do
       {:ok, venue} ->
