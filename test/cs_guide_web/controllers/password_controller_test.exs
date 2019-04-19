@@ -2,6 +2,7 @@ defmodule CsGuideWeb.PasswordControllerTest do
   use CsGuideWeb.ConnCase
 
   alias CsGuide.Accounts.User
+  alias CsGuide.Repo
   import CsGuide.SetupHelpers
 
   @valid_user_email %{user: %{email: "good@user"}}
@@ -41,6 +42,17 @@ defmodule CsGuideWeb.PasswordControllerTest do
     test "get /password/:token/edit when user has valid token", %{conn: conn, user: user} do
       conn = get(conn, password_path(conn, :edit, user.password_reset_token))
       assert html_response(conn, 200) =~ "Set password"
+      assert html_response(conn, 200) =~ "I agree with the"
+    end
+
+    test "get /password/:token/edit when user has valid token and is verified", %{conn: conn, user: user} do
+      user
+      |> User.changeset(%{verified: NaiveDateTime.utc_now()})
+      |> Repo.update!()
+
+      conn = get(conn, password_path(conn, :edit, user.password_reset_token))
+      assert html_response(conn, 200) =~ "Set password"
+      refute html_response(conn, 200) =~ "I agree with the"
     end
 
     test "put /password when user has valid token redirects user and logs them in", %{conn: conn, user: user} do
