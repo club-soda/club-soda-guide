@@ -2,6 +2,19 @@
   <h3 class="f4 lh4">Set password</h3>
 
   <%= form_for @changeset, password_path(@conn, :update, @token), [method: :put], fn f -> %>
+    <%= if is_nil(@verified?) do %>
+      <div class="form-group mb3">
+        <p class="control-label required">Ts & Cs</p>
+        <input class="form-control" id="t_and_c" name="venue[t_and_c]" type="checkbox" required="">
+        <label class="i" for="t_and_c">I agree with the terms and conditions.</label>
+      </div>,
+      <div class="form-group">
+        <p class="control-label required">Cookies</p>
+        <input class="form-control" id="cookies" name="venue[cookies]" type="checkbox" required="">
+        <label class="i" for="cookies">I agree with the privacy and cookie policy.</label>
+      </div>,
+    <% end %>
+
     <%= label f, :password, "Password", class: "control-label" %>
     <%= text_input f, :password, class: "form-control", type: "password" %>
     <%= error_tag f, :password %>

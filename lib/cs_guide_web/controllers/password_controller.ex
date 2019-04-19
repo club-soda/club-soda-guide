@@ -42,7 +42,7 @@ defmodule CsGuideWeb.PasswordController do
         |> put_flash(:error, "Invalid password reset token")
         |> redirect(to: password_path(conn, :new))
 
-      _user ->
+      user ->
         now = NaiveDateTime.utc_now()
         user_token = user.password_reset_token
         user_token_expiry = user.password_reset_token_expiry
@@ -51,7 +51,11 @@ defmodule CsGuideWeb.PasswordController do
         # token then we allow them to reset a password
         if user_token && NaiveDateTime.compare(now, user_token_expiry) == :lt do
           changeset = User.changeset(%User{}, %{})
-          render(conn, "edit.html", changeset: changeset, token: user_token)
+          render(conn, "edit.html", [
+            changeset: changeset,
+            token: user_token,
+            verified?: user.verified
+          ])
 
         # else the user is taken to the new path
         else
@@ -69,19 +73,10 @@ defmodule CsGuideWeb.PasswordController do
     user_token_expiry = user.password_reset_token_expiry
     pw_changeset = User.set_password_changeset(user, params)
 
-    reset_token_params =
-      if user.verified do
-        %{
-          password_reset_token: nil,
-          password_reset_token_expiry: nil
-        }
-      else
-        %{
-          password_reset_token: nil,
-          password_reset_token_expiry: nil,
-          verified: now
-        }
-      end
+    reset_token_params = %{
+      password_reset_token: nil,
+      password_reset_token_expiry: nil
+    }
 
     if user_token && NaiveDateTime.compare(now, user_token_expiry) == :lt do
       # if token is valid
