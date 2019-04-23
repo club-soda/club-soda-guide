@@ -660,6 +660,12 @@ select {
   padding: 1rem 0;
 }
 
+.static-content ul, .static-content ol {
+  padding-left: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
 strong, b {
   font-weight: bold;
 }
