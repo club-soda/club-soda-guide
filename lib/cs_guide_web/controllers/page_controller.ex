@@ -20,9 +20,6 @@ defmodule CsGuideWeb.PageController do
 
     sponsor = Sponsor.getShowingSponsor() || nil
 
-    render(conn, "index.html",
-      venues: venues,
-      sponsor: sponsor
-    )
+    render(conn, "index.html", venues: venues, sponsor: sponsor)
   end
 end

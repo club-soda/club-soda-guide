@@ -81,6 +81,8 @@ defmodule CsGuideWeb.DrinkController do
     drink =
       Drink.get(id)
       |> Drink.preload([:brand, :venues, :drink_images])
+      # updating drink images to ensure latest image is displayed
+      |> Map.update(:drink_images, [], fn(images) -> Enum.sort(images, &(&1.id <= &2.id)) end)
 
     if drink != nil do
       render(conn, "show.html", drink: drink)
@@ -126,7 +128,10 @@ defmodule CsGuideWeb.DrinkController do
 
   def upload_photo(conn, params) do
     CsGuide.Repo.transaction(fn ->
-      with {:ok, drink_image} <- DrinkImage.insert(%{drink: params["id"]}),
+      with {:ok, drink_image} <- DrinkImage.insert(%{
+        drink: params["id"],
+        extension: CsGuide.Resources.get_file_extension(params)
+      }),
            {:ok, _} <- CsGuide.Resources.upload_photo(params, drink_image.entry_id) do
         {:ok, drink_image}
       else

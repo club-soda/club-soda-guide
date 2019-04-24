@@ -8,7 +8,9 @@ defmodule CsGuideWeb.BrandController do
   import Ecto.Query
 
   def index(conn, _params) do
-    brands = Brand.all()
+    brands =
+      Brand.all()
+      |> Enum.sort_by(&(String.first(&1.name)))
     render(conn, "index.html", brands: brands)
   end
 
@@ -225,10 +227,17 @@ defmodule CsGuideWeb.BrandController do
           end)
         end)
 
+      is_authenticated =
+        if not is_nil(conn.assigns.current_user) do
+          conn.assigns.current_user.role == :site_admin
+        else
+          false
+        end
+
       render(conn, "show.html",
-        brand: assigns.brand,
+        brand: brand,
         related_drinks: assigns.related_drinks,
-        is_authenticated: conn.assigns[:admin],
+        is_authenticated: is_authenticated,
         dd_discount_code: assigns.dd_code,
         wb_discount_code: assigns.wb_code,
         drink_type: assigns.drink_type,
@@ -315,7 +324,8 @@ defmodule CsGuideWeb.BrandController do
       with {:ok, brand_image} <-
              BrandImage.insert(%{
                brand: brand.entry_id,
-               one: one
+               one: one,
+               extension: CsGuide.Resources.get_file_extension(params)
              }),
            {:ok, _} <- CsGuide.Resources.upload_photo(params, brand_image.entry_id) do
         {:ok, brand_image}
@@ -328,9 +338,5 @@ defmodule CsGuideWeb.BrandController do
       {:ok, _} -> redirect(conn, to: brand_path(conn, :show, params["slug"]))
       {:error, _} -> render(conn, "add_photo.html", id: params["id"], error: true)
     end
-  end
-
-  defp check_brand_name(name) do
-    name |> String.split("-") |> Enum.join(" ") |> String.split("_") |> Enum.join("-")
   end
 end

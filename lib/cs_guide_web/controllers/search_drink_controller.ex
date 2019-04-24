@@ -8,6 +8,12 @@ defmodule CsGuideWeb.SearchDrinkController do
     drinks = Drink.all()
     |> Drink.preload([:brand, :drink_types, :drink_styles, :drink_images])
     |> Enum.sort_by(fn d -> Map.get(d, :weighting, 0) end, &>=/2)
+    |> Enum.map(
+      # updating drink images to ensure latest image is displayed
+      fn(drink) ->
+        Map.update(drink, :drink_images, [], fn(images) -> Enum.sort(images, &(&1.id <= &2.id)) end)
+      end
+    )
 
     drink_cards = Enum.map(drinks, fn d -> Drink.get_drink_card(d) end)
     term = params["term"] || ""

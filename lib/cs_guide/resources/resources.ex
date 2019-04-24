@@ -7,8 +7,6 @@ defmodule CsGuide.Resources do
   alias CsGuide.Repo
   @ex_aws Application.get_env(:ex_aws, :ex_aws_request)
 
-  alias CsGuide.Resources.Venue
-
   def put_many_to_many_assoc(item, attrs, assoc, assoc_module, field) do
     assocs =
       Enum.map(get_assoc_attrs(assoc, attrs), fn a ->
@@ -53,7 +51,7 @@ defmodule CsGuide.Resources do
       nil ->
         item
 
-      loaded ->
+      _loaded ->
         Map.put(item, assoc_field, loaded_assoc.id)
     end
   end
@@ -75,6 +73,18 @@ defmodule CsGuide.Resources do
         c
       end
     end)
+  end
+
+  def get_file_extension(params) do
+    params["photo"].filename
+    |> MIME.from_path()
+    |> MIME.extensions()
+    |> Enum.at(0)
+  end
+
+  def add_file_extension(map, attrs) do
+    extension = Map.get(attrs, :extension)
+    Map.update!(map, :entry_id, &("#{&1}.#{extension}" ))
   end
 
   def upload_photo(params, filename) do

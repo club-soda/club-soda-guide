@@ -83,15 +83,17 @@ function getParentsId(elt) {
   return res.filter(Boolean);
 }
 
-window.addEventListener("scroll", function (e) {
-  // Detect whether user has scrolled to the bottom of the page
-  // Then send message to the Elm app
-  var top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-  var height = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
+if (window.location.href.match(/search\/drinks/)) {
+  window.addEventListener("scroll", function (e) {
+    // Detect whether user has scrolled to the bottom of the page
+    // Then send message to the Elm app
+    var top = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+    var height = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
 
-  // We send the message if they have scrolled to within 10%
-  // of the bottom of the page to create a smoother transition
-  if (top + window.innerHeight >= height - (height / 10)) {
-    elmApp.ports.scroll.send(true);
-  }
-})
+    // We send the message if they have scrolled to within 10%
+    // of the bottom of the page to create a smoother transition
+    if (top + window.innerHeight >= height - (height / 10)) {
+      elmApp.ports.scroll.send(true);
+    }
+  })
+}
