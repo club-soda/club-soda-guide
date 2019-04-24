@@ -114,15 +114,17 @@
       <%= render @view_module, @view_template, assigns %>
     </main>
     <footer class="mt6 pv5 pv-6rem-ns bg-footer">
-      <div class="w-90 w-75-ns h-100 center">
+      <div class="w-90 w-75-ns h-100 center flex">
         <div class="dib w-30 w-10-ns pr4 pr0-ns h-100 relative">
           <img src="<%= static_path(@conn, "/images/cs-logo.png") %>" alt="Club Soda Logo" class="w-100 absolute-vertical-center-ns">
         </div>
-        <%= for page <- @static_page_links do %>
-          <%= if page.display_in_footer do %>
-            <%= link page.title_in_menu, to: static_page_path(@conn, :show, change_spaces_to_dashes(page.page_title)), class: "pr4 ph5-ns pv3 white v-top" %>
+        <div class="w-70 w-90-ns pl3 pl5-ns">
+          <%= for page <- @static_page_links do %>
+            <%= if page.display_in_footer do %>
+              <%= link page.title_in_menu, to: static_page_path(@conn, :show, change_spaces_to_dashes(page.page_title)), class: "white w-33-l w-50-m dib-ns db mv2" %>
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
     </footer>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
