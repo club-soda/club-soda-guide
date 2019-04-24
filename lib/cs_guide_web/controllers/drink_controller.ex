@@ -81,6 +81,8 @@ defmodule CsGuideWeb.DrinkController do
     drink =
       Drink.get(id)
       |> Drink.preload([:brand, :venues, :drink_images])
+      # updating drink images to ensure latest image is displayed
+      |> Map.update(:drink_images, [], fn(images) -> Enum.sort(images, &(&1.id <= &2.id)) end)
 
     if drink != nil do
       render(conn, "show.html", drink: drink)

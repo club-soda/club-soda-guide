@@ -315,7 +315,8 @@ defmodule CsGuideWeb.BrandController do
       with {:ok, brand_image} <-
              BrandImage.insert(%{
                brand: brand.entry_id,
-               one: one
+               one: one,
+               extension: CsGuide.Resources.get_file_extension(params)
              }),
            {:ok, _} <- CsGuide.Resources.upload_photo(params, brand_image.entry_id) do
         {:ok, brand_image}
@@ -328,9 +329,5 @@ defmodule CsGuideWeb.BrandController do
       {:ok, _} -> redirect(conn, to: brand_path(conn, :show, params["slug"]))
       {:error, _} -> render(conn, "add_photo.html", id: params["id"], error: true)
     end
-  end
-
-  defp check_brand_name(name) do
-    name |> String.split("-") |> Enum.join(" ") |> String.split("_") |> Enum.join("-")
   end
 end
