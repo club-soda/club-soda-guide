@@ -75,20 +75,26 @@ defmodule CsGuide.Resources do
     end)
   end
 
-  def upload_photo(params, filename) do
-    extension =
-      params["photo"].path
-      |> MIME.from_path()
-      |> MIME.extensions()
-      |> Enum.at(0)
+  def get_file_extension(params) do
+    params["photo"].filename
+    |> MIME.from_path()
+    |> MIME.extensions()
+    |> Enum.at(0)
+  end
 
+  def add_file_extension(map, attrs) do
+    extension = Map.get(attrs, :extension)
+    Map.update!(map, :entry_id, &("#{&1}.#{extension}" ))
+  end
+
+  def upload_photo(params, filename) do
     file = File.read!(params["photo"].path)
 
     filename =
       if Mix.env() == :test do
         params["photo"].filename
       else
-        "#{filename}.#{extension}"
+        filename
       end
 
     Application.get_env(:ex_aws, :bucket)

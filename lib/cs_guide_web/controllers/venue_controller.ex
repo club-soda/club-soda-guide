@@ -219,9 +219,6 @@ defmodule CsGuideWeb.VenueController do
 
     photo_number =
       cond do
-        params["1"] ->
-          1
-
         params["2"] ->
           2
 
@@ -237,7 +234,12 @@ defmodule CsGuideWeb.VenueController do
 
     CsGuide.Repo.transaction(fn ->
       with {:ok, venue_image} <-
-             VenueImage.insert(%{venue: params["id"], photo_number: photo_number}),
+             VenueImage.insert(%{
+               venue: params["id"],
+               photo_number: photo_number,
+               extension: CsGuide.Resources.get_file_extension(params)
+             }),
+
            {:ok, _} <- CsGuide.Resources.upload_photo(params, venue_image.entry_id) do
         {:ok, venue_image}
       else

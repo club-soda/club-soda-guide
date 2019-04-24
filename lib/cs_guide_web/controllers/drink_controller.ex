@@ -126,7 +126,10 @@ defmodule CsGuideWeb.DrinkController do
 
   def upload_photo(conn, params) do
     CsGuide.Repo.transaction(fn ->
-      with {:ok, drink_image} <- DrinkImage.insert(%{drink: params["id"]}),
+      with {:ok, drink_image} <- DrinkImage.insert(%{
+        drink: params["id"],
+        extension: CsGuide.Resources.get_file_extension(params)
+      }),
            {:ok, _} <- CsGuide.Resources.upload_photo(params, drink_image.entry_id) do
         {:ok, drink_image}
       else

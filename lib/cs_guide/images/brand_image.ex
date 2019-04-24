@@ -22,6 +22,7 @@ defmodule CsGuide.Images.BrandImage do
   def insert(attrs) do
     %__MODULE__{}
     |> insert_entry_id()
+    |> CsGuide.Resources.add_file_extension(attrs)
     |> CsGuide.Resources.put_belongs_to_assoc(
       attrs,
       :brand,
