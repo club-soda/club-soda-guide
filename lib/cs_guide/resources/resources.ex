@@ -7,8 +7,6 @@ defmodule CsGuide.Resources do
   alias CsGuide.Repo
   @ex_aws Application.get_env(:ex_aws, :ex_aws_request)
 
-  alias CsGuide.Resources.Venue
-
   def put_many_to_many_assoc(item, attrs, assoc, assoc_module, field) do
     assocs =
       Enum.map(get_assoc_attrs(assoc, attrs), fn a ->
@@ -53,7 +51,7 @@ defmodule CsGuide.Resources do
       nil ->
         item
 
-      loaded ->
+      _loaded ->
         Map.put(item, assoc_field, loaded_assoc.id)
     end
   end
@@ -78,13 +76,19 @@ defmodule CsGuide.Resources do
   end
 
   def upload_photo(params, filename) do
+    extension =
+      params["photo"].path
+      |> MIME.from_path()
+      |> MIME.extensions()
+      |> Enum.at(0)
+
     file = File.read!(params["photo"].path)
 
     filename =
       if Mix.env() == :test do
         params["photo"].filename
       else
-        filename
+        "#{filename}.#{extension}"
       end
 
     Application.get_env(:ex_aws, :bucket)
