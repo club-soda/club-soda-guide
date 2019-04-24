@@ -242,7 +242,7 @@
     <section class="w-90 center pv5">
       <h2 class="roboto-slab f2 lh2 db tc">Places that Serve <%= @brand.name %></h2>
       <div class="mv4 tc">
-        <p  id="near_me" class="center bg-cs-black br2 pv2 white no-underline pointer w5">
+        <p id="near_me" class="center bg-cs-black br2 pv2 white no-underline pointer w5">
           Order By Nearest Me
         </p>
       </div>
@@ -283,8 +283,7 @@
 
 <script>
   var nearMe = document.getElementById("near_me");
-
-  nearMe.addEventListener("click", getLocation)
+  if (nearMe) { nearMe.addEventListener("click", getLocation) }
 
   function getLocation(e) {
     e.target.removeEventListener("click", getLocation)
