@@ -2,7 +2,6 @@ defmodule CsGuideWeb.DiscountCodeController do
   use CsGuideWeb, :controller
   alias CsGuide.Resources.{Venue}
   alias CsGuide.DiscountCode
-  import Ecto.Query
 
   def index(conn, _params) do
     discount_codes = DiscountCode.all()
@@ -22,7 +21,7 @@ defmodule CsGuideWeb.DiscountCodeController do
     discount_code_params = Map.put(discount_code_params, "venue_id", retailer_id)
 
     case DiscountCode.insert(discount_code_params) do
-      {:ok, discount_code} ->
+      {:ok, _discount_code} ->
         conn
         |> put_flash(:info, "Discount code created successfully.")
         |> redirect(to: discount_code_path(conn, :index))

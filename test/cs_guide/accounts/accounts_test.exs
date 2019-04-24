@@ -18,7 +18,7 @@ defmodule CsGuide.AccountsTest do
     end
 
     test "all/0 returns all users" do
-      user = user_fixture()
+      user_fixture()
       assert length(User.all()) == 1
     end
 
@@ -55,8 +55,7 @@ defmodule CsGuide.AccountsTest do
     end
 
     test "cannot duplicate email addresses" do
-      user = user_fixture()
-
+      user_fixture()
       assert {:error, user_2} = %User{} |> User.changeset(@valid_attrs) |> User.insert()
     end
   end

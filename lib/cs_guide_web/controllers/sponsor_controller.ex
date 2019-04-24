@@ -1,6 +1,6 @@
 defmodule CsGuideWeb.SponsorController do
   use CsGuideWeb, :controller
-  alias CsGuide.{Sponsor, Repo}
+  alias CsGuide.Sponsor
 
   def index(conn, _params) do
     sponsors = Sponsor.all()
@@ -30,7 +30,7 @@ defmodule CsGuideWeb.SponsorController do
     end
 
     case Sponsor.insert(sponsor_params) do
-      {:ok, sponsor} ->
+      {:ok, _sponsor} ->
         conn
         |> put_flash(:info, "Sponsor created successfully.")
         |> redirect(to: sponsor_path(conn, :index))
@@ -55,7 +55,7 @@ defmodule CsGuideWeb.SponsorController do
     end
 
     case Sponsor.update(changeset) do
-      {:ok, sponsor} ->
+      {:ok, _sponsor} ->
         conn
         |> put_flash(:info, "Sponsor updated successfully.")
         |> redirect(to: sponsor_path(conn, :index))

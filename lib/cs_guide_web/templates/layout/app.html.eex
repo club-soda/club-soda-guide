@@ -79,7 +79,7 @@
               method: "delete",
               class: "f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2"
             %>
-          <%= else %>
+          <% else %>
             <%= link "Log in",
               to: session_path(@conn, :new),
               class: "f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2"
