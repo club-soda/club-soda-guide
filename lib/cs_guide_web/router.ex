@@ -31,6 +31,7 @@ defmodule CsGuideWeb.Router do
     pipe_through([:browser])
 
     get("/", PageController, :index)
+    get("/brands", BrandController, :index)
     post("/signup", SignupController, :create)
 
     get("/brands/:slug", BrandController, :show)

@@ -1,28 +1,36 @@
 <section class="center w-80 w-75-l mv6">
-  <h2 class="f4 lh4 dib">Listing Brands</h2>
+  <h1 class="f4 lh4 dib">Brands</h1>
   <span class="fr"><%= link "New Brand", to: brand_path(@conn, :new), class: "btn-primary no-underline" %></span>
-  <table class="mt3 mb5 w-100">
-    <thead>
-      <tr class="tl">
-        <th class="pv3 pr3 f5 lh5 b">Name</th>
-        <th class="pa3 f5 lh5 b">Member</th>
-
-        <th></th>
-      </tr>
-    </thead>
     <tbody>
-  <%= for brand <- @brands do %>
-      <tr class="bt bb b--cs-light-gray">
-        <td class="pv3 pr3 w5"><%= brand.name %></td>
-        <td class="pa3"><%= brand.member %></td>
+      <%= if @conn.assigns.current_user != nil do %>
+        <%= if @conn.assigns.current_user.role == :site_admin do %>
+          <table class="mt3 mb5 w-100">
+            <thead>
+              <tr class="tl">
+                <th class="pv3 pr3 f5 lh5 b">Name</th>
+                <th class="pa3 f5 lh5 b">Member</th>
 
-        <td class="text-right">
-          <span><%= link "Show", to: brand_path(@conn, :show, brand.slug), class: "ph3 pv3-ns cs-mid-blue" %></span>
-          <span><%= link "Edit", to: brand_path(@conn, :edit, brand.slug), class: "ph3 pv3-ns cs-mid-blue" %></span>
-          <span><%= link "Delete", to: brand_path(@conn, :delete, brand.entry_id), method: :delete, data: [confirm: "Are you sure?"], class: "ph3 pv3-ns cs-mid-blue" %></span>
-        </td>
-      </tr>
-  <% end %>
-    </tbody>
-  </table>
+                <th></th>
+              </tr>
+            </thead>
+            <%= for brand <- @brands do %>
+              <tr class="bt bb b--cs-light-gray">
+                <td class="pv3 pr3 w5"><%= brand.name %></td>
+                <td class="pa3"><%= brand.member %></td>
+
+                <td class="text-right">
+                  <span><%= link "Show", to: brand_path(@conn, :show, brand.slug), class: "ph3 pv3-ns cs-mid-blue" %></span>
+                  <span><%= link "Edit", to: brand_path(@conn, :edit, brand.slug), class: "ph3 pv3-ns cs-mid-blue" %></span>
+                  <span><%= link "Delete", to: brand_path(@conn, :delete, brand.entry_id), method: :delete, data: [confirm: "Are you sure?"], class: "ph3 pv3-ns cs-mid-blue" %></span>
+                </td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        <% end %>
+      <% else %>
+        <%= for brand <- @brands do %>
+          <p class="pv2"><%= link brand.name, to: brand_path(@conn, :show, brand.slug), class: "cs-mid-blue" %></p>
+        <% end %>
+      <% end %>
 </section>
