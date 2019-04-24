@@ -3,8 +3,18 @@ defmodule CsGuideWeb.PageController do
   alias CsGuide.Resources.Venue
   alias CsGuideWeb.{VenueController, SearchVenueController}
   alias CsGuide.Sponsor
+  @prefix "https://s3-eu-west-1.amazonaws.com/club-soda-staging/"
 
   def index(conn, _params) do
+    bucket_list =
+      "AWS_S3_BUCKET"
+      |> System.get_env()
+      |> ExAws.S3.list_objects()
+      |> ExAws.request!()
+
+    contents = bucket_list.body.contents
+    img_urls = Enum.map(contents, &("#{@prefix}#{&1.key}"))
+
     venues =
       Venue.all()
       |> Venue.preload([:venue_types, :venue_images])
@@ -20,9 +30,6 @@ defmodule CsGuideWeb.PageController do
 
     sponsor = Sponsor.getShowingSponsor() || nil
 
-    render(conn, "index.html",
-      venues: venues,
-      sponsor: sponsor
-    )
+    render(conn, "index.html", venues: venues, sponsor: sponsor, img_urls: img_urls)
   end
 end

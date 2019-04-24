@@ -54,7 +54,8 @@ defmodule CsGuide.Mixfile do
       {:csv, "~> 2.1"},
       {:bamboo, "~> 1.2"},
       {:bamboo_smtp, "~> 1.6.0"},
-      {:ecto_enum, "~> 1.2"}
+      {:ecto_enum, "~> 1.2"},
+      {:sweet_xml, "~> 0.6"}
     ]
   end
 
