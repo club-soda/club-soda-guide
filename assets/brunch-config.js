@@ -58,7 +58,7 @@ exports.config = {
                    ],
       outputFolder: "js",
       outputFile: "main.js",
-      makeParameters: []
+      makeParameters: ["--optimize"]
     },
     babel: {
       // Do not use ES6 compiler in vendor code

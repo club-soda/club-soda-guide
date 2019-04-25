@@ -157,10 +157,6 @@ displayImage venueImage =
 
 getImageByIndex : Model -> Int -> VenueImage
 getImageByIndex model index =
-    let
-        _ =
-            Debug.log "set default 5" index
-    in
     Array.fromList model.images
         |> Array.get index
         |> Maybe.withDefault (VenueImage "" 0 1)
