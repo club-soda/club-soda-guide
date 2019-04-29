@@ -457,7 +457,7 @@ select {
 }
 
 .bg-newsletter {
-  background-image: url("/images/newsletter-image.png");
+  background-image: url("/images/newsletter-image-min.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
