@@ -429,7 +429,7 @@ select {
 }
 
 .bg-nominate-venue {
-  background-image: url("/images/nominate-venue-img.jpg");
+  background-image: url("/images/nominate-venue-img-min.jpg");
   background-repeat: no-repeat;
   object-fit: cover;
   background-position: 0 30%;
