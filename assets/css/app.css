@@ -418,9 +418,9 @@ select {
 
 /* Landing page bg images */
 .bg-hero {
-  background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%,rgba(255,255,255,0.1) 100%), url("/images/hero-image.png"); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  background: -moz-linear-gradient(top, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.1) 100%), url("/images/hero-image.png"); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, rgba(255,255,255,0.1) 0%,rgba(255,255,255,0.1) 100%), url("/images/hero-image.png"); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%,rgba(255,255,255,0.1) 100%), url("/images/hero-image-min.png"); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  background: -moz-linear-gradient(top, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.1) 100%), url("/images/hero-image-min.png"); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(255,255,255,0.1) 0%,rgba(255,255,255,0.1) 100%), url("/images/hero-image-min.png"); /* Chrome10-25,Safari5.1-6 */
   background-repeat: no-repeat;
   object-fit: cover;
   background-position: center;
