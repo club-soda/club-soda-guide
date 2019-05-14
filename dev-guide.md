@@ -246,6 +246,45 @@ https://gist.github.com/wrburgess/5528649 ❤️
 
 ## Importing Data
 
+### 1. Backup and Restore the Database
+
+_Before_ importing any `new` data,
+ensure that you have made a backup of the production database.
+Follow the instructions in:
+[dev-guide.md#using-real-data](https://github.com/club-soda/club-soda-guide/blob/master/dev-guide.md#using-real-data)
+to backup, download and import the production data.
+
+Having the latest production data on your `localhost`
+is _essential_ to testing the import process.
+
+### 2. Download the Data as CSV
+
+In order to import the data,
+we need to have it in a useable format.
+Most of our imports are stored in Google Drive as spreadsheets.
+
+Open the Google Drive file,
+click "Download as >" and select "Comma-separated values":
+
+![club-soda-data-import-download-as-csv](https://user-images.githubusercontent.com/194400/57693131-5fdfd580-7640-11e9-9429-19f0dcf71d7c.png)
+
+### 3. Move the `.csv` file to the `./temp` directory
+
+Move the `.csv` file you just downloaded to the `/temp` directory:
+
+in our case it's `temp/Bermondsey-Pub-Company.csv`
+
+![club-soda-data-import-view-csv-file](https://user-images.githubusercontent.com/194400/57694050-a6ceca80-7642-11e9-8e3c-fb1a498f732d.png)
+
+
+
+
+
+### _Superseded_
+
+> The following docs are superseded
+and only kept here for reference.
+
 The existing data is imported through our [seeds file](priv/repo/seeds.exs).
 
 The environment variable `IMPORT_FILES_DIR`
