@@ -248,13 +248,33 @@ https://gist.github.com/wrburgess/5528649 ❤️
 
 The existing data is imported through our [seeds file](priv/repo/seeds.exs).
 
-The environment variable `IMPORT_FILES_DIR` should be the path to the directory containing the csv files (For example, if those files are hosted on AWS S3, it would be the path of the S3 bucket).
+The environment variable `IMPORT_FILES_DIR`
+should be the path to the directory containing the csv files
+(For example, if those files are hosted on AWS S3,
+  it would be the path of the S3 bucket).
 
-The files should be named correctly such that the format of the file matches the function that will be calling it. (That is, the brands file should be `brands.csv`, drinks `drinks.csv` and the venues `venues_1.csv`, `venues_2.csv` or `venues_3.csv`, depending on which format it is. These should be named correctly already, and as this import is only intended to be done once, shouldn't need to be changed. This documentation is just here as a guide if this import function ever needs to be extended.)
+The files should be named correctly
+such that the format of the file
+matches the function that will be calling it.
+(That is, the brands file should be `brands.csv`,
+  drinks `drinks.csv`
+  and the venues `venues_1.csv`,
+  `venues_2.csv`
+  or `venues_3.csv`,
+  depending on which format it is.
+These should be named correctly already,
+and as this import is only intended to be done once,
+shouldn't need to be changed.
+This documentation is just here as a guide
+if this import function ever needs to be extended.)
 
-If you do need to import more venues, use this script as a guide, but you will most likely have to create a new one based on the format of the csv file.
+If you do need to import more venues, use this script as a guide,
+but you will most likely have to create a new one
+based on the format of the csv file.
 
-After new venues have been imported, you may have to run `mix run priv/repo/update_cs_score.exs` if any drinks were attached to venues as part of the upload process.
+After new venues have been imported, you may have to run
+`mix run priv/repo/update_cs_score.exs`
+if any drinks were attached to venues as part of the upload process.
 
 
 
