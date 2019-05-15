@@ -281,8 +281,10 @@ human-friendly like `Bermondsey-Pub-Company - Sheet1.csv` in our case:
 ![club-soda-data-import-filename](https://user-images.githubusercontent.com/194400/57755263-5d38bb00-76e8-11e9-8b50-6bec5c553fcb.png)
 
 Move the `.csv` file you just downloaded to the `/temp` directory
-and re-name it to something machine readable e.g: `temp/bermondsey_pub_company.csv`.
-Removing spaces and using underscores in the filename is necessary for Elixir to understand it.
+and re-name it to something machine readable
+e.g: `temp/bermondsey_pub_company.csv`.
+Removing spaces and using underscores in the filename
+is necessary for Elixir to understand it.
 
 ![moved-and-renamed-file](https://user-images.githubusercontent.com/194400/57756173-9f62fc00-76ea-11e9-9cd7-ad5d5a681268.png)
 
@@ -306,14 +308,61 @@ Low/No Alcohol Drink 10,Low/No Alcohol Drink 11,Low/No Alcohol Drink 12,
 Low/No Alcohol Drink 13,Low/No Alcohol Drink 14,Low/No Alcohol Drink 15,
 Low/No Alcohol Drink 16,Low/No Alcohol Drink 17,Low/No Alcohol Drink 18
 ```
-> Note: we have split the header into multiple lines for legibility
-in a real CSV file these will all be on a single line.
+> **Note**: we have split the header into multiple lines
+for _legibility_.
+A valid CSV file headers are always on a _single_ line.
+
+### 5. Map the CSV Column Headers to Database Fields
+
+In order to import the data,
+we need to go through the csv file column headers
+and map them to the database column names.
+
+The following is the list of **`venues`** table fields
+This list is separated by spaces
+because that's how our `Elixir` venue importer script `new_venues.exs`
+needs them.
+
 
 ```csv
-~w(venue_name parent_company address city postcode phone_number venue_types description website facebook twitter instagram venue_types num_cocktails drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9 drink_10 drink_11 drink_12 drink_13 drink_14 drink_15 drink_16 drink_17 drink_18)a,
+venue_name parent_company address city postcode phone_number venue_types
+email description website facebook twitter instagram
+drink_1 drink_2 drink_3 drink_4 drink_5 drink_6
+drink_7 drink_8 drink_9 drink_10 drink_11 drink_12
+drink_13 drink_14 drink_15 drink_16 drink_17 drink_18
+```
+> **Note**: this needs to be a _single_ line of code
+when you paste it into the `priv/repo/new_venues.exs` below;
+we have split it into 5 lines to aid _legibility_.
+Also, some `.csv` files do not contain _all_ the fields
+in the database (venues) table
+e.g: **`num_cocktails`** is not present in the case of Berbomondsey.
 
+### 6. Add line to `new_venues.exs`
+
+Open the `priv/repo/new_venues.exs` file
+(_our venue importer script_)
+and search for the
+[`@venues`](https://github.com/club-soda/club-soda-guide/blob/master/priv/repo/new_venues.exs#L6)
+map.
+The `@venues` map is a key-value lookup
+of the chains of venues we have imported
+and the corresponding field names for the `csv` files.
+
+Add the following line to the `@venues` map:
+
+```elixir
+bermondsey_pub_company:
+  ~w(venue_name parent_company address city postcode phone_number venue_types email description website facebook twitter instagram drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9 drink_10 drink_11 drink_12 drink_13 drink_14 drink_15 drink_16 drink_17 drink_18)a,
 ```
 
+`bermondsey_pub_company` corresponds to the csv file name
+and the contents of the `~w()a` is the
+[sigil](https://elixir-lang.org/getting-started/sigils.html#word-lists)
+for a "word list";
+in our case the list of database column headers.
+the list of words should be on a single line.
+(_some horizontal scrolling may be required ..._)
 
 
 ### _Superseded_
