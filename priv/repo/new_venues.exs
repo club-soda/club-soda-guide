@@ -50,19 +50,16 @@ defmodule CsGuide.NewVenues do
   def import_venues(csv, filename) do
     csv
     |> csv_to_map(Map.get(@venues, String.slice(filename, 0..-5) |> String.to_existing_atom()))
-    |> Enum.each(fn v ->
+    |> Enum.reduce([], fn v, acc ->
       {_, venue} = add_link(v, :venue_types, VenueType, :name)
-      # |> IO.inspect( label: 'csv')
 
-
-    IO.inspect(v.postcode, label: 'postcode')
-    # extract_postcode assumes address has postcode in-line
-    [address, postcode] = case extract_postcode(v.address) do
-      [address] ->
-        [v.address, v.postcode]
-      list ->
-        list
-    end
+      # extract_postcode assumes address has postcode in-line
+      [address, postcode] = case extract_postcode(v.address) do
+        [address] ->
+          [v.address, v.postcode]
+        list ->
+          list
+      end
 
       drinks =
         Enum.reduce(v, [], fn {key, val}, acc ->
@@ -89,7 +86,7 @@ defmodule CsGuide.NewVenues do
                 drinks
 
               not_found_drink ->
-                IO.inspect("Brand not found: #{not_found_drink}")
+                # IO.inspect("Brand not found: #{not_found_drink}")
                 acc
             end
           else
@@ -114,7 +111,7 @@ defmodule CsGuide.NewVenues do
 
                   case Drink.get_by(name: d, brand_id: brand.id) do
                     nil ->
-                      IO.inspect("Drink not found: #{d}, brand: #{b}")
+                      # IO.inspect("Drink not found: #{d}, brand: #{b}")
                       nil
 
                     drink ->
@@ -138,36 +135,40 @@ defmodule CsGuide.NewVenues do
               end).()
           |> Venue.insert()
           |> case do
-            {:ok, _} -> nil
-            err -> IO.inspect(err)
+            {:ok, _} -> acc
+            err ->
+              # IO.inspect(err)
+              [err | acc]
           end
 
         ven ->
-          ven
-          |> Venue.preload([:drinks, :venue_types, :users])
-          |> Venue.update(
-            ven
-            |> Map.drop([:users])
-            |> Map.from_struct()
-            |> (fn v ->
-                  case :ets.lookup(:postcode_cache, String.replace(postcode, " ", "")) do
-                    [{_postcode, lat, long}] ->
-                      v
-                      |> Map.put(:lat, lat)
-                      |> Map.put(:long, long)
-
-                    _ ->
-                      v
-                  end
-                end).()
-            |> Map.merge(venue)
-          )
-          |> case do
-            {:ok, _} -> nil
-            err -> IO.inspect(err)
-          end
+          acc
+          # ven
+          # |> Venue.preload([:drinks, :venue_types, :users])
+          # |> Venue.update(
+          #   ven
+          #   |> Map.drop([:users])
+          #   |> Map.from_struct()
+          #   |> (fn v ->
+          #         case :ets.lookup(:postcode_cache, String.replace(postcode, " ", "")) do
+          #           [{_postcode, lat, long}] ->
+          #             v
+          #             |> Map.put(:lat, lat)
+          #             |> Map.put(:long, long)
+          #
+          #           _ ->
+          #             v
+          #         end
+          #       end).()
+          #   |> Map.merge(venue)
+          # )
+          # |> case do
+          #   {:ok, _} -> nil
+          #   err -> IO.inspect(err)
+          # end
       end
     end)
+    |> IO.inspect(label: "errors")
   end
 
   defp add_link(item, column, queryable, field) do
@@ -216,5 +217,7 @@ end
 System.get_env("IMPORT_FILES_DIR")
 |> File.ls!()
 |> Enum.each(fn f ->
-  CsGuide.NewVenues.import_venues(File.read!("#{System.get_env("IMPORT_FILES_DIR")}/#{f}"), f)
+  if f =~ ".csv" do
+      CsGuide.NewVenues.import_venues(File.read!("#{System.get_env("IMPORT_FILES_DIR")}/#{f}"), f)
+  end
 end)
