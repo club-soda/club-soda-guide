@@ -369,7 +369,8 @@ Save the file and `new_venues.exs` and prepare to _run_ it!
 String.split("venue_name parent_company address city postcode phone_number venue_types email description website facebook twitter instagram drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9 drink_10 drink_11 drink_12 drink_13 drink_14 drink_15 drink_16 drink_17 drink_18", " ") |> Enum.join(',')
 
 
-### 7.
+### 7. Run the `new_venues.exs` import script
+
 
 > Before attempting to run the `new_venues.exs` script,
 ensure that you have a **`IMPORT_FILES_DIR`**
@@ -379,10 +380,25 @@ by running `source .env`.
 If you don't yet have an `.env` file,
 GOTO: [dev-guide.md#environment-variables](https://github.com/club-soda/club-soda-guide/blob/master/dev-guide.md#environment-variables)
 
+Open your database GUI of choice
+and confirm the number of rows for the `venues` table. e.g:
+
+![7428-rows](https://user-images.githubusercontent.com/194400/57765501-80219a00-76fd-11e9-9a5d-cf7f8605b051.png)
+
+
 Run the `new_venues.exs` script with the following command:
 ```sh
 mix run priv/repo/new_venues.exs
 ```
+
+After _successfully_ running the script,
+refresh the DB and you should see the increase in the number of records.
+e.g: 7486
+![7486-rows](https://user-images.githubusercontent.com/194400/57783825-b9bacb00-7726-11e9-9c99-fb90ca1ceea1.png)
+
+7486 - 7428 = 58.
+58 corresponds to the number of rows in the `.csv` file (_minus the header row_)
+
 
 
 
