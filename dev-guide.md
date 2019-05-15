@@ -364,6 +364,27 @@ in our case the list of database column headers.
 the list of words should be on a single line.
 (_some horizontal scrolling may be required ..._)
 
+Save the file and `new_venues.exs` and prepare to _run_ it!
+
+String.split("venue_name parent_company address city postcode phone_number venue_types email description website facebook twitter instagram drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9 drink_10 drink_11 drink_12 drink_13 drink_14 drink_15 drink_16 drink_17 drink_18", " ") |> Enum.join(',')
+
+
+### 7.
+
+> Before attempting to run the `new_venues.exs` script,
+ensure that you have a **`IMPORT_FILES_DIR`**
+key-value in your **`.env`** file
+and that you have the environment variable set
+by running `source .env`.
+If you don't yet have an `.env` file,
+GOTO: [dev-guide.md#environment-variables](https://github.com/club-soda/club-soda-guide/blob/master/dev-guide.md#environment-variables)
+
+Run the `new_venues.exs` script with the following command:
+```sh
+mix run priv/repo/new_venues.exs
+```
+
+
 
 ### _Superseded_
 

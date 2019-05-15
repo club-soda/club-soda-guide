@@ -37,7 +37,7 @@ defmodule CsGuide.NewVenues do
     nicholsons:
       ~w(venue_name nil address phone_number description website facebook twitter instagram venue_types num_cocktails drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9 drink_10 drink_11 drink_12 drink_13 drink_14 drink_15 drink_16 drink_17)a,
     bermondsey_pub_company:
-      ~w(venue_name nil address phone_number description website facebook twitter instagram venue_types num_cocktails drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9 drink_10 drink_11 drink_12 drink_13 drink_14 drink_15 drink_16 drink_17)a,
+      ~w(venue_name parent_company address city postcode phone_number venue_types email description website facebook twitter instagram drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9 drink_10 drink_11 drink_12 drink_13 drink_14 drink_15 drink_16 drink_17 drink_18)a,
   }
 
 
@@ -52,8 +52,17 @@ defmodule CsGuide.NewVenues do
     |> csv_to_map(Map.get(@venues, String.slice(filename, 0..-5) |> String.to_existing_atom()))
     |> Enum.each(fn v ->
       {_, venue} = add_link(v, :venue_types, VenueType, :name)
+      # |> IO.inspect( label: 'csv')
 
-      [address, postcode] = extract_postcode(v.address)
+
+    IO.inspect(v.postcode, label: 'postcode')
+    # extract_postcode assumes address has postcode in-line
+    [address, postcode] = case extract_postcode(v.address) do
+      [address] ->
+        [v.address, v.postcode]
+      list ->
+        list
+    end
 
       drinks =
         Enum.reduce(v, [], fn {key, val}, acc ->
