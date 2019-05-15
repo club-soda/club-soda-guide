@@ -86,7 +86,7 @@ defmodule CsGuide.NewVenues do
                 drinks
 
               not_found_drink ->
-                # IO.inspect("Brand not found: #{not_found_drink}")
+                IO.inspect("Brand not found: #{not_found_drink}")
                 acc
             end
           else
@@ -111,7 +111,7 @@ defmodule CsGuide.NewVenues do
 
                   case Drink.get_by(name: d, brand_id: brand.id) do
                     nil ->
-                      # IO.inspect("Drink not found: #{d}, brand: #{b}")
+                      IO.inspect("Drink not found: #{d}, brand: #{b}")
                       nil
 
                     drink ->
@@ -137,7 +137,6 @@ defmodule CsGuide.NewVenues do
           |> case do
             {:ok, _} -> acc
             err ->
-              # IO.inspect(err)
               [err | acc]
           end
 
