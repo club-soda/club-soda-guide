@@ -246,6 +246,11 @@ https://gist.github.com/wrburgess/5528649 ❤️
 
 ## Importing Data
 
+The fastest way to on-board a lot of venues into the Guide
+is to import their data (_with permission_) in bulk.
+This section takes you through the steps to add
+a spreadsheet of data into the Guide App's Database.
+
 ### 1. Backup and Restore the Database
 
 _Before_ importing any `new` data,
@@ -268,15 +273,46 @@ click "Download as >" and select "Comma-separated values":
 
 ![club-soda-data-import-download-as-csv](https://user-images.githubusercontent.com/194400/57693131-5fdfd580-7640-11e9-9429-19f0dcf71d7c.png)
 
-### 3. Move the `.csv` file to the `./temp` directory
+### 3. Move the `.csv` file to the `./temp` directory and Re-name it.
 
-Move the `.csv` file you just downloaded to the `/temp` directory:
+The file you download from Google Sheets will be named something
+human-friendly like `Bermondsey-Pub-Company - Sheet1.csv` in our case:
 
-in our case it's `temp/Bermondsey-Pub-Company.csv`
+![club-soda-data-import-filename](https://user-images.githubusercontent.com/194400/57755263-5d38bb00-76e8-11e9-8b50-6bec5c553fcb.png)
 
-![club-soda-data-import-view-csv-file](https://user-images.githubusercontent.com/194400/57694050-a6ceca80-7642-11e9-8e3c-fb1a498f732d.png)
+Move the `.csv` file you just downloaded to the `/temp` directory
+and re-name it to something machine readable e.g: `temp/bermondsey_pub_company.csv`.
+Removing spaces and using underscores in the filename is necessary for Elixir to understand it.
 
+![moved-and-renamed-file](https://user-images.githubusercontent.com/194400/57756173-9f62fc00-76ea-11e9-9cd7-ad5d5a681268.png)
 
+### 4. Review the Column Headers
+
+When you open the `.csv` file,
+the first row/line are the "headers" (_or column names_).
+The spreadsheet will have human-readable names e.g:
+
+![csv-file-headers](https://user-images.githubusercontent.com/194400/57756010-3c716500-76ea-11e9-9afa-3692d7fb8d5e.png)
+
+Copy that first line of the file and past it into your text editor.
+
+```csv
+Venue Name,Parent company,Street Address,City,Post Code,Telephone,Venue Type,
+Email,Description,Website,Facebook,Twitter,Instagram,
+Low/No Alcohol Drink 1,Low/No Alcohol Drink 2,Low/No Alcohol Drink 3,
+Low/No Alcohol Drink 4,Low/No Alcohol Drink 5,Low/No Alcohol Drink 6,
+Low/No Alcohol Drink 7,Low/No Alcohol Drink 8,Low/No Alcohol Drink 9,
+Low/No Alcohol Drink 10,Low/No Alcohol Drink 11,Low/No Alcohol Drink 12,
+Low/No Alcohol Drink 13,Low/No Alcohol Drink 14,Low/No Alcohol Drink 15,
+Low/No Alcohol Drink 16,Low/No Alcohol Drink 17,Low/No Alcohol Drink 18
+```
+> Note: we have split the header into multiple lines for legibility
+in a real CSV file these will all be on a single line.
+
+```csv
+~w(venue_name parent_company address city postcode phone_number venue_types description website facebook twitter instagram venue_types num_cocktails drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9 drink_10 drink_11 drink_12 drink_13 drink_14 drink_15 drink_16 drink_17 drink_18)a,
+
+```
 
 
 
@@ -291,6 +327,10 @@ The environment variable `IMPORT_FILES_DIR`
 should be the path to the directory containing the csv files
 (For example, if those files are hosted on AWS S3,
   it would be the path of the S3 bucket).
+
+> On Heroku these files are stored in the **`/temp`** directory.
+So we do the same on `localhost`, store them in **`club-soda-guide/temp`**.
+
 
 The files should be named correctly
 such that the format of the file
