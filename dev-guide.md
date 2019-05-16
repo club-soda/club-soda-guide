@@ -366,8 +366,6 @@ the list of words should be on a single line.
 
 Save the file and `new_venues.exs` and prepare to _run_ it!
 
-String.split("venue_name parent_company address city postcode phone_number venue_types email description website facebook twitter instagram drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9 drink_10 drink_11 drink_12 drink_13 drink_14 drink_15 drink_16 drink_17 drink_18", " ") |> Enum.join(',')
-
 
 ### 7. Run the `new_venues.exs` import script
 
@@ -459,6 +457,35 @@ https://dashboard.heroku.com/apps/club-soda-guide/settings
 + [x] MIX_ENV=prod mix run priv/repo/new_venues.exs
 
 
+### 10. Repeat steps 1 - 9 for a New file
+
+`craft_union.csv`
+
+Headers:
+```
+Venue Name,Street Address,City/Town,Post Code,Venue Type,Parent Company,Website,Facebook,Twitter,Low/No Alcohol Drink 1,Low/No Alcohol Drink 2,Low/No Alcohol Drink 3,Low/No Alcohol Drink 4,Low/No Alcohol Drink 5,Low/No Alcohol Drink 6,Low/No Alcohol Drink 7,Low/No Alcohol Drink 8,Low/No Alcohol Drink 9,Low/No Alcohol Drink 10,Low/No Alcohol Drink 11,Low/No Alcohol Drink 12,Low/No Alcohol Drink 13,Low/No Alcohol Drink 14,Low/No Alcohol Drink 15,Low/No Alcohol Drink 16,Low/No Alcohol Drink 17,Low/No Alcohol Drink 18,Low/No Alcohol Drink 19,Low/No Alcohol Drink 20,Low/No Alcohol Drink 21,Low/No Alcohol Drink 22,Low/No Alcohol Drink 23,Low/No Alcohol Drink 24,Low/No Alcohol Drink 25
+```
+
+Field order:
+```
+venue_name address city postcode venue_types parent_company website facebook twitter drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9
+```
+
+@venues entry (code to be added to `new_venues.exs`):
+```elixir
+craft_union:
+  ~w(venue_name address city postcode venue_types parent_company website facebook twitter drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9)a,
+```
+
+> IMPORTANT: remember to comment out prod/staging `DATABASE_URL`
+> `before` running the script! (_ensure you're running it on `localhost`!!_)
+
+run:
+
+```sh
+source .env
+mix run priv/repo/new_venues.exs
+```
 
 
 ### _Superseded_
