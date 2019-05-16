@@ -100,7 +100,11 @@ defmodule CsGuide.NewVenues do
         nil ->
           venue
           |> Map.update!(:venue_name, &String.trim/1)
-          |> Map.update!(:phone_number, fn s -> String.replace(s, " ", "") |> String.trim() end)
+          |> sanitise_phone_number(v) # remove spaces from phone_number if set
+          |> sanitise_url(v, :website) # downcase, trim & add https:// to url
+          |> sanitise_url(v, :twitter)
+          |> sanitise_url(v, :facebook)
+          |> sanitise_url(v, :instagram)
           |> Map.put(:postcode, postcode)
           |> Map.put(:address, String.trim(address))
           |> add_drinks_to_map(drinks)
@@ -188,12 +192,58 @@ defmodule CsGuide.NewVenues do
   end
 
   defp add_users_to_map(map, venue) do
-    if venue.email != "" do
+    if Map.has_key?(venue, :email) && venue.email != "" do
       Map.put(map, :users, %{"0" => %{"email" => venue.email, "role" => "venue_admin"}})
     else
       map
     end
   end
+
+  # some venues don't have a phone_number so don't attempt to String.replace!
+  defp sanitise_phone_number(map, venue) do
+    # IO.inspect(map, label: "map")
+    # IO.inspect(venue, label: "venue")
+    # IO.inspect(Map.equal?(map, venue), label: "map == venue")
+    if Map.has_key?(venue, :phone_number) && venue.phone_number != "" do
+
+      Map.update!(map, :phone_number, fn s ->
+        to_string(s)
+        |> String.replace(" ", "")
+        |> String.trim() end)
+    else
+      map
+    end
+  end
+
+  defp sanitise_url(map, venue, key) do
+    IO.inspect(map, label: "map")
+    IO.inspect(venue, label: "venue")
+
+    if Map.has_key?(venue, key) && Map.get(venue, key) != "" do
+
+      url = Map.get(venue, key)
+      |> to_string()
+      |> String.downcase() # e.g: Name.pubchain.com
+      |> String.trim()
+      |> String.replace("htttp", "http") # yep this is a thing ...
+      |> String.replace(" ", "") # yep people typo spaces in urls ...
+
+      IO.inspect(url, label: "url")
+
+      url = if url =~ "http://" || url =~ "https://" do
+        url
+      else
+        "https://" <> url
+      end
+
+      Map.put(map, key, url)
+    else
+      map
+    end
+  end
+
+
+
 
   defp add_lat_long_to_map(venue, postcode) do
     case :ets.lookup(:postcode_cache, String.replace(postcode, " ", "")) do
