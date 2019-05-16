@@ -1,7 +1,7 @@
 defmodule CsGuide.NewVenues do
   alias NimbleCSV.RFC4180, as: CSV
   alias CsGuide.Resources.{Brand, Drink, Venue}
-  alias CsGuide.Categories.{DrinkType, DrinkStyle, VenueType}
+  alias CsGuide.Categories.{VenueType} # DrinkType, DrinkStyle, # git.io/fjlN5
 
   @venues %{ # should this list be alphabetical?
     all_bar_one:
