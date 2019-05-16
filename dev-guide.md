@@ -426,9 +426,26 @@ Newly imported venue admin users viewable in Admin UI:
 ![club-soda-users-bermondsey](https://user-images.githubusercontent.com/194400/57852281-a8cb9180-77da-11e9-9193-baee5d4f5c69.png)
 
 
-### 8. _Test_ Importing Venues on Staging
+### 8. _Test_ Importing Venues on Staging Environment
+
+Visit: https://club-soda-guide-staging.herokuapp.com/admin/users
+
+BEFORE:
+
+![staging-users](https://user-images.githubusercontent.com/194400/57860532-eafdce80-77ec-11e9-832d-a3231d6bb56e.png)
+
+#### Tasks to run the script and insert data into staging:
+
++ [x] get DATABASE_URL environment variable from staging:
+https://dashboard.heroku.com/apps/club-soda-guide-staging/settings
+
++ [x] add DATABASE_URL to `.env` file on `localhost`
+
++ [x] MIX_ENV=prod mix run priv/repo/new_venues.exs
 
 
+AFTER:
+![staging-users-bermondsey](https://user-images.githubusercontent.com/194400/57860877-87c06c00-77ed-11e9-9aa3-2c225d44fe51.png)
 
 
 ### _Superseded_
