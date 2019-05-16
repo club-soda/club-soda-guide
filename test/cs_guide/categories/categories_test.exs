@@ -69,9 +69,8 @@ defmodule CsGuide.CategoriesTest do
     @update_attrs %{name: "some updated name"}
     @invalid_attrs %{name: nil}
 
-    def drink_style_fixture(attrs \\ %{}) do
+    def drink_style_fixture() do
       {:ok, drink_style} = DrinkStyle.insert(@valid_attrs)
-
       drink_style
     end
 

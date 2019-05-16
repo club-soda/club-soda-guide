@@ -69,28 +69,25 @@ defmodule CsGuideWeb.SearchAllControllerTest do
   describe "search on venues and drinks" do
     setup [:create_venue, :drink_setup]
 
-    test "GET /search/all display venue and drink", %{conn: conn, venue: venue} do
+    test "GET /search/all display venue and drink", %{conn: conn} do
       conn = get(conn, "/search/all")
 
       assert html_response(conn, 200) =~ "The Favourite Pub"
       assert html_response(conn, 200) =~ "AF Beer 1"
     end
 
-    test "GET search by postcode", %{conn: conn, venue: venue} do
+    test "GET search by postcode", %{conn: conn} do
       conn = get(conn, "/search/all?term=MK40 1AY")
-
       assert html_response(conn, 302)
     end
 
-    test "GET search by postcode text", %{conn: conn, venue: venue} do
+    test "GET search by postcode text", %{conn: conn} do
       conn = get(conn, "/search/all?term=MK40")
-
       assert html_response(conn, 200) =~ "The Favourite Pub"
     end
 
-    test "GET search by city text", %{conn: conn, venue: venue} do
+    test "GET search by city text", %{conn: conn} do
       conn = get(conn, "/search/all?term=Lond")
-
       assert html_response(conn, 200) =~ "The Favourite Pub"
     end
   end

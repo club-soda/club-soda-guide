@@ -2,7 +2,9 @@ defmodule CsGuideWeb.RetailerController do
   use CsGuideWeb, :controller
   alias CsGuide.Resources.{Venue, Brand}
 
-  import Ecto.Query, only: [from: 2, subquery: 1]
+  # =====================================
+  # Was being imported for query that was not being used
+  # import Ecto.Query, only: [from: 2, subquery: 1]
 
   def index(conn, _params) do
     venues =
@@ -98,19 +100,22 @@ defmodule CsGuideWeb.RetailerController do
   end
 
   defp do_update(conn, venue, venue_params) do
-    query = fn s, m ->
-      sub =
-        from(mod in Map.get(m.__schema__(:association, s), :queryable),
-          distinct: mod.entry_id,
-          order_by: [desc: :updated_at],
-          select: mod
-        )
-
-      from(m in subquery(sub), where: not m.deleted, select: m)
-    end
+    # This query doesn't appear to be used. Seems a little odd. No tests are
+    # failing when code is commented out. Will look into this.
+    # =====================================
+    # query = fn s, m ->
+    #   sub =
+    #     from(mod in Map.get(m.__schema__(:association, s), :queryable),
+    #       distinct: mod.entry_id,
+    #       order_by: [desc: :updated_at],
+    #       select: mod
+    #     )
+    #
+    #   from(m in subquery(sub), where: not m.deleted, select: m)
+    # end
 
     with {:ok, venue} <- Venue.retailer_update(venue, venue_params),
-         {:ok, venue} <-
+         {:ok, _venue} <-
            Venue.retailer_update(
              venue,
              venue_params

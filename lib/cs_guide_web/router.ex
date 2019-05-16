@@ -71,7 +71,6 @@ defmodule CsGuideWeb.Router do
     resources("/users", UserController, except: [:new, :create])
     post("/user-password-reset/:user_id", PasswordController, :admin_reset)
     resources("/venues", VenueController, only: [:delete, :index])
-    resources("/wholesalers", WholesalerController, except: [:show])
 
     resources("/venue_types", VenueTypeController)
     resources("/drink_types", DrinkTypeController)

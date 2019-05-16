@@ -196,13 +196,13 @@ defmodule CsGuideWeb.BrandController do
     end
   end
 
-  def show_helper(conn, params, ll \\ "") do
+  def show_helper(params, ll \\ "") do
     %{"slug" => slug} = params
     basic_brand_info = Brand.get_by(slug: slug)
 
     if basic_brand_info != nil do
       brand = get_brand_info(basic_brand_info)
-      {drink_type, count} = get_drink_type(brand)
+      {drink_type, _count} = get_drink_type(brand)
 
       %{
         brand: brand,
@@ -250,13 +250,13 @@ defmodule CsGuideWeb.BrandController do
     end
   end
 
-  def show(conn, %{"slug" => slug, "ll" => latlong} = params) do
-    assigns = show_helper(conn, params, latlong)
+  def show(conn, %{"ll" => latlong} = params) do
+    assigns = show_helper(params, latlong)
     render_brands(conn, assigns)
   end
 
-  def show(conn, %{"slug" => slug} = params) do
-    assigns = show_helper(conn, params)
+  def show(conn, params) do
+    assigns = show_helper(params)
     render_brands(conn, assigns)
   end
 
