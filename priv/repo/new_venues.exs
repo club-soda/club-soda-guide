@@ -55,7 +55,7 @@ defmodule CsGuide.NewVenues do
 
       # extract_postcode assumes address has postcode in-line
       [address, postcode] = case extract_postcode(v.address) do
-        [address] ->
+        [_address] ->
           [v.address, v.postcode]
         list ->
           list
@@ -101,70 +101,19 @@ defmodule CsGuide.NewVenues do
           |> Map.update!(:phone_number, fn s -> String.replace(s, " ", "") |> String.trim() end)
           |> Map.put(:postcode, postcode)
           |> Map.put(:address, String.trim(address))
-          |> Map.put(
-            :drinks,
-            Map.new(
-              Enum.map(
-                drinks,
-                fn {d, b} ->
-                  brand = Brand.get_by(name: b)
-
-                  case Drink.get_by(name: d, brand_id: brand.id) do
-                    nil ->
-                      IO.inspect("Drink not found: #{d}, brand: #{b}")
-                      nil
-
-                    drink ->
-                      {drink.entry_id, "on"}
-                  end
-                end
-              )
-              |> Enum.filter(fn d -> not is_nil(d) end)
-            )
-          )
-          |> (fn v ->
-                case :ets.lookup(:postcode_cache, String.replace(postcode, " ", "")) do
-                  [{_postcode, lat, long}] ->
-                    v
-                    |> Map.put(:lat, lat)
-                    |> Map.put(:long, long)
-
-                  _ ->
-                    v
-                end
-              end).()
+          |> add_drinks_to_map(drinks)
+          |> add_users_to_map(v)
+          |> add_lat_long_to_map(postcode)
           |> Venue.insert()
           |> case do
-            {:ok, _} -> acc
+            {:ok, _} ->
+              acc
             err ->
               [err | acc]
           end
 
-        ven ->
+        _venue ->
           acc
-          # ven
-          # |> Venue.preload([:drinks, :venue_types, :users])
-          # |> Venue.update(
-          #   ven
-          #   |> Map.drop([:users])
-          #   |> Map.from_struct()
-          #   |> (fn v ->
-          #         case :ets.lookup(:postcode_cache, String.replace(postcode, " ", "")) do
-          #           [{_postcode, lat, long}] ->
-          #             v
-          #             |> Map.put(:lat, lat)
-          #             |> Map.put(:long, long)
-          #
-          #           _ ->
-          #             v
-          #         end
-          #       end).()
-          #   |> Map.merge(venue)
-          # )
-          # |> case do
-          #   {:ok, _} -> nil
-          #   err -> IO.inspect(err)
-          # end
       end
     end)
     |> IO.inspect(label: "errors")
@@ -210,6 +159,50 @@ defmodule CsGuide.NewVenues do
       ~r/((GIR 0AA)|((([A-PR-UWYZ][0-9][0-9]?)|(([A-PR-UWYZ][A-HK-Y][0-9][0-9]?)|(([A-PR-UWYZ][0-9][A-HJKSTUW])|([A-PR-UWYZ][A-HK-Y][0-9][ABEHMNPRVWXY])))) [0-9][ABD-HJLNP-UW-Z]{2}))/
 
     Regex.split(postcode_regex, str, include_captures: true, trim: true)
+  end
+
+  defp add_drinks_to_map(map, drinks) do
+    Map.put(map,
+      :drinks,
+      Map.new(
+        Enum.map(
+          drinks,
+          fn {d, b} ->
+            brand = Brand.get_by(name: b)
+
+            case Drink.get_by(name: d, brand_id: brand.id) do
+              nil ->
+                IO.inspect("Drink not found: #{d}, brand: #{b}")
+                nil
+
+              drink ->
+                {drink.entry_id, "on"}
+            end
+          end
+        )
+        |> Enum.filter(fn d -> not is_nil(d) end)
+      )
+    )
+  end
+
+  defp add_users_to_map(map, venue) do
+    if venue.email != "" do
+      Map.put(map, :users, %{"0" => %{"email" => venue.email, "role" => "venue_admin"}})
+    else
+      map
+    end
+  end
+
+  defp add_lat_long_to_map(venue, postcode) do
+    case :ets.lookup(:postcode_cache, String.replace(postcode, " ", "")) do
+      [{_postcode, lat, long}] ->
+        venue
+        |> Map.put(:lat, lat)
+        |> Map.put(:long, long)
+
+      _ ->
+        venue
+    end
   end
 end
 
