@@ -486,6 +486,16 @@ run:
 source .env
 mix run priv/repo/new_venues.exs
 ```
+Before: (_latest pubs are bermondsey..._)
+![image](https://user-images.githubusercontent.com/194400/57866398-34531b80-77f7-11e9-9098-769fb98c1c26.png)
+
+After:
+![image](https://user-images.githubusercontent.com/194400/57872178-070c6a80-7803-11e9-8e41-6edee2c8df59.png)
+
+7784 - 7486 = **298**
+
+The Craft Union Spreadsheet (and corresponding CSV file) has **298** rows (_discounting the header row_)
+![image](https://user-images.githubusercontent.com/194400/57872225-260afc80-7803-11e9-82cc-0e8237d95912.png)
 
 
 ### _Superseded_
