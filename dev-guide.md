@@ -419,6 +419,14 @@ in the `venue_users` table:
 
 ![bermondsey-pub-without-email-address](https://user-images.githubusercontent.com/194400/57850885-01009480-77d7-11e9-9081-da6f7a91b133.png)
 
+Visit: http://localhost:4000/admin/users
+
+Newly imported venue admin users viewable in Admin UI:
+
+![club-soda-users-bermondsey](https://user-images.githubusercontent.com/194400/57852281-a8cb9180-77da-11e9-9193-baee5d4f5c69.png)
+
+
+### 8. _Test_ Importing Venues on Staging
 
 
 
