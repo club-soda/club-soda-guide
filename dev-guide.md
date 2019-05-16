@@ -399,6 +399,27 @@ e.g: 7486
 7486 - 7428 = 58.
 58 corresponds to the number of rows in the `.csv` file (_minus the header row_)
 
+#### Confirm the Venue Managers (Users) are Associated with the Venue
+
+Open your PostgreSQL GUI and visit the `venue_users` table.
+
+`venue_users` before running the `new_venues.exs` script: **310** rows
+
+![venue_users_before_import](https://user-images.githubusercontent.com/194400/57850496-f5f93480-77d5-11e9-886f-9c7421f79be1.png)
+
+`venue_users` after running the `new_venues.exs` script: **367** rows
+
+![venue_users_after_import](https://user-images.githubusercontent.com/194400/57850768-af580a00-77d6-11e9-83ce-cdb64fe6b55f.png)
+
+This is consistent with the data we just imported
+because there are 58 rows but one of the rows
+does _not_ have an email address
+so we only expect 57 new entries
+in the `venue_users` table:
+
+![bermondsey-pub-without-email-address](https://user-images.githubusercontent.com/194400/57850885-01009480-77d7-11e9-9081-da6f7a91b133.png)
+
+
 
 
 
