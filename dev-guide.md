@@ -288,7 +288,7 @@ is necessary for Elixir to understand it.
 
 ![moved-and-renamed-file](https://user-images.githubusercontent.com/194400/57756173-9f62fc00-76ea-11e9-9cd7-ad5d5a681268.png)
 
-### 4. Review the Column Headers
+### 4. Review the Column Headers
 
 When you open the `.csv` file,
 the first row/line are the "headers" (_or column names_).
@@ -446,6 +446,19 @@ https://dashboard.heroku.com/apps/club-soda-guide-staging/settings
 
 AFTER:
 ![staging-users-bermondsey](https://user-images.githubusercontent.com/194400/57860877-87c06c00-77ed-11e9-9aa3-2c225d44fe51.png)
+
+
+### 9. _Test_ Importing Venues on PRODUCTION Environment
+
++ [x] get `DATABASE_URL` environment variable from prod:
+https://dashboard.heroku.com/apps/club-soda-guide/settings
++ [x] add `DATABASE_URL` to `.env` file on `localhost`
+
++ [x] repeat for `ENCRYPTION_KEYS` environment variable for prod
+
++ [x] MIX_ENV=prod mix run priv/repo/new_venues.exs
+
+
 
 
 ### _Superseded_
