@@ -14,7 +14,7 @@ config :cs_guide,
 # Configures the endpoint
 config :cs_guide, CsGuideWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "4hf8JJmuXBYA1qDB1RpA6wePqW9EHkF6DxqXMshLZcSdTu3yLmoy2OR0Dhq2CYmE",
+  secret_key_base: System.get_env("SECRET_KEY_BASE"),
   render_errors: [view: CsGuideWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: CsGuide.PubSub, adapter: Phoenix.PubSub.PG2]
 
@@ -42,7 +42,8 @@ config :fields, Fields.AES,
     |> Enum.map(fn key -> :base64.decode(key) end)
 
 config :fields, Fields,
-  secret_key_base: "4hf8JJmuXBYA1qDB1RpA6wePqW9EHkF6DxqXMshLZcSdTu3yLmoy2OR0Dhq2CYmE"
+  secret_key_base: System.get_env("SECRET_KEY_BASE")
+
 config :cs_guide, CsGuide.Mailer,
   adapter: Bamboo.SMTPAdapter,
   server: System.get_env("SES_SERVER"),

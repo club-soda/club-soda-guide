@@ -1,9 +1,9 @@
 defmodule CsGuide.NewVenues do
   alias NimbleCSV.RFC4180, as: CSV
   alias CsGuide.Resources.{Brand, Drink, Venue}
-  alias CsGuide.Categories.{DrinkType, DrinkStyle, VenueType}
+  alias CsGuide.Categories.{VenueType} # DrinkType, DrinkStyle, # git.io/fjlN5
 
-  @venues %{
+  @venues %{ # should this list be alphabetical?
     all_bar_one:
       ~w(venue_name nil address phone_number description website facebook twitter instagram nil venue_types num_cocktails drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9 drink_10 drink_11)a,
     yates:
@@ -35,7 +35,13 @@ defmodule CsGuide.NewVenues do
     sizzling_pubs:
       ~w(venue_name nil address phone_number description website facebook twitter venue_types num_cocktails drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7)a,
     nicholsons:
-      ~w(venue_name nil address phone_number description website facebook twitter instagram venue_types num_cocktails drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9 drink_10 drink_11 drink_12 drink_13 drink_14 drink_15 drink_16 drink_17)a
+      ~w(venue_name nil address phone_number description website facebook twitter instagram venue_types num_cocktails drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9 drink_10 drink_11 drink_12 drink_13 drink_14 drink_15 drink_16 drink_17)a,
+    bermondsey_pub_company:
+      ~w(venue_name parent_company address city postcode phone_number venue_types email description website facebook twitter instagram drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9 drink_10 drink_11 drink_12 drink_13 drink_14 drink_15 drink_16 drink_17 drink_18)a,
+    craft_union:
+      ~w(venue_name address city postcode venue_types parent_company website facebook twitter drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9)a,
+    brewdog:
+      ~w(venue_name venue_types parent_company address city postcode phone_number email description website facebook twitter instagram nil drink_1 drink_2 drink_3)a,
   }
 
   @doc """
@@ -46,10 +52,17 @@ defmodule CsGuide.NewVenues do
   def import_venues(csv, filename) do
     csv
     |> csv_to_map(Map.get(@venues, String.slice(filename, 0..-5) |> String.to_existing_atom()))
-    |> Enum.each(fn v ->
+    |> Enum.reduce([], fn v, acc ->
       {_, venue} = add_link(v, :venue_types, VenueType, :name)
 
-      [address, postcode] = extract_postcode(v.address)
+      # extract_postcode assumes address has postcode in-line
+      [address, postcode] =
+        case extract_postcode(v.address) do
+          [_address] ->
+            [v.address, v.postcode]
+          list ->
+            list
+        end
 
       drinks =
         Enum.reduce(v, [], fn {key, val}, acc ->
@@ -88,73 +101,29 @@ defmodule CsGuide.NewVenues do
         nil ->
           venue
           |> Map.update!(:venue_name, &String.trim/1)
-          |> Map.update!(:phone_number, fn s -> String.replace(s, " ", "") |> String.trim() end)
+          |> sanitise_phone_number(v) # remove spaces from phone_number if set
+          |> sanitise_url(v, :website) # downcase, trim & add https:// to url
+          |> sanitise_url(v, :twitter)
+          |> sanitise_url(v, :facebook)
+          |> sanitise_url(v, :instagram)
           |> Map.put(:postcode, postcode)
           |> Map.put(:address, String.trim(address))
-          |> Map.put(
-            :drinks,
-            Map.new(
-              Enum.map(
-                drinks,
-                fn {d, b} ->
-                  brand = Brand.get_by(name: b)
-
-                  case Drink.get_by(name: d, brand_id: brand.id) do
-                    nil ->
-                      IO.inspect("Drink not found: #{d}, brand: #{b}")
-                      nil
-
-                    drink ->
-                      {drink.entry_id, "on"}
-                  end
-                end
-              )
-              |> Enum.filter(fn d -> not is_nil(d) end)
-            )
-          )
-          |> (fn v ->
-                case :ets.lookup(:postcode_cache, String.replace(postcode, " ", "")) do
-                  [{_postcode, lat, long}] ->
-                    v
-                    |> Map.put(:lat, lat)
-                    |> Map.put(:long, long)
-
-                  _ ->
-                    v
-                end
-              end).()
+          |> add_drinks_to_map(drinks)
+          |> add_users_to_map(v)
+          |> add_lat_long_to_map(postcode)
           |> Venue.insert()
           |> case do
-            {:ok, _} -> nil
-            err -> IO.inspect(err)
+            {:ok, _} ->
+              acc
+            err ->
+              [err | acc]
           end
 
-        ven ->
-          ven
-          |> Venue.preload([:drinks, :venue_types, :users])
-          |> Venue.update(
-            ven
-            |> Map.drop([:users])
-            |> Map.from_struct()
-            |> (fn v ->
-                  case :ets.lookup(:postcode_cache, String.replace(postcode, " ", "")) do
-                    [{_postcode, lat, long}] ->
-                      v
-                      |> Map.put(:lat, lat)
-                      |> Map.put(:long, long)
-
-                    _ ->
-                      v
-                  end
-                end).()
-            |> Map.merge(venue)
-          )
-          |> case do
-            {:ok, _} -> nil
-            err -> IO.inspect(err)
-          end
+        _venue ->
+          acc
       end
     end)
+    |> IO.inspect(label: "errors")
   end
 
   defp add_link(item, column, queryable, field) do
@@ -198,10 +167,94 @@ defmodule CsGuide.NewVenues do
 
     Regex.split(postcode_regex, str, include_captures: true, trim: true)
   end
+
+  defp add_drinks_to_map(map, drinks) do
+    Map.put(map,
+      :drinks,
+      Map.new(
+        Enum.map(
+          drinks,
+          fn {d, b} ->
+            brand = Brand.get_by(name: b)
+
+            case Drink.get_by(name: d, brand_id: brand.id) do
+              nil ->
+                IO.inspect("Drink not found: #{d}, brand: #{b}")
+                nil
+
+              drink ->
+                {drink.entry_id, "on"}
+            end
+          end
+        )
+        |> Enum.filter(fn d -> not is_nil(d) end)
+      )
+    )
+  end
+
+  defp add_users_to_map(map, venue) do
+    if Map.has_key?(venue, :email) && venue.email != "" do
+      Map.put(map, :users, %{"0" => %{"email" => venue.email, "role" => "venue_admin"}})
+    else
+      map
+    end
+  end
+
+  # some venues don't have a phone_number so don't attempt to String.replace!
+  defp sanitise_phone_number(map, venue) do
+    # IO.inspect(map, label: "map")
+    # IO.inspect(venue, label: "venue")
+    # IO.inspect(Map.equal?(map, venue), label: "map == venue")
+    if Map.has_key?(venue, :phone_number) && venue.phone_number != "" do
+
+      Map.update!(map, :phone_number, fn s ->
+        to_string(s)
+        |> String.replace(" ", "")
+        |> String.trim() end)
+    else
+      map
+    end
+  end
+
+  defp sanitise_url(map, venue, key) do
+    if Map.has_key?(venue, key) && Map.get(venue, key) != "" do
+
+      url = Map.get(venue, key)
+      |> String.downcase() # e.g: Name.pubchain.com
+      |> String.trim()
+      |> String.replace("htttp", "http") # yep this is a thing ...
+      |> String.replace(" ", "") # yep people typo spaces in urls ...
+      |> String.replace(~r/http:\/[a-z]/, "http://") # if there is a url with only 1 / after http
+
+      url = if url =~ "http://" || url =~ "https://" do
+        url
+      else
+        "https://" <> url
+      end
+
+      Map.put(map, key, url)
+    else
+      map
+    end
+  end
+
+  defp add_lat_long_to_map(venue, postcode) do
+    case :ets.lookup(:postcode_cache, String.replace(postcode, " ", "")) do
+      [{_postcode, lat, long}] ->
+        venue
+        |> Map.put(:lat, lat)
+        |> Map.put(:long, long)
+
+      _ ->
+        venue
+    end
+  end
 end
 
 System.get_env("IMPORT_FILES_DIR")
 |> File.ls!()
 |> Enum.each(fn f ->
-  CsGuide.NewVenues.import_venues(File.read!("#{System.get_env("IMPORT_FILES_DIR")}/#{f}"), f)
+  if f =~ ".csv" do
+      CsGuide.NewVenues.import_venues(File.read!("#{System.get_env("IMPORT_FILES_DIR")}/#{f}"), f)
+  end
 end)

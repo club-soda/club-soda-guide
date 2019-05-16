@@ -1,7 +1,7 @@
 %{
   "alog": {:git, "https://github.com/dwyl/alog.git", "71615906e79efb5e12a7bd287d7059ccbc2d3ba4", [tag: "0.5.0"]},
   "argon2_elixir": {:hex, :argon2_elixir, "1.3.3", "487ffa071ef78c51d9b16e50ff3cf30cf8204e0aa4bdc8afd3765fdd8195e213", [:make, :mix], [{:elixir_make, "~> 0.4", [hex: :elixir_make, optional: false]}]},
-  "autoform": {:git, "https://github.com/dwyl/autoform.git", "582d42c36df4519f35fea02abb49c6fc6911b298", [tag: "0.6.4"]},
+  "autoform": {:git, "https://github.com/dwyl/autoform.git", "24092ef3e6c0235188a10a714ef730a85f64fb6b", [tag: "0.6.7"]},
   "bamboo": {:hex, :bamboo, "1.2.0", "8aebd24f7c606c32d0163c398004a11608ca1028182a169b2e527793bfab7561", [:mix], [{:hackney, ">= 1.13.0", [hex: :hackney, repo: "hexpm", optional: false]}, {:plug, "~> 1.0", [hex: :plug, repo: "hexpm", optional: false]}, {:poison, ">= 1.5.0", [hex: :poison, repo: "hexpm", optional: true]}], "hexpm"},
   "bamboo_smtp": {:hex, :bamboo_smtp, "1.6.0", "0a3607b77f22554af58c547350c1c73ebba6f4fb2c4bd0b11713ab5b4081588f", [:mix], [{:bamboo, "~> 1.0", [hex: :bamboo, repo: "hexpm", optional: false]}, {:gen_smtp, "~> 0.12.0", [hex: :gen_smtp, repo: "hexpm", optional: false]}], "hexpm"},
   "certifi": {:hex, :certifi, "2.4.2", "75424ff0f3baaccfd34b1214184b6ef616d89e420b258bb0a5ea7d7bc628f7f0", [:rebar3], [{:parse_trans, "~>3.3", [hex: :parse_trans, optional: false]}]},
@@ -17,7 +17,7 @@
   "elixir_make": {:hex, :elixir_make, "0.4.2", "332c649d08c18bc1ecc73b1befc68c647136de4f340b548844efc796405743bf", [:mix], []},
   "ex_aws": {:hex, :ex_aws, "2.1.0", "b92651527d6c09c479f9013caa9c7331f19cba38a650590d82ebf2c6c16a1d8a", [:mix], [{:configparser_ex, "~> 2.0", [hex: :configparser_ex, optional: true]}, {:hackney, "1.6.3 or 1.6.5 or 1.7.1 or 1.8.6 or ~> 1.9", [hex: :hackney, optional: true]}, {:jsx, "~> 2.8", [hex: :jsx, optional: true]}, {:poison, ">= 1.2.0", [hex: :poison, optional: true]}, {:sweet_xml, "~> 0.6", [hex: :sweet_xml, optional: true]}, {:xml_builder, "~> 0.1.0", [hex: :xml_builder, optional: true]}]},
   "ex_aws_s3": {:hex, :ex_aws_s3, "2.0.1", "9e09366e77f25d3d88c5393824e613344631be8db0d1839faca49686e99b6704", [:mix], [{:ex_aws, "~> 2.0", [hex: :ex_aws, optional: false]}, {:sweet_xml, ">= 0.0.0", [hex: :sweet_xml, optional: true]}]},
-  "fields": {:git, "https://github.com/dwyl/fields.git", "a979abbf65aff2e3a2d5e95185ea084e754019c7", [tag: "0.1.4"]},
+  "fields": {:git, "https://github.com/dwyl/fields.git", "877ba75b7dc8251ec0aca40312b6fb13923d7693", [tag: "0.1.7"]},
   "file_system": {:hex, :file_system, "0.2.6", "fd4dc3af89b9ab1dc8ccbcc214a0e60c41f34be251d9307920748a14bf41f1d3", [:mix], []},
   "gen_smtp": {:hex, :gen_smtp, "0.12.0", "97d44903f5ca18ca85cb39aee7d9c77e98d79804bbdef56078adcf905cb2ef00", [:rebar3], [], "hexpm"},
   "gettext": {:hex, :gettext, "0.16.0", "4a7e90408cef5f1bf57c5a39e2db8c372a906031cc9b1466e963101cb927dafc", [:mix], []},

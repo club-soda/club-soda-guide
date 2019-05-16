@@ -246,15 +246,296 @@ https://gist.github.com/wrburgess/5528649 ❤️
 
 ## Importing Data
 
+The fastest way to on-board a lot of venues into the Guide
+is to import their data (_with permission_) in bulk.
+This section takes you through the steps to add
+a spreadsheet of data into the Guide App's Database.
+
+### 1. Backup and Restore the Database
+
+_Before_ importing any `new` data,
+ensure that you have made a backup of the production database.
+Follow the instructions in:
+[dev-guide.md#using-real-data](https://github.com/club-soda/club-soda-guide/blob/master/dev-guide.md#using-real-data)
+to backup, download and import the production data.
+
+Having the latest production data on your `localhost`
+is _essential_ to testing the import process.
+
+### 2. Download the Data as CSV
+
+In order to import the data,
+we need to have it in a useable format.
+Most of our imports are stored in Google Drive as spreadsheets.
+
+Open the Google Drive file,
+click "Download as >" and select "Comma-separated values":
+
+![club-soda-data-import-download-as-csv](https://user-images.githubusercontent.com/194400/57693131-5fdfd580-7640-11e9-9429-19f0dcf71d7c.png)
+
+### 3. Move the `.csv` file to the `./temp` directory and Re-name it.
+
+The file you download from Google Sheets will be named something
+human-friendly like `Bermondsey-Pub-Company - Sheet1.csv` in our case:
+
+![club-soda-data-import-filename](https://user-images.githubusercontent.com/194400/57755263-5d38bb00-76e8-11e9-8b50-6bec5c553fcb.png)
+
+Move the `.csv` file you just downloaded to the `/temp` directory
+and re-name it to something machine readable
+e.g: `temp/bermondsey_pub_company.csv`.
+Removing spaces and using underscores in the filename
+is necessary for Elixir to understand it.
+
+![moved-and-renamed-file](https://user-images.githubusercontent.com/194400/57756173-9f62fc00-76ea-11e9-9cd7-ad5d5a681268.png)
+
+### 4. Review the Column Headers
+
+When you open the `.csv` file,
+the first row/line are the "headers" (_or column names_).
+The spreadsheet will have human-readable names e.g:
+
+![csv-file-headers](https://user-images.githubusercontent.com/194400/57756010-3c716500-76ea-11e9-9afa-3692d7fb8d5e.png)
+
+Copy that first line of the file and past it into your text editor.
+
+```csv
+Venue Name,Parent company,Street Address,City,Post Code,Telephone,Venue Type,
+Email,Description,Website,Facebook,Twitter,Instagram,
+Low/No Alcohol Drink 1,Low/No Alcohol Drink 2,Low/No Alcohol Drink 3,
+Low/No Alcohol Drink 4,Low/No Alcohol Drink 5,Low/No Alcohol Drink 6,
+Low/No Alcohol Drink 7,Low/No Alcohol Drink 8,Low/No Alcohol Drink 9,
+Low/No Alcohol Drink 10,Low/No Alcohol Drink 11,Low/No Alcohol Drink 12,
+Low/No Alcohol Drink 13,Low/No Alcohol Drink 14,Low/No Alcohol Drink 15,
+Low/No Alcohol Drink 16,Low/No Alcohol Drink 17,Low/No Alcohol Drink 18
+```
+> **Note**: we have split the header into multiple lines
+for _legibility_.
+A valid CSV file headers are always on a _single_ line.
+
+### 5. Map the CSV Column Headers to Database Fields
+
+In order to import the data,
+we need to go through the csv file column headers
+and map them to the database column names.
+
+The following is the list of **`venues`** table fields
+This list is separated by spaces
+because that's how our `Elixir` venue importer script `new_venues.exs`
+needs them.
+
+
+```csv
+venue_name parent_company address city postcode phone_number venue_types
+email description website facebook twitter instagram
+drink_1 drink_2 drink_3 drink_4 drink_5 drink_6
+drink_7 drink_8 drink_9 drink_10 drink_11 drink_12
+drink_13 drink_14 drink_15 drink_16 drink_17 drink_18
+```
+> **Note**: this needs to be a _single_ line of code
+when you paste it into the `priv/repo/new_venues.exs` below;
+we have split it into 5 lines to aid _legibility_.
+Also, some `.csv` files do not contain _all_ the fields
+in the database (venues) table
+e.g: **`num_cocktails`** is not present in the case of Berbomondsey.
+
+### 6. Add line to `new_venues.exs`
+
+Open the `priv/repo/new_venues.exs` file
+(_our venue importer script_)
+and search for the
+[`@venues`](https://github.com/club-soda/club-soda-guide/blob/master/priv/repo/new_venues.exs#L6)
+map.
+The `@venues` map is a key-value lookup
+of the chains of venues we have imported
+and the corresponding field names for the `csv` files.
+
+Add the following line to the `@venues` map:
+
+```elixir
+bermondsey_pub_company:
+  ~w(venue_name parent_company address city postcode phone_number venue_types email description website facebook twitter instagram drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9 drink_10 drink_11 drink_12 drink_13 drink_14 drink_15 drink_16 drink_17 drink_18)a,
+```
+
+`bermondsey_pub_company` corresponds to the csv file name
+and the contents of the `~w()a` is the
+[sigil](https://elixir-lang.org/getting-started/sigils.html#word-lists)
+for a "word list";
+in our case the list of database column headers.
+the list of words should be on a single line.
+(_some horizontal scrolling may be required ..._)
+
+Save the file and `new_venues.exs` and prepare to _run_ it!
+
+
+### 7. Run the `new_venues.exs` import script
+
+
+> Before attempting to run the `new_venues.exs` script,
+ensure that you have a **`IMPORT_FILES_DIR`**
+key-value in your **`.env`** file
+and that you have the environment variable set
+by running `source .env`.
+If you don't yet have an `.env` file,
+GOTO: [dev-guide.md#environment-variables](https://github.com/club-soda/club-soda-guide/blob/master/dev-guide.md#environment-variables)
+
+Open your database GUI of choice
+and confirm the number of rows for the `venues` table. e.g:
+
+![7428-rows](https://user-images.githubusercontent.com/194400/57765501-80219a00-76fd-11e9-9a5d-cf7f8605b051.png)
+
+
+Run the `new_venues.exs` script with the following command:
+```sh
+mix run priv/repo/new_venues.exs
+```
+
+After _successfully_ running the script,
+refresh the DB and you should see the increase in the number of records.
+e.g: 7486
+![7486-rows](https://user-images.githubusercontent.com/194400/57783825-b9bacb00-7726-11e9-9c99-fb90ca1ceea1.png)
+
+7486 - 7428 = 58.
+58 corresponds to the number of rows in the `.csv` file (_minus the header row_)
+
+#### Confirm the Venue Managers (Users) are Associated with the Venue
+
+Open your PostgreSQL GUI and visit the `venue_users` table.
+
+`venue_users` before running the `new_venues.exs` script: **310** rows
+
+![venue_users_before_import](https://user-images.githubusercontent.com/194400/57850496-f5f93480-77d5-11e9-886f-9c7421f79be1.png)
+
+`venue_users` after running the `new_venues.exs` script: **367** rows
+
+![venue_users_after_import](https://user-images.githubusercontent.com/194400/57850768-af580a00-77d6-11e9-83ce-cdb64fe6b55f.png)
+
+This is consistent with the data we just imported
+because there are 58 rows but one of the rows
+does _not_ have an email address
+so we only expect 57 new entries
+in the `venue_users` table:
+
+![bermondsey-pub-without-email-address](https://user-images.githubusercontent.com/194400/57850885-01009480-77d7-11e9-9081-da6f7a91b133.png)
+
+Visit: http://localhost:4000/admin/users
+
+Newly imported venue admin users viewable in Admin UI:
+
+![club-soda-users-bermondsey](https://user-images.githubusercontent.com/194400/57852281-a8cb9180-77da-11e9-9193-baee5d4f5c69.png)
+
+
+### 8. _Test_ Importing Venues on Staging Environment
+
+Visit: https://club-soda-guide-staging.herokuapp.com/admin/users
+
+BEFORE:
+
+![staging-users](https://user-images.githubusercontent.com/194400/57860532-eafdce80-77ec-11e9-832d-a3231d6bb56e.png)
+
+#### Tasks to run the script and insert data into staging:
+
++ [x] get DATABASE_URL environment variable from staging:
+https://dashboard.heroku.com/apps/club-soda-guide-staging/settings
+
++ [x] add DATABASE_URL to `.env` file on `localhost`
+
++ [x] MIX_ENV=prod mix run priv/repo/new_venues.exs
+
+
+AFTER:
+![staging-users-bermondsey](https://user-images.githubusercontent.com/194400/57860877-87c06c00-77ed-11e9-9aa3-2c225d44fe51.png)
+
+
+### 9. _Test_ Importing Venues on PRODUCTION Environment
+
++ [x] get `DATABASE_URL` environment variable from prod:
+https://dashboard.heroku.com/apps/club-soda-guide/settings
++ [x] add `DATABASE_URL` to `.env` file on `localhost`
+
++ [x] repeat for `ENCRYPTION_KEYS` environment variable for prod
+
++ [x] MIX_ENV=prod mix run priv/repo/new_venues.exs
+
+
+### 10. Repeat steps 1 - 9 for a New file
+
+`craft_union.csv`
+
+Headers:
+```
+Venue Name,Street Address,City/Town,Post Code,Venue Type,Parent Company,Website,Facebook,Twitter,Low/No Alcohol Drink 1,Low/No Alcohol Drink 2,Low/No Alcohol Drink 3,Low/No Alcohol Drink 4,Low/No Alcohol Drink 5,Low/No Alcohol Drink 6,Low/No Alcohol Drink 7,Low/No Alcohol Drink 8,Low/No Alcohol Drink 9,Low/No Alcohol Drink 10,Low/No Alcohol Drink 11,Low/No Alcohol Drink 12,Low/No Alcohol Drink 13,Low/No Alcohol Drink 14,Low/No Alcohol Drink 15,Low/No Alcohol Drink 16,Low/No Alcohol Drink 17,Low/No Alcohol Drink 18,Low/No Alcohol Drink 19,Low/No Alcohol Drink 20,Low/No Alcohol Drink 21,Low/No Alcohol Drink 22,Low/No Alcohol Drink 23,Low/No Alcohol Drink 24,Low/No Alcohol Drink 25
+```
+
+Field order:
+```
+venue_name address city postcode venue_types parent_company website facebook twitter drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9
+```
+
+@venues entry (code to be added to `new_venues.exs`):
+```elixir
+craft_union:
+  ~w(venue_name address city postcode venue_types parent_company website facebook twitter drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9)a,
+```
+
+> IMPORTANT: remember to comment out prod/staging `DATABASE_URL`
+> `before` running the script! (_ensure you're running it on `localhost`!!_)
+
+run:
+
+```sh
+source .env
+mix run priv/repo/new_venues.exs
+```
+Before: (_latest pubs are bermondsey..._)
+![image](https://user-images.githubusercontent.com/194400/57866398-34531b80-77f7-11e9-9098-769fb98c1c26.png)
+
+After:
+![image](https://user-images.githubusercontent.com/194400/57872178-070c6a80-7803-11e9-8e41-6edee2c8df59.png)
+
+7784 - 7486 = **298**
+
+The Craft Union Spreadsheet (and corresponding CSV file) has **298** rows (_discounting the header row_)
+![image](https://user-images.githubusercontent.com/194400/57872225-260afc80-7803-11e9-82cc-0e8237d95912.png)
+
+
+### _Superseded_
+
+> The following docs are superseded
+and only kept here for reference.
+
 The existing data is imported through our [seeds file](priv/repo/seeds.exs).
 
-The environment variable `IMPORT_FILES_DIR` should be the path to the directory containing the csv files (For example, if those files are hosted on AWS S3, it would be the path of the S3 bucket).
+The environment variable `IMPORT_FILES_DIR`
+should be the path to the directory containing the csv files
+(For example, if those files are hosted on AWS S3,
+  it would be the path of the S3 bucket).
 
-The files should be named correctly such that the format of the file matches the function that will be calling it. (That is, the brands file should be `brands.csv`, drinks `drinks.csv` and the venues `venues_1.csv`, `venues_2.csv` or `venues_3.csv`, depending on which format it is. These should be named correctly already, and as this import is only intended to be done once, shouldn't need to be changed. This documentation is just here as a guide if this import function ever needs to be extended.)
+> On Heroku these files are stored in the **`/temp`** directory.
+So we do the same on `localhost`, store them in **`club-soda-guide/temp`**.
 
-If you do need to import more venues, use this script as a guide, but you will most likely have to create a new one based on the format of the csv file.
 
-After new venues have been imported, you may have to run `mix run priv/repo/update_cs_score.exs` if any drinks were attached to venues as part of the upload process.
+The files should be named correctly
+such that the format of the file
+matches the function that will be calling it.
+(That is, the brands file should be `brands.csv`,
+  drinks `drinks.csv`
+  and the venues `venues_1.csv`,
+  `venues_2.csv`
+  or `venues_3.csv`,
+  depending on which format it is.
+These should be named correctly already,
+and as this import is only intended to be done once,
+shouldn't need to be changed.
+This documentation is just here as a guide
+if this import function ever needs to be extended.)
+
+If you do need to import more venues, use this script as a guide,
+but you will most likely have to create a new one
+based on the format of the csv file.
+
+After new venues have been imported, you may have to run
+`mix run priv/repo/update_cs_score.exs`
+if any drinks were attached to venues as part of the upload process.
 
 
 
