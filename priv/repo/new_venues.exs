@@ -216,19 +216,14 @@ defmodule CsGuide.NewVenues do
   end
 
   defp sanitise_url(map, venue, key) do
-    IO.inspect(map, label: "map")
-    IO.inspect(venue, label: "venue")
-
     if Map.has_key?(venue, key) && Map.get(venue, key) != "" do
 
       url = Map.get(venue, key)
-      |> to_string()
       |> String.downcase() # e.g: Name.pubchain.com
       |> String.trim()
       |> String.replace("htttp", "http") # yep this is a thing ...
       |> String.replace(" ", "") # yep people typo spaces in urls ...
-
-      IO.inspect(url, label: "url")
+      |> String.replace(~r/http:\/[a-z]/, "http://") # if there is a url with only 1 / after http
 
       url = if url =~ "http://" || url =~ "https://" do
         url
