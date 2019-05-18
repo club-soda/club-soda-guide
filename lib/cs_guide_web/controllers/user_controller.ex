@@ -101,13 +101,4 @@ defmodule CsGuideWeb.UserController do
     #{Application.get_env(:cs_guide, :site_url)}/password/#{user.password_reset_token}/edit
     """
   end
-
-  # def delete(conn, %{"id" => id}) do
-  # user = Accounts.get_user!(id)
-  # {:ok, _user} = Accounts.delete_user(user)
-
-  # conn
-  # |> put_flash(:info, "User deleted successfully.")
-  # |> redirect(to: user_path(conn, :index))
-  # end
 end
