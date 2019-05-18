@@ -338,18 +338,17 @@ Also, some `.csv` files do not contain _all_ the fields
 in the database (venues) table
 e.g: **`num_cocktails`** is not present in the case of Berbomondsey.
 
-### 6. Add line to `new_venues.exs`
+### 6. Add line to `script_helpers.exs`
 
-Open the `priv/repo/new_venues.exs` file
-(_our venue importer script_)
-and search for the
-[`@venues`](https://github.com/club-soda/club-soda-guide/blob/master/priv/repo/new_venues.exs#L6)
+Open the `priv/repo/script_helpers.exs` file and find the
+[`venues/0`](https://github.com/club-soda/club-soda-guide/blob/master/priv/repo/script_helpers.ex#L4)
+function.
 map.
-The `@venues` map is a key-value lookup
+The `venues/0` function returns a map which is a key-value lookup
 of the chains of venues we have imported
 and the corresponding field names for the `csv` files.
 
-Add the following line to the `@venues` map:
+Add the following line to the map:
 
 ```elixir
 bermondsey_pub_company:
@@ -364,7 +363,7 @@ in our case the list of database column headers.
 the list of words should be on a single line.
 (_some horizontal scrolling may be required ..._)
 
-Save the file and `new_venues.exs` and prepare to _run_ it!
+Save the file and prepare to _run_ a script!
 
 
 ### 7. Run the `new_venues.exs` import script
@@ -496,6 +495,30 @@ After:
 
 The Craft Union Spreadsheet (and corresponding CSV file) has **298** rows (_discounting the header row_)
 ![image](https://user-images.githubusercontent.com/194400/57872225-260afc80-7803-11e9-82cc-0e8237d95912.png)
+
+### 11. Creating Venue Admins for existing venues
+
+In some cases you may have had to run a script to import venues that did not
+have an email addresses for the venue manager. If this has ever happened then
+you will have venues that do not have venue managers associated with them.
+
+In these cases you may be asked to create users for these venues at a later
+date. This is where `add_emails_to_existing_venues.exs` comes in. This script
+works in the same way as the above so you can follow steps 1-6 from above.
+Steps 7-9 are almost the same as above, the only difference is that you will
+need to replace all the `mix run priv/repo/new_venues.exs` calls with
+`mix run priv/repo/add_emails_to_existing_venues.exs`. That is the only
+difference!
+
+The script will check to see if a venue exists in our database. If it does, it
+will then check to see if the email from the csv file belongs to an existing
+user. If so, it associates that user with the existing venue. If the user
+doesn't exist, it creates a new user and add the association.
+
+In some cases, you may be asked to run this script but the csv will have a venue
+that doesn't exist in our database. In these cases the script will still run as
+expected but it will return a list of errors containing the list of venue names
+that do not exist in our database.
 
 
 ### _Superseded_
