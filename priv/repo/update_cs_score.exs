@@ -22,18 +22,33 @@ defmodule CsGuide.UpdateCsScore do
       )
 
     if venue.cs_score != calculatedScore && length(venue.drinks) != 0 do
-      Venue.update(
-        venue,
-        venue |> Map.from_struct() |> Map.merge(%{cs_score: calculatedScore})
-      )
-      [{venue.venue_name, venue.entry_id} | acc]
+      attrs =
+        venue
+        |> Map.from_struct()
+        |> Map.merge(%{cs_score: calculatedScore})
+
+      attrs = if attrs.users, do: Map.delete(attrs, :users)
+
+      update = Venue.update(venue, attrs)
+      case update do
+        {:error, changeset} ->
+          Map.update!(acc, :errors, &([changeset | &1]))
+        _ ->
+          Map.update!(acc, :updates, &([{venue.venue_name, venue.entry_id} | &1]))
+      end
     else
       acc
     end
   end
 end
 
+log_numbers = fn(map) ->
+  IO.inspect(length(map.errors), label: "number of errors")
+  IO.inspect(length(map.updates), label: "number of updates")
+end
+
 CsGuide.Resources.Venue.all()
 |> CsGuide.Resources.Venue.preload([:drinks, :venue_types, :users])
-|> Enum.reduce([], &CsGuide.UpdateCsScore.update_cs_score(&1, &2))
-|> IO.inspect(label: "Venues that had cs scores updated")
+|> Enum.reduce(%{errors: [], updates: []}, &CsGuide.UpdateCsScore.update_cs_score(&1, &2))
+|> IO.inspect(label: "Updates and errors", limit: :infinity)
+|> log_numbers.()
