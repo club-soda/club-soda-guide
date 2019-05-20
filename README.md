@@ -157,6 +157,7 @@ corresponding URLs:
 - Wholesalers `/admin/wholesalers`
 - Static Pages `/admin/static_pages`
 - Sponsors `/admin/sponsor`
+- Searches log `/admin/searchlog`
 
 All of these links are also available by visiting `/admin`.
 
@@ -383,6 +384,22 @@ This is what you will see on the page:
 As you can see, some of these elements already have default styling for sizing.
 However if you wish to style an element in an alternative way to what you see here
 you can use [inline styling](https://www.w3schools.com/css/css_howto.asp).
+
+## Searches Log
+
+In order for the Club Soda team to better understand how they can improve their
+site functionality and content, we have begun to _anonymously_ keep track of
+the search terms used in the search bar on the homepage to see what kind of
+information is useful to visitors.
+
+The log of _anonimised_ search queries can be found at `/admin/searchlog`.
+
+
+## Create Site Admin
+
+Any member of the CS team can create new admin users.
+
+This can be done through the admin dashboard or `/admin/users/new-site-admin`.
 
 
 <hr />
