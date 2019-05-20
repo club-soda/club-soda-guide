@@ -560,7 +560,12 @@ After new venues have been imported, you may have to run
 `mix run priv/repo/update_cs_score.exs`
 if any drinks were attached to venues as part of the upload process.
 
+## Update Club Soda scores for venues
 
+After new venues have been imported, you may have to run
+`mix run priv/repo/update_cs_score.exs`
+if any drinks were attached to venues as part of the upload process. This script
+will update all incorrect `cs_score` values.
 
 ## Creating Admin Users
 
