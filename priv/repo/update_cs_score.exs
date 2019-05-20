@@ -2,7 +2,7 @@ defmodule CsGuide.UpdateCsScore do
   alias CsGuide.Resources.{Venue, Drink}
   import Ecto.Query, only: [from: 2, subquery: 1]
 
-  def update_cs_score(venue) do
+  def update_cs_score(venue, acc) do
     query = fn s, m ->
       sub =
         from(mod in Map.get(m.__schema__(:association, s), :queryable),
@@ -21,15 +21,19 @@ defmodule CsGuide.UpdateCsScore do
         venue.num_cocktails
       )
 
-    if venue.cs_score != calculatedScore && map_size(venue.drinks) != 0 do
+    if venue.cs_score != calculatedScore && length(venue.drinks) != 0 do
       Venue.update(
         venue,
         venue |> Map.from_struct() |> Map.merge(%{cs_score: calculatedScore})
       )
+      [{venue.venue_name, venue.entry_id} | acc]
+    else
+      acc
     end
   end
 end
 
 CsGuide.Resources.Venue.all()
 |> CsGuide.Resources.Venue.preload([:drinks, :venue_types, :users])
-|> Enum.map(&CsGuide.UpdateCsScore.update_cs_score(&1))
+|> Enum.reduce([], &CsGuide.UpdateCsScore.update_cs_score(&1, &2))
+|> IO.inspect(label: "Venues that had cs scores updated")
