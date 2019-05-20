@@ -64,7 +64,7 @@ defmodule CsGuide.NewVenues do
           |> Map.put(:postcode, postcode)
           |> Map.put(:address, String.trim(address))
           |> add_drinks_to_map(drinks)
-          # |> add_users_to_map(v)
+          |> add_users_to_map(v)
           |> add_lat_long_to_map(postcode)
           |> Venue.insert()
           |> case do
