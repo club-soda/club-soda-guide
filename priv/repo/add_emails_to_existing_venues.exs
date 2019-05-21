@@ -17,6 +17,7 @@ defmodule CsGuide.AddEmailsToExistingVenues do
 
     csv
     |> ScriptHelpers.csv_to_list_of_maps(venue_keys) #
+    |> add_area_to_address(filename)
     |> Enum.reduce([], fn v, acc ->
       [_address, postcode] = ScriptHelpers.get_address_and_postcode(v)
 
@@ -63,6 +64,19 @@ defmodule CsGuide.AddEmailsToExistingVenues do
       end
     end)
     |> IO.inspect(label: "===> ")
+  end
+
+  # function specifically for cosy club csv
+  defp add_area_to_address(venue_maps, filename) do
+    if filename == :cosy_club do
+      Enum.map(venue_maps, fn(venue_map) ->
+        [town, _] = String.split(venue_map.email, "bookings")
+        town = String.capitalize(town)
+        %{venue_map | venue_name: venue_map.venue_name <> " " <> town}
+      end)
+    else
+      venue_maps
+    end
   end
 end
 

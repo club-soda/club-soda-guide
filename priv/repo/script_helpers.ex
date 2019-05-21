@@ -41,6 +41,10 @@ defmodule CsGuide.ScriptHelpers do
         ~w(venue_name address city postcode venue_types parent_company website facebook twitter drink_1 drink_2 drink_3 drink_4 drink_5 drink_6 drink_7 drink_8 drink_9)a,
       brewdog:
         ~w(venue_name venue_types parent_company address city postcode phone_number email description website facebook twitter instagram nil drink_1 drink_2 drink_3)a,
+      lounges:
+        ~w(venue_name address phone_number email description website facebook twitter nil drink_1 drink_2 drink_3 drink_4 drink_5 drink_6)a,
+      cosy_club:
+        ~w(venue_name address phone_number email description website nil drink_1 drink_2 drink_3 drink_4 drink_5 drink_6)a,
     }
   end
 
