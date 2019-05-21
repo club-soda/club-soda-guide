@@ -350,40 +350,60 @@ so they no longer display on the landing page.
 
 ### Static Pages
 
-When you create a static page, you have the ability to write HTML or markdown in
-the body field:
+CS admins have the ability to add additional pages of content to the website.  
+These pages do not have interactive elements and are mostly informative (such as
+  legal pages and 'About Us' style pages).
+
+When you create a static page, you only have to fill in two mandatory fields:
+page _title_ and page _body_.
+
+You have the ability to write HTML or markdown in the body field.
+
+The following elements are supported:
 
 ```
-<h1> h1 text </h1>
-<h2> h2 text </h2>
-<h3> h3 text </h3>
-<p> p text </p>
-<strong> strong text </strong>
+<h1> Top level h1 headers </h1>
+<h2> h2 headers </h2>
+<h3> h3 headers </h3>
+<p> paragraph text </p>
+<strong> strong/bold text </strong>
 <i> italic text </i>
 
 <ul>
+  <li>Unordered lists</li>
   <li>Coffee</li>
   <li>Tea</li>
   <li>Milk</li>
 </ul>
 
+<br>
+
 <ol>
+  <li>Ordered lists</li>
   <li>Coffee</li>
   <li>Tea</li>
   <li>Milk</li>
 </ol>
 
-# h1 markdown
+# Markdown options are also available - this is an h1 level header
 ## h2 markdown
 ### h3 markdown
 ```
 
 This is what you will see on the page:
-![rendered html from body example](https://user-images.githubusercontent.com/15571853/55817371-510b7d80-5aec-11e9-9bc2-f2c4b5dc1b53.png)
+![rendered html from body example](https://user-images.githubusercontent.com/4185328/58089959-fcb0ee80-7bbd-11e9-8907-3b1e419472ad.png)
+
 
 As you can see, some of these elements already have default styling for sizing.
 However if you wish to style an element in an alternative way to what you see here
 you can use [inline styling](https://www.w3schools.com/css/css_howto.asp).
+
+If you'd like to know a little more markdown, [this 'cheat sheet' is very useful](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
+
+You can also choose to add this page to the Club Soda Guide main menu
+(across the top of the website) or to the footer. Furthermore, you can choose to
+give the page a 'Browser title' - this is what will appear in the browser tab
+when visitors navigate to this page.
 
 ## Searches Log
 
