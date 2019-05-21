@@ -499,7 +499,7 @@ The Craft Union Spreadsheet (and corresponding CSV file) has **298** rows (_disc
 ### 11. Creating Venue Admins for existing venues
 
 In some cases you may have had to run a script to import venues that did not
-have an email addresses for the venue manager. If this has ever happened then
+have email addresses for the venue manager. If this has ever happened then
 you will have venues that do not have venue managers associated with them.
 
 In these cases you may be asked to create users for these venues at a later
