@@ -49,6 +49,38 @@ defmodule CsGuideWeb.BrandControllerTest do
     brand
   end
 
+  describe "testing meta tags on brands pages" do
+    test "heineken meta tag", %{conn: conn} do
+      create_brand("heineken")
+      conn = get(conn, "/brands/heineken")
+      assert html_response(conn, 200) =~ "Heineken 0.0 is twice brewed and fermented with "
+    end
+
+    test "old mout meta tag", %{conn: conn} do
+      create_brand("old-mout")
+      conn = get(conn, "/brands/old-mout")
+      assert html_response(conn, 200) =~ "Old Mout Alcohol Free Berries"
+    end
+
+    test "punchy drinks meta tag", %{conn: conn} do
+      create_brand("punchy-drinks")
+      conn = get(conn, "/brands/punchy-drinks")
+      assert html_response(conn, 200) =~ "PUNCHY are an independent start up who make alcohol"
+    end
+
+    test "shrb drinks meta tag", %{conn: conn} do
+      create_brand("shrb")
+      conn = get(conn, "/brands/shrb")
+      assert html_response(conn, 200) =~ "/shrb... for the perfect non-alcoholic drink"
+    end
+
+    test "genie-living-drinks-co drinks meta tag", %{conn: conn} do
+      create_brand("genie-living-drinks-co")
+      conn = get(conn, "/brands/genie-living-drinks-co")
+      assert html_response(conn, 200) =~ "Genie Living Drinks produce delicious natural"
+    end
+  end
+
   describe "index" do
     test "cannot access page if not logged in", %{conn: conn} do
       conn = get(conn, brand_path(conn, :index))
@@ -62,6 +94,7 @@ defmodule CsGuideWeb.BrandControllerTest do
     test "lists all brands", %{conn: conn} do
       conn = get(conn, brand_path(conn, :index))
       assert html_response(conn, 200) =~ "Brands"
+      assert html_response(conn, 200) =~ "Search for the best low and no alcohol brands, including wines, beers, and spirits"
     end
   end
 
@@ -178,5 +211,15 @@ defmodule CsGuideWeb.BrandControllerTest do
   defp create_brand(_) do
     brand = fixture(:brand)
     {:ok, brand: brand}
+  end
+
+  defp create_brand(brand_name) when is_binary(brand_name) do
+    params =
+      @create_attrs
+      |> Map.put(:name, brand_name)
+
+    %Brand{}
+    |> Brand.changeset(params)
+    |> Brand.insert()
   end
 end

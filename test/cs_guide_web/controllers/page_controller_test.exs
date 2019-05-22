@@ -26,8 +26,8 @@ defmodule CsGuideWeb.PageControllerTest do
     test "GET /", %{conn: conn, venue: _venue} do
       conn = get(conn, "/")
 
-      assert html_response(conn, 200) =~
-               "The best low and no alcohol drinks and where to find them"
+      assert html_response(conn, 200) =~ "The best low and no alcohol drinks and where to find them"
+      assert html_response(conn, 200) =~ "The Club Soda Guide is the UK’s first directory for low and no alcohol drinks, and the best places to find them."
     end
 
     test "Favourite venue shows", %{conn: conn, venue: _venue} do
