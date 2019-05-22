@@ -39,6 +39,26 @@ defmodule CsGuideWeb.StaticPageControllerTest do
     static_page
   end
 
+  describe "testing meta tags" do
+    test "contact meta tag", %{conn: conn} do
+      create_static_page("contact")
+      conn = get(conn, "/contact")
+      assert html_response(conn, 200) =~ "Get in touch with us by email or on social media"
+    end
+
+    test "about-us meta tag", %{conn: conn} do
+      create_static_page("About-us")
+      conn = get(conn, "/about-us")
+      assert html_response(conn, 200) =~ "Club Soda is a mindful drinking movement of indiv"
+    end
+
+    test "frequently-asked-questions meta tag", %{conn: conn} do
+      create_static_page("frequently-asked-questions")
+      conn = get(conn, "/frequently-asked-questions")
+      assert html_response(conn, 200) =~ "Find out more about the Club Soda Guide, the UK’s"
+    end
+  end
+
   describe "index" do
     test "cannot access page if not logged in", %{conn: conn} do
       conn = get(conn, static_page_path(conn, :index))
@@ -144,8 +164,20 @@ defmodule CsGuideWeb.StaticPageControllerTest do
     end
   end
 
-  defp create_static_page(_) do
+  defp create_static_page(arg) when is_map(arg) do
     static_page = fixture(:static_page)
     {:ok, static_page: static_page}
+  end
+
+  defp create_static_page(page_name) when is_binary(page_name) do
+    params =
+      @create_attrs
+      |> Map.put(:page_title, page_name)
+      |> Map.put(:title_in_menu, page_name)
+      |> Map.put(:browser_title, page_name)
+
+    %StaticPage{}
+    |> StaticPage.changeset(params)
+    |> StaticPage.insert()
   end
 end

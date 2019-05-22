@@ -52,6 +52,7 @@ defmodule CsGuideWeb.SearchVenueControllerTest do
       conn = get(conn, "/search/venues")
 
       assert html_response(conn, 200) =~ "The Favourite Pub"
+      assert html_response(conn, 200) =~ "Find the best UK venues for low and no alcohol drinks near you and see what they stock"
     end
 
     test "GET /search/venues contains expected venues", %{conn: conn} do

@@ -19,6 +19,7 @@ defmodule CsGuideWeb.SearchDrinkControllerTest do
     test "GET /search/drinks with term", %{conn: conn} do
       conn = get(conn, "/search/drinks?term=beer")
       assert html_response(conn, 200) =~ "AF Beer 1"
+      assert html_response(conn, 200) =~ "Search from over 750 low and no alcohol drinks, including wines, beers, and spirits"
     end
   end
 
