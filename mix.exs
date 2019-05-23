@@ -20,7 +20,7 @@ defmodule CsGuide.Mixfile do
   def application do
     [
       mod: {CsGuide.Application, []},
-      extra_applications: [:logger, :runtime_tools, :ex_aws, :httpoison]
+      extra_applications: [:logger, :runtime_tools, :ex_aws, :httpoison, :sitemap]
     ]
   end
 
@@ -56,7 +56,8 @@ defmodule CsGuide.Mixfile do
       {:bamboo_smtp, "~> 1.6.0"},
       {:ecto_enum, "~> 1.2"},
       {:mime, "~> 1.2"},
-      {:sweet_xml, "~> 0.6"}
+      {:sweet_xml, "~> 0.6"},
+      {:sitemap, "~> 1.1"}
     ]
   end
 
