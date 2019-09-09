@@ -2,7 +2,7 @@ language: elixir
 elixir:
   - 1.7
 otp_release:
-  - 20.2.4
+  - 22
 env:
   - MIX_ENV=test
 cache:
