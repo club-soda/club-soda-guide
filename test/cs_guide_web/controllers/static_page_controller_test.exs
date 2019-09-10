@@ -56,7 +56,6 @@ defmodule CsGuideWeb.StaticPageControllerTest do
       create_static_page("frequently-asked-questions")
       conn = get(conn, "/frequently-asked-questions")
       assert html_response(conn, 200) =~ "Find out more about the Club Soda Guide, the UK’s"
-      assert html_response(conn, 200) =~ "<title>some browser title</title>"
     end
   end
 
@@ -131,6 +130,14 @@ defmodule CsGuideWeb.StaticPageControllerTest do
     test "renders form for editing chosen static page", %{conn: conn, static_page: static_page} do
       conn = get(conn, static_page_path(conn, :edit, static_page.page_title))
       assert html_response(conn, 200) =~ "Edit Static Page"
+    end
+  end
+
+  describe "Title page" do
+    test "title of static page is displayed", %{conn: conn} do
+      create_static_page("hello")
+      conn = get(conn, "/hello")
+      assert html_response(conn, 200) =~ "<title>hello</title>"
     end
   end
 
