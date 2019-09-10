@@ -133,6 +133,14 @@ defmodule CsGuideWeb.StaticPageControllerTest do
     end
   end
 
+  describe "Title page" do
+    test "title of static page is displayed", %{conn: conn} do
+      create_static_page("hello")
+      conn = get(conn, "/hello")
+      assert html_response(conn, 200) =~ "<title>hello</title>"
+    end
+  end
+
   describe "update static page" do
     setup [:create_static_page, :admin_login]
 
