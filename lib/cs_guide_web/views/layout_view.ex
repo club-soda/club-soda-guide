@@ -39,7 +39,7 @@ defmodule CsGuideWeb.LayoutView do
 
   def page_title(nil), do: "Club Soda Guide"
   def page_title(static_page) do
-    if String.trim(static_page.browser_title) == "" do
+    if String.trim(static_page.browser_title || "") == "" do
       "Club Soda Guide"
     else
       String.trim(static_page.browser_title)
