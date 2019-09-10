@@ -56,6 +56,7 @@ defmodule CsGuideWeb.StaticPageControllerTest do
       create_static_page("frequently-asked-questions")
       conn = get(conn, "/frequently-asked-questions")
       assert html_response(conn, 200) =~ "Find out more about the Club Soda Guide, the UK’s"
+      assert html_response(conn, 200) =~ "<title>some browser title</title>"
     end
   end
 

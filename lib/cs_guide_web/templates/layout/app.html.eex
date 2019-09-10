@@ -16,7 +16,7 @@
     <meta name="description" content="<%= meta_description(@conn) %>" >
     <meta name="author" content="">
 
-    <title>Club Soda Guide</title>
+    <title><%=page_title(assigns[:static_page])%></title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Slab" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/tachyons@4.10.0/css/tachyons.min.css"/>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
