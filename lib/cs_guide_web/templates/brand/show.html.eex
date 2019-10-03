@@ -22,7 +22,7 @@
 
     <div class="w-90 w-70-m w-50-l center">
       <%= if @brand.description do %>
-        <p class="pv3 lh5"><%= raw @brand.description %></p>
+        <p class="pv3 lh5"><%= raw text_to_html(@brand.description) %></p>
       <% else %>
         <%= if @is_authenticated do %>
           <div class="pb3">

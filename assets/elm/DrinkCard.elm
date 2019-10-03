@@ -48,7 +48,7 @@ drinkCard index d =
                                 ]
                             , p [ class "dib bg-cs-mint br2 ph3 pv2 white shadow-4 mv2" ] [ text <| String.fromFloat d.abv ++ "% ABV" ]
                             ]
-                        , p [ class "pv2 f6 lh6" ]
+                        , p [ class "pv2 f6 lh6 wrap", style "white-space" "pre-wrap" ]
                             [ text d.description
                             ]
                         ]
