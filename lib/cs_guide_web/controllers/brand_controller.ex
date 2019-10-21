@@ -184,13 +184,14 @@ defmodule CsGuideWeb.BrandController do
     |> Enum.flat_map(fn(drink) ->
       Enum.map(drink.drink_styles, fn(style) -> style.name end)
     end)
-    if Enum.empty?(brand_styles) do
-      nil
-    else
-      Enum.max_by(brand_styles, fn(style) ->
-        Enum.count(brand_styles, fn(s) -> s == style end)
-      end)
-    end
+    max_by_name(brand_styles)
+  end
+
+  defp max_by_name([]), do: nil
+  defp max_by_name(list) do
+    Enum.max_by(list, fn(item) ->
+      Enum.count(list, fn(i) -> i == item end)
+    end)
   end
 
   defp get_sorted_venues(ll, brand) do

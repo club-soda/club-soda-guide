@@ -218,20 +218,14 @@ defmodule CsGuideWeb.BrandControllerTest do
       }
       assert CsGuideWeb.BrandController.get_drink_style(brand) == "style1"
     end
+
+    test "return nil when list of styles is empty" do
+      assert CsGuideWeb.BrandController.get_drink_style(%{drinks: []}) == nil
+    end
   end
 
   defp create_brand(_) do
     brand = fixture(:brand)
     {:ok, brand: brand}
-  end
-
-  defp create_brand(brand_name) when is_binary(brand_name) do
-    params =
-      @create_attrs
-      |> Map.put(:name, brand_name)
-
-    %Brand{}
-    |> Brand.changeset(params)
-    |> Brand.insert()
   end
 end
