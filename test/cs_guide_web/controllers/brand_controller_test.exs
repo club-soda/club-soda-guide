@@ -208,6 +208,18 @@ defmodule CsGuideWeb.BrandControllerTest do
     end
   end
 
+  describe "Get the most common style of the brand" do
+    test "return the most common style for the brand" do
+      brand = %{
+          drinks: [
+            %{drink_styles: [%{name: "style1"}, %{name: "style2"}]},
+            %{drink_styles: [%{name: "style1"}, %{name: "style3"}]}
+          ]
+      }
+      assert BrandController.get_drink_style(brand) == "style1"
+    end
+  end
+
   defp create_brand(_) do
     brand = fixture(:brand)
     {:ok, brand: brand}
