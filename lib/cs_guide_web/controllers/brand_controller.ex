@@ -130,7 +130,8 @@ defmodule CsGuideWeb.BrandController do
     end)
   end
 
-  defp get_related_drinks(brand, drink_type) do
+  defp get_related_drinks(_brand, nil), do: []
+  defp get_related_drinks(brand, drink_style) do
     Drink.all()
     |> Drink.preload([
       :drink_images,
@@ -140,11 +141,12 @@ defmodule CsGuideWeb.BrandController do
       venues: [:venue_types, :venue_images]
     ])
     |> Enum.filter(fn d ->
-      Enum.any?(d.drink_types, fn t ->
-        t.name == drink_type
+      Enum.any?(d.drink_styles, fn t ->
+        t.name == drink_style
       end)
     end)
     |> Enum.reject(fn d -> d.brand.name == brand.name end)
+    |> Enum.sort_by(&(&1.weighting || 0), &>=/2)
     |> Enum.take(4)
   end
 
@@ -170,6 +172,25 @@ defmodule CsGuideWeb.BrandController do
             {acc_dtype, acc_count}
           end
       end
+    end)
+  end
+
+  @doc """
+  Returns the most common drink's style used by the brand
+  see issue #598
+  """
+  def get_drink_style(brand) do
+    brand.drinks
+    |> Enum.flat_map(fn(drink) ->
+      Enum.map(drink.drink_styles, fn(style) -> style.name end)
+    end)
+    |> max_by_name()
+  end
+
+  defp max_by_name([]), do: nil
+  defp max_by_name(list) do
+    Enum.max_by(list, fn(item) ->
+      Enum.count(list, fn(i) -> i == item end)
     end)
   end
 
@@ -202,11 +223,11 @@ defmodule CsGuideWeb.BrandController do
 
     if basic_brand_info != nil do
       brand = get_brand_info(basic_brand_info)
+      brand_style = get_drink_style(brand)
       {drink_type, _count} = get_drink_type(brand)
-
       %{
         brand: brand,
-        related_drinks: get_related_drinks(brand, drink_type),
+        related_drinks: get_related_drinks(brand, brand_style),
         dd_code: get_code("DryDrinker"),
         wb_code: get_code("WiseBartender"),
         drink_type: drink_type,

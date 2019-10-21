@@ -267,13 +267,18 @@ best quality, but other sizes will be stretched or cropped to fit.
 
 The brand page contains brand information and lists all the drinks belonging to
 a brand. It also includes the venues, wholesalers and retailers that stock or
-sell those drinks. There are two templates for brand pages, one for members and
+sell those drinks.
+
+The brand page also displays the "Related Products" section which contains drinks
+matching the most common style of the brand. The drinks are sorted by weight
+and the first four ones are displayed.
+
+There are two templates for brand pages, one for members and
 the other for non members. Membership status is a checkbox on the brand form.
 Members have the ability to add two brand images (a cover image and one in the
 body of text). Member pages also display social media links.
 
 To add a stockist, simply add a drink from this brand to the venue as you normally would.
-
 
 ## Retailers
 Retailers can be added in two ways:
