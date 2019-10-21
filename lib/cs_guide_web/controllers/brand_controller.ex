@@ -180,11 +180,11 @@ defmodule CsGuideWeb.BrandController do
   see issue #598
   """
   def get_drink_style(brand) do
-    brand_styles = brand.drinks
+    brand.drinks
     |> Enum.flat_map(fn(drink) ->
       Enum.map(drink.drink_styles, fn(style) -> style.name end)
     end)
-    max_by_name(brand_styles)
+    |> max_by_name()
   end
 
   defp max_by_name([]), do: nil
