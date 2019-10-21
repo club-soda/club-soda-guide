@@ -216,7 +216,7 @@ defmodule CsGuideWeb.BrandControllerTest do
             %{drink_styles: [%{name: "style1"}, %{name: "style3"}]}
           ]
       }
-      assert BrandController.get_drink_style(brand) == "style1"
+      assert CsGuideWeb.BrandController.get_drink_style(brand) == "style1"
     end
   end
 

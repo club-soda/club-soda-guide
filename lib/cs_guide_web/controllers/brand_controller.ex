@@ -130,6 +130,7 @@ defmodule CsGuideWeb.BrandController do
     end)
   end
 
+  defp get_related_drinks(_brand, nil), do: []
   defp get_related_drinks(brand, drink_style) do
     Drink.all()
     |> Drink.preload([
@@ -183,10 +184,13 @@ defmodule CsGuideWeb.BrandController do
     |> Enum.flat_map(fn(drink) ->
       Enum.map(drink.drink_styles, fn(style) -> style.name end)
     end)
-
-    Enum.max_by(brand_styles, fn(style) ->
-      Enum.count(brand_styles, fn(s) -> s == style end)
-    end)
+    if Enum.empty?(brand_styles) do
+      nil
+    else
+      Enum.max_by(brand_styles, fn(style) ->
+        Enum.count(brand_styles, fn(s) -> s == style end)
+      end)
+    end
   end
 
   defp get_sorted_venues(ll, brand) do
