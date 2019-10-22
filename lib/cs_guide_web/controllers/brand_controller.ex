@@ -189,9 +189,15 @@ defmodule CsGuideWeb.BrandController do
     |> max_by_name()
   end
 
-  defp max_by_name([]), do: nil
+  @doc """
+  Returns the most common element of a list
+  ## Example
+      iex> max_by_name(["one", "two", "one"])
+      "one
+  """
+  def max_by_name([]), do: nil
 
-  defp max_by_name(list) do
+  def max_by_name(list) do
     Enum.reduce(list, %{}, fn name, acc ->
       Map.update(acc, name, 1, &(&1 + 1))
     end)

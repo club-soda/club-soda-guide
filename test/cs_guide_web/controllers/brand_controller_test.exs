@@ -222,6 +222,11 @@ defmodule CsGuideWeb.BrandControllerTest do
     test "return nil when list of styles is empty" do
       assert CsGuideWeb.BrandController.get_drink_style(%{drinks: []}) == nil
     end
+
+    test "return most common element of a list" do
+      assert CsGuideWeb.BrandController.max_by_name(["one", "two", "one"]) == "one"
+      assert CsGuideWeb.BrandController.max_by_name([]) == nil
+    end
   end
 
   defp create_brand(_) do
