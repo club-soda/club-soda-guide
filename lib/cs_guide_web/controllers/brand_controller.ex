@@ -10,7 +10,8 @@ defmodule CsGuideWeb.BrandController do
   def index(conn, _params) do
     brands =
       Brand.all()
-      |> Enum.sort_by(&(String.first(&1.name)))
+      |> Enum.sort_by(&String.first(&1.name))
+
     render(conn, "index.html", brands: brands)
   end
 
@@ -131,6 +132,7 @@ defmodule CsGuideWeb.BrandController do
   end
 
   defp get_related_drinks(_brand, nil), do: []
+
   defp get_related_drinks(brand, drink_style) do
     Drink.all()
     |> Drink.preload([
@@ -181,17 +183,20 @@ defmodule CsGuideWeb.BrandController do
   """
   def get_drink_style(brand) do
     brand.drinks
-    |> Enum.flat_map(fn(drink) ->
-      Enum.map(drink.drink_styles, fn(style) -> style.name end)
+    |> Enum.flat_map(fn drink ->
+      Enum.map(drink.drink_styles, fn style -> style.name end)
     end)
     |> max_by_name()
   end
 
   defp max_by_name([]), do: nil
+
   defp max_by_name(list) do
-    Enum.max_by(list, fn(item) ->
-      Enum.count(list, fn(i) -> i == item end)
+    Enum.reduce(list, %{}, fn name, acc ->
+      Map.update(acc, name, 1, &(&1 + 1))
     end)
+    |> Enum.max_by(&elem(&1, 1))
+    |> elem(0)
   end
 
   defp get_sorted_venues(ll, brand) do
@@ -225,6 +230,7 @@ defmodule CsGuideWeb.BrandController do
       brand = get_brand_info(basic_brand_info)
       brand_style = get_drink_style(brand)
       {drink_type, _count} = get_drink_type(brand)
+
       %{
         brand: brand,
         related_drinks: get_related_drinks(brand, brand_style),
