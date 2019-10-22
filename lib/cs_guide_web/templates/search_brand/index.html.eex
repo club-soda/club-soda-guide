@@ -1,1 +1,25 @@
-<h1> Search Brands!!</h1>
+<div id="search-brand">
+    <div class="mt5 mt6-ns center mw-1500px">
+        <div class="w-90 center pl2-ns">
+            <div class="relative center">
+                <div class="flex-ns flex-wrap pt3 pb4-ns db dib-ns">
+                    <%= for member_brand <- @member_brands do %>
+                        <%= component("brand_card", brand: member_brand, conn: @conn) %>
+                    <% end %>
+                </div>
+            </div>
+
+            <div class="relative center pt3">
+                <div class="flex-ns flex-wrap pt3 pb4-ns db dib-ns">
+                    <%= for brand <- @brands do %>
+                        <div class="w-100 w-25-ns pb4 ph2-ns">
+                            <a class="cs-black no-underline pointer" href="<%= brand_path(@conn, :show, brand.slug) %>">
+                                <span class="f4 lh5 cs-black no-underline"><%= brand.name %></span>
+                            </a>
+                        </div>
+                    <% end %>
+                </div>
+            </div    
+        </div>
+    </div>
+</div>

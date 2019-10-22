@@ -6,10 +6,13 @@ defmodule CsGuideWeb.SearchBrandController do
   alias CsGuide.DiscountCode
 
   def index(conn, _params) do
-    brands =
+    %{true: member_brands, false: brands} =
       Brand.all()
+      |> Brand.preload(brand_images: [])
       |> Enum.sort_by(&String.first(&1.name))
+      |> Enum.group_by(& &1.member)
 
-    render(conn, "index.html", brands: brands)
+    IO.inspect(member_brands)
+    render(conn, "index.html", member_brands: member_brands, brands: brands)
   end
 end
