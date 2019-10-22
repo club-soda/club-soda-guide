@@ -152,29 +152,17 @@ defmodule CsGuideWeb.BrandController do
     |> Enum.take(4)
   end
 
-  defp get_drink_type(brand) do
+  @doc """
+  Returns the most common used drink type of a brand
+  This is used to define the background colour of the brand page
+  see issue #346 and the PR #384
+  """
+  def get_drink_type(brand) do
     brand.drinks
-    |> Enum.map(fn d ->
-      Enum.map(d.drink_types, fn t -> t.name end)
+    |> Enum.flat_map(fn drink ->
+      Enum.map(drink.drink_types, fn type -> type.name end)
     end)
-    |> List.flatten()
-    |> Enum.reduce(%{}, fn drink_type, acc ->
-      Map.update(acc, drink_type, 1, fn value -> value + 1 end)
-    end)
-    # Will assign brands with no drink_type background colour of spirits banner
-    |> Enum.reduce({"Spirits", 0}, fn {drink_type, count}, acc ->
-      case acc do
-        {} ->
-          {drink_type, count}
-
-        {acc_dtype, acc_count} ->
-          if count > acc_count do
-            {drink_type, count}
-          else
-            {acc_dtype, acc_count}
-          end
-      end
-    end)
+    |> max_by_name()
   end
 
   @doc """
@@ -235,7 +223,8 @@ defmodule CsGuideWeb.BrandController do
     if basic_brand_info != nil do
       brand = get_brand_info(basic_brand_info)
       brand_style = get_drink_style(brand)
-      {drink_type, _count} = get_drink_type(brand)
+      # Will assign brands with no drink_type background colour of spirits banner
+      drink_type = get_drink_type(brand) || "Spirits"
 
       %{
         brand: brand,
