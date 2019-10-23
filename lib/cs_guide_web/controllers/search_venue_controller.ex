@@ -50,7 +50,7 @@ defmodule CsGuideWeb.SearchVenueController do
       end)
     end)
     |> Enum.sort_by(&{5 - &1.cs_score, &1.venue_name})
-    |> Enum.map(&VenueController.sortImagesByMostRecent/1)
+    |> Enum.map(&VenueController.sort_images_by_most_recent/1)
     |> Enum.map(&selectPhotoNumber1/1)
     |> Enum.map(&Venue.get_venue_card/1)
   end

@@ -123,7 +123,7 @@ defmodule CsGuideWeb.BrandController do
     )
     |> Map.update(:venues, [], fn venues ->
       venues
-      |> Enum.map(&VenueController.sortImagesByMostRecent/1)
+      |> Enum.map(&VenueController.sort_images_by_most_recent/1)
     end)
     |> Map.update(:venues, [], fn venues ->
       venues
@@ -150,47 +150,6 @@ defmodule CsGuideWeb.BrandController do
     |> Enum.reject(fn d -> d.brand.name == brand.name end)
     |> Enum.sort_by(&(&1.weighting || 0), &>=/2)
     |> Enum.take(4)
-  end
-
-  @doc """
-  Returns the most common used drink type of a brand
-  This is used to define the background colour of the brand page
-  see issue #346 and the PR #384
-  """
-  def get_drink_type(brand) do
-    brand.drinks
-    |> Enum.flat_map(fn drink ->
-      Enum.map(drink.drink_types, fn type -> type.name end)
-    end)
-    |> max_by_name()
-  end
-
-  @doc """
-  Returns the most common drink's style used by the brand
-  see issue #598
-  """
-  def get_drink_style(brand) do
-    brand.drinks
-    |> Enum.flat_map(fn drink ->
-      Enum.map(drink.drink_styles, fn style -> style.name end)
-    end)
-    |> max_by_name()
-  end
-
-  @doc """
-  Returns the most common element of a list
-  ## Example
-      iex> max_by_name(["one", "two", "one"])
-      "one
-  """
-  def max_by_name([]), do: nil
-
-  def max_by_name(list) do
-    Enum.reduce(list, %{}, fn name, acc ->
-      Map.update(acc, name, 1, &(&1 + 1))
-    end)
-    |> Enum.max_by(&elem(&1, 1))
-    |> elem(0)
   end
 
   defp get_sorted_venues(ll, brand) do
@@ -222,9 +181,9 @@ defmodule CsGuideWeb.BrandController do
 
     if basic_brand_info != nil do
       brand = get_brand_info(basic_brand_info)
-      brand_style = get_drink_style(brand)
+      brand_style = Drink.get_drink_style(brand.drinks)
       # Will assign brands with no drink_type background colour of spirits banner
-      drink_type = get_drink_type(brand) || "Spirits"
+      drink_type = Drink.get_drink_type(brand.drinks) || "Spirits"
 
       %{
         brand: brand,
