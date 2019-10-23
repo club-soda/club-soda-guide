@@ -4,6 +4,11 @@
   <% end %>
   <div class="flex-ns items-center tl flex-wrap">
     <h1 class="roboto-slab f2 lh2 dib-ns mr4-ns"><%= @venue.venue_name %></h1>
+    <%= if @venue.draught do %>
+      <p class="dib mr4-ns ph3 pv1 br2 f5 lh5 mb3 mb0-ns bg-cs-yellow">
+        Draught 
+      </p>
+    <% end %>
     <%= for type <- @venue.venue_types do %>
       <p class="dib mr4-ns ph3 pv1 br2 f5 lh5 mb3 mb0-ns <%= background_colour_type(String.capitalize(type.name)) %>">
         <%= String.capitalize(type.name) %>
