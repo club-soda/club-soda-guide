@@ -216,16 +216,16 @@ defmodule CsGuideWeb.BrandControllerTest do
             %{drink_styles: [%{name: "style1"}, %{name: "style3"}]}
           ]
       }
-      assert CsGuideWeb.BrandController.get_drink_style(brand) == "style1"
+      assert CsGuide.Resources.Drink.get_drink_style(brand.drinks) == "style1"
     end
 
     test "return nil when list of styles is empty" do
-      assert CsGuideWeb.BrandController.get_drink_style(%{drinks: []}) == nil
+      assert CsGuide.Resources.Drink.get_drink_style([]) == nil
     end
 
     test "return most common element of a list" do
-      assert CsGuideWeb.BrandController.max_by_name(["one", "two", "one"]) == "one"
-      assert CsGuideWeb.BrandController.max_by_name([]) == nil
+      assert CsGuide.Resources.Drink.max_by_name(["one", "two", "one"]) == "one"
+      assert CsGuide.Resources.Drink.max_by_name([]) == nil
     end
   end
 
