@@ -84,7 +84,7 @@ defmodule CsGuideWeb.BrandControllerTest do
   describe "index" do
     test "cannot access page if not logged in", %{conn: conn} do
       conn = get(conn, brand_path(conn, :index))
-      assert html_response(conn, 200) =~ "Brands"
+      assert html_response(conn, 302)
     end
   end
 

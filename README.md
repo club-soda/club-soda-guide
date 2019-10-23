@@ -132,6 +132,11 @@ also to quickly unselect them
 
 ![drink-type-filter-pills](https://user-images.githubusercontent.com/4185328/52588512-8c633600-2e34-11e9-8b80-1c50048b2bd1.png)
 
+#### Brands
+The list of brands is split into two sections:
+- The first section display the brands as cards for member brands.
+- The second section diplay only the brands' name and is for non-member brands.
+
 # Admin Guide
 
 The Club Soda team has the ability to add, edit and delete various details to do with
