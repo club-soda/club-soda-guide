@@ -65,8 +65,4 @@ defmodule CsGuideWeb.VenueView do
     |> Enum.join("+")
   end
 
-  def order_drinks_by_type(drinks) do
-    drinks
-    |> Enum.sort_by(& &1.drink_types)
-  end
 end

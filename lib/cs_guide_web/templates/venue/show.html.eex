@@ -45,7 +45,7 @@
     <h1 class="roboto-slab f2 lh2 dib">Drinks at <%= @venue.venue_name %></h1>
     <div class="flex-ns flex-wrap justify-center pv4-ns">
       <!-- Drink cards -->
-      <%= for {drink, index} <- Enum.with_index(order_drinks_by_type(@venue.drinks)) do %>
+      <%= for {drink, index} <- Enum.with_index(@venue.drinks) do %>
         <%= component("drink_card", drink: drink, index: index, conn: @conn) %>
       <% end %>
       <!-- Cocktail card -->
