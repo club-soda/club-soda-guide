@@ -460,6 +460,16 @@ defmodule CsGuideWeb.VenueControllerTest do
       assert html_response(conn, 200) =~ "Venue A"
       assert html_response(conn, 200) =~ "Venue B"
     end
+
+    test "Draught pill displayed for venue A", %{conn: conn} do
+      conn = get(conn, venue_path(conn, :show, "venue-a-ec1a-7aa"))
+      assert html_response(conn, 200) =~ "Draught"
+    end
+
+    test "Draught pill not displayed for venue B", %{conn: conn} do
+      conn = get(conn, venue_path(conn, :show, "venue-b-e9-7lh"))
+      refute html_response(conn, 200) =~ "Draught"
+    end
   end
 
   describe "edit venue" do

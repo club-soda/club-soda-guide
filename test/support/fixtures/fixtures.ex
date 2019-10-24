@@ -23,7 +23,8 @@ defmodule CsGuide.Fixtures do
         venue_types: %{"Bars" => "on"},
         slug: "venue-a-ec1a-7aa",
         lat: "51.5162121774794",
-        long: "-0.101606872279769"
+        long: "-0.101606872279769",
+        draught: true
       },
       %{
         venue_name: "Venue B",
@@ -36,7 +37,8 @@ defmodule CsGuide.Fixtures do
         venue_types: %{"Bars" => "on"},
         slug: "venue-b-e1-7lh",
         lat: "51.5370697966524",
-        long: "-0.044906060143753"
+        long: "-0.044906060143753",
+        draught: false
       }
     ]
   end
