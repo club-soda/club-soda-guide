@@ -45,6 +45,7 @@ defmodule CsGuideWeb.Router do
     resources("/password", PasswordController, only: [:new, :create])
     resources("/password", PasswordController, only: [:edit, :update], param: "token")
     post("/accept_cookies/:path", CookieController, :accept_cookies)
+    resources("/contact-us", ContactUsController, only: [:new, :create])
   end
 
   scope "/search", CsGuideWeb do

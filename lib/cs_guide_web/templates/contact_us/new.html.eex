@@ -1,0 +1,30 @@
+<section class="mt3 pv5 w-90 w-75-ns center">
+    <h1 class="f3 lh3">Get in Touch</h1>
+    <div class="pv3 pr3 static-content">
+        <h1> Contact us!!!</h1>
+
+        <%= form_for @changeset, contact_us_path(@conn, :create), fn f -> %> 
+            <%= text_input f, :name, placeholder: "Name" %>
+            <div>
+                <%= error_tag f, :name %>
+            </div>
+            <%= email_input f, :email, placeholder: "Email" %>
+            <div>
+                <%= error_tag f, :email %>
+            </div>
+            <%= text_input f, :message, placeholder: "Message" %>
+            <div>
+                <%= error_tag f, :message %>
+            </div>
+            <%= checkbox f, :gdpr %> 
+            <span>
+                I consent to having this website store my submitted information
+                so they can respond to my enquiry.
+            </span>
+            <div>
+                <%= error_tag f, :gdpr %>
+            </div>
+            <%= submit "Send message" %>
+        <% end %>
+    </div>
+</section>

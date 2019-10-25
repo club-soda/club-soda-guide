@@ -43,6 +43,7 @@
           <a href="/search/venues" class="db f5 lh5 pl3 pt2 pb3 cs-black no-underline">Venues</a>
           <a href="/users/new" class="db f5 lh5 pl3 pt2 pb3 cs-black no-underline">List a Venue</a>
           <a href="/search/brands" class="db f5 lh5 pl3 pt2 pb3 cs-black no-underline">Brands</a>
+          <a href=<%= contact_us_path(@conn, :new) %> class="db f5 lh5 pl3 pt2 pb3 cs-black no-underline">Contact Us</a>
           <%= for page <- @static_page_links do %>
             <%= if page.display_in_menu do %>
               <%= link page.title_in_menu, to: static_page_path(@conn, :show, change_spaces_to_dashes(page.page_title)), class: "db f5 lh5 pl3 pt2 pb3 cs-black no-underline" %>
@@ -68,6 +69,7 @@
           <a href="/search/venues" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Venues</a>
           <a href="/users/new" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">List a Venue</a>
           <a href="/search/brands" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Brands</a>
+          <a href=<%= contact_us_path(@conn, :new) %> class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Contact Us</a>
           <%= for page <- @static_page_links do %>
             <%= if page.display_in_menu do %>
               <%= link page.title_in_menu, to: static_page_path(@conn, :show, change_spaces_to_dashes(page.page_title)), class: "f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2" %>
