@@ -506,6 +506,23 @@ select {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#333333', endColorstr='#80ffffff',GradientType=1 ); /* IE6-9 */
 }
 
+/* contact us page */
+
+.contact-us-message {
+ resize: none;
+ height: 10em;
+}
+
+.bg-contact-us {
+  background: -moz-linear-gradient(top, rgba(17,17,17,0.59) 0%, rgba(89,89,89,0.59) 11%, rgba(102,102,102,0.59) 53%, rgba(102,102,102,0.59) 71%, rgba(71,71,71,0.59) 88%, rgba(28,28,28,0.59) 99%, rgba(19,19,19,0.59) 100%), url("/images/contact-us-image.jpg"); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(17,17,17,0.59) 0%,rgba(89,89,89,0.59) 11%,rgba(102,102,102,0.59) 53%,rgba(102,102,102,0.59) 71%,rgba(71,71,71,0.59) 88%,rgba(28,28,28,0.59) 99%,rgba(19,19,19,0.59) 100%), url("/images/contact-us-image.jpg"); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(17,17,17,0.59) 0%,rgba(89,89,89,0.59) 11%,rgba(102,102,102,0.59) 53%,rgba(102,102,102,0.59) 71%,rgba(71,71,71,0.59) 88%,rgba(28,28,28,0.59) 99%,rgba(19,19,19,0.59) 100%), url("/images/contact-us-image.jpg"); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#96111111', endColorstr='#96131313',GradientType=0 ); /* IE6-9 */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
 /* Landing page bg images END */
 
 .absolute-center {

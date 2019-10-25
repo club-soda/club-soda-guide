@@ -16,9 +16,8 @@ defmodule CsGuideWeb.ContactUsController do
     changeset = ContactUs.changeset(%ContactUs{}, message)
     # send email if form validation valid
     if changeset.valid? do
-      IO.inspect(changeset.changes)
-     # CsGuide.Email.send_contact_form_email(changeset.changes.name, changeset.changes.email, changeset.changes.message)
-     # |> @mailer.deliver_now()
+      CsGuide.Email.send_contact_form_email(changeset.changes.name, changeset.changes.email, changeset.changes.message)
+      |> @mailer.deliver_now()
 
       # reset changeset for empty form
       changeset = ContactUs.changeset(%ContactUs{}, %{})
@@ -28,7 +27,6 @@ defmodule CsGuideWeb.ContactUsController do
       # to display the error on the form Phoenix check the action property
       # as we do not use Repo for the contact form we need to craete the action manually
       {_, changeset} = Ecto.Changeset.apply_action(changeset, :insert)
-      IO.inspect(changeset)
       render(conn, "new.html", changeset: changeset)
     end
   end

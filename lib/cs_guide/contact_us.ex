@@ -19,8 +19,4 @@ defmodule CsGuide.ContactUs do
     |> validate_acceptance(:gdpr)
     |> validate_format(:email, email_regex)
   end
-
-  def send_message(attrs \\ %{}) do
-    {:ok, "message has been sent"}
-  end
 end

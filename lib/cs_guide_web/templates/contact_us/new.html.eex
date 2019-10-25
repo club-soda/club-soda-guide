@@ -1,30 +1,58 @@
-<section class="mt3 pv5 w-90 w-75-ns center">
-    <h1 class="f3 lh3">Get in Touch</h1>
-    <div class="pv3 pr3 static-content">
-        <h1> Contact us!!!</h1>
+<section class="mt5 mt6-ns center mw-1500px">
+    <div class="flex items-center justify-between">
+        <div class="w-40 social-links">
+            <a href="">
+                <img src="<%= static_path(@conn, "/images/facebook.png") %>" alt="facebook icon" class="w3 db pt2 pointer">
+            </a>
 
-        <%= form_for @changeset, contact_us_path(@conn, :create), fn f -> %> 
-            <%= text_input f, :name, placeholder: "Name" %>
-            <div>
-                <%= error_tag f, :name %>
-            </div>
-            <%= email_input f, :email, placeholder: "Email" %>
-            <div>
-                <%= error_tag f, :email %>
-            </div>
-            <%= text_input f, :message, placeholder: "Message" %>
-            <div>
-                <%= error_tag f, :message %>
-            </div>
-            <%= checkbox f, :gdpr %> 
-            <span>
-                I consent to having this website store my submitted information
-                so they can respond to my enquiry.
-            </span>
-            <div>
-                <%= error_tag f, :gdpr %>
-            </div>
-            <%= submit "Send message" %>
-        <% end %>
+           
+            <a href="">
+                <img src="<%= static_path(@conn, "/images/twitter.png") %>" alt="twitter icon" class="w3 db pt2 pointer">
+            </a>
+
+            <a href="">
+                <img src="<%= static_path(@conn, "/images/instagram.png") %>" alt="instagram icon" class="w3 db pt2 pointer">
+            </a>
+
+            <a href="">
+                <img src="<%= static_path(@conn, "/images/youtube.png") %>" alt="youtube icon" class="w3 db pt2 pointer">
+            </a>
+        </div>
+
+        <div class="w-40-ns tc">
+            <h2 class="f2 cs-pink">Get in Touch</h2>
+            <%= form_for @changeset, contact_us_path(@conn, :create), fn f -> %>
+                <div class="flex flex-column items-center">
+                    <div class="w-100 pa2">
+                        <%= text_input f, :name, placeholder: "Name", class: "w-80 pa2" %>
+                        <%= error_tag f, :name %>
+                    </div>
+
+                    <div class="w-100 pa2">
+                        <%= email_input f, :email, placeholder: "Email", class: "w-80 pa2", required: true %>
+                        <%= error_tag f, :email %>
+                    </div>
+                   
+                    <div class="w-100 pa2">
+                        <%= textarea f, :message, placeholder: "Message", class: "w-80 contact-us-message", required: true %>
+                        <%= error_tag f, :message %>
+                    </div>
+
+                    <div class="w-100 pa2"> 
+                        <div class="w-80 center">
+                            <%= checkbox f, :gdpr, required: true, class: "pointer" %> 
+                            <span>
+                                I consent to having this website store my submitted information
+                                so they can respond to my enquiry.
+                            </span>
+                            <%= error_tag f, :gdpr %>
+                        </div>
+                    </div>
+                    <div class="w-100 pa2">
+                        <%= submit "Send", class: "bg-cs-pink white f5 lh5 ph3 ph2-m pv2 br2 ba b--cs-pink pointer" %>
+                    </div>
+                </div>
+            <% end %>
+        </div>
     </div>
 </section>
