@@ -1,3 +1,4 @@
+<div class="bg-contact-us pb6">
 <section class="mt5 mt6-ns center mw-1500px">
     <div class="flex items-center justify-between">
         <div class="w-40 social-links">
@@ -22,7 +23,7 @@
             </a>
         </div>
 
-        <div class="w-40-ns tc">
+        <div class="w-40-ns tc pt3">
             <h2 class="f2 cs-pink">Get in Touch</h2>
             <%= form_for @changeset, contact_us_path(@conn, :create), fn f -> %>
                 <div class="flex flex-column items-center">
@@ -62,3 +63,4 @@
         </div>
     </div>
 </section>
+</div>
