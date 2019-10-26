@@ -43,6 +43,7 @@
           <a href="/search/venues" class="db f5 lh5 pl3 pt2 pb3 cs-black no-underline">Venues</a>
           <a href="/users/new" class="db f5 lh5 pl3 pt2 pb3 cs-black no-underline">List a Venue</a>
           <a href="/search/brands" class="db f5 lh5 pl3 pt2 pb3 cs-black no-underline">Brands</a>
+          <a href=<%= contact_us_path(@conn, :new) %> class="db f5 lh5 pl3 pt2 pb3 cs-black no-underline">Contact Us</a>
           <%= for page <- @static_page_links do %>
             <%= if page.display_in_menu do %>
               <%= link page.title_in_menu, to: static_page_path(@conn, :show, change_spaces_to_dashes(page.page_title)), class: "db f5 lh5 pl3 pt2 pb3 cs-black no-underline" %>
@@ -68,6 +69,7 @@
           <a href="/search/venues" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Venues</a>
           <a href="/users/new" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">List a Venue</a>
           <a href="/search/brands" class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Brands</a>
+          <a href=<%= contact_us_path(@conn, :new) %> class="f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2">Contact Us</a>
           <%= for page <- @static_page_links do %>
             <%= if page.display_in_menu do %>
               <%= link page.title_in_menu, to: static_page_path(@conn, :show, change_spaces_to_dashes(page.page_title)), class: "f5 lh5 ph2 ph4-ns pv2 cs-black no-underline br2" %>
@@ -91,7 +93,7 @@
       <span class="logo"></span>
     </header>
 
-    <main role="main" class="body-container relative">
+    <main role="main" class="relative">
       <p class="pl3 lh4 b alert alert-info absolute top-0 left-0 right-0 z-1" role="alert"><%= get_flash(@conn, :info)%></p>
       <p class="pl3 lh4 b alert alert-info absolute top-0 left-0 right-0 z-1" role="alert"><%= get_flash(@conn, :error)%></p>
 
@@ -113,7 +115,7 @@
 
       <%= render @view_module, @view_template, assigns %>
     </main>
-    <footer class="mt6 pv5 pv-6rem-ns bg-footer">
+    <footer class="pv5 pv-6rem-ns bg-footer">
       <div class="w-90 w-75-ns h-100 center flex">
         <div class="dib w-30 w-10-ns pr4 pr0-ns h-100 relative">
           <img src="<%= static_path(@conn, "/images/cs-logo-min.png") %>" alt="Club Soda Logo" class="w-100 absolute-vertical-center-ns">
