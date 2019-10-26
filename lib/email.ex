@@ -15,7 +15,7 @@ defmodule CsGuide.Email do
     #{message}
     """
     new_email()
-    |> to(System.get_env("SENDERS_EMAIL"))
+    |> to(System.get_env("CONTACT_FORM_EMAIL"))
     |> subject("New Club Soda Guide message")
     |> from(System.get_env("SENDERS_EMAIL"))
     |> text_body(message)

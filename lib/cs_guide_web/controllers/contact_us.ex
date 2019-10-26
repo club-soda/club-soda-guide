@@ -6,7 +6,7 @@ defmodule CsGuideWeb.ContactUsController do
 
   def new(conn, _params) do
     changeset = ContactUs.changeset(%ContactUs{}, %{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: changeset, message_sent: false)
   end
 
   @doc """
@@ -27,7 +27,7 @@ defmodule CsGuideWeb.ContactUsController do
       # to display the error on the form Phoenix check the action property
       # as we do not use Repo for the contact form we need to craete the action manually
       {_, changeset} = Ecto.Changeset.apply_action(changeset, :insert)
-      render(conn, "new.html", changeset: changeset)
+      render(conn, "new.html", changeset: changeset, message_sent: false)
     end
   end
 end
