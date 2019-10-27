@@ -137,6 +137,12 @@ The list of brands is split into two sections:
 - The first section display the brands as cards for member brands.
 - The second section diplay only the brands' name and is for non-member brands.
 
+### Contact Form
+![image](https://user-images.githubusercontent.com/6057298/67619558-ff5ee200-f7f4-11e9-9ede-0580014029d7.png)
+
+The contact form allows users to send an email to the Club Soda team.
+The form is composed with name (optional), email and message fields.
+
 # Admin Guide
 
 The Club Soda team has the ability to add, edit and delete various details to do with
