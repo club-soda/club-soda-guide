@@ -187,7 +187,6 @@ defmodule CsGuideWeb.BrandController do
     if basic_brand_info != nil do
       brand = get_brand_info(basic_brand_info)
       brand_style = Drink.get_drink_style(brand.drinks)
-      IO.inspect(brand.drinks)
       # Will assign brands with no drink_type background colour of spirits banner
       drink_type = Drink.get_drink_type(brand.drinks) || "Spirits"
 
