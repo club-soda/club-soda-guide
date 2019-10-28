@@ -95,6 +95,11 @@ stocklist form. Hint: these count towards you Club Soda Score!
 
 ![alcohol-free-cocktails-box](https://user-images.githubusercontent.com/4185328/58052152-026dec00-7b4c-11e9-9279-c89261a23fe1.png)
 
+The drinks on the venue page are grouped and displayed with the following order:
+
+Beer, Cider, Wine, Spirits & Premixed, Soft Drink, Tonics & Mixers
+
+:warning: This order is hardcoded, so admins should make sure to use the case and spelling for these drink types :warning:
 
 ### Searching
 
