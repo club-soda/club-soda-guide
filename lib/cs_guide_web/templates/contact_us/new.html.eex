@@ -2,23 +2,23 @@
 <section class="mt5 mt6-ns center mw-1500px">
     <div class="flex items-center justify-between">
         <div class="w-40 social-links">
-            <a href="http://www.facebook.com/clubsodaguide">
+            <a href="http://www.facebook.com/clubsodaguide" target="_blank">
                 <img src="<%= static_path(@conn, "/images/facebook.png") %>" alt="facebook icon" class="w3 db pt2 pointer">
             </a>
 
-            <a href="http://www.twitter.com/clubsodaguide">
+            <a href="http://www.twitter.com/clubsodaguide" target="_blank">
                 <img src="<%= static_path(@conn, "/images/twitter.png") %>" alt="twitter icon" class="w3 db pt2 pointer">
             </a>
 
-            <a href="http://www.instagram.com/clubsodaguide">
+            <a href="http://www.instagram.com/clubsodaguide" target="_blank">
                 <img src="<%= static_path(@conn, "/images/instagram.png") %>" alt="instagram icon" class="w3 db pt2 pointer">
             </a>
 
-            <a href="https://www.youtube.com/channel/UCvR4rMt13bK8dwX-6gDiwAA/feed">
+            <a href="https://www.youtube.com/channel/UCFaaOD8V84NZTilAvnxzO4w" target="_blank">
                 <img src="<%= static_path(@conn, "/images/youtube.png") %>" alt="youtube icon" class="w3 db pt2 pointer">
             </a>
 
-            <a href="https://www.linkedin.com/company/club-soda-uk/">
+            <a href="https://www.linkedin.com/company/club-soda-uk/" target="_blank">
                 <img src="<%= static_path(@conn, "/images/linkedin.png") %>" alt="linkedin icon" class="w3 db pt2 pointer">
             </a>
         </div>
