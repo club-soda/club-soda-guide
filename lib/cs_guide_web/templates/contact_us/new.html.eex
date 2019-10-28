@@ -22,7 +22,6 @@
                 <img src="<%= static_path(@conn, "/images/linkedin.png") %>" alt="linkedin icon" class="w3 db pt2 pointer">
             </a>
         </div>
-
         <div class="w-40-ns tc pt3">
             <h2 class="f2 cs-pink">Get in Touch</h2>
             <%= form_for @changeset, contact_us_path(@conn, :create), fn f -> %>
