@@ -129,6 +129,11 @@ defmodule CsGuideWeb.BrandController do
       venues
       |> Enum.map(&SearchVenueController.selectPhotoNumber1/1)
     end)
+    |> Map.update(:drinks, [], fn drinks ->
+      Enum.map(drinks, fn drink ->
+        %{drink | drink_images: Enum.sort_by(drink.drink_images, &(&1.id), &>=/2) }
+      end)
+    end)
   end
 
   defp get_related_drinks(_brand, nil), do: []
@@ -182,6 +187,7 @@ defmodule CsGuideWeb.BrandController do
     if basic_brand_info != nil do
       brand = get_brand_info(basic_brand_info)
       brand_style = Drink.get_drink_style(brand.drinks)
+      IO.inspect(brand.drinks)
       # Will assign brands with no drink_type background colour of spirits banner
       drink_type = Drink.get_drink_type(brand.drinks) || "Spirits"
 
