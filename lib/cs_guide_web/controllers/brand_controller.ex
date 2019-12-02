@@ -131,6 +131,11 @@ defmodule CsGuideWeb.BrandController do
     end)
     |> Map.update(:drinks, [], fn drinks ->
       Enum.map(drinks, fn drink ->
+        # update the drink_images list by sorting the list of images
+        # from the oldest to the most recent version
+        # the /cs_guide_web/templates/components/drink_card.html.eex template component
+        # is then using List.last to get the most recent image version
+        # see https://git.io/JeMwB
         %{drink | drink_images: Enum.sort_by(drink.drink_images, &(&1.id), &<=/2) }
       end)
     end)
