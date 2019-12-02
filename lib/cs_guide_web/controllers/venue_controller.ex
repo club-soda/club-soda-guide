@@ -127,6 +127,11 @@ defmodule CsGuideWeb.VenueController do
       )
       |> sort_images_by_most_recent()
       |> sort_venue_drinks_by_type()
+      |> Map.update(:drinks, [], fn drinks ->
+        Enum.map(drinks, fn drink ->
+          %{drink | drink_images: Enum.sort_by(drink.drink_images, &(&1.id), &<=/2) }
+        end)
+      end)
 
 
     nearby_venues =
