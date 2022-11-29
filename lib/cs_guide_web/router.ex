@@ -31,7 +31,6 @@ defmodule CsGuideWeb.Router do
     pipe_through([:browser])
 
     get("/", PageController, :index)
-    get("/brands", BrandController, :index)
     post("/signup", SignupController, :create)
 
     get("/brands/:slug", BrandController, :show)
@@ -46,6 +45,7 @@ defmodule CsGuideWeb.Router do
     resources("/password", PasswordController, only: [:new, :create])
     resources("/password", PasswordController, only: [:edit, :update], param: "token")
     post("/accept_cookies/:path", CookieController, :accept_cookies)
+    resources("/contact-us", ContactUsController, only: [:new, :create])
   end
 
   scope "/search", CsGuideWeb do
@@ -53,6 +53,7 @@ defmodule CsGuideWeb.Router do
 
     resources("/drinks", SearchDrinkController, only: [:index])
     resources("/venues", SearchVenueController, only: [:index])
+    resources("/brands", SearchBrandController, only: [:index])
     resources("/all", SearchAllController, only: [:index])
   end
 

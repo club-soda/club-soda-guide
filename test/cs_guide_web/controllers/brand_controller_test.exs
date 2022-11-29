@@ -84,7 +84,7 @@ defmodule CsGuideWeb.BrandControllerTest do
   describe "index" do
     test "cannot access page if not logged in", %{conn: conn} do
       conn = get(conn, brand_path(conn, :index))
-      assert html_response(conn, 200) =~ "Brands"
+      assert html_response(conn, 302)
     end
   end
 
@@ -208,18 +208,29 @@ defmodule CsGuideWeb.BrandControllerTest do
     end
   end
 
+  describe "Get the most common style of the brand" do
+    test "return the most common style for the brand" do
+      brand = %{
+          drinks: [
+            %{drink_styles: [%{name: "style1"}, %{name: "style2"}]},
+            %{drink_styles: [%{name: "style1"}, %{name: "style3"}]}
+          ]
+      }
+      assert CsGuide.Resources.Drink.get_drink_style(brand.drinks) == "style1"
+    end
+
+    test "return nil when list of styles is empty" do
+      assert CsGuide.Resources.Drink.get_drink_style([]) == nil
+    end
+
+    test "return most common element of a list" do
+      assert CsGuide.Resources.Drink.max_by_name(["one", "two", "one"]) == "one"
+      assert CsGuide.Resources.Drink.max_by_name([]) == nil
+    end
+  end
+
   defp create_brand(_) do
     brand = fixture(:brand)
     {:ok, brand: brand}
-  end
-
-  defp create_brand(brand_name) when is_binary(brand_name) do
-    params =
-      @create_attrs
-      |> Map.put(:name, brand_name)
-
-    %Brand{}
-    |> Brand.changeset(params)
-    |> Brand.insert()
   end
 end

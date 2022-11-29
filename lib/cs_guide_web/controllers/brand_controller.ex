@@ -10,7 +10,8 @@ defmodule CsGuideWeb.BrandController do
   def index(conn, _params) do
     brands =
       Brand.all()
-      |> Enum.sort_by(&(String.first(&1.name)))
+      |> Enum.sort_by(&String.first(&1.name))
+
     render(conn, "index.html", brands: brands)
   end
 
@@ -122,15 +123,27 @@ defmodule CsGuideWeb.BrandController do
     )
     |> Map.update(:venues, [], fn venues ->
       venues
-      |> Enum.map(&VenueController.sortImagesByMostRecent/1)
+      |> Enum.map(&VenueController.sort_images_by_most_recent/1)
     end)
     |> Map.update(:venues, [], fn venues ->
       venues
       |> Enum.map(&SearchVenueController.selectPhotoNumber1/1)
     end)
+    |> Map.update(:drinks, [], fn drinks ->
+      Enum.map(drinks, fn drink ->
+        # update the drink_images list by sorting the list of images
+        # from the oldest to the most recent version
+        # the /cs_guide_web/templates/components/drink_card.html.eex template component
+        # is then using List.last to get the most recent image version
+        # see https://git.io/JeMwB
+        %{drink | drink_images: Enum.sort_by(drink.drink_images, &(&1.id), &<=/2) }
+      end)
+    end)
   end
 
-  defp get_related_drinks(brand, drink_type) do
+  defp get_related_drinks(_brand, nil), do: []
+
+  defp get_related_drinks(brand, drink_style) do
     Drink.all()
     |> Drink.preload([
       :drink_images,
@@ -140,37 +153,13 @@ defmodule CsGuideWeb.BrandController do
       venues: [:venue_types, :venue_images]
     ])
     |> Enum.filter(fn d ->
-      Enum.any?(d.drink_types, fn t ->
-        t.name == drink_type
+      Enum.any?(d.drink_styles, fn t ->
+        t.name == drink_style
       end)
     end)
     |> Enum.reject(fn d -> d.brand.name == brand.name end)
+    |> Enum.sort_by(&(&1.weighting || 0), &>=/2)
     |> Enum.take(4)
-  end
-
-  defp get_drink_type(brand) do
-    brand.drinks
-    |> Enum.map(fn d ->
-      Enum.map(d.drink_types, fn t -> t.name end)
-    end)
-    |> List.flatten()
-    |> Enum.reduce(%{}, fn drink_type, acc ->
-      Map.update(acc, drink_type, 1, fn value -> value + 1 end)
-    end)
-    # Will assign brands with no drink_type background colour of spirits banner
-    |> Enum.reduce({"Spirits", 0}, fn {drink_type, count}, acc ->
-      case acc do
-        {} ->
-          {drink_type, count}
-
-        {acc_dtype, acc_count} ->
-          if count > acc_count do
-            {drink_type, count}
-          else
-            {acc_dtype, acc_count}
-          end
-      end
-    end)
   end
 
   defp get_sorted_venues(ll, brand) do
@@ -202,11 +191,13 @@ defmodule CsGuideWeb.BrandController do
 
     if basic_brand_info != nil do
       brand = get_brand_info(basic_brand_info)
-      {drink_type, _count} = get_drink_type(brand)
+      brand_style = Drink.get_drink_style(brand.drinks)
+      # Will assign brands with no drink_type background colour of spirits banner
+      drink_type = Drink.get_drink_type(brand.drinks) || "Spirits"
 
       %{
         brand: brand,
-        related_drinks: get_related_drinks(brand, drink_type),
+        related_drinks: get_related_drinks(brand, brand_style),
         dd_code: get_code("DryDrinker"),
         wb_code: get_code("WiseBartender"),
         drink_type: drink_type,

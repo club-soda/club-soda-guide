@@ -75,7 +75,7 @@ defmodule CsGuide.Resources.Drink do
         selected =
           case Map.get(attrs, to_string(a)) do
             nil -> []
-            [_] = selected -> Enum.map(selected, fn {k, v} -> k end)
+            [_] = selected -> Enum.map(selected, fn {k, _} -> k end)
             selected -> selected
           end
 
@@ -91,6 +91,7 @@ defmodule CsGuide.Resources.Drink do
     |> CsGuide.Repo.preload(assocs)
     |> Map.put(:id, nil)
     |> Map.put(:updated_at, nil)
+    |> Map.put(:brand, nil)
     |> Resources.put_belongs_to_assoc(attrs, :brand, :brand_id, CsGuide.Resources.Brand, :name)
     |> __MODULE__.changeset(attrs)
     |> Resources.put_many_to_many_assoc(attrs, :drink_types, CsGuide.Categories.DrinkType, :name)
@@ -124,5 +125,46 @@ defmodule CsGuide.Resources.Drink do
             }"
         end
     }
+  end
+
+  @doc """
+  Returns the most common used drink type from a list of drinks
+  This is used to define the background colour of the brand page
+  see issue #346 and the PR #384
+  """
+  def get_drink_type(drinks) do
+    drinks
+    |> Enum.flat_map(fn drink ->
+      Enum.map(drink.drink_types, fn type -> type.name end)
+    end)
+    |> max_by_name()
+  end
+
+  @doc """
+  Returns the most common drink's style used in a list of drinks
+  see issue #598
+  """
+  def get_drink_style(drinks) do
+    drinks
+    |> Enum.flat_map(fn drink ->
+      Enum.map(drink.drink_styles, fn style -> style.name end)
+    end)
+    |> max_by_name()
+  end
+
+  @doc """
+  Returns the most common element of a list
+  ## Example
+      iex> max_by_name(["one", "two", "one"])
+      "one
+  """
+  def max_by_name([]), do: nil
+
+  def max_by_name(list) do
+    Enum.reduce(list, %{}, fn name, acc ->
+      Map.update(acc, name, 1, &(&1 + 1))
+    end)
+    |> Enum.max_by(&elem(&1, 1))
+    |> elem(0)
   end
 end

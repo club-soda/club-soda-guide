@@ -36,4 +36,13 @@ defmodule CsGuideWeb.LayoutView do
         "The Club Soda Guide is the UK’s first directory for low and no alcohol drinks, and the best places to find them."
     end
   end
+
+  def page_title(nil), do: "Club Soda Guide"
+  def page_title(static_page) do
+    if String.trim(static_page.browser_title || "") == "" do
+      "Club Soda Guide"
+    else
+      String.trim(static_page.browser_title)
+    end
+  end
 end

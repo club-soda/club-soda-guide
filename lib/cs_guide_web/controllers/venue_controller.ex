@@ -8,7 +8,17 @@ defmodule CsGuideWeb.VenueController do
   alias CsGuide.Accounts.{User, VenueUser}
 
   @mailer Application.get_env(:cs_guide, :mailer) || CsGuide.Mailer
-  @ten_days 864000 # ten days in seconds
+  # ten days in seconds
+  @ten_days 864_000
+
+  # see issue #600
+  @order_drink_types %{ "Tonics & Mixers" => 1,
+                        "Soft Drink" => 2,
+                        "Spirits & Premixed" => 3,
+                        "Wine" => 4,
+                        "Cider" => 5,
+                        "Beer" => 6
+                      }
 
   import Ecto.Query, only: [from: 2, subquery: 1]
 
@@ -78,7 +88,7 @@ defmodule CsGuideWeb.VenueController do
         venue_images: [],
         discount_codes: []
       )
-      |> sortImagesByMostRecent()
+      |> sort_images_by_most_recent()
 
     venue_images =
       [
@@ -115,13 +125,24 @@ defmodule CsGuideWeb.VenueController do
         venue_images: [],
         discount_codes: []
       )
+      |> sort_images_by_most_recent()
+      |> sort_venue_drinks_by_type()
+      |> Map.update(:drinks, [], fn drinks ->
+        Enum.map(drinks, fn drink ->
+        # update the drink_images list by sorting the list of images
+        # from the oldest to the most recent version
+        # the /cs_guide_web/templates/components/drink_card.html.eex template component
+        # is then using List.last to get the most recent image version
+        # see https://git.io/JeMwB
+          %{drink | drink_images: Enum.sort_by(drink.drink_images, &(&1.id), &<=/2) }
+        end)
+      end)
 
-    venue = sortImagesByMostRecent(venue)
 
     nearby_venues =
       getVenueCardsByLatLong(venue.lat, venue.long, venue.venue_name)
       |> Enum.take(4)
-      |> Enum.map(&sortImagesByMostRecent/1)
+      |> Enum.map(&sort_images_by_most_recent/1)
       |> Enum.map(&SearchVenueController.selectPhotoNumber1/1)
 
     current_user_able_to_edit_venue = can_current_user_edit_venue?(conn, venue)
@@ -203,7 +224,7 @@ defmodule CsGuideWeb.VenueController do
     venue =
       Venue.get_by(slug: slug)
       |> Venue.preload([:venue_images])
-      |> sortImagesByMostRecent()
+      |> sort_images_by_most_recent()
 
     render(conn, "add_photo.html",
       id: venue.entry_id,
@@ -215,7 +236,7 @@ defmodule CsGuideWeb.VenueController do
     venue =
       Venue.get(params["id"])
       |> Venue.preload([:venue_images])
-      |> sortImagesByMostRecent()
+      |> sort_images_by_most_recent()
 
     photo_number =
       cond do
@@ -239,7 +260,6 @@ defmodule CsGuideWeb.VenueController do
                photo_number: photo_number,
                extension: CsGuide.Resources.get_file_extension(params)
              }),
-
            {:ok, _} <- CsGuide.Resources.upload_photo(params, venue_image.entry_id) do
         {:ok, venue_image}
       else
@@ -299,7 +319,7 @@ defmodule CsGuideWeb.VenueController do
             is_user_already_this_venues_admin? =
               venue
               |> get_venue_owners()
-              |> Enum.map(&(&1.id))
+              |> Enum.map(& &1.id)
               |> Enum.any?(&(&1 == user.id))
 
             case is_user_already_this_venues_admin? do
@@ -336,7 +356,6 @@ defmodule CsGuideWeb.VenueController do
       |> put_flash(:info, "User removed as owner of this venue")
       |> redirect(to: venue_path(conn, :view_admins, venue.slug))
     else
-
       conn
       |> put_flash(:info, "User or venue given were incorrect")
       |> redirect(to: venue_path(conn, :view_admins, venue.slug))
@@ -347,10 +366,11 @@ defmodule CsGuideWeb.VenueController do
 
   defp get_venue_owners(venue) do
     query =
-      from u in User,
-      join: vu in "venues_users",
-      on: u.id == vu.user_id,
-      where: vu.venue_id == ^venue.id
+      from(u in User,
+        join: vu in "venues_users",
+        on: u.id == vu.user_id,
+        where: vu.venue_id == ^venue.id
+      )
 
     Repo.all(query)
   end
@@ -390,7 +410,6 @@ defmodule CsGuideWeb.VenueController do
     end
   end
 
-
   defp compareDates(date1, date2) do
     case NaiveDateTime.compare(date1, date2) do
       :gt ->
@@ -427,13 +446,28 @@ defmodule CsGuideWeb.VenueController do
     end)
   end
 
-  def sortImagesByMostRecent(venue) do
+  def sort_images_by_most_recent(venue) do
     Map.update(venue, :venue_images, [], fn images ->
-      images
-      |> Enum.sort(fn img1, img2 ->
+      Enum.sort(images, fn img1, img2 ->
         img1.id >= img2.id
       end)
     end)
+  end
+
+  @doc """
+  Sort venue's drink by most common type
+  see issue #600
+  beers > ciders > wines > spirits > softs > tonics/mixers > other-types
+  """
+  def sort_venue_drinks_by_type(venue) do
+    drinks =
+      venue.drinks
+      |> Enum.map(fn drink -> Map.put(drink, :main_type, Drink.get_drink_type([drink]))end)
+      |> Enum.sort_by(fn(drink) ->
+        @order_drink_types[drink.main_type]
+      end, &>=/2)
+
+    Map.put(venue, :drinks, drinks)
   end
 
   defp getPhotoOfPhotoNumber(venue, photo_number) do
@@ -466,13 +500,13 @@ defmodule CsGuideWeb.VenueController do
 
   defp send_email(user, new_user?, venue) do
     subject = "You have been made a venue admin"
+
     if new_user? do
       user = User.reset_password_token(user, @ten_days)
 
       user.email
       |> CsGuide.Email.send_email(subject, new_user_email_msg(user, venue))
       |> @mailer.deliver_now()
-
     else
       user.email
       |> CsGuide.Email.send_email(subject, existing_user_email_msg(venue))

@@ -28,6 +28,7 @@ defmodule CsGuide.Resources.Venue do
     field(:long, :float)
     field(:distance, :float, virtual: true)
     field(:slug, :string)
+    field(:draught, :boolean, default: false)
 
     many_to_many(
       :venue_types,
@@ -79,7 +80,8 @@ defmodule CsGuide.Resources.Venue do
       :favourite,
       :lat,
       :long,
-      :slug
+      :slug,
+      :draught
     ])
     |> cast_assoc(:users)
     |> validate_required([:venue_name, :parent_company, :postcode, :venue_types])

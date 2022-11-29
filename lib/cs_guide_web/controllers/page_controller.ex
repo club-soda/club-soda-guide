@@ -14,7 +14,7 @@ defmodule CsGuideWeb.PageController do
       |> Enum.slice(0, 4)
       |> Enum.sort(fn v1, v2 -> v1.cs_score >= v2.cs_score end)
       |> Enum.map(fn v ->
-        VenueController.sortImagesByMostRecent(v)
+        VenueController.sort_images_by_most_recent(v)
       end)
       |> Enum.map(&SearchVenueController.selectPhotoNumber1/1)
 

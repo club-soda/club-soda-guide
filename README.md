@@ -95,6 +95,11 @@ stocklist form. Hint: these count towards you Club Soda Score!
 
 ![alcohol-free-cocktails-box](https://user-images.githubusercontent.com/4185328/58052152-026dec00-7b4c-11e9-9279-c89261a23fe1.png)
 
+The drinks on the venue page are grouped and displayed with the following order:
+
+Beer, Cider, Wine, Spirits & Premixed, Soft Drink, Tonics & Mixers
+
+:warning: This order is hardcoded, so admins should make sure to use the case and spelling for these drink types :warning:
 
 ### Searching
 
@@ -131,6 +136,17 @@ which allows the user to see which filters have been applied at a glance and
 also to quickly unselect them
 
 ![drink-type-filter-pills](https://user-images.githubusercontent.com/4185328/52588512-8c633600-2e34-11e9-8b80-1c50048b2bd1.png)
+
+#### Brands
+The list of brands is split into two sections:
+- The first section display the brands as cards for member brands.
+- The second section diplay only the brands' name and is for non-member brands.
+
+### Contact Form
+![image](https://user-images.githubusercontent.com/6057298/67619558-ff5ee200-f7f4-11e9-9ede-0580014029d7.png)
+
+The contact form allows users to send an email to the Club Soda team.
+The form is composed with name (optional), email and message fields.
 
 # Admin Guide
 
@@ -267,13 +283,18 @@ best quality, but other sizes will be stretched or cropped to fit.
 
 The brand page contains brand information and lists all the drinks belonging to
 a brand. It also includes the venues, wholesalers and retailers that stock or
-sell those drinks. There are two templates for brand pages, one for members and
+sell those drinks.
+
+The brand page also displays the "Related Products" section which contains drinks
+matching the most common style of the brand. The drinks are sorted by weight
+and the first four ones are displayed.
+
+There are two templates for brand pages, one for members and
 the other for non members. Membership status is a checkbox on the brand form.
 Members have the ability to add two brand images (a cover image and one in the
 body of text). Member pages also display social media links.
 
 To add a stockist, simply add a drink from this brand to the venue as you normally would.
-
 
 ## Retailers
 Retailers can be added in two ways:

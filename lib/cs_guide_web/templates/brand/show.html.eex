@@ -22,7 +22,7 @@
 
     <div class="w-90 w-70-m w-50-l center">
       <%= if @brand.description do %>
-        <p class="pv3 lh5"><%= raw @brand.description %></p>
+        <p class="pv3 lh5"><%= raw add_line_breaks(@brand.description) %></p>
       <% else %>
         <%= if @is_authenticated do %>
           <div class="pb3">
@@ -195,7 +195,7 @@
         <% end %>
         <%= if @brand.sold_wb do %>
           <div class="dib ph4">
-            <a class="f4 lh4 cs-mid-blue underline db v-top w-50 w-20-ns tc pt1 pb3" target="_blank" href="https://wisebartender.co.uk/">
+            <a class="f4 lh4 cs-mid-blue underline db v-top w-50 w-20-ns tc pt1 pb3" target="_blank" href="https://wisebartender.co.uk/?ref=clubsoda">
               WiseBartender
             </a>
             <%= if @wb_discount_code do %>

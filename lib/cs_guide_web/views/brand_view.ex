@@ -3,7 +3,8 @@ defmodule CsGuideWeb.BrandView do
   use Autoform
 
   import Ecto.Query, only: [from: 2, subquery: 1]
-
+  import CsGuideWeb.VenueView, only: [add_line_breaks: 1]
+  
   def get_venues(brand) do
     brand.drinks
     |> Enum.map(fn d ->
